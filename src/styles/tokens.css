@@ -25,7 +25,7 @@
   --dose-night: var(--green);
 
   /* Type */
-  --font-head: 'Lora', Georgia, serif;
+  --font-head: 'Lora', 'Noto Sans Devanagari', Georgia, serif;
   --font-body: 'Nunito Sans', 'Open Sans', 'Noto Sans Devanagari', Calibri, Arial, sans-serif;
 
   /* 8px spacing grid */

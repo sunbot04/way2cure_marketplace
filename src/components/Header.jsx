@@ -2,11 +2,33 @@ import { useEffect, useState } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import Icon from './Icon.jsx';
 import { useCart } from '../context/CartContext.jsx';
-import { useLang, languages } from '../context/LangContext.jsx';
+import { useLang, useT, languages } from '../context/LangContext.jsx';
 import { SITE } from '../config/site.js';
+
+const T = {
+  en: {
+    support: '24/7 support · Mumbai, Navi Mumbai & Thane',
+    homeAria: 'Way2Cure Marketplace, home',
+    cartAria: '{label}, {count} items',
+    mainNav: 'Main',
+  },
+  hi: {
+    support: '24/7 मदद · मुंबई, नवी मुंबई और ठाणे',
+    homeAria: 'Way2Cure मार्केटप्लेस, होम पेज',
+    cartAria: '{label}, {count} सामान',
+    mainNav: 'मुख्य मेनू',
+  },
+  mr: {
+    support: '24/7 मदत · मुंबई, नवी मुंबई आणि ठाणे',
+    homeAria: 'Way2Cure मार्केटप्लेस, मुख्यपृष्ठ',
+    cartAria: '{label}, {count} वस्तू',
+    mainNav: 'मुख्य मेनू',
+  },
+};
 
 function TopBar() {
   const { lang, setLang, t } = useLang();
+  const tr = useT(T);
   return (
     <div className="topbar">
       <div className="container topbar-inner">
@@ -20,7 +42,7 @@ function TopBar() {
           <a href={SITE.homeCareUrl} className="topbar-link">
             <Icon name="stethoscope" size={18} /> <span>{t('homeCareSite')}</span>
           </a>
-          <span className="topbar-note">24/7 support · {SITE.cities}</span>
+          <span className="topbar-note">{tr('support')}</span>
         </div>
         <div className="lang-switch" role="group" aria-label={t('language')}>
           <Icon name="globe" size={18} />
@@ -45,6 +67,7 @@ function TopBar() {
 export default function Header() {
   const { count } = useCart();
   const { t } = useLang();
+  const tr = useT(T);
   const navigate = useNavigate();
   const location = useLocation();
   const [q, setQ] = useState('');
@@ -63,7 +86,7 @@ export default function Header() {
     <header className="site-header">
       <TopBar />
       <div className="container header-main">
-        <Link to="/" className="brand" aria-label="Way2Cure Marketplace, home">
+        <Link to="/" className="brand" aria-label={tr('homeAria')}>
           <img src="/logo.png" alt="Way2Cure" className="brand-logo" width="132" height="44" />
           <span className="brand-label">{SITE.label}</span>
         </Link>
@@ -92,7 +115,7 @@ export default function Header() {
           <Link to="/account" className="icon-link hide-mobile">
             <Icon name="user" /> <span>{t('login')}</span>
           </Link>
-          <Link to="/cart" className="icon-link" aria-label={`${t('cart')}, ${count} items`}>
+          <Link to="/cart" className="icon-link" aria-label={tr('cartAria', { label: t('cart'), count })}>
             <Icon name="cart" />
             <span className="hide-mobile">{t('cart')}</span>
             {count > 0 && <span className="cart-count" aria-hidden="true">{count}</span>}
@@ -109,7 +132,7 @@ export default function Header() {
         </div>
       </div>
 
-      <nav id="main-nav" className={`main-nav${open ? ' open' : ''}`} aria-label="Main">
+      <nav id="main-nav" className={`main-nav${open ? ' open' : ''}`} aria-label={tr('mainNav')}>
         <div className="container nav-inner">
           {links.map((l) => (
             <NavLink key={l.to} to={l.to} end={l.end} className="nav-link">

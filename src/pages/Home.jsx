@@ -1,17 +1,95 @@
 import { Link } from 'react-router-dom';
 import Icon from '../components/Icon.jsx';
-import { useLang } from '../context/LangContext.jsx';
+import { useLang, useLoc, useT } from '../context/LangContext.jsx';
 import { SITE } from '../config/site.js';
 import { categories } from '../data/products.js';
 import { services } from '../data/services.js';
 import { subscriptionPlans, faqs } from '../data/content.js';
 import { FaqList, ServiceCard, Steps, TrustStrip, rxSteps, InfoBand } from '../components/ui.jsx';
 
-function HeroArt() {
+const T = {
+  en: {
+    heroArt: 'Illustration of a home with medicines and care',
+    eyebrow: 'Way2Cure Marketplace · Mumbai, Navi Mumbai & Thane',
+    app: '(app)',
+    callBefore: 'Prefer to talk? Call',
+    callAfter: ', any time.',
+    nurseText: 'Qualified nurses at home, day or night',
+    needToday: 'What do you need today?',
+    rxTitle: 'How prescription orders work',
+    rxLead: 'Four simple steps. A registered pharmacist checks every prescription before we pack it.',
+    aiDecides: 'AI assists, pharmacist decides.',
+    aiText: 'If anything on the prescription is unclear, the pharmacist will call you.',
+    seeHow: 'See how it works',
+    careTitle: 'Care at home',
+    careLead: 'Trained, background-checked nurses and doctors, sent to your home.',
+    careNote: 'Specialised care: suitability is assessed by the treating doctor before care begins.',
+    allCare: 'See all care services',
+    subTitle: 'Never run out. Subscribe to regular care.',
+    subLead: 'We schedule it, deliver or visit, and remind you before each order. Pause or change anytime.',
+    families: 'Families we care for',
+    stories: 'Real stories from families will appear here, shared with their written permission.',
+    shareStory: 'Have a story to share? Tell us on WhatsApp.',
+    questions: 'Common questions',
+    allQuestions: 'All questions',
+  },
+  hi: {
+    heroArt: 'दवाइयों और देखभाल के साथ एक घर का चित्र',
+    eyebrow: 'Way2Cure मार्केटप्लेस · मुंबई, नवी मुंबई और ठाणे',
+    app: '(ऐप)',
+    callBefore: 'बात करना चाहते हैं? कभी भी',
+    callAfter: ' पर कॉल करें।',
+    nurseText: 'घर पर योग्य नर्स, दिन हो या रात',
+    needToday: 'आज आपको क्या चाहिए?',
+    rxTitle: 'पर्चे वाले ऑर्डर कैसे काम करते हैं',
+    rxLead: 'चार आसान कदम। पैक करने से पहले हर पर्चे को एक रजिस्टर्ड फ़ार्मासिस्ट जाँचते हैं।',
+    aiDecides: 'AI मदद करता है, फ़ैसला फ़ार्मासिस्ट करते हैं।',
+    aiText: 'अगर पर्चे में कुछ भी साफ़ न हो, तो फ़ार्मासिस्ट आपको कॉल करेंगे।',
+    seeHow: 'देखें यह कैसे काम करता है',
+    careTitle: 'घर पर देखभाल',
+    careLead: 'प्रशिक्षित और जाँचे-परखे नर्स और डॉक्टर, आपके घर पर।',
+    careNote: 'खास देखभाल: देखभाल शुरू होने से पहले, इलाज करने वाले डॉक्टर तय करते हैं कि यह मरीज़ के लिए सही है या नहीं।',
+    allCare: 'सभी देखभाल सेवाएँ देखें',
+    subTitle: 'कभी कमी न हो। नियमित देखभाल का सब्सक्रिप्शन लें।',
+    subLead: 'हम समय तय करते हैं, डिलिवरी या विज़िट करते हैं, और हर ऑर्डर से पहले आपको याद दिलाते हैं। जब चाहें रोकें या बदलें।',
+    families: 'जिन परिवारों की हम देखभाल करते हैं',
+    stories: 'परिवारों की सच्ची कहानियाँ यहाँ आएँगी, उनकी लिखित अनुमति के साथ।',
+    shareStory: 'आपके पास कोई कहानी है? हमें व्हाट्सऐप पर बताएँ।',
+    questions: 'आम सवाल',
+    allQuestions: 'सभी सवाल',
+  },
+  mr: {
+    heroArt: 'औषधे आणि काळजीसह एका घराचे चित्र',
+    eyebrow: 'Way2Cure मार्केटप्लेस · मुंबई, नवी मुंबई आणि ठाणे',
+    app: '(ॲप)',
+    callBefore: 'बोलायचे आहे? कधीही',
+    callAfter: ' वर कॉल करा.',
+    nurseText: 'घरी पात्र नर्स, दिवस असो वा रात्र',
+    needToday: 'आज तुम्हाला काय हवे आहे?',
+    rxTitle: 'प्रिस्क्रिप्शन ऑर्डर कशी होते',
+    rxLead: 'चार सोप्या पायऱ्या. पॅक करण्यापूर्वी प्रत्येक प्रिस्क्रिप्शन नोंदणीकृत फार्मासिस्ट तपासतात.',
+    aiDecides: 'AI मदत करते, निर्णय फार्मासिस्ट घेतात.',
+    aiText: 'प्रिस्क्रिप्शनमध्ये काही स्पष्ट नसल्यास, फार्मासिस्ट तुम्हाला कॉल करतील.',
+    seeHow: 'हे कसे होते ते पाहा',
+    careTitle: 'घरी काळजी',
+    careLead: 'प्रशिक्षित, पार्श्वभूमी तपासलेल्या नर्स आणि डॉक्टर, तुमच्या घरी.',
+    careNote: 'विशेष काळजी: काळजी सुरू होण्यापूर्वी, उपचार करणारे डॉक्टर ती रुग्णासाठी योग्य आहे का ते ठरवतात.',
+    allCare: 'सर्व काळजी सेवा पाहा',
+    subTitle: 'औषधे कधीही संपू देऊ नका. नियमित काळजीची सदस्यता घ्या.',
+    subLead: 'आम्ही वेळ ठरवतो, डिलिव्हरी किंवा भेट देतो, आणि प्रत्येक ऑर्डरपूर्वी तुम्हाला आठवण करून देतो. कधीही थांबवा किंवा बदला.',
+    families: 'आम्ही काळजी घेत असलेली कुटुंबे',
+    stories: 'कुटुंबांच्या खऱ्या गोष्टी इथे दिसतील, त्यांच्या लेखी परवानगीने.',
+    shareStory: 'तुमच्याकडे सांगण्यासारखी गोष्ट आहे? आम्हाला व्हॉट्सॲपवर सांगा.',
+    questions: 'नेहमीचे प्रश्न',
+    allQuestions: 'सर्व प्रश्न',
+  },
+};
+
+function HeroArt({ label }) {
   // Brand illustration (circles, home, pill, sachet). Replace or pair with real photos of
   // caregivers and families in Indian homes once photo consent is in place.
   return (
-    <svg className="hero-art" viewBox="0 0 420 360" role="img" aria-label="Illustration of a home with medicines and care">
+    <svg className="hero-art" viewBox="0 0 420 360" role="img" aria-label={label}>
       <circle cx="300" cy="110" r="96" fill="#EAB34B" />
       <circle cx="120" cy="250" r="62" fill="#E07B5F" />
       <circle cx="350" cy="280" r="54" fill="#70A9A1" />
@@ -37,9 +115,11 @@ function HeroArt() {
 
 export default function Home() {
   const { t } = useLang();
+  const tr = useT(T);
+  const loc = useLoc();
   const quickPaths = [
-    ...categories.filter((c) => c.slug !== 'safety').map((c) => ({ to: `/shop/${c.slug}`, icon: c.icon, title: c.name, text: c.blurb, edge: c.edge })),
-    { to: '/care/nurse', icon: 'stethoscope', title: t('bookNurse'), text: 'Qualified nurses at home, day or night', edge: 'var(--terracotta-deep)' },
+    ...categories.filter((c) => c.slug !== 'safety').map(loc).map((c) => ({ to: `/shop/${c.slug}`, icon: c.icon, title: c.name, text: c.blurb, edge: c.edge })),
+    { to: '/care/nurse', icon: 'stethoscope', title: t('bookNurse'), text: tr('nurseText'), edge: 'var(--terracotta-deep)' },
   ];
   const homeServices = ['nurse', 'doctor', 'icu', 'stroke'].map((id) => services.find((s) => s.id === id));
 
@@ -49,7 +129,7 @@ export default function Home() {
       <section className="hero">
         <div className="container hero-inner">
           <div className="hero-copy">
-            <p className="eyebrow eyebrow-light">Way2Cure Marketplace · {SITE.cities}</p>
+            <p className="eyebrow eyebrow-light">{tr('eyebrow')}</p>
             <h1>{t('heroTitle')}</h1>
             <p className="hero-text">{t('heroText')}</p>
             <div className="btn-row">
@@ -57,21 +137,21 @@ export default function Home() {
                 <Icon name="pill" /> {t('orderMedicines')}
               </Link>
               <Link to="/prescription" className="btn btn-urgent">
-                <Icon name="rx" /> {t('uploadRx')} <span className="btn-note">(app)</span>
+                <Icon name="rx" /> {t('uploadRx')} <span className="btn-note">{tr('app')}</span>
               </Link>
             </div>
             <p className="hero-call">
-              Prefer to talk? Call <a href={SITE.phoneHref}>{SITE.phone}</a>, any time.
+              {tr('callBefore')} <a href={SITE.phoneHref}>{SITE.phone}</a>{tr('callAfter')}
             </p>
           </div>
-          <HeroArt />
+          <HeroArt label={tr('heroArt')} />
         </div>
       </section>
 
       {/* 3 · Quick paths */}
       <section className="section">
         <div className="container">
-          <h2>What do you need today?</h2>
+          <h2>{tr('needToday')}</h2>
           <div className="grid grid-tiles">
             {quickPaths.map((p) => (
               <Link key={p.to} to={p.to} className="card card-edge-left tile" style={{ '--edge': p.edge }}>
@@ -90,14 +170,14 @@ export default function Home() {
       {/* 4 · How prescriptions work */}
       <section className="section section-white">
         <div className="container">
-          <h2>How prescription orders work</h2>
-          <p className="lead">Four simple steps. A registered pharmacist checks every prescription before we pack it.</p>
+          <h2>{tr('rxTitle')}</h2>
+          <p className="lead">{tr('rxLead')}</p>
           <Steps steps={rxSteps} />
           <InfoBand icon="sparkles">
-            <strong>AI assists, pharmacist decides.</strong> If anything on the prescription is unclear, the pharmacist will call you.
+            <strong>{tr('aiDecides')}</strong> {tr('aiText')}
           </InfoBand>
           <div className="btn-row center-mobile">
-            <Link to="/prescription" className="btn btn-primary">See how it works</Link>
+            <Link to="/prescription" className="btn btn-primary">{tr('seeHow')}</Link>
           </div>
         </div>
       </section>
@@ -105,23 +185,23 @@ export default function Home() {
       {/* 5 · Care at home */}
       <section className="section">
         <div className="container">
-          <h2>Care at home</h2>
-          <p className="lead">Trained, background-checked nurses and doctors, sent to your home.</p>
+          <h2>{tr('careTitle')}</h2>
+          <p className="lead">{tr('careLead')}</p>
           <div className="grid grid-4">
             {homeServices.map((s) => <ServiceCard key={s.id} service={s} />)}
           </div>
-          <p className="small muted">Specialised care: suitability is assessed by the treating doctor before care begins.</p>
-          <Link to="/care" className="text-link">See all care services <Icon name="arrow" size={18} /></Link>
+          <p className="small muted">{tr('careNote')}</p>
+          <Link to="/care" className="text-link">{tr('allCare')} <Icon name="arrow" size={18} /></Link>
         </div>
       </section>
 
       {/* 6 · Subscribe & save */}
       <section className="section section-mint">
         <div className="container">
-          <h2>Never run out. Subscribe to regular care.</h2>
-          <p className="lead">We schedule it, deliver or visit, and remind you before each order. Pause or change anytime.</p>
+          <h2>{tr('subTitle')}</h2>
+          <p className="lead">{tr('subLead')}</p>
           <div className="grid grid-4">
-            {subscriptionPlans.map((p) => (
+            {subscriptionPlans.map(loc).map((p) => (
               <Link key={p.id} to={p.id === 'sachets' ? '/subscriptions/dose-sachets' : '/subscriptions'} className="card card-edge-top plan-mini" style={{ '--edge': p.edge }}>
                 <Icon name={p.icon} size={28} />
                 <h3>{p.name}</h3>
@@ -139,19 +219,17 @@ export default function Home() {
       <section className="section">
         <div className="container two-col">
           <div>
-            <h2>Families we care for</h2>
+            <h2>{tr('families')}</h2>
             <div className="card story-placeholder">
               <Icon name="users" size={32} />
-              <p>
-                Real stories from families will appear here, shared with their written permission.
-              </p>
-              <p className="small muted">Have a story to share? Tell us on WhatsApp.</p>
+              <p>{tr('stories')}</p>
+              <p className="small muted">{tr('shareStory')}</p>
             </div>
           </div>
           <div>
-            <h2>Common questions</h2>
+            <h2>{tr('questions')}</h2>
             <FaqList items={faqs.slice(0, 5)} />
-            <Link to="/help" className="text-link">All questions <Icon name="arrow" size={18} /></Link>
+            <Link to="/help" className="text-link">{tr('allQuestions')} <Icon name="arrow" size={18} /></Link>
           </div>
         </div>
       </section>

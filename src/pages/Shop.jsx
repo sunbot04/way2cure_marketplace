@@ -4,13 +4,62 @@ import Icon from '../components/Icon.jsx';
 import ProductCard from '../components/ProductCard.jsx';
 import { categories, shopViews, products } from '../data/products.js';
 import { PageHead, RxNotice } from '../components/ui.jsx';
+import { useT, useLoc } from '../context/LangContext.jsx';
 import NotFound from './NotFound.jsx';
 
+const T = {
+  en: {
+    shop: 'Shop',
+    resultsFor: 'Results for "{q}"',
+    intro: 'Medicines, devices, daily care and more. Delivered in Mumbai, Navi Mumbai and Thane.',
+    filters: 'Filters', filter: 'Filter',
+    brand: 'Brand', allBrands: 'All brands',
+    price: 'Price', anyPrice: 'Any price', under500: 'Under Rs. 500', mid: 'Rs. 500 to 2,000', over2000: 'Over Rs. 2,000',
+    buyOrRent: 'Buy or rent', buy: 'Buy', rent: 'Rent',
+    prescription: 'Prescription', rxAll: 'Rx and no Rx', rxNeeded: 'Rx needed', rxNo: 'No Rx needed',
+    clear: 'Clear filters',
+    item: 'item', items: 'items',
+    sortBy: 'Sort by', popular: 'Most popular', priceLow: 'Price: low to high', priceHigh: 'Price: high to low', fastest: 'Fastest delivery',
+    emptyTitle: 'We could not find that.',
+    emptyText: 'Try a different word, or clear the filters. You can also call us and we will find it for you.',
+  },
+  hi: {
+    shop: 'खरीदारी',
+    resultsFor: '"{q}" के नतीजे',
+    intro: 'दवाइयाँ, उपकरण, रोज़ की देखभाल और बहुत कुछ। मुंबई, नवी मुंबई और ठाणे में डिलिवरी।',
+    filters: 'फ़िल्टर', filter: 'फ़िल्टर',
+    brand: 'ब्रांड', allBrands: 'सभी ब्रांड',
+    price: 'कीमत', anyPrice: 'कोई भी कीमत', under500: 'Rs. 500 से कम', mid: 'Rs. 500 से 2,000', over2000: 'Rs. 2,000 से ज़्यादा',
+    buyOrRent: 'ख़रीदें या किराये पर', buy: 'ख़रीदें', rent: 'किराये पर',
+    prescription: 'पर्चा', rxAll: 'पर्चे वाली और बिना पर्चे वाली', rxNeeded: 'पर्चा ज़रूरी', rxNo: 'पर्चा ज़रूरी नहीं',
+    clear: 'फ़िल्टर हटाएँ',
+    item: 'सामान', items: 'सामान',
+    sortBy: 'क्रम', popular: 'सबसे लोकप्रिय', priceLow: 'कीमत: कम से ज़्यादा', priceHigh: 'कीमत: ज़्यादा से कम', fastest: 'सबसे जल्दी डिलिवरी',
+    emptyTitle: 'हमें यह नहीं मिला।',
+    emptyText: 'कोई दूसरा शब्द आज़माएँ, या फ़िल्टर हटाएँ। आप हमें कॉल भी कर सकते हैं, हम आपके लिए ढूँढ देंगे।',
+  },
+  mr: {
+    shop: 'खरेदी',
+    resultsFor: '"{q}" साठी निकाल',
+    intro: 'औषधे, उपकरणे, दैनंदिन काळजी आणि बरेच काही. मुंबई, नवी मुंबई आणि ठाणे येथे डिलिव्हरी.',
+    filters: 'फिल्टर', filter: 'फिल्टर',
+    brand: 'ब्रँड', allBrands: 'सर्व ब्रँड',
+    price: 'किंमत', anyPrice: 'कोणतीही किंमत', under500: 'Rs. 500 पेक्षा कमी', mid: 'Rs. 500 ते 2,000', over2000: 'Rs. 2,000 पेक्षा जास्त',
+    buyOrRent: 'विकत की भाड्याने', buy: 'विकत घ्या', rent: 'भाड्याने',
+    prescription: 'प्रिस्क्रिप्शन', rxAll: 'प्रिस्क्रिप्शनची आणि विना-प्रिस्क्रिप्शन', rxNeeded: 'प्रिस्क्रिप्शन आवश्यक', rxNo: 'प्रिस्क्रिप्शन आवश्यक नाही',
+    clear: 'फिल्टर काढा',
+    item: 'वस्तू', items: 'वस्तू',
+    sortBy: 'क्रम', popular: 'सर्वात लोकप्रिय', priceLow: 'किंमत: कमी ते जास्त', priceHigh: 'किंमत: जास्त ते कमी', fastest: 'सर्वात लवकर डिलिव्हरी',
+    emptyTitle: 'आम्हाला हे सापडले नाही.',
+    emptyText: 'दुसरा शब्द वापरून पाहा, किंवा फिल्टर काढा. तुम्ही आम्हाला कॉलही करू शकता, आम्ही तुमच्यासाठी शोधून देऊ.',
+  },
+};
+
 const priceBands = [
-  { id: 'all', label: 'Any price', test: () => true },
-  { id: 'u500', label: 'Under Rs. 500', test: (p) => p < 500 },
-  { id: '500-2000', label: 'Rs. 500 to 2,000', test: (p) => p >= 500 && p <= 2000 },
-  { id: 'o2000', label: 'Over Rs. 2,000', test: (p) => p > 2000 },
+  { id: 'all', label: 'anyPrice', test: () => true },
+  { id: 'u500', label: 'under500', test: (p) => p < 500 },
+  { id: '500-2000', label: 'mid', test: (p) => p >= 500 && p <= 2000 },
+  { id: 'o2000', label: 'over2000', test: (p) => p > 2000 },
 ];
 
 const sorters = {
@@ -20,7 +69,13 @@ const sorters = {
   delivery: (a, b) => a.deliveryHours - b.deliveryHours,
 };
 
+// Search matches the English text and both translations, so a search typed in any language works.
+const searchText = (p) =>
+  [p, p.hi, p.mr].filter(Boolean).map((x) => `${x.name} ${x.desc}`).join(' ') + ` ${p.brand} ${p.cat}`;
+
 export default function Shop() {
+  const tr = useT(T);
+  const loc = useLoc();
   const { category } = useParams();
   const [params] = useSearchParams();
   const q = (params.get('q') || '').trim().toLowerCase();
@@ -38,7 +93,7 @@ export default function Shop() {
     if (category === 'rent') list = list.filter((p) => p.rentPerMonth);
     else if (category === 'sellers') list = list.filter((p) => p.seller !== 'Way2Cure');
     else if (category) list = list.filter((p) => p.cat === category);
-    if (q) list = list.filter((p) => `${p.name} ${p.brand} ${p.desc} ${p.cat}`.toLowerCase().includes(q));
+    if (q) list = list.filter((p) => searchText(p).toLowerCase().includes(q));
     return list;
   }, [category, q]);
 
@@ -59,19 +114,20 @@ export default function Shop() {
 
   if (category && !view) return <NotFound />;
 
-  const title = q ? `Results for "${params.get('q')}"` : view ? view.name : 'Shop';
+  const v = loc(view);
+  const title = q ? tr('resultsFor', { q: params.get('q') }) : v ? v.name : tr('shop');
   const reset = () => { setBrand('all'); setPrice('all'); setBuyRent('all'); setRx('all'); };
 
   return (
     <>
-      <PageHead eyebrow="Shop" title={title}>
-        <p>{view ? view.blurb : 'Medicines, devices, daily care and more. Delivered in Mumbai, Navi Mumbai and Thane.'}</p>
+      <PageHead eyebrow={tr('shop')} title={title}>
+        <p>{v ? v.blurb : tr('intro')}</p>
       </PageHead>
 
       <div className="container section-sm">
         {!category && !q && (
           <div className="grid grid-tiles shop-cats">
-            {[...categories, ...shopViews].map((c) => (
+            {[...categories, ...shopViews].map(loc).map((c) => (
               <Link key={c.slug} to={`/shop/${c.slug}`} className="card card-edge-left tile" style={{ '--edge': c.edge }}>
                 <span className="tile-icon"><Icon name={c.icon} size={32} /></span>
                 <span className="tile-text"><strong>{c.name}</strong><span>{c.blurb}</span></span>
@@ -84,45 +140,45 @@ export default function Shop() {
         {(category === 'medicines' || base.some((p) => p.rx)) && <RxNotice />}
 
         <div className="shop-layout">
-          <aside className="filters card" aria-label="Filters">
-            <h2 className="h3">Filter</h2>
-            <label className="select-label">Brand
+          <aside className="filters card" aria-label={tr('filters')}>
+            <h2 className="h3">{tr('filter')}</h2>
+            <label className="select-label">{tr('brand')}
               <select value={brand} onChange={(e) => setBrand(e.target.value)}>
-                <option value="all">All brands</option>
+                <option value="all">{tr('allBrands')}</option>
                 {brands.map((b) => <option key={b}>{b}</option>)}
               </select>
             </label>
-            <label className="select-label">Price
+            <label className="select-label">{tr('price')}
               <select value={price} onChange={(e) => setPrice(e.target.value)}>
-                {priceBands.map((b) => <option key={b.id} value={b.id}>{b.label}</option>)}
+                {priceBands.map((b) => <option key={b.id} value={b.id}>{tr(b.label)}</option>)}
               </select>
             </label>
-            <label className="select-label">Buy or rent
+            <label className="select-label">{tr('buyOrRent')}
               <select value={buyRent} onChange={(e) => setBuyRent(e.target.value)}>
-                <option value="all">Buy or rent</option>
-                <option value="buy">Buy</option>
-                <option value="rent">Rent</option>
+                <option value="all">{tr('buyOrRent')}</option>
+                <option value="buy">{tr('buy')}</option>
+                <option value="rent">{tr('rent')}</option>
               </select>
             </label>
-            <label className="select-label">Prescription
+            <label className="select-label">{tr('prescription')}
               <select value={rx} onChange={(e) => setRx(e.target.value)}>
-                <option value="all">Rx and no Rx</option>
-                <option value="rx">Rx needed</option>
-                <option value="otc">No Rx needed</option>
+                <option value="all">{tr('rxAll')}</option>
+                <option value="rx">{tr('rxNeeded')}</option>
+                <option value="otc">{tr('rxNo')}</option>
               </select>
             </label>
-            <button type="button" className="btn btn-outline btn-block" onClick={reset}>Clear filters</button>
+            <button type="button" className="btn btn-outline btn-block" onClick={reset}>{tr('clear')}</button>
           </aside>
 
           <div>
             <div className="shop-toolbar">
-              <p aria-live="polite"><strong>{shown.length}</strong> {shown.length === 1 ? 'item' : 'items'}</p>
-              <label className="select-label inline">Sort by
+              <p aria-live="polite"><strong>{shown.length}</strong> {shown.length === 1 ? tr('item') : tr('items')}</p>
+              <label className="select-label inline">{tr('sortBy')}
                 <select value={sort} onChange={(e) => setSort(e.target.value)}>
-                  <option value="popular">Most popular</option>
-                  <option value="price-low">Price: low to high</option>
-                  <option value="price-high">Price: high to low</option>
-                  <option value="delivery">Fastest delivery</option>
+                  <option value="popular">{tr('popular')}</option>
+                  <option value="price-low">{tr('priceLow')}</option>
+                  <option value="price-high">{tr('priceHigh')}</option>
+                  <option value="delivery">{tr('fastest')}</option>
                 </select>
               </label>
             </div>
@@ -132,9 +188,9 @@ export default function Shop() {
               </div>
             ) : (
               <div className="empty card">
-                <h3>We could not find that.</h3>
-                <p>Try a different word, or clear the filters. You can also call us and we will find it for you.</p>
-                <button type="button" className="btn btn-primary" onClick={reset}>Clear filters</button>
+                <h3>{tr('emptyTitle')}</h3>
+                <p>{tr('emptyText')}</p>
+                <button type="button" className="btn btn-primary" onClick={reset}>{tr('clear')}</button>
               </div>
             )}
           </div>

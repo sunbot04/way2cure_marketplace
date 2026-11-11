@@ -2,16 +2,91 @@ import { Link } from 'react-router-dom';
 import { QRCodeSVG } from 'qrcode.react';
 import Icon from './Icon.jsx';
 import { SITE } from '../config/site.js';
+import { useLoc, useT } from '../context/LangContext.jsx';
+
+// Copy for the shared building blocks below (English, Hindi, Marathi).
+const T = {
+  en: {
+    soldByUs: 'Sold by Way2Cure',
+    soldBy: 'Sold by {seller} · Verified seller',
+    rxNotice: 'Prescription medicines sold only with a valid prescription. A registered pharmacist checks every prescription order.',
+    trustAria: 'Why families trust Way2Cure',
+    happy: '{n} happy patients', happyText: 'Across Mumbai, Navi Mumbai & Thane',
+    nurses: 'Verified nurses', nursesText: 'Background-checked',
+    pharmacies: 'Licensed pharmacies', pharmaciesText: 'Mumbai partners',
+    payments: 'Secure payments', paymentsText: 'UPI · cards · net banking',
+    privacy: 'Private data', privacyText: 'Consent-based, DPDP-ready',
+    support: '24/7 support', supportText: 'Call {phone}',
+    openInApp: 'Open in the app',
+    qrTitle: 'QR code to open the Way2Cure app',
+    qrText: 'Prescription upload works in the Way2Cure mobile app. Scan this code with your phone camera to open it.',
+    openApp: 'Open the app',
+    noPhone: 'No smartphone? Call',
+    noPhoneEnd: 'and we will take your order.',
+    bookNow: 'Book now',
+    needHelp: 'Need help?',
+    helpText: 'Talk to a real person. We can place the order for you.',
+    call: 'Call {phone}',
+    whatsapp: 'WhatsApp',
+  },
+  hi: {
+    soldByUs: 'Way2Cure द्वारा बेचा गया',
+    soldBy: '{seller} द्वारा बेचा गया · सत्यापित विक्रेता',
+    rxNotice: 'पर्चे वाली दवाइयाँ सिर्फ़ वैध पर्चे पर ही मिलती हैं। पर्चे वाले हर ऑर्डर को एक रजिस्टर्ड फ़ार्मासिस्ट जाँचते हैं।',
+    trustAria: 'परिवार Way2Cure पर भरोसा क्यों करते हैं',
+    happy: '{n} संतुष्ट मरीज़', happyText: 'मुंबई, नवी मुंबई और ठाणे में',
+    nurses: 'जाँचे-परखे नर्स', nursesText: 'बैकग्राउंड की जाँच की गई',
+    pharmacies: 'लाइसेंस वाली फ़ार्मेसी', pharmaciesText: 'मुंबई के पार्टनर',
+    payments: 'सुरक्षित भुगतान', paymentsText: 'यूपीआई · कार्ड · नेट बैंकिंग',
+    privacy: 'आपकी जानकारी निजी', privacyText: 'आपकी सहमति से, DPDP के अनुसार',
+    support: '24/7 मदद', supportText: '{phone} पर कॉल करें',
+    openInApp: 'ऐप में खोलें',
+    qrTitle: 'Way2Cure ऐप खोलने के लिए QR कोड',
+    qrText: 'पर्चा Way2Cure मोबाइल ऐप में अपलोड होता है। ऐप खोलने के लिए अपने फ़ोन के कैमरे से यह कोड स्कैन करें।',
+    openApp: 'ऐप खोलें',
+    noPhone: 'स्मार्टफ़ोन नहीं है? कॉल करें',
+    noPhoneEnd: '— हम आपका ऑर्डर ले लेंगे।',
+    bookNow: 'अभी बुक करें',
+    needHelp: 'मदद चाहिए?',
+    helpText: 'किसी असली व्यक्ति से बात करें। हम आपके लिए ऑर्डर कर सकते हैं।',
+    call: '{phone} पर कॉल करें',
+    whatsapp: 'व्हाट्सऐप',
+  },
+  mr: {
+    soldByUs: 'Way2Cure कडून विक्री',
+    soldBy: '{seller} कडून विक्री · पडताळलेले विक्रेते',
+    rxNotice: 'प्रिस्क्रिप्शनची औषधे फक्त वैध प्रिस्क्रिप्शनवरच मिळतात. प्रिस्क्रिप्शनची प्रत्येक ऑर्डर नोंदणीकृत फार्मासिस्ट तपासतात.',
+    trustAria: 'कुटुंबे Way2Cure वर विश्वास का ठेवतात',
+    happy: '{n} समाधानी रुग्ण', happyText: 'मुंबई, नवी मुंबई आणि ठाणे येथे',
+    nurses: 'पडताळलेल्या नर्स', nursesText: 'पार्श्वभूमी तपासलेली',
+    pharmacies: 'परवानाधारक फार्मसी', pharmaciesText: 'मुंबईतील भागीदार',
+    payments: 'सुरक्षित पेमेंट', paymentsText: 'यूपीआय · कार्ड · नेट बँकिंग',
+    privacy: 'तुमची माहिती खाजगी', privacyText: 'तुमच्या संमतीने, DPDP नुसार',
+    support: '24/7 मदत', supportText: '{phone} वर कॉल करा',
+    openInApp: 'ॲपमध्ये उघडा',
+    qrTitle: 'Way2Cure ॲप उघडण्यासाठी QR कोड',
+    qrText: 'प्रिस्क्रिप्शन Way2Cure मोबाइल ॲपमध्ये अपलोड करता येते. ॲप उघडण्यासाठी तुमच्या फोनच्या कॅमेऱ्याने हा कोड स्कॅन करा.',
+    openApp: 'ॲप उघडा',
+    noPhone: 'स्मार्टफोन नाही? कॉल करा',
+    noPhoneEnd: '— आम्ही तुमची ऑर्डर घेऊ.',
+    bookNow: 'आता बुक करा',
+    needHelp: 'मदत हवी आहे?',
+    helpText: 'खऱ्या व्यक्तीशी बोला. आम्ही तुमच्यासाठी ऑर्डर देऊ शकतो.',
+    call: '{phone} वर कॉल करा',
+    whatsapp: 'व्हॉट्सॲप',
+  },
+};
 
 export function Tag({ kind, children }) {
   return <span className={`tag tag-${kind}`}>{children}</span>;
 }
 
 export function SellerTag({ product }) {
+  const tr = useT(T);
   return product.seller === 'Way2Cure' ? (
-    <p className="seller-line"><Icon name="verified" size={18} /> Sold by Way2Cure</p>
+    <p className="seller-line"><Icon name="verified" size={18} /> {tr('soldByUs')}</p>
   ) : (
-    <p className="seller-line"><Icon name="verified" size={18} /> Sold by {product.seller} · Verified seller</p>
+    <p className="seller-line"><Icon name="verified" size={18} /> {tr('soldBy', { seller: product.seller })}</p>
   );
 }
 
@@ -37,18 +112,15 @@ export function InfoBand({ children, icon = 'info' }) {
 }
 
 export function RxNotice() {
-  return (
-    <InfoBand icon="rx">
-      Prescription medicines sold only with a valid prescription. A registered pharmacist checks every
-      prescription order.
-    </InfoBand>
-  );
+  const tr = useT(T);
+  return <InfoBand icon="rx">{tr('rxNotice')}</InfoBand>;
 }
 
 export function Steps({ steps, current }) {
+  const loc = useLoc();
   return (
     <ol className="steps">
-      {steps.map((s, i) => (
+      {steps.map(loc).map((s, i) => (
         <li
           key={s.title}
           className={`step${current === i ? ' current' : ''}${current > i ? ' done' : ''}`}
@@ -67,26 +139,43 @@ export function Steps({ steps, current }) {
 }
 
 export const rxSteps = [
-  { title: 'Upload', text: 'Snap your prescription in the app', color: 'var(--green)' },
-  { title: 'AI reads', text: 'Medicines are listed for you to confirm', color: 'var(--sage)' },
-  { title: 'Pharmacist verifies', text: 'A registered pharmacist checks it', color: 'var(--mustard)' },
-  { title: 'Delivered', text: 'To your door. Share the OTP with the rider', color: 'var(--terracotta-deep)' },
+  {
+    title: 'Upload', text: 'Snap your prescription in the app', color: 'var(--green)',
+    hi: { title: 'अपलोड करें', text: 'ऐप में अपने पर्चे की फ़ोटो लें' },
+    mr: { title: 'अपलोड करा', text: 'ॲपमध्ये तुमच्या प्रिस्क्रिप्शनचा फोटो काढा' },
+  },
+  {
+    title: 'AI reads', text: 'Medicines are listed for you to confirm', color: 'var(--sage)',
+    hi: { title: 'AI पढ़ता है', text: 'दवाइयों की सूची बनती है, आप उसे पक्का करें' },
+    mr: { title: 'AI वाचते', text: 'औषधांची यादी तयार होते, तुम्ही ती निश्चित करा' },
+  },
+  {
+    title: 'Pharmacist verifies', text: 'A registered pharmacist checks it', color: 'var(--mustard)',
+    hi: { title: 'फ़ार्मासिस्ट जाँचते हैं', text: 'एक रजिस्टर्ड फ़ार्मासिस्ट इसे जाँचते हैं' },
+    mr: { title: 'फार्मासिस्ट तपासतात', text: 'नोंदणीकृत फार्मासिस्ट ते तपासतात' },
+  },
+  {
+    title: 'Delivered', text: 'To your door. Share the OTP with the rider', color: 'var(--terracotta-deep)',
+    hi: { title: 'पहुँच गया', text: 'आपके दरवाज़े तक। राइडर को OTP बताएँ' },
+    mr: { title: 'पोहोचले', text: 'तुमच्या दारापर्यंत. रायडरला OTP सांगा' },
+  },
 ];
 
 export function TrustStrip() {
+  const tr = useT(T);
   const items = [
-    { icon: 'users', title: `${SITE.happyPatients} happy patients`, text: 'Across Mumbai, Navi Mumbai & Thane' },
-    { icon: 'userCheck', title: 'Verified nurses', text: 'Background-checked' },
-    { icon: 'verified', title: 'Licensed pharmacies', text: 'Mumbai partners' },
-    { icon: 'lock', title: 'Secure payments', text: 'UPI · cards · net banking' },
-    { icon: 'shield', title: 'Private data', text: 'Consent-based, DPDP-ready' },
-    { icon: 'support', title: '24/7 support', text: `Call ${SITE.phone}` },
+    { icon: 'users', title: tr('happy', { n: SITE.happyPatients }), text: tr('happyText') },
+    { icon: 'userCheck', title: tr('nurses'), text: tr('nursesText') },
+    { icon: 'verified', title: tr('pharmacies'), text: tr('pharmaciesText') },
+    { icon: 'lock', title: tr('payments'), text: tr('paymentsText') },
+    { icon: 'shield', title: tr('privacy'), text: tr('privacyText') },
+    { icon: 'support', title: tr('support'), text: tr('supportText', { phone: SITE.phone }) },
   ];
   return (
-    <section className="trust-strip" aria-label="Why families trust Way2Cure">
+    <section className="trust-strip" aria-label={tr('trustAria')}>
       <div className="container trust-grid">
         {items.map((i) => (
-          <div key={i.title} className="trust-item">
+          <div key={i.icon} className="trust-item">
             <Icon name={i.icon} size={28} />
             <div>
               <strong>{i.title}</strong>
@@ -99,45 +188,53 @@ export function TrustStrip() {
   );
 }
 
-export function AppQR({ title = 'Open in the app', text }) {
+export function AppQR({ title, text }) {
+  const tr = useT(T);
   return (
     <div className="app-qr card">
       <div className="qr-box">
-        <QRCodeSVG value={SITE.appUrl} size={148} fgColor="#114D4A" bgColor="#FFFFFF" level="M" title="QR code to open the Way2Cure app" />
+        <QRCodeSVG value={SITE.appUrl} size={148} fgColor="#114D4A" bgColor="#FFFFFF" level="M" title={tr('qrTitle')} />
       </div>
       <div>
-        <h3>{title}</h3>
-        <p>{text || 'Prescription upload works in the Way2Cure mobile app. Scan this code with your phone camera to open it.'}</p>
+        <h3>{title || tr('openInApp')}</h3>
+        <p>{text || tr('qrText')}</p>
         <a className="btn btn-urgent show-mobile-inline" href={SITE.appUrl}>
-          <Icon name="phoneApp" /> Open the app
+          <Icon name="phoneApp" /> {tr('openApp')}
         </a>
-        <p className="small">No smartphone? Call <a href={SITE.phoneHref}>{SITE.phone}</a> and we will take your order.</p>
+        <p className="small">{tr('noPhone')} <a href={SITE.phoneHref}>{SITE.phone}</a> {tr('noPhoneEnd')}</p>
       </div>
     </div>
   );
 }
 
 export function FaqList({ items }) {
+  const loc = useLoc();
   return (
     <div className="faq">
-      {items.map((f) => (
-        <details key={f.q} className="faq-item">
-          <summary>{f.q}<Icon name="plus" className="faq-icon" /></summary>
-          <p>{f.a}</p>
-        </details>
-      ))}
+      {items.map((item, i) => {
+        const f = loc(item);
+        return (
+          <details key={item.q || i} className="faq-item">
+            <summary>{f.q}<Icon name="plus" className="faq-icon" /></summary>
+            <p>{f.a}</p>
+          </details>
+        );
+      })}
     </div>
   );
 }
 
 export function ServiceCard({ service }) {
+  const tr = useT(T);
+  const loc = useLoc();
+  const s = loc(service);
   return (
     <article className="card card-edge-top service-card" style={{ '--edge': service.edge }}>
       <span className="service-icon"><Icon name={service.icon} size={28} /></span>
-      <h3>{service.name}</h3>
-      <p>{service.short}</p>
+      <h3>{s.name}</h3>
+      <p>{s.short}</p>
       <Link to={`/care/${service.id}`} className="btn btn-urgent">
-        Book now
+        {tr('bookNow')}
       </Link>
     </article>
   );
@@ -159,13 +256,14 @@ export function Field({ id, label, hint, error, children }) {
 }
 
 export function HelpBox() {
+  const tr = useT(T);
   return (
     <aside className="help-box">
-      <h3>Need help?</h3>
-      <p>Talk to a real person. We can place the order for you.</p>
+      <h3>{tr('needHelp')}</h3>
+      <p>{tr('helpText')}</p>
       <div className="btn-row">
-        <a className="btn btn-outline" href={SITE.phoneHref}><Icon name="phone" /> Call {SITE.phone}</a>
-        <a className="btn btn-outline" href={SITE.whatsappHref} target="_blank" rel="noreferrer"><Icon name="whatsapp" /> WhatsApp</a>
+        <a className="btn btn-outline" href={SITE.phoneHref}><Icon name="phone" /> {tr('call', { phone: SITE.phone })}</a>
+        <a className="btn btn-outline" href={SITE.whatsappHref} target="_blank" rel="noreferrer"><Icon name="whatsapp" /> {tr('whatsapp')}</a>
       </div>
     </aside>
   );

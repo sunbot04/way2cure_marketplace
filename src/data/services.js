@@ -1,4 +1,5 @@
 // Care services. Descriptions adapted from the current way2cure.com and the marketplace proposal.
+// Hindi (hi) and Marathi (mr) copy is laid over the English fields by loc(service).
 
 export const services = [
   {
@@ -6,60 +7,180 @@ export const services = [
     short: 'Injections, IV care, wound dressing and post-surgery care by qualified nurses.',
     includes: ['Injections & IV care', 'Wound dressing', 'Vital sign checks', 'Medicine given on time', 'Post-surgery care'],
     duration: 'Single visits of about 1 hour, or 12 / 24-hour shifts',
+    hi: {
+      name: 'घर पर नर्स',
+      short: 'प्रशिक्षित नर्सों द्वारा इंजेक्शन, आईवी, घाव की पट्टी और ऑपरेशन के बाद की देखभाल।',
+      includes: ['इंजेक्शन और आईवी', 'घाव की पट्टी', 'बीपी, पल्स और बुखार की जाँच', 'समय पर दवा देना', 'ऑपरेशन के बाद की देखभाल'],
+      duration: 'लगभग 1 घंटे की एक विज़िट, या 12 / 24 घंटे की शिफ़्ट',
+    },
+    mr: {
+      name: 'घरी नर्स',
+      short: 'प्रशिक्षित नर्सकडून इंजेक्शन, आयव्ही, जखमेची मलमपट्टी आणि शस्त्रक्रियेनंतरची काळजी.',
+      includes: ['इंजेक्शन आणि आयव्ही', 'जखमेची मलमपट्टी', 'बीपी, पल्स आणि ताप तपासणी', 'वेळेवर औषध देणे', 'शस्त्रक्रियेनंतरची काळजी'],
+      duration: 'सुमारे 1 तासाची एक भेट, किंवा 12 / 24 तासांची शिफ्ट',
+    },
   },
   {
     id: 'doctor', name: 'Doctor at home', icon: 'userDoctor', edge: 'var(--green)',
     short: 'Home consultations, check-ups and follow-up visits.',
     includes: ['Home consultation', 'General check-up', 'Follow-up visits', 'Prescriptions and referrals'],
     duration: 'About 30 to 45 minutes per visit',
+    hi: {
+      name: 'घर पर डॉक्टर',
+      short: 'घर पर डॉक्टर से सलाह, जाँच और फ़ॉलो-अप विज़िट।',
+      includes: ['घर पर डॉक्टर से सलाह', 'सामान्य जाँच', 'फ़ॉलो-अप विज़िट', 'पर्चा और ज़रूरत हो तो स्पेशलिस्ट के पास रेफ़र'],
+      duration: 'हर विज़िट लगभग 30 से 45 मिनट',
+    },
+    mr: {
+      name: 'घरी डॉक्टर',
+      short: 'घरी डॉक्टरांचा सल्ला, तपासणी आणि फॉलो-अप भेटी.',
+      includes: ['घरी डॉक्टरांचा सल्ला', 'सामान्य तपासणी', 'फॉलो-अप भेटी', 'प्रिस्क्रिप्शन आणि गरज असल्यास तज्ज्ञांकडे रेफर'],
+      duration: 'प्रत्येक भेट सुमारे 30 ते 45 मिनिटे',
+    },
   },
   {
     id: 'elder', name: 'Elder care', icon: 'handHeart', edge: 'var(--mustard)',
     short: 'Daily living support with comfort, dignity and independence.',
     includes: ['Help with walking and moving', 'Bathing and hygiene', 'Meals and medicines on time', 'Companionship'],
     duration: '12 or 24-hour caretaker, daily or long term',
+    hi: {
+      name: 'बुज़ुर्गों की देखभाल',
+      short: 'रोज़ के कामों में मदद, आराम और सम्मान के साथ, ताकि वे अपने मन से जी सकें।',
+      includes: ['चलने-फिरने में मदद', 'नहलाना और साफ़-सफ़ाई', 'समय पर खाना और दवाइयाँ', 'साथ और बातचीत'],
+      duration: '12 या 24 घंटे का केयरटेकर, रोज़ाना या लंबे समय के लिए',
+    },
+    mr: {
+      name: 'ज्येष्ठांची काळजी',
+      short: 'रोजच्या कामांत मदत, आराम आणि सन्मानाने, जेणेकरून ते स्वतःच्या मनाने जगू शकतील.',
+      includes: ['चालण्या-फिरण्यात मदत', 'आंघोळ आणि स्वच्छता', 'वेळेवर जेवण आणि औषधे', 'सोबत आणि गप्पा'],
+      duration: '12 किंवा 24 तासांचा केअरटेकर, रोज किंवा दीर्घ काळासाठी',
+    },
   },
   {
     id: 'bedridden', name: 'Bedridden patient care', icon: 'bed', edge: 'var(--terracotta)',
     short: 'Hygiene, feeding, turning and close watch to prevent bedsores and complications.',
     includes: ['Turning every 2 hours', 'Hygiene and diaper care', 'Feeding support', 'Bedsore prevention'],
     duration: '12 or 24-hour shifts',
+    hi: {
+      name: 'बिस्तर पर रहने वाले मरीज़ों की देखभाल',
+      short: 'साफ़-सफ़ाई, खाना खिलाना, करवट दिलाना और ध्यान से देखभाल, ताकि बेडसोर और दूसरी परेशानियाँ न हों।',
+      includes: ['हर 2 घंटे में करवट दिलाना', 'साफ़-सफ़ाई और डायपर बदलना', 'खाना खिलाने में मदद', 'बेडसोर से बचाव'],
+      duration: '12 या 24 घंटे की शिफ़्ट',
+    },
+    mr: {
+      name: 'अंथरुणाला खिळलेल्या रुग्णांची काळजी',
+      short: 'स्वच्छता, जेवण भरवणे, कूस बदलणे आणि बारकाईने लक्ष, जेणेकरून बेडसोर आणि इतर त्रास होणार नाहीत.',
+      includes: ['दर 2 तासांनी कूस बदलणे', 'स्वच्छता आणि डायपर बदलणे', 'जेवण भरवण्यात मदत', 'बेडसोरपासून बचाव'],
+      duration: '12 किंवा 24 तासांची शिफ्ट',
+    },
   },
   {
     id: 'post-op', name: 'Post-operative care', icon: 'bandage', edge: 'var(--sage)',
     short: 'Wound care, medicines, physiotherapy support and regular checks after surgery.',
     includes: ['Wound and drain care', 'Medicine management', 'Physiotherapy support', 'Regular health checks'],
     duration: 'Daily visits or shifts, usually 1 to 4 weeks',
+    hi: {
+      name: 'ऑपरेशन के बाद की देखभाल',
+      short: 'ऑपरेशन के बाद घाव की देखभाल, दवाइयाँ, फ़िज़ियोथेरेपी में मदद और नियमित जाँच।',
+      includes: ['घाव और ड्रेन की देखभाल', 'दवाइयों का ध्यान रखना', 'फ़िज़ियोथेरेपी में मदद', 'नियमित सेहत जाँच'],
+      duration: 'रोज़ की विज़िट या शिफ़्ट, आमतौर पर 1 से 4 हफ़्ते',
+    },
+    mr: {
+      name: 'शस्त्रक्रियेनंतरची काळजी',
+      short: 'शस्त्रक्रियेनंतर जखमेची काळजी, औषधे, फिजिओथेरपीत मदत आणि नियमित तपासणी.',
+      includes: ['जखम आणि ड्रेनची काळजी', 'औषधांचे नियोजन', 'फिजिओथेरपीत मदत', 'नियमित आरोग्य तपासणी'],
+      duration: 'रोजच्या भेटी किंवा शिफ्ट, साधारण 1 ते 4 आठवडे',
+    },
   },
   {
     id: 'baby', name: 'Baby care', icon: 'baby', edge: 'var(--mustard)',
     short: 'Gentle care for newborns, including feeding support and hygiene.',
     includes: ['Feeding support', 'Bathing and hygiene', 'Sleep routine help', 'Support for the mother'],
     duration: '12 or 24-hour shifts',
+    hi: {
+      name: 'शिशु देखभाल',
+      short: 'नवजात शिशु की प्यार से देखभाल, दूध पिलाने और साफ़-सफ़ाई में मदद के साथ।',
+      includes: ['दूध पिलाने में मदद', 'नहलाना और साफ़-सफ़ाई', 'सोने का रूटीन बनाने में मदद', 'माँ की देखभाल में मदद'],
+      duration: '12 या 24 घंटे की शिफ़्ट',
+    },
+    mr: {
+      name: 'बाळाची काळजी',
+      short: 'नवजात बाळाची प्रेमाने काळजी, दूध पाजण्यात आणि स्वच्छतेत मदतीसह.',
+      includes: ['दूध पाजण्यात मदत', 'आंघोळ आणि स्वच्छता', 'झोपेचे वेळापत्रक लावण्यात मदत', 'आईच्या काळजीत मदत'],
+      duration: '12 किंवा 24 तासांची शिफ्ट',
+    },
   },
   {
     id: 'icu', name: 'ICU at home', icon: 'activity', edge: 'var(--terracotta)', specialised: true,
     short: 'Critical-care setup with monitors, oxygen support and a trained team on call.',
     includes: ['Critical-care nurse', 'Monitors & oxygen', 'Doctor supervision', 'Equipment setup at home'],
     duration: 'Planned with the treating doctor, often 1 to 4 weeks',
+    hi: {
+      name: 'घर पर आईसीयू',
+      short: 'मॉनिटर, ऑक्सीजन और कॉल पर तैयार प्रशिक्षित टीम के साथ घर पर आईसीयू की व्यवस्था।',
+      includes: ['आईसीयू में काम कर चुकी नर्स', 'मॉनिटर और ऑक्सीजन', 'डॉक्टर की निगरानी', 'घर पर उपकरण लगाना'],
+      duration: 'इलाज करने वाले डॉक्टर के साथ तय, अक्सर 1 से 4 हफ़्ते',
+    },
+    mr: {
+      name: 'घरी आयसीयू',
+      short: 'मॉनिटर, ऑक्सिजन आणि कॉलवर तयार प्रशिक्षित टीमसह घरी आयसीयूची व्यवस्था.',
+      includes: ['आयसीयूचा अनुभव असलेली नर्स', 'मॉनिटर आणि ऑक्सिजन', 'डॉक्टरांची देखरेख', 'घरी उपकरणे बसवणे'],
+      duration: 'उपचार करणाऱ्या डॉक्टरांसोबत ठरवले जाते, अनेकदा 1 ते 4 आठवडे',
+    },
   },
   {
     id: 'ventilator', name: 'Ventilator care', icon: 'wind', edge: 'var(--green)', specialised: true,
     short: 'Ventilator or BiPAP support with tracheostomy and respiratory care.',
     includes: ['Ventilator or BiPAP', 'Tracheostomy care', 'Respiratory support', 'Trained respiratory nurse'],
     duration: 'Planned with the treating doctor',
+    hi: {
+      name: 'वेंटिलेटर केयर',
+      short: 'वेंटिलेटर या BiPAP सपोर्ट, साथ में ट्रेकियोस्टॉमी और साँस की देखभाल।',
+      includes: ['वेंटिलेटर या BiPAP', 'ट्रेकियोस्टॉमी की देखभाल', 'साँस लेने में मदद', 'साँस की देखभाल में प्रशिक्षित नर्स'],
+      duration: 'इलाज करने वाले डॉक्टर के साथ तय',
+    },
+    mr: {
+      name: 'व्हेंटिलेटर केअर',
+      short: 'व्हेंटिलेटर किंवा BiPAP सपोर्ट, सोबत ट्रेकिओस्टॉमी आणि श्वसनाची काळजी.',
+      includes: ['व्हेंटिलेटर किंवा BiPAP', 'ट्रेकिओस्टॉमीची काळजी', 'श्वास घेण्यास मदत', 'श्वसन काळजीत प्रशिक्षित नर्स'],
+      duration: 'उपचार करणाऱ्या डॉक्टरांसोबत ठरवले जाते',
+    },
   },
   {
     id: 'stroke', name: 'Stroke care', icon: 'brain', edge: 'var(--sage)', specialised: true,
     short: 'Nursing, physiotherapy and speech therapy with a recovery plan at home.',
     includes: ['Nursing & physiotherapy', 'Speech & mobility therapy', 'Recovery plan at home', 'Family training'],
     duration: 'Usually weeks to months, reviewed every 2 weeks',
+    hi: {
+      name: 'स्ट्रोक केयर',
+      short: 'घर पर ठीक होने की योजना के साथ नर्सिंग, फ़िज़ियोथेरेपी और स्पीच थेरेपी।',
+      includes: ['नर्सिंग और फ़िज़ियोथेरेपी', 'बोलने और चलने-फिरने की थेरेपी', 'घर पर ठीक होने की योजना', 'परिवार को देखभाल सिखाना'],
+      duration: 'आमतौर पर कुछ हफ़्तों से कुछ महीनों तक, हर 2 हफ़्ते में समीक्षा',
+    },
+    mr: {
+      name: 'स्ट्रोक केअर',
+      short: 'घरी बरे होण्याच्या योजनेसह नर्सिंग, फिजिओथेरपी आणि स्पीच थेरपी.',
+      includes: ['नर्सिंग आणि फिजिओथेरपी', 'बोलण्याची आणि हालचालीची थेरपी', 'घरी बरे होण्याची योजना', 'कुटुंबाला काळजी घ्यायला शिकवणे'],
+      duration: 'साधारण काही आठवडे ते काही महिने, दर 2 आठवड्यांनी आढावा',
+    },
   },
   {
     id: 'cancer', name: 'Cancer care', icon: 'ribbon', edge: 'var(--mustard)', specialised: true,
     short: 'Oncology nursing, line and wound care, and pain and palliative support.',
     includes: ['Oncology nursing', 'Line & wound care', 'Pain & palliative support', 'Support for the family'],
     duration: 'Planned with the treating oncologist',
+    hi: {
+      name: 'कैंसर केयर',
+      short: 'कैंसर मरीज़ों के लिए नर्सिंग, लाइन और घाव की देखभाल, दर्द में राहत और पैलिएटिव केयर।',
+      includes: ['कैंसर मरीज़ों के लिए प्रशिक्षित नर्सिंग', 'लाइन और घाव की देखभाल', 'दर्द में राहत और पैलिएटिव केयर', 'परिवार का साथ'],
+      duration: 'इलाज करने वाले कैंसर डॉक्टर (ऑन्कोलॉजिस्ट) के साथ तय',
+    },
+    mr: {
+      name: 'कर्करोग काळजी',
+      short: 'कर्करोग रुग्णांसाठी नर्सिंग, लाइन आणि जखमेची काळजी, वेदनांपासून आराम आणि पॅलिएटिव्ह केअर.',
+      includes: ['कर्करोग रुग्णांसाठी प्रशिक्षित नर्सिंग', 'लाइन आणि जखमेची काळजी', 'वेदनांपासून आराम आणि पॅलिएटिव्ह केअर', 'कुटुंबाला आधार'],
+      duration: 'उपचार करणाऱ्या कर्करोग तज्ज्ञांसोबत (ऑन्कोलॉजिस्ट) ठरवले जाते',
+    },
   },
 ];
 

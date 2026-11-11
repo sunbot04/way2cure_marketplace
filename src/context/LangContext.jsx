@@ -1,8 +1,12 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 
-// English, Hindi and Marathi for the navigation, hero and key actions.
-// NOTE: Hindi and Marathi strings are a first draft - have a native speaker review before launch.
-// Page body copy falls back to English until full translations are added.
+// English, Hindi and Marathi across the whole site (Brand guidelines p.6, p.8, p.12).
+// - Shared UI words live in `strings` below and are read with t('key').
+// - Each page keeps its own copy in a local { en, hi, mr } object and reads it with useT(dict).
+// - Data items (products, services, plans, FAQs) carry `hi` / `mr` objects with translated
+//   fields; render them through loc(item) from useLoc().
+// NOTE: Hindi and Marathi copy should be reviewed by a native speaker (and medical wording by
+// the pharmacy partner) before launch.
 const strings = {
   en: {
     home: 'Home', shop: 'Shop', care: 'Care Services', subscriptions: 'Subscriptions',
@@ -44,6 +48,8 @@ const LangContext = createContext(null);
 export function LangProvider({ children }) {
   const [lang, setLang] = useState(() => {
     try {
+      const fromUrl = new URLSearchParams(window.location.search).get('lang');
+      if (['en', 'hi', 'mr'].includes(fromUrl)) return fromUrl;
       return localStorage.getItem('w2c-lang') || 'en';
     } catch {
       return 'en';
@@ -59,8 +65,32 @@ export function LangProvider({ children }) {
     }
   }, [lang]);
 
-  const t = (key) => strings[lang]?.[key] ?? strings.en[key] ?? key;
+  const t = (key, vars) => fill(strings[lang]?.[key] ?? strings.en[key] ?? key, vars);
   return <LangContext.Provider value={{ lang, setLang, t }}>{children}</LangContext.Provider>;
 }
 
 export const useLang = () => useContext(LangContext);
+
+// Replaces {name} placeholders: fill('Hello {name}', { name: 'Asha' }).
+const fill = (s, vars) =>
+  vars && typeof s === 'string' ? s.replace(/\{(\w+)\}/g, (m, k) => (vars[k] ?? m)) : s;
+
+// Page-level copy: const tr = useT(T) where T = { en: {...}, hi: {...}, mr: {...} }.
+// Missing Hindi/Marathi keys fall back to English, so nothing ever shows blank.
+export function useT(dict) {
+  const { lang } = useLang();
+  return (key, vars) => fill(dict[lang]?.[key] ?? dict.en?.[key] ?? key, vars);
+}
+
+// Data items: loc(item) returns the item with its `hi` / `mr` fields laid over the English ones.
+export const localize = (item, lang) =>
+  item && lang !== 'en' && item[lang] ? { ...item, ...item[lang] } : item;
+
+export function useLoc() {
+  const { lang } = useLang();
+  return (item) => localize(item, lang);
+}
+
+// Dates in the reader's language, e.g. formatDate('2026-12-02', lang).
+export const formatDate = (d, lang, opts = { day: 'numeric', month: 'short', year: 'numeric' }) =>
+  new Date(d).toLocaleDateString(lang === 'en' ? 'en-IN' : `${lang}-IN`, opts);
