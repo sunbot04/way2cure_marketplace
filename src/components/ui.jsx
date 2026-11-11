@@ -79,6 +79,7 @@ export function TrustStrip() {
     { icon: 'userCheck', title: 'Verified nurses', text: 'Background-checked' },
     { icon: 'verified', title: 'Licensed pharmacies', text: 'Mumbai partners' },
     { icon: 'lock', title: 'Secure payments', text: 'UPI · cards · net banking' },
+    { icon: 'shield', title: 'Private data', text: 'Consent-based, DPDP-ready' },
     { icon: 'support', title: '24/7 support', text: `Call ${SITE.phone}` },
   ];
   return (

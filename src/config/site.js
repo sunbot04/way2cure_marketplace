@@ -11,6 +11,8 @@ export const SITE = {
   // TODO: confirm the WhatsApp business number. The current site lists none, so we use the main line.
   whatsappHref: 'https://wa.me/917400400908',
   email: 'support@way2cure.com',
+  // The existing Way2Cure home care website. Linked from the marketplace header and footer.
+  homeCareUrl: 'https://way2cure.com/',
   cities: 'Mumbai, Navi Mumbai & Thane',
   // TODO: replace with the real app store / deep link once the app is live.
   appUrl: 'https://way2cure.com/app',

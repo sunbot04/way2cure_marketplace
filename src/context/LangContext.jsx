@@ -7,7 +7,7 @@ const strings = {
   en: {
     home: 'Home', shop: 'Shop', care: 'Care Services', subscriptions: 'Subscriptions',
     uploadRx: 'Upload Prescription', about: 'About', contact: 'Contact', account: 'Account',
-    rx: 'Rx', login: 'Login', cart: 'Cart', search: 'Search', menu: 'Menu',
+    rx: 'Rx', homeCareSite: 'Home care site', login: 'Login', cart: 'Cart', search: 'Search', menu: 'Menu',
     searchPlaceholder: 'Search medicines, devices, care...', callUs: 'Call us', whatsapp: 'WhatsApp',
     heroTitle: 'Care at home, now with everything seniors need.',
     heroText: 'Nurses, doctors and ICU care at home. Medicines, devices and daily care delivered to your door in Mumbai, Navi Mumbai and Thane.',
@@ -16,7 +16,7 @@ const strings = {
   hi: {
     home: 'होम', shop: 'खरीदारी', care: 'देखभाल सेवाएँ', subscriptions: 'सब्सक्रिप्शन',
     uploadRx: 'पर्चा अपलोड करें', about: 'हमारे बारे में', contact: 'संपर्क', account: 'खाता',
-    rx: 'पर्चा', login: 'लॉग इन', cart: 'कार्ट', search: 'खोजें', menu: 'मेनू',
+    rx: 'पर्चा', homeCareSite: 'होम केयर साइट', login: 'लॉग इन', cart: 'कार्ट', search: 'खोजें', menu: 'मेनू',
     searchPlaceholder: 'दवाइयाँ, उपकरण, देखभाल खोजें...', callUs: 'कॉल करें', whatsapp: 'व्हाट्सऐप',
     heroTitle: 'घर पर देखभाल, अब बुज़ुर्गों की हर ज़रूरत के साथ।',
     heroText: 'घर पर नर्स, डॉक्टर और आईसीयू देखभाल। मुंबई, नवी मुंबई और ठाणे में दवाइयाँ, उपकरण और रोज़ की ज़रूरतें आपके दरवाज़े तक।',
@@ -25,7 +25,7 @@ const strings = {
   mr: {
     home: 'मुख्यपृष्ठ', shop: 'खरेदी', care: 'काळजी सेवा', subscriptions: 'सदस्यता',
     uploadRx: 'प्रिस्क्रिप्शन अपलोड करा', about: 'आमच्याबद्दल', contact: 'संपर्क', account: 'खाते',
-    rx: 'प्रिस्क्रिप्शन', login: 'लॉग इन', cart: 'कार्ट', search: 'शोधा', menu: 'मेनू',
+    rx: 'प्रिस्क्रिप्शन', homeCareSite: 'होम केअर साइट', login: 'लॉग इन', cart: 'कार्ट', search: 'शोधा', menu: 'मेनू',
     searchPlaceholder: 'औषधे, उपकरणे, काळजी शोधा...', callUs: 'कॉल करा', whatsapp: 'व्हॉट्सॲप',
     heroTitle: 'घरी काळजी, आता ज्येष्ठांना लागणाऱ्या सर्व गोष्टींसह.',
     heroText: 'घरी नर्स, डॉक्टर आणि आयसीयू काळजी. मुंबई, नवी मुंबई आणि ठाणे येथे औषधे, उपकरणे आणि रोजच्या गरजा तुमच्या दारात.',

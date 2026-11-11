@@ -17,6 +17,9 @@ function TopBar() {
           <a href={SITE.whatsappHref} className="topbar-link" target="_blank" rel="noreferrer">
             <Icon name="whatsapp" size={18} /> <span>{t('whatsapp')}</span>
           </a>
+          <a href={SITE.homeCareUrl} className="topbar-link">
+            <Icon name="stethoscope" size={18} /> <span>{t('homeCareSite')}</span>
+          </a>
           <span className="topbar-note">24/7 support · {SITE.cities}</span>
         </div>
         <div className="lang-switch" role="group" aria-label={t('language')}>

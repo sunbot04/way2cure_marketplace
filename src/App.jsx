@@ -18,6 +18,8 @@ const About = lazy(() => import('./pages/About.jsx'));
 const Contact = lazy(() => import('./pages/Contact.jsx'));
 const Help = lazy(() => import('./pages/Help.jsx'));
 const Account = lazy(() => import('./pages/Account.jsx'));
+const FamilyProfiles = lazy(() => import('./pages/FamilyProfiles.jsx'));
+const Addresses = lazy(() => import('./pages/Addresses.jsx'));
 const Legal = lazy(() => import('./pages/Legal.jsx'));
 const NotFound = lazy(() => import('./pages/NotFound.jsx'));
 
@@ -52,6 +54,8 @@ export default function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/help" element={<Help />} />
           <Route path="/account" element={<Account />} />
+          <Route path="/account/family" element={<FamilyProfiles />} />
+          <Route path="/account/addresses" element={<Addresses />} />
           <Route path="/legal" element={<Legal />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

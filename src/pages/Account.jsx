@@ -8,8 +8,8 @@ import { PageHead } from '../components/ui.jsx';
 const sections = [
   { to: '/prescription', icon: 'rx', title: 'Prescriptions', text: 'Upload and see past prescriptions in the app' },
   { to: '/subscriptions#manage', icon: 'refresh', title: 'Subscriptions', text: 'Pause, change or cancel your plans' },
-  { to: '/contact', icon: 'users', title: 'Family profiles', text: 'Order for parents with their own address and medicines' },
-  { to: '/contact', icon: 'pin', title: 'Addresses & payments', text: 'Saved addresses, UPI and cards' },
+  { to: '/account/family', icon: 'users', title: 'Family profiles', text: 'Order for parents with their own address and medicines' },
+  { to: '/account/addresses', icon: 'pin', title: 'Addresses & payments', text: 'Saved addresses, UPI and cards' },
   { to: '/help', icon: 'support', title: 'Help centre / FAQ', text: 'Answers and support, 24/7' },
   { to: '/safe-zone', icon: 'watch', title: 'Safe-zone band', text: 'For dementia care (coming soon)' },
 ];

@@ -46,6 +46,7 @@ export default function Footer() {
         <div>
           <h2 className="footer-title">Company</h2>
           <ul className="footer-list">
+            <li><a href={SITE.homeCareUrl}>Way2Cure home care</a></li>
             <li><Link to="/about">About us</Link></li>
             <li><Link to="/safe-zone">Safe-zone band</Link></li>
             <li><Link to="/legal">Terms of use</Link></li>

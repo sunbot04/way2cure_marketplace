@@ -210,7 +210,7 @@ main:focus { outline: none; }
 .trust-strip { background: var(--mustard); color: var(--green); padding: var(--s3) 0; }
 .trust-grid { display: grid; gap: var(--s2); grid-template-columns: 1fr; }
 @media (min-width: 600px) { .trust-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 1000px) { .trust-grid { grid-template-columns: repeat(5, 1fr); } }
+@media (min-width: 1000px) { .trust-grid { grid-template-columns: repeat(3, 1fr); } }
 .trust-item { display: flex; gap: 12px; align-items: center; }
 .trust-item div { display: grid; line-height: 1.3; }
 .trust-item span { font-size: 15px; }
