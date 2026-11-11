@@ -27,8 +27,8 @@ export function CartProvider({ children }) {
   const [items, setItems] = useState(() => read(CART_KEY, []));
   const [orders, setOrders] = useState(() => read(ORDERS_KEY, []));
 
-  useEffect(() => write(CART_KEY, items), [items]);
-  useEffect(() => write(ORDERS_KEY, orders), [orders]);
+  useEffect(() => { write(CART_KEY, items); }, [items]);
+  useEffect(() => { write(ORDERS_KEY, orders); }, [orders]);
 
   const same = (a, id, mode) => a.id === id && a.mode === mode;
 

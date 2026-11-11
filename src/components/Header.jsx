@@ -50,7 +50,7 @@ export default function Header() {
   const [q, setQ] = useState('');
   const [open, setOpen] = useState(false);
 
-  useEffect(() => setOpen(false), [location.pathname]);
+  useEffect(() => { setOpen(false); }, [location.pathname]);
 
   const links = [
     { to: '/', label: t('home'), end: true },
