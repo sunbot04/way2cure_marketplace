@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import { SITE } from '../config/site.js';
-import { useLang, useT } from '../context/LangContext.jsx';
+import { SITE } from '../config/site';
+import { useLang, useT } from '../i18n/LangContext';
 
 const T = {
   en: {

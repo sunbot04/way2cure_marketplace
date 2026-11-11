@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import Icon from '../components/Icon.jsx';
-import { getService, services } from '../data/services.js';
-import { Field, InfoBand, PageHead, Steps, HelpBox } from '../components/ui.jsx';
-import { isServiceablePincode, SITE } from '../config/site.js';
-import { useLang, useLoc, useT } from '../context/LangContext.jsx';
-import NotFound from './NotFound.jsx';
+import Icon from '../components/Icon';
+import { getService, services } from '../data';
+import { Field, InfoBand, PageHead, Steps, HelpBox } from '../components/legacy-ui';
+import { isServiceablePincode, SITE } from '../config/site';
+import { useLang, useLoc, useT } from '../i18n/LangContext';
+import NotFound from './NotFound';
 
 const STEPS = [
   {

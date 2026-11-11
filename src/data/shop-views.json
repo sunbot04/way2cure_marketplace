@@ -1,0 +1,32 @@
+[
+  {
+    "slug": "rent",
+    "name": "Rent equipment",
+    "blurb": "Beds, wheelchairs and oxygen by the month",
+    "icon": "refresh",
+    "edge": "var(--sage)",
+    "hi": {
+      "name": "किराये पर उपकरण",
+      "blurb": "बेड, व्हीलचेयर और ऑक्सीजन, महीने के हिसाब से"
+    },
+    "mr": {
+      "name": "भाड्याने उपकरणे",
+      "blurb": "बेड, व्हीलचेअर आणि ऑक्सिजन, दरमहा भाड्याने"
+    }
+  },
+  {
+    "slug": "sellers",
+    "name": "Marketplace sellers",
+    "blurb": "Products from verified partner sellers",
+    "icon": "store",
+    "edge": "var(--mustard)",
+    "hi": {
+      "name": "मार्केटप्लेस विक्रेता",
+      "blurb": "सत्यापित पार्टनर विक्रेताओं के प्रोडक्ट"
+    },
+    "mr": {
+      "name": "मार्केटप्लेस विक्रेते",
+      "blurb": "पडताळलेल्या भागीदार विक्रेत्यांची उत्पादने"
+    }
+  }
+]

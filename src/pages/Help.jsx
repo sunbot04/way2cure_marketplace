@@ -1,6 +1,6 @@
-import { faqs } from '../data/content.js';
-import { FaqList, HelpBox, PageHead } from '../components/ui.jsx';
-import { useT } from '../context/LangContext.jsx';
+import { faqs } from '../data';
+import { FaqList, HelpBox, PageHead } from '../components/legacy-ui';
+import { useT } from '../i18n/LangContext';
 
 const T = {
   en: {

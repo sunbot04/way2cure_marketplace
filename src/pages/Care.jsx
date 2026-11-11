@@ -1,6 +1,6 @@
-import { services } from '../data/services.js';
-import { InfoBand, PageHead, ServiceCard, TrustStrip, HelpBox } from '../components/ui.jsx';
-import { useLoc, useT } from '../context/LangContext.jsx';
+import { services } from '../data';
+import { InfoBand, PageHead, ServiceCard, TrustStrip, HelpBox } from '../components/legacy-ui';
+import { useLoc, useT } from '../i18n/LangContext';
 
 const T = {
   en: {

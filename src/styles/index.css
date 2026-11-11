@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  Way2Cure brand tokens (Brand & Website Guidelines v1.0, p.5).
+  Space-separated RGB so Tailwind can apply opacity. A white-label partner overrides these only.
+*/
+@layer base {
+  :root {
+    --c-green: 17 77 74;          /* #114D4A deep green */
+    --c-green-dark: 12 58 56;     /* #0C3A38 hover on deep green */
+    --c-terracotta: 224 123 95;   /* #E07B5F accents only: never small text, never white text on it */
+    --c-terracotta-deep: 184 71 42; /* #B8472A links, Rx tags, booking / urgent buttons */
+    --c-mustard: 234 179 75;      /* #EAB34B badges, offers, ratings (green text on it) */
+    --c-sage: 112 169 161;        /* #70A9A1 illustrations, dividers, success */
+    --c-sage-tint: 220 235 232;   /* #DCEBE8 light sage behind small green text (keeps 4.5:1) */
+    --c-mint: 200 216 213;        /* #C8D8D5 info bands, soft panels, borders */
+    --c-cream: 246 241 233;       /* #F6F1E9 page */
+    --c-white: 255 255 255;       /* #FFFFFF cards */
+    --c-ink: 31 42 42;            /* #1F2A2A text */
+    --c-grey: 94 107 107;         /* #5E6B6B secondary text */
+    --c-line: 228 235 233;        /* #E4EBE9 hairlines on white */
+
+    /* Colour references used by data files (category edges, step colours) */
+    --green: rgb(var(--c-green));
+    --terracotta: rgb(var(--c-terracotta));
+    --terracotta-deep: rgb(var(--c-terracotta-deep));
+    --mustard: rgb(var(--c-mustard));
+    --sage: rgb(var(--c-sage));
+    --mint: rgb(var(--c-mint));
+  }
+
+  html { -webkit-text-size-adjust: 100%; overflow-x: clip; }
+  body {
+    @apply bg-cream font-body text-body text-ink antialiased;
+    overflow-x: clip;
+  }
+  :lang(hi) body, :lang(mr) body { font-family: 'Noto Sans Devanagari', 'Nunito Sans', Arial, sans-serif; }
+
+  /* Type scale: mobile first, desktop from 768px (p.6). One H1 per page. */
+  h1 { @apply mb-4 font-head text-h1m font-bold text-green md:text-h1; }
+  h2 { @apply mb-4 font-head text-h2m font-bold text-green md:text-h2; }
+  h3 { @apply mb-2 font-body text-h3m font-bold text-green md:text-h3; }
+  :lang(hi) :is(h1, h2), :lang(mr) :is(h1, h2) { font-family: 'Noto Sans Devanagari', Lora, Georgia, serif; }
+  p { @apply mb-4; max-width: 70ch; }
+  a { @apply text-terracotta-deep underline underline-offset-[3px]; }
+  img { @apply h-auto max-w-full; }
+
+  /* Visible focus for keyboard users everywhere (p.12) */
+  :focus-visible { outline: 3px solid rgb(var(--c-terracotta-deep)); outline-offset: 3px; border-radius: 4px; }
+  main:focus { outline: none; }
+
+  /* Calm motion: 200ms fades only, and none at all when the user asks (p.12-13) */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+  }
+}
+
+@layer components {
+  .container { @apply mx-auto w-full max-w-page px-4 md:px-6; }
+  .sr-only-focusable:not(:focus) { @apply sr-only; }
+}

@@ -1,5 +1,5 @@
-import { PageHead, InfoBand } from '../components/ui.jsx';
-import { useLang, useT } from '../context/LangContext.jsx';
+import { PageHead, InfoBand } from '../components/legacy-ui';
+import { useLang, useT } from '../i18n/LangContext';
 
 // Placeholder structure. Final wording must be confirmed by a lawyer and pharmacy partners
 // (labels, Schedule H/H1 handling, device rules, DPDP privacy wording) before launch.

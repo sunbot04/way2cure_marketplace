@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import Icon from '../components/Icon.jsx';
-import { Field, HelpBox, InfoBand, PageHead } from '../components/ui.jsx';
-import useStoredList from '../hooks/useStoredList.js';
-import { isServiceablePincode, SITE } from '../config/site.js';
-import { useLoc, useT } from '../context/LangContext.jsx';
+import Icon from '../components/Icon';
+import { Field, HelpBox, InfoBand, PageHead } from '../components/legacy-ui';
+import useStoredList from '../hooks/useStoredList';
+import { isServiceablePincode, SITE } from '../config/site';
+import { useLoc, useT } from '../i18n/LangContext';
 
 // Address labels are saved as stable ids and shown in the reader's language.
 const LABELS = ['home', 'parents', 'work', 'other'];

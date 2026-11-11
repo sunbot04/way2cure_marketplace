@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import Icon from '../components/Icon.jsx';
-import { subscriptionPlans } from '../data/content.js';
-import { InfoBand, PageHead, HelpBox } from '../components/ui.jsx';
-import { formatDate, useLang, useLoc, useT } from '../context/LangContext.jsx';
+import Icon from '../components/Icon';
+import { subscriptionPlans } from '../data';
+import { InfoBand, PageHead, HelpBox } from '../components/legacy-ui';
+import { formatDate, useLang, useLoc, useT } from '../i18n/LangContext';
 
 // Example plans so families can see how "manage / pause" works. Real plans come from the account API.
 const SAMPLE_PLANS = [

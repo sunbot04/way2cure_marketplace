@@ -1,0 +1,122 @@
+[
+  {
+    "id": "refills",
+    "name": "Medicine refills",
+    "icon": "pill",
+    "edge": "var(--sage)",
+    "often": "Suggested: monthly",
+    "points": [
+      "Your regular BP, sugar and heart medicines",
+      "Pharmacist-verified every time",
+      "Reminder before each order"
+    ],
+    "hi": {
+      "name": "दवाइयों की रीफ़िल",
+      "often": "सुझाव: हर महीने",
+      "points": [
+        "आपकी रोज़ की बीपी, शुगर और दिल की दवाइयाँ",
+        "हर बार फ़ार्मासिस्ट द्वारा जाँचा गया",
+        "हर ऑर्डर से पहले याद दिलाते हैं"
+      ]
+    },
+    "mr": {
+      "name": "औषधांचे रिफिल",
+      "often": "सुचवलेले: दर महिन्याला",
+      "points": [
+        "तुमची नेहमीची बीपी, शुगर आणि हृदयाची औषधे",
+        "प्रत्येक वेळी फार्मासिस्टने तपासलेले",
+        "प्रत्येक ऑर्डरपूर्वी आठवण"
+      ]
+    }
+  },
+  {
+    "id": "diapers",
+    "name": "Diaper delivery",
+    "icon": "package",
+    "edge": "var(--terracotta)",
+    "often": "Suggested: monthly or fortnightly",
+    "points": [
+      "Right size and quantity",
+      "Delivered on schedule",
+      "Pause or change anytime"
+    ],
+    "hi": {
+      "name": "डायपर डिलिवरी",
+      "often": "सुझाव: हर महीने या हर 15 दिन",
+      "points": [
+        "सही साइज़ और सही मात्रा",
+        "तय समय पर डिलिवरी",
+        "जब चाहें रोकें या बदलें"
+      ]
+    },
+    "mr": {
+      "name": "डायपर डिलिव्हरी",
+      "often": "सुचवलेले: दर महिन्याला किंवा दर 15 दिवसांनी",
+      "points": [
+        "योग्य साइझ आणि योग्य प्रमाण",
+        "ठरलेल्या वेळी डिलिव्हरी",
+        "कधीही थांबवा किंवा बदला"
+      ]
+    }
+  },
+  {
+    "id": "health-checks",
+    "name": "Health checks at home",
+    "icon": "heartPulse",
+    "edge": "var(--green)",
+    "often": "Suggested: monthly",
+    "points": [
+      "Nurse BP and sugar check",
+      "Blood tests at home",
+      "Reports in the app"
+    ],
+    "hi": {
+      "name": "घर पर हेल्थ चेक",
+      "often": "सुझाव: हर महीने",
+      "points": [
+        "नर्स बीपी और शुगर जाँचती हैं",
+        "घर पर ब्लड टेस्ट",
+        "रिपोर्ट ऐप में"
+      ]
+    },
+    "mr": {
+      "name": "घरी आरोग्य तपासणी",
+      "often": "सुचवलेले: दर महिन्याला",
+      "points": [
+        "नर्सकडून बीपी आणि शुगर तपासणी",
+        "घरी रक्त तपासणी",
+        "रिपोर्ट ॲपमध्ये"
+      ]
+    }
+  },
+  {
+    "id": "sachets",
+    "name": "Dose sachets (pill packs)",
+    "icon": "sun",
+    "edge": "var(--mustard)",
+    "often": "Suggested: monthly",
+    "points": [
+      "Medicines sorted by time of day",
+      "Tear one, take the dose",
+      "No full strips, no leftovers"
+    ],
+    "hi": {
+      "name": "डोज़ सैशे (गोलियों के पैक)",
+      "often": "सुझाव: हर महीने",
+      "points": [
+        "दवाइयाँ दिन के समय के हिसाब से अलग-अलग",
+        "एक पैकेट फाड़ें, खुराक लें",
+        "पूरी स्ट्रिप नहीं, कुछ बचता नहीं"
+      ]
+    },
+    "mr": {
+      "name": "डोस सॅशे (गोळ्यांचे पॅक)",
+      "often": "सुचवलेले: दर महिन्याला",
+      "points": [
+        "औषधे दिवसाच्या वेळेनुसार वेगळी केलेली",
+        "एक पाकीट फाडा, डोस घ्या",
+        "पूर्ण स्ट्रिप नाही, काही उरत नाही"
+      ]
+    }
+  }
+]

@@ -1,7 +1,7 @@
-import { InfoBand, PageHead } from '../components/ui.jsx';
-import Icon from '../components/Icon.jsx';
-import { SITE } from '../config/site.js';
-import { useT } from '../context/LangContext.jsx';
+import { InfoBand, PageHead } from '../components/legacy-ui';
+import Icon from '../components/Icon';
+import { SITE } from '../config/site';
+import { useT } from '../i18n/LangContext';
 
 const STEPS = ['s1', 's2', 's3', 's4'];
 

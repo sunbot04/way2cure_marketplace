@@ -1,8 +1,8 @@
-import { team } from '../data/content.js';
-import { PageHead, TrustStrip } from '../components/ui.jsx';
-import Icon from '../components/Icon.jsx';
-import { SITE } from '../config/site.js';
-import { useLoc, useT } from '../context/LangContext.jsx';
+import { team } from '../data';
+import { PageHead, TrustStrip } from '../components/legacy-ui';
+import Icon from '../components/Icon';
+import { SITE } from '../config/site';
+import { useLoc, useT } from '../i18n/LangContext';
 
 const T = {
   en: {

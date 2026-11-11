@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import Icon from '../components/Icon.jsx';
-import { useCart } from '../context/CartContext.jsx';
-import { useLang, useT } from '../context/LangContext.jsx';
-import { OrderSummary } from './Cart.jsx';
-import { Field, PageHead, Steps, AppQR, InfoBand } from '../components/ui.jsx';
-import { isServiceablePincode, formatPrice } from '../config/site.js';
+import Icon from '../components/Icon';
+import { useCart } from '../context/CartContext';
+import { useLang, useT } from '../i18n/LangContext';
+import { OrderSummary } from './Cart';
+import { Field, PageHead, Steps, AppQR, InfoBand } from '../components/legacy-ui';
+import { isServiceablePincode, formatPrice } from '../config/site';
 
 const STEPS = [
   { title: 'Phone', text: 'Verify with OTP', color: 'var(--green)',
@@ -156,7 +156,7 @@ export default function Checkout() {
           <span className="confirm-icon"><Icon name="check" size={40} /></span>
           <h1>{tr('thanks')}</h1>
           <p className="lead">{tr('orderNo')} <strong>{order.id}</strong> · {formatPrice(order.total)}</p>
-          {hasRx || order.status.startsWith('Waiting') ? (
+          {hasRx || order.status === 'awaiting-pharmacist' ? (
             <InfoBand icon="rx">{tr('rxCheck', { phone: form.phone })}</InfoBand>
           ) : (
             <InfoBand icon="truck">{tr('arriving', { slot: lang === 'en' ? slot.toLowerCase() : slot })}</InfoBand>

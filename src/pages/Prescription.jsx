@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import Icon from '../components/Icon.jsx';
-import { AppQR, InfoBand, PageHead, Steps, rxSteps, HelpBox } from '../components/ui.jsx';
-import { useLoc, useT } from '../context/LangContext.jsx';
+import Icon from '../components/Icon';
+import { AppQR, InfoBand, PageHead, Steps, rxSteps, HelpBox } from '../components/legacy-ui';
+import { useLoc, useT } from '../i18n/LangContext';
 
 const T = {
   en: {

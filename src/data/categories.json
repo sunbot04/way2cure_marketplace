@@ -1,0 +1,95 @@
+[
+  {
+    "slug": "medicines",
+    "name": "Medicines",
+    "blurb": "Prescription, over-the-counter and regular refills",
+    "icon": "pill",
+    "edge": "var(--terracotta)",
+    "launch": true,
+    "hi": {
+      "name": "दवाइयाँ",
+      "blurb": "पर्चे वाली, बिना पर्चे वाली और नियमित रीफ़िल"
+    },
+    "mr": {
+      "name": "औषधे",
+      "blurb": "प्रिस्क्रिप्शनची, विना-प्रिस्क्रिप्शन आणि नियमित रिफिल"
+    }
+  },
+  {
+    "slug": "devices",
+    "name": "Medical devices",
+    "blurb": "BP monitors, glucometers, oximeters",
+    "icon": "heartPulse",
+    "edge": "var(--green)",
+    "launch": true,
+    "hi": {
+      "name": "मेडिकल उपकरण",
+      "blurb": "बीपी मॉनिटर, ग्लूकोमीटर, ऑक्सीमीटर"
+    },
+    "mr": {
+      "name": "वैद्यकीय उपकरणे",
+      "blurb": "बीपी मॉनिटर, ग्लुकोमीटर, ऑक्सिमीटर"
+    }
+  },
+  {
+    "slug": "daily-care",
+    "name": "Daily care",
+    "blurb": "Adult diapers, underpads, wound care",
+    "icon": "handHeart",
+    "edge": "var(--sage)",
+    "launch": true,
+    "hi": {
+      "name": "रोज़ की देखभाल",
+      "blurb": "एडल्ट डायपर, अंडरपैड, घाव की देखभाल"
+    },
+    "mr": {
+      "name": "दैनंदिन काळजी",
+      "blurb": "प्रौढांसाठी डायपर, अंडरपॅड, जखमेची काळजी"
+    }
+  },
+  {
+    "slug": "mobility",
+    "name": "Mobility & recovery",
+    "blurb": "Walkers, wheelchairs, hospital beds",
+    "icon": "mobility",
+    "edge": "var(--mustard)",
+    "hi": {
+      "name": "चलना-फिरना और रिकवरी",
+      "blurb": "वॉकर, व्हीलचेयर, हॉस्पिटल बेड"
+    },
+    "mr": {
+      "name": "हालचाल आणि रिकव्हरी",
+      "blurb": "वॉकर, व्हीलचेअर, हॉस्पिटल बेड"
+    }
+  },
+  {
+    "slug": "nutrition",
+    "name": "Nutrition & wellness",
+    "blurb": "Protein drinks, diabetic-friendly foods, vitamins",
+    "icon": "apple",
+    "edge": "var(--terracotta)",
+    "hi": {
+      "name": "पोषण और सेहत",
+      "blurb": "प्रोटीन ड्रिंक, डायबिटीज़ में ठीक रहने वाला खाना, विटामिन"
+    },
+    "mr": {
+      "name": "पोषण आणि आरोग्य",
+      "blurb": "प्रोटीन ड्रिंक, मधुमेहींसाठी योग्य पदार्थ, व्हिटॅमिन"
+    }
+  },
+  {
+    "slug": "safety",
+    "name": "Safety & smart tech",
+    "blurb": "Pill boxes, fall alerts, oxygen on rent",
+    "icon": "shield",
+    "edge": "var(--green)",
+    "hi": {
+      "name": "सुरक्षा और स्मार्ट उपकरण",
+      "blurb": "पिल बॉक्स, गिरने पर अलर्ट, किराये पर ऑक्सीजन"
+    },
+    "mr": {
+      "name": "सुरक्षा आणि स्मार्ट उपकरणे",
+      "blurb": "पिल बॉक्स, पडल्यास अलर्ट, भाड्याने ऑक्सिजन"
+    }
+  }
+]

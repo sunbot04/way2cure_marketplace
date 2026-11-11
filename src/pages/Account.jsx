@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom';
-import Icon from '../components/Icon.jsx';
-import { useCart } from '../context/CartContext.jsx';
-import { getProduct } from '../data/products.js';
-import { formatPrice } from '../config/site.js';
-import { PageHead } from '../components/ui.jsx';
-import { formatDate, useLang, useLoc, useT } from '../context/LangContext.jsx';
+import Icon from '../components/Icon';
+import { useCart } from '../context/CartContext';
+import { getProduct } from '../data';
+import { formatPrice } from '../config/site';
+import { PageHead } from '../components/legacy-ui';
+import { formatDate, useLang, useLoc, useT } from '../i18n/LangContext';
 
 const T = {
   en: {
@@ -18,8 +18,8 @@ const T = {
     orderMedicines: 'Order medicines',
     yourAccount: 'Your account',
     // Order status text saved by CartContext (English) mapped to the reader's language.
-    'status:Waiting for pharmacist check': 'Waiting for pharmacist check',
-    'status:Packed, arriving today': 'Packed, arriving today',
+    'status:awaiting-pharmacist': 'Waiting for pharmacist check',
+    'status:packed': 'Packed, arriving today',
     'rx.title': 'Prescriptions', 'rx.text': 'Upload and see past prescriptions in the app',
     'subs.title': 'Subscriptions', 'subs.text': 'Pause, change or cancel your plans',
     'family.title': 'Family profiles', 'family.text': 'Order for parents with their own address and medicines',
@@ -37,8 +37,8 @@ const T = {
     emptyText: 'ऑर्डर करने पर वह यहाँ लाइव ट्रैकिंग के साथ दिखेगा। अगली बार एक टैप में फिर से ऑर्डर करें।',
     orderMedicines: 'दवाइयाँ मँगाएँ',
     yourAccount: 'आपका खाता',
-    'status:Waiting for pharmacist check': 'फ़ार्मासिस्ट की जाँच बाकी है',
-    'status:Packed, arriving today': 'पैक हो गया, आज पहुँचेगा',
+    'status:awaiting-pharmacist': 'फ़ार्मासिस्ट की जाँच बाकी है',
+    'status:packed': 'पैक हो गया, आज पहुँचेगा',
     'rx.title': 'पर्चे', 'rx.text': 'ऐप में पर्चा अपलोड करें और पुराने पर्चे देखें',
     'subs.title': 'सब्सक्रिप्शन', 'subs.text': 'अपने प्लान रोकें, बदलें या रद्द करें',
     'family.title': 'परिवार के सदस्य', 'family.text': 'माता-पिता के लिए उनके अपने पते और दवाइयों के साथ ऑर्डर करें',
@@ -56,8 +56,8 @@ const T = {
     emptyText: 'तुम्ही ऑर्डर केल्यावर ती इथे लाइव्ह ट्रॅकिंगसह दिसेल. पुढच्या वेळी एका टॅपमध्ये पुन्हा ऑर्डर करा.',
     orderMedicines: 'औषधे मागवा',
     yourAccount: 'तुमचे खाते',
-    'status:Waiting for pharmacist check': 'फार्मासिस्टची तपासणी बाकी',
-    'status:Packed, arriving today': 'पॅक झाले, आज पोहोचेल',
+    'status:awaiting-pharmacist': 'फार्मासिस्टची तपासणी बाकी',
+    'status:packed': 'पॅक झाले, आज पोहोचेल',
     'rx.title': 'प्रिस्क्रिप्शन', 'rx.text': 'ॲपमध्ये प्रिस्क्रिप्शन अपलोड करा आणि जुनी प्रिस्क्रिप्शन पाहा',
     'subs.title': 'सदस्यता', 'subs.text': 'तुमच्या योजना थांबवा, बदला किंवा रद्द करा',
     'family.title': 'कुटुंबातील सदस्य', 'family.text': 'आई-वडिलांसाठी त्यांच्या स्वतःच्या पत्त्यासह आणि औषधांसह ऑर्डर करा',

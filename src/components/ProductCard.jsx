@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom';
-import Icon from './Icon.jsx';
-import { categories } from '../data/products.js';
-import { formatPrice } from '../config/site.js';
-import { useCart } from '../context/CartContext.jsx';
-import { useLoc, useT } from '../context/LangContext.jsx';
-import { SellerTag, Tag } from './ui.jsx';
+import Icon from './Icon';
+import { categories } from '../data';
+import { formatPrice } from '../config/site';
+import { useCart } from '../context/CartContext';
+import { useLoc, useT } from '../i18n/LangContext';
+import { SellerTag, Tag } from './legacy-ui';
 
 const T = {
   en: {

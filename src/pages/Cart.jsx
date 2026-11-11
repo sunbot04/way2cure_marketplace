@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
-import Icon from '../components/Icon.jsx';
-import { formatPrice, SITE } from '../config/site.js';
-import { useCart } from '../context/CartContext.jsx';
-import { useT, useLoc } from '../context/LangContext.jsx';
-import { PageHead, RxNotice, HelpBox, Tag } from '../components/ui.jsx';
+import Icon from '../components/Icon';
+import { formatPrice, SITE } from '../config/site';
+import { useCart } from '../context/CartContext';
+import { useT, useLoc } from '../i18n/LangContext';
+import { PageHead, RxNotice, HelpBox, Tag } from '../components/legacy-ui';
 
 const T = {
   en: {

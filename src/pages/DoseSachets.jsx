@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
-import Icon from '../components/Icon.jsx';
-import { InfoBand, PageHead, AppQR } from '../components/ui.jsx';
-import { useLoc, useT } from '../context/LangContext.jsx';
+import Icon from '../components/Icon';
+import { InfoBand, PageHead, AppQR } from '../components/legacy-ui';
+import { useLoc, useT } from '../i18n/LangContext';
 
 // Time-of-day colours are the same in the app, website and printed sachets.
 // Each one always has a word label, so it also works for colour-blind users.

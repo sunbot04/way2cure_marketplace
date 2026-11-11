@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import Icon from '../components/Icon.jsx';
-import { Field, PageHead } from '../components/ui.jsx';
-import { SITE } from '../config/site.js';
-import { useT } from '../context/LangContext.jsx';
+import Icon from '../components/Icon';
+import { Field, PageHead } from '../components/legacy-ui';
+import { SITE } from '../config/site';
+import { useT } from '../i18n/LangContext';
 
 // Select options are stored by id so a language switch never breaks the form.
 const TOPICS = ['medicines', 'nurse', 'icu', 'equipment', 'subscriptions', 'other'];

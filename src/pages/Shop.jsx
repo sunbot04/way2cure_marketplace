@@ -1,11 +1,11 @@
 import { useMemo, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
-import Icon from '../components/Icon.jsx';
-import ProductCard from '../components/ProductCard.jsx';
-import { categories, shopViews, products } from '../data/products.js';
-import { PageHead, RxNotice } from '../components/ui.jsx';
-import { useT, useLoc } from '../context/LangContext.jsx';
-import NotFound from './NotFound.jsx';
+import Icon from '../components/Icon';
+import ProductCard from '../components/ProductCard';
+import { categories, shopViews, products } from '../data';
+import { PageHead, RxNotice } from '../components/legacy-ui';
+import { useT, useLoc } from '../i18n/LangContext';
+import NotFound from './NotFound';
 
 const T = {
   en: {

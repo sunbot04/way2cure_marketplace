@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import Icon from '../components/Icon.jsx';
-import { Field, HelpBox, InfoBand, PageHead } from '../components/ui.jsx';
-import useStoredList from '../hooks/useStoredList.js';
-import { useT } from '../context/LangContext.jsx';
+import Icon from '../components/Icon';
+import { Field, HelpBox, InfoBand, PageHead } from '../components/legacy-ui';
+import useStoredList from '../hooks/useStoredList';
+import { useT } from '../i18n/LangContext';
 
 // Relations are saved as stable ids and shown in the reader's language.
 const RELATIONS = ['mother', 'father', 'grandmother', 'grandfather', 'spouse', 'myself', 'other'];

@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import Icon from '../components/Icon.jsx';
-import { ProductImage } from '../components/ProductCard.jsx';
-import { getProduct, categories, deliveryLabel, productFaq } from '../data/products.js';
-import { formatPrice, isServiceablePincode } from '../config/site.js';
-import { useCart } from '../context/CartContext.jsx';
-import { useLang, useT, useLoc } from '../context/LangContext.jsx';
-import { FaqList, HelpBox, RxNotice, SellerTag, Tag, AppQR } from '../components/ui.jsx';
-import NotFound from './NotFound.jsx';
+import Icon from '../components/Icon';
+import { ProductImage } from '../components/ProductCard';
+import { getProduct, categories, deliveryLabel, productFaq } from '../data';
+import { formatPrice, isServiceablePincode } from '../config/site';
+import { useCart } from '../context/CartContext';
+import { useLang, useT, useLoc } from '../i18n/LangContext';
+import { FaqList, HelpBox, RxNotice, SellerTag, Tag, AppQR } from '../components/legacy-ui';
+import NotFound from './NotFound';
 
 const T = {
   en: {
