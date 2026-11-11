@@ -15,7 +15,7 @@ export default function Footer() {
   const tr = useT(LAYOUT);
   const loc = useLoc();
   return (
-    <footer className="bg-green pt-12 text-[#e6efed]">
+    <footer className="bg-green pt-12 text-mint">
       <div className="container grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr_1.3fr]">
         <div>
           {/* No reversed logo file exists yet, so the official logo sits on a white panel (p.4). TODO: client */}

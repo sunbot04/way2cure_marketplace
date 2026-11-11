@@ -8,7 +8,7 @@ export type ButtonVariant = 'primary' | 'urgent' | 'outline' | 'light' | 'outlin
 
 const VARIANTS: Record<ButtonVariant, string> = {
   primary: 'border-green bg-green text-white hover:border-green-dark hover:bg-green-dark',
-  urgent: 'border-terracotta-deep bg-terracotta-deep text-white hover:border-[#9c3a21] hover:bg-[#9c3a21]',
+  urgent: 'border-terracotta-deep bg-terracotta-deep text-white hover:border-terracotta-darker hover:bg-terracotta-darker',
   outline: 'border-green bg-white text-green hover:bg-sage-tint',
   light: 'border-white bg-white text-green hover:bg-cream',
   'outline-light': 'border-white/80 bg-transparent text-white hover:bg-white/10',

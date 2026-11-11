@@ -10,6 +10,7 @@ import FAQAccordion from '../components/ui/FAQAccordion';
 import { Field, Input, Select, describedBy } from '../components/ui/Field';
 import ProductCard from '../components/commerce/ProductCard';
 import RxNotice from '../components/commerce/RxNotice';
+import { ChoiceList, QtyStepper } from '../components/commerce/Choice';
 import AppPanel, { HelpBox } from '../components/commerce/AppPanel';
 import ServiceCard from '../components/care/ServiceCard';
 import PlanCard from '../components/plans/PlanCard';
@@ -48,6 +49,8 @@ function Block({ title, children, note }: { title: string; children: ReactNode; 
 export default function Styleguide() {
   const [paused, setPaused] = useState(false);
   const [phone, setPhone] = useState('98');
+  const [mode, setMode] = useState('buy');
+  const [qty, setQty] = useState(1);
   const phoneError = phone.length !== 10 ? 'Please enter a 10-digit mobile number.' : undefined;
 
   return (
@@ -82,7 +85,7 @@ export default function Styleguide() {
 
       <Block title="Type" note="Lora Bold for headings, Nunito Sans for body and UI. Sizes shown are desktop / mobile.">
         <div className="grid gap-4">
-          <div><h1 className="m-0">H1 Lora Bold 40 / 32</h1><span className="text-small text-grey">Page titles. One per page.</span></div>
+          <div><p className="m-0 font-head text-h1m font-bold text-green md:text-h1">H1 Lora Bold 40 / 32</p><span className="text-small text-grey">Page titles. One per page.</span></div>
           <div><h2 className="m-0">H2 Lora Bold 30 / 24</h2><span className="text-small text-grey">Sections</span></div>
           <div><h3 className="m-0">H3 Nunito Sans Bold 22 / 20</h3><span className="text-small text-grey">Card titles</span></div>
           <p className="m-0">Body Nunito Sans 18px, line height 1.6, never under 16. Left-aligned, at most 70 characters per line, so a long paragraph stays easy to follow for older eyes.</p>
@@ -134,6 +137,15 @@ export default function Styleguide() {
         </div>
       </Block>
 
+      <Block title="Choices & quantity" note="Large radio rows: the chosen one gets a green border and a tick, not colour alone. Stepper buttons are 48px.">
+        <div className="grid max-w-xl gap-6">
+          <ChoiceList name="sg-mode" legend="How would you like it?" value={mode} onChange={setMode}
+            choices={[{ id: 'buy', label: 'Buy', detail: 'Rs. 1,499' }, { id: 'rent', label: 'Rent', detail: 'Rs. 349 a month' }]} />
+          <QtyStepper value={qty} label="Quantity" lessLabel="One less" moreLabel="One more"
+            onLess={() => setQty((q) => Math.max(1, q - 1))} onMore={() => setQty((q) => q + 1)} />
+        </div>
+      </Block>
+
       <Block title="Cards" note="White, 12px radius, soft shadow, 5px colour edge showing the category.">
         <div className="grid gap-3 sm:grid-cols-3">
           <Card edge="var(--green)"><h3>Sorted by time</h3><p className="m-0 text-grey">Morning to night</p></Card>
@@ -151,7 +163,7 @@ export default function Styleguide() {
       </Block>
 
       <Block title="Section heading">
-        <SectionHeading title="Care at home" lead="Trained, background-checked nurses and doctors, sent to your home." action={<a href="#top" className="font-bold">See all care services</a>} />
+        <SectionHeading title="Care at home" lead="Trained, background-checked nurses and doctors, sent to your home." action={<a href="#top" className="inline-flex min-h-tap items-center font-bold">See all care services</a>} />
       </Block>
 
       <Block title="Step list" note="Row on tablet and up; column with a connecting line; live flow with the current step.">

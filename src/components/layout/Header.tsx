@@ -8,35 +8,39 @@ import { categories, services, shopViews, subscriptionPlans } from '../../data';
 import { SITE } from '../../config/site';
 import { LAYOUT } from './copy';
 
-// Top bar (guidelines p.8): phone, WhatsApp, link back to the home care site, language switch.
+// Utility bar (guidelines p.8): helpline, WhatsApp, home care site, language switch, in one slim row.
 function TopBar() {
   const { lang, setLang, t } = useLang();
-  const link = 'inline-flex min-h-[44px] items-center gap-1.5 font-bold text-white no-underline hover:underline';
+  const tr = useT(LAYOUT);
+  const link = 'inline-flex min-h-[44px] items-center gap-1.5 text-white no-underline hover:underline';
   return (
-    <div className="bg-green text-base text-white">
-      <div className="container flex min-h-[48px] flex-wrap items-center justify-center gap-x-6 gap-y-1 py-1 sm:justify-between">
-        <div className="flex flex-wrap items-center gap-x-5">
-          <a href={SITE.phoneHref} className={link}><Icon name="phone" size={18} /> {SITE.phone}</a>
-          <a href={SITE.whatsappHref} className={link} target="_blank" rel="noreferrer"><Icon name="whatsapp" size={18} /> {t('whatsapp')}</a>
-          <a href={SITE.homeCareUrl} className={`${link} hidden sm:inline-flex`}><Icon name="stethoscope" size={18} /> {t('homeCareSite')}</a>
+    <div className="bg-green text-small text-white">
+      <div className="container flex h-11 items-center justify-between gap-4">
+        <div className="flex items-center gap-5">
+          <a href={SITE.phoneHref} className={link}>
+            <Icon name="phone" size={16} /> <span className="hidden sm:inline">{tr('helpline')}</span> <strong>{SITE.phone}</strong>
+          </a>
+          <a href={SITE.whatsappHref} className={`${link} hidden sm:inline-flex`} target="_blank" rel="noreferrer"><Icon name="whatsapp" size={16} /> {t('whatsapp')}</a>
         </div>
-        {/* Language switch stays visible in the header, never hidden in a menu (p.12) */}
-        <div className="flex items-center gap-1" role="group" aria-label={t('language')}>
-          <Icon name="globe" size={18} />
-          {languages.map((l) => (
-            <button
-              key={l.code}
-              type="button"
-              lang={l.code}
-              aria-pressed={lang === l.code}
-              onClick={() => setLang(l.code)}
-              className={`min-h-[40px] rounded-btn px-3 text-base transition-colors ${
-                lang === l.code ? 'bg-white font-bold text-green' : 'text-white hover:bg-white/10'
-              }`}
-            >
-              {l.label}
-            </button>
-          ))}
+        <div className="flex items-center gap-5">
+          <a href={SITE.homeCareUrl} className={`${link} hidden md:inline-flex`}>{t('homeCareSite')} <Icon name="external" size={14} /></a>
+          {/* Language switch stays visible in the header, never hidden in a menu (p.12) */}
+          <div className="flex items-center" role="group" aria-label={t('language')}>
+            {languages.map((l, i) => (
+              <button
+                key={l.code}
+                type="button"
+                lang={l.code}
+                aria-pressed={lang === l.code}
+                onClick={() => setLang(l.code)}
+                className={`min-h-[44px] px-2 ${i > 0 ? 'border-l border-white/30' : ''} ${
+                  lang === l.code ? 'font-bold text-white underline decoration-2 underline-offset-4' : 'text-mint hover:text-white'
+                }`}
+              >
+                {l.label}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
     </div>
@@ -63,8 +67,8 @@ function NavMenu({ to, label, children, wide = false }: { to: string; label: str
 }
 
 const navLinkClass = (active: boolean) =>
-  `flex min-h-tap items-center gap-1 whitespace-nowrap rounded-btn px-3 font-bold text-green no-underline hover:bg-cream ${
-    active ? 'bg-sage-tint lg:bg-transparent lg:underline lg:decoration-terracotta lg:decoration-[3px] lg:underline-offset-[10px]' : ''
+  `flex min-h-tap items-center gap-1 whitespace-nowrap rounded-btn px-3 font-semibold no-underline lg:rounded-none lg:border-b-[3px] lg:px-0 ${
+    active ? 'bg-sage-tint text-green lg:border-terracotta lg:bg-transparent' : 'text-ink hover:text-green lg:border-transparent'
   }`;
 
 const panelTitle = 'mb-3 text-small font-bold text-grey';
@@ -88,19 +92,18 @@ export default function Header() {
   }, [location.pathname]);
 
   return (
-    <header className="relative z-40 bg-white lg:sticky lg:top-[-48px]">
+    <header className="relative z-40 bg-white lg:sticky lg:top-[-44px]">
       <TopBar />
       <div className="border-b border-line bg-white">
-        <div className="container grid grid-cols-[auto_1fr_auto] items-center gap-x-4 gap-y-3 py-3 [grid-template-areas:'brand_._actions''search_search_search'] lg:gap-x-6 lg:[grid-template-areas:'brand_search_actions']">
-          <Link to="/" aria-label={tr('homeAria')} className="flex items-center gap-3 no-underline [grid-area:brand]">
+        <div className="container grid grid-cols-[auto_1fr_auto] items-center gap-x-4 gap-y-3 py-3 [grid-template-areas:'brand_._actions''search_search_search'] lg:gap-x-10 lg:py-4 lg:[grid-template-areas:'brand_search_actions']">
+          <Link to="/" aria-label={tr('homeAria')} className="flex min-h-tap items-center gap-3 no-underline [grid-area:brand]">
             {/* Official logo: 36px high on mobile, 44px on desktop (p.4) */}
             <img src="/logo.png" alt="Way2Cure" width={132} height={44} className="h-9 w-auto lg:h-11" />
-            <span className="border-l-2 border-mint pl-3 text-small font-bold tracking-wide text-terracotta-deep">{tr('label')}</span>
           </Link>
 
           <form
             role="search"
-            className="flex w-full max-w-[640px] items-center gap-2 justify-self-center rounded-btn border-2 border-green bg-white py-0.5 pl-3 pr-0.5 [grid-area:search] focus-within:outline focus-within:outline-[3px] focus-within:outline-offset-2 focus-within:outline-terracotta-deep"
+            className="flex w-full max-w-[960px] items-center gap-2 justify-self-stretch rounded-btn border border-grey/40 bg-cream py-0.5 pl-3 pr-0.5 focus-within:border-green [grid-area:search] focus-within:outline focus-within:outline-[3px] focus-within:outline-offset-2 focus-within:outline-terracotta-deep"
             onSubmit={(e) => { e.preventDefault(); navigate(`/shop?q=${encodeURIComponent(q.trim())}`); }}
           >
             <label htmlFor="site-search" className="sr-only">{t('search')}</label>
@@ -117,13 +120,6 @@ export default function Header() {
           </form>
 
           <div className="flex items-center gap-1 [grid-area:actions]">
-            <a href={SITE.phoneHref} className="mr-2 hidden items-center gap-2.5 rounded-btn px-2 py-1 no-underline hover:bg-cream xl:flex">
-              <span className="grid h-10 w-10 place-items-center rounded-full bg-terracotta-deep text-white"><Icon name="phone" size={20} /></span>
-              <span className="grid leading-tight">
-                <small className="text-small font-semibold text-grey">{tr('support247')}</small>
-                <strong className="whitespace-nowrap text-base text-green">{SITE.phoneDisplay}</strong>
-              </span>
-            </a>
             <Link to="/account" className="flex min-h-tap min-w-[48px] items-center justify-center gap-1.5 rounded-btn px-2 font-bold text-green no-underline hover:bg-cream">
               <Icon name="user" /> <span className="hidden lg:inline">{t('login')}</span>
             </Link>
@@ -149,7 +145,7 @@ export default function Header() {
 
         {/* Main nav (p.8): Home · Shop · Care Services · Subscriptions · Upload Prescription · About · Contact */}
         <nav id="main-nav" aria-label={tr('mainNav')} className={`border-t border-line ${open ? 'block' : 'hidden'} lg:block`}>
-          <div className="container grid gap-1 pb-4 pt-2 lg:flex lg:items-center lg:gap-1 lg:py-1">
+          <div className="container grid gap-1 pb-4 pt-2 lg:flex lg:items-center lg:gap-8 lg:py-0">
             <NavLink to="/" end className={({ isActive }) => navLinkClass(isActive)}>{t('home')}</NavLink>
 
             <NavMenu to="/shop" label={t('shop')} wide>
@@ -204,12 +200,12 @@ export default function Header() {
               <Link to="/subscriptions#manage" className={panelAll}>{tr('managePlan')} <Icon name="arrow" size={18} /></Link>
             </NavMenu>
 
-            {/* Prescription upload stays a bright button for everyone (p.8) */}
-            <NavLink to="/prescription" className={`${buttonClass('urgent', { compact: true })} my-2 whitespace-nowrap lg:mx-2 lg:my-0`}>
-              <Icon name="rx" size={20} /> {t('uploadRx')}
-            </NavLink>
             <NavLink to="/about" className={({ isActive }) => navLinkClass(isActive)}>{t('about')}</NavLink>
             <NavLink to="/contact" className={({ isActive }) => navLinkClass(isActive)}>{t('contact')}</NavLink>
+            {/* Prescription upload: always visible, set apart at the end of the bar (p.8) */}
+            <NavLink to="/prescription" className="mt-2 flex min-h-tap items-center gap-2 whitespace-nowrap rounded-btn border-2 border-terracotta-deep px-4 font-bold text-terracotta-deep no-underline hover:bg-terracotta-deep hover:text-white lg:my-1.5 lg:ml-auto lg:mt-1.5">
+              <Icon name="rx" size={20} /> {t('uploadRx')}
+            </NavLink>
           </div>
         </nav>
       </div>

@@ -1,8 +1,16 @@
-# Photos needed for the Way2Cure marketplace
+# Photos for the Way2Cure marketplace
 
-Every image on the site is currently a labelled placeholder. Replace each file in
-`public/images/` with a real photograph **using the same file name and proportions**; no code
-changes are needed.
+The site currently uses the photos from the existing way2cure.com site (WebP files in
+`public/images/`). They look professional but appear to be AI-generated. The healthcare
+guidelines (p.11 and p.13) ask for real photography, with written consent from everyone
+shown. Plan to replace them with a real shoot using the brief below. Keep the file names
+and proportions, or update the paths in `src/data/services.json`, `src/pages/Home.tsx`,
+`src/pages/Care.tsx` and `src/pages/About.tsx`.
+
+Current files: `hero-care.webp` (home hero) · `nurse-portrait.webp`, `care-doctor.webp`,
+`care-elder.webp` (home "About" collage) · `team-group.webp` (About header) ·
+`care-nurse.webp` (Care header and nurse card) · one `care-*.webp` per care service.
+The ventilator service has no photo of its own yet and reuses `care-icu.webp`.
 
 ## Brief for the photographer (Brand guidelines p.9 and p.13)
 - Real seniors, caregivers and families in Indian homes in Mumbai, Navi Mumbai and Thane.
@@ -10,7 +18,7 @@ changes are needed.
 - No hospital stock photos, no illustrations of people, no AI-generated images.
 - Nurses and caretakers in the Way2Cure uniform.
 - **Written consent from every person photographed** (and from a parent/guardian for children).
-- Export as JPG, longest side 1600 px, about 150 KB or less, so the home page stays under 3 seconds on 4G.
+- Export as WebP or JPG, longest side 1600 px (hero: 2000 px), about 150 KB or less, so the home page stays under 3 seconds on 4G.
 
 ## Shot list
 | File | Size | Used on | Shot |

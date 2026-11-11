@@ -1,5 +1,5 @@
 import { Suspense, lazy, useEffect } from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import MobileTabBar from './components/layout/MobileTabBar';
@@ -23,7 +23,8 @@ const Help = lazy(() => import('./pages/Help'));
 const Account = lazy(() => import('./pages/Account'));
 const FamilyProfiles = lazy(() => import('./pages/FamilyProfiles'));
 const Addresses = lazy(() => import('./pages/Addresses'));
-const Legal = lazy(() => import('./pages/Legal'));
+const Privacy = lazy(() => import('./pages/Privacy'));
+const Terms = lazy(() => import('./pages/Terms'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 function ScrollToTop() {
@@ -62,9 +63,9 @@ export default function App() {
           <Route path="/account" element={<Account />} />
           <Route path="/account/family" element={<FamilyProfiles />} />
           <Route path="/account/addresses" element={<Addresses />} />
-          <Route path="/legal" element={<Legal />} />
-          <Route path="/privacy" element={<Legal />} />
-          <Route path="/terms" element={<Legal />} />
+          <Route path="/legal" element={<Navigate to="/terms" replace />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/terms" element={<Terms />} />
           <Route path="/styleguide" element={<Styleguide />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

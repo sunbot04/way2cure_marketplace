@@ -7,17 +7,17 @@ import { COPY } from '../copy';
 
 // Prescription upload is in the mobile app only (pitch deck p.10). On the web we show
 // "Open in the app" with a QR code, store links, and the phone line for people without a smartphone.
-export default function AppPanel({ title }: { title?: string }) {
+export default function AppPanel({ title, text }: { title?: string; text?: string }) {
   const tr = useT(COPY);
   return (
     <div className="grid items-center gap-6 rounded-card bg-white p-6 shadow-card sm:grid-cols-[auto_1fr]">
       <div className="hidden justify-self-start rounded-card border-2 border-mint bg-white p-3 lg:block">
         {/* TODO: client: point SITE.appUrl at the real app link so this code opens the app */}
-        <QRCodeSVG value={SITE.appUrl} size={148} fgColor="#114D4A" bgColor="#FFFFFF" level="M" title={tr('qrTitle')} />
+        <QRCodeSVG value={SITE.appUrl} size={148} fgColor="rgb(17 77 74)" bgColor="rgb(255 255 255)" level="M" title={tr('qrTitle')} />
       </div>
       <div>
         <h3>{title ?? tr('openInApp')}</h3>
-        <p>{tr('qrText')}</p>
+        <p>{text ?? tr('qrText')}</p>
         <div className="my-4 flex flex-wrap gap-3">
           <a href={SITE.appStores.android} className={buttonClass('primary', { compact: true })} target="_blank" rel="noreferrer">
             <Icon name="phoneApp" size={20} /> {tr('playStore')}
@@ -38,7 +38,7 @@ export default function AppPanel({ title }: { title?: string }) {
 export function HelpBox() {
   const tr = useT(COPY);
   return (
-    <aside className="rounded-card bg-white p-6 shadow-card" style={{ borderLeft: '5px solid var(--green)' }}>
+    <aside className="rounded-card bg-white p-6 shadow-card" style={{ borderLeft: '5px solid var(--green)' }} /* same 5px edge as Card */>
       <h3>{tr('needHelp')}</h3>
       <p>{tr('helpText')}</p>
       <div className="flex flex-wrap gap-3">

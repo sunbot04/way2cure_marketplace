@@ -14,7 +14,7 @@ export default {
       current: 'currentColor',
       white: v('white'),
       green: { DEFAULT: v('green'), dark: v('green-dark') }, // headings, header, footer, primary buttons
-      terracotta: { DEFAULT: v('terracotta'), deep: v('terracotta-deep') }, // accents only / links, Rx, urgent
+      terracotta: { DEFAULT: v('terracotta'), deep: v('terracotta-deep'), darker: v('terracotta-darker') }, // accents only / links, Rx, urgent
       mustard: v('mustard'), // badges, offers, ratings: green text on it
       sage: { DEFAULT: v('sage'), tint: v('sage-tint') }, // illustrations, dividers, success
       mint: v('mint'), // info bands, soft panels, borders
@@ -48,7 +48,7 @@ export default {
         card: '0 1px 2px rgb(17 77 74 / 0.06), 0 4px 16px rgb(17 77 74 / 0.06)',
         raised: '0 12px 32px rgb(17 77 74 / 0.14)',
       },
-      maxWidth: { prose: '70ch', page: '1200px' },
+      maxWidth: { prose: '70ch', page: '1920px' },
       transitionDuration: { DEFAULT: '200ms' },
       minHeight: { tap: '48px' },
       borderWidth: { edge: '5px' },

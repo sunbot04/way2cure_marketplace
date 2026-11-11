@@ -12,6 +12,7 @@
     --c-green-dark: 12 58 56;     /* #0C3A38 hover on deep green */
     --c-terracotta: 224 123 95;   /* #E07B5F accents only: never small text, never white text on it */
     --c-terracotta-deep: 184 71 42; /* #B8472A links, Rx tags, booking / urgent buttons */
+    --c-terracotta-darker: 156 58 33; /* #9C3A21 hover on urgent buttons */
     --c-mustard: 234 179 75;      /* #EAB34B badges, offers, ratings (green text on it) */
     --c-sage: 112 169 161;        /* #70A9A1 illustrations, dividers, success */
     --c-sage-tint: 220 235 232;   /* #DCEBE8 light sage behind small green text (keeps 4.5:1) */
@@ -33,8 +34,8 @@
 
   html { -webkit-text-size-adjust: 100%; overflow-x: clip; }
   body {
-    @apply bg-cream font-body text-body text-ink antialiased;
-    overflow-x: clip;
+    @apply bg-cream pb-[72px] font-body text-body text-ink antialiased lg:pb-0;
+    overflow-x: clip; /* room above: the mobile bottom tab bar */
   }
   :lang(hi) body, :lang(mr) body { font-family: 'Noto Sans Devanagari', 'Nunito Sans', Arial, sans-serif; }
 
@@ -57,7 +58,17 @@
   }
 }
 
+/* Soft photo edges: images fade into the section behind them instead of sitting in a box.
+   In the utilities layer so they work with breakpoints (e.g. lg:fade-l). */
+@layer utilities {
+  .fade-l { -webkit-mask-image: linear-gradient(to right, transparent 0, #000 32%); mask-image: linear-gradient(to right, transparent 0, #000 32%); }
+  .fade-b { -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%); mask-image: linear-gradient(to bottom, #000 55%, transparent 100%); }
+  .fade-card { -webkit-mask-image: linear-gradient(to bottom, #000 72%, transparent 100%); mask-image: linear-gradient(to bottom, #000 72%, transparent 100%); }
+  .fade-all { -webkit-mask-image: radial-gradient(ellipse 72% 70% at 50% 45%, #000 58%, transparent 100%); mask-image: radial-gradient(ellipse 72% 70% at 50% 45%, #000 58%, transparent 100%); }
+  .fade-none { -webkit-mask-image: none; mask-image: none; }
+}
+
 @layer components {
-  .container { @apply mx-auto w-full max-w-page px-4 md:px-6; }
+  .container { @apply mx-auto w-full max-w-page px-4 md:px-8 xl:px-16; }
   .sr-only-focusable:not(:focus) { @apply sr-only; }
 }

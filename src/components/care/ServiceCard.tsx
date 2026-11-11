@@ -4,19 +4,19 @@ import { useLoc, useT } from '../../i18n/LangContext';
 import type { Service } from '../../data';
 import { COPY } from '../copy';
 
-// Care service card: photo, colour edge, what it is, how long it usually takes, one booking action.
+// Care service card: photo, what it is, how long it usually takes, one booking action.
 export default function ServiceCard({ service, showDuration = false }: { service: Service; showDuration?: boolean }) {
   const tr = useT(COPY);
   const loc = useLoc();
   const s = loc(service);
   return (
-    <article className="flex flex-col overflow-hidden rounded-card bg-white shadow-card" style={{ borderTop: `5px solid ${service.edge}` }}>
+    <article className="group flex w-full flex-col overflow-hidden rounded-card bg-white shadow-card">
       {service.image && (
-        <img src={service.image} alt="" loading="lazy" width={1200} height={800} className="aspect-[3/2] w-full bg-mint object-cover" />
+        <img src={service.image} alt="" loading="lazy" width={1200} height={800} className="fade-card aspect-[3/2] w-full object-cover" />
       )}
-      <div className="flex flex-1 flex-col p-5">
+      <div className="relative -mt-8 flex flex-1 flex-col p-5 pt-0 md:p-6 md:pt-0">
         <h3 className="mb-2 flex items-center gap-2">
-          <Icon name={service.icon} className="shrink-0 text-terracotta-deep" />
+          <Icon name={service.icon} className="shrink-0 text-sage" />
           {s.name}
         </h3>
         <p className="mb-4 flex-1 text-grey">{s.short}</p>

@@ -1,7 +1,7 @@
 [
   {
     "id": "nurse",
-    "image": "/images/care-nurse-at-home.jpg",
+    "image": "/images/care-nurse.webp",
     "name": "Nurse at home",
     "icon": "stethoscope",
     "edge": "var(--sage)",
@@ -41,7 +41,7 @@
   },
   {
     "id": "doctor",
-    "image": "/images/care-doctor-home-visit.jpg",
+    "image": "/images/care-doctor.webp",
     "name": "Doctor at home",
     "icon": "userDoctor",
     "edge": "var(--green)",
@@ -78,7 +78,7 @@
   },
   {
     "id": "elder",
-    "image": "/images/care-elder-care.jpg",
+    "image": "/images/care-elder.webp",
     "name": "Elder care",
     "icon": "handHeart",
     "edge": "var(--mustard)",
@@ -115,7 +115,7 @@
   },
   {
     "id": "bedridden",
-    "image": "/images/care-bedridden-care.jpg",
+    "image": "/images/care-bedridden.webp",
     "name": "Bedridden patient care",
     "icon": "bed",
     "edge": "var(--terracotta)",
@@ -152,7 +152,7 @@
   },
   {
     "id": "post-op",
-    "image": "/images/care-post-operative.jpg",
+    "image": "/images/care-post-op.webp",
     "name": "Post-operative care",
     "icon": "bandage",
     "edge": "var(--sage)",
@@ -189,7 +189,7 @@
   },
   {
     "id": "baby",
-    "image": "/images/care-baby-care.jpg",
+    "image": "/images/care-baby.webp",
     "name": "Baby care",
     "icon": "baby",
     "edge": "var(--mustard)",
@@ -226,7 +226,7 @@
   },
   {
     "id": "icu",
-    "image": "/images/care-icu-at-home.jpg",
+    "image": "/images/care-icu.webp",
     "name": "ICU at home",
     "icon": "activity",
     "edge": "var(--terracotta)",
@@ -264,7 +264,7 @@
   },
   {
     "id": "ventilator",
-    "image": "/images/care-ventilator-care.jpg",
+    "image": "/images/care-icu.webp",
     "name": "Ventilator care",
     "icon": "wind",
     "edge": "var(--green)",
@@ -302,7 +302,7 @@
   },
   {
     "id": "stroke",
-    "image": "/images/care-stroke-recovery.jpg",
+    "image": "/images/care-stroke.webp",
     "name": "Stroke care",
     "icon": "brain",
     "edge": "var(--sage)",
@@ -340,7 +340,7 @@
   },
   {
     "id": "cancer",
-    "image": "/images/care-cancer-care.jpg",
+    "image": "/images/care-cancer.webp",
     "name": "Cancer care",
     "icon": "ribbon",
     "edge": "var(--mustard)",
