@@ -1,0 +1,43 @@
+/*
+  Way2Cure design tokens (Brand & Website Guidelines v1.0).
+  White-label later: override these variables per partner; components only use tokens.
+*/
+:root {
+  /* Brand colours */
+  --green: #114d4a;          /* headings, header, footer, primary buttons */
+  --terracotta: #e07b5f;     /* accent shapes, icons, highlights - never small white text on it */
+  --terracotta-deep: #b8472a;/* text links, Rx tags, booking / urgent buttons */
+  --mustard: #eab34b;        /* badges, offers, ratings - green text on it */
+  --sage: #70a9a1;           /* illustrations, dividers, success */
+  --mint: #c8d8d5;           /* info bands, soft panels, borders */
+  --sage-tint: #dcebe8;      /* light sage for small-text tags (keeps 4.5:1 with green text) */
+
+  /* Neutrals */
+  --cream: #f6f1e9;
+  --white: #ffffff;
+  --ink: #1f2a2a;
+  --grey: #5e6b6b;
+
+  /* Time-of-day dose colours (sachets) - always paired with a word label */
+  --dose-morning: var(--mustard);
+  --dose-afternoon: var(--sage);
+  --dose-evening: var(--terracotta-deep);
+  --dose-night: var(--green);
+
+  /* Type */
+  --font-head: 'Lora', Georgia, serif;
+  --font-body: 'Nunito Sans', 'Open Sans', 'Noto Sans Devanagari', Calibri, Arial, sans-serif;
+
+  /* 8px spacing grid */
+  --s1: 8px;
+  --s2: 16px;
+  --s3: 24px;
+  --s4: 32px;
+  --s6: 48px;
+
+  --radius-btn: 8px;
+  --radius-card: 12px;
+  --shadow: 0 2px 10px rgba(17, 77, 74, 0.08);
+  --fade: 200ms ease;
+  --maxw: 1200px;
+}
