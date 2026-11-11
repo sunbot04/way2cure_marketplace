@@ -3,7 +3,7 @@
 
 export const services = [
   {
-    id: 'nurse', name: 'Nurse at home', icon: 'stethoscope', edge: 'var(--sage)',
+    id: 'nurse', image: '/images/care-nurse.webp', name: 'Nurse at home', icon: 'stethoscope', edge: 'var(--sage)',
     short: 'Injections, IV care, wound dressing and post-surgery care by qualified nurses.',
     includes: ['Injections & IV care', 'Wound dressing', 'Vital sign checks', 'Medicine given on time', 'Post-surgery care'],
     duration: 'Single visits of about 1 hour, or 12 / 24-hour shifts',
@@ -21,7 +21,7 @@ export const services = [
     },
   },
   {
-    id: 'doctor', name: 'Doctor at home', icon: 'userDoctor', edge: 'var(--green)',
+    id: 'doctor', image: '/images/care-doctor.webp', name: 'Doctor at home', icon: 'userDoctor', edge: 'var(--green)',
     short: 'Home consultations, check-ups and follow-up visits.',
     includes: ['Home consultation', 'General check-up', 'Follow-up visits', 'Prescriptions and referrals'],
     duration: 'About 30 to 45 minutes per visit',
@@ -39,7 +39,7 @@ export const services = [
     },
   },
   {
-    id: 'elder', name: 'Elder care', icon: 'handHeart', edge: 'var(--mustard)',
+    id: 'elder', image: '/images/care-elder.webp', name: 'Elder care', icon: 'handHeart', edge: 'var(--mustard)',
     short: 'Daily living support with comfort, dignity and independence.',
     includes: ['Help with walking and moving', 'Bathing and hygiene', 'Meals and medicines on time', 'Companionship'],
     duration: '12 or 24-hour caretaker, daily or long term',
@@ -57,7 +57,7 @@ export const services = [
     },
   },
   {
-    id: 'bedridden', name: 'Bedridden patient care', icon: 'bed', edge: 'var(--terracotta)',
+    id: 'bedridden', image: '/images/care-bedridden.webp', name: 'Bedridden patient care', icon: 'bed', edge: 'var(--terracotta)',
     short: 'Hygiene, feeding, turning and close watch to prevent bedsores and complications.',
     includes: ['Turning every 2 hours', 'Hygiene and diaper care', 'Feeding support', 'Bedsore prevention'],
     duration: '12 or 24-hour shifts',
@@ -75,7 +75,7 @@ export const services = [
     },
   },
   {
-    id: 'post-op', name: 'Post-operative care', icon: 'bandage', edge: 'var(--sage)',
+    id: 'post-op', image: '/images/care-post-op.webp', name: 'Post-operative care', icon: 'bandage', edge: 'var(--sage)',
     short: 'Wound care, medicines, physiotherapy support and regular checks after surgery.',
     includes: ['Wound and drain care', 'Medicine management', 'Physiotherapy support', 'Regular health checks'],
     duration: 'Daily visits or shifts, usually 1 to 4 weeks',
@@ -93,7 +93,7 @@ export const services = [
     },
   },
   {
-    id: 'baby', name: 'Baby care', icon: 'baby', edge: 'var(--mustard)',
+    id: 'baby', image: '/images/care-baby.webp', name: 'Baby care', icon: 'baby', edge: 'var(--mustard)',
     short: 'Gentle care for newborns, including feeding support and hygiene.',
     includes: ['Feeding support', 'Bathing and hygiene', 'Sleep routine help', 'Support for the mother'],
     duration: '12 or 24-hour shifts',
@@ -111,7 +111,7 @@ export const services = [
     },
   },
   {
-    id: 'icu', name: 'ICU at home', icon: 'activity', edge: 'var(--terracotta)', specialised: true,
+    id: 'icu', image: '/images/care-icu.webp', name: 'ICU at home', icon: 'activity', edge: 'var(--terracotta)', specialised: true,
     short: 'Critical-care setup with monitors, oxygen support and a trained team on call.',
     includes: ['Critical-care nurse', 'Monitors & oxygen', 'Doctor supervision', 'Equipment setup at home'],
     duration: 'Planned with the treating doctor, often 1 to 4 weeks',
@@ -129,7 +129,7 @@ export const services = [
     },
   },
   {
-    id: 'ventilator', name: 'Ventilator care', icon: 'wind', edge: 'var(--green)', specialised: true,
+    id: 'ventilator', image: '/images/care-bedridden.webp', name: 'Ventilator care', icon: 'wind', edge: 'var(--green)', specialised: true,
     short: 'Ventilator or BiPAP support with tracheostomy and respiratory care.',
     includes: ['Ventilator or BiPAP', 'Tracheostomy care', 'Respiratory support', 'Trained respiratory nurse'],
     duration: 'Planned with the treating doctor',
@@ -147,7 +147,7 @@ export const services = [
     },
   },
   {
-    id: 'stroke', name: 'Stroke care', icon: 'brain', edge: 'var(--sage)', specialised: true,
+    id: 'stroke', image: '/images/care-stroke.webp', name: 'Stroke care', icon: 'brain', edge: 'var(--sage)', specialised: true,
     short: 'Nursing, physiotherapy and speech therapy with a recovery plan at home.',
     includes: ['Nursing & physiotherapy', 'Speech & mobility therapy', 'Recovery plan at home', 'Family training'],
     duration: 'Usually weeks to months, reviewed every 2 weeks',
@@ -165,7 +165,7 @@ export const services = [
     },
   },
   {
-    id: 'cancer', name: 'Cancer care', icon: 'ribbon', edge: 'var(--mustard)', specialised: true,
+    id: 'cancer', image: '/images/care-cancer.webp', name: 'Cancer care', icon: 'ribbon', edge: 'var(--mustard)', specialised: true,
     short: 'Oncology nursing, line and wound care, and pain and palliative support.',
     includes: ['Oncology nursing', 'Line & wound care', 'Pain & palliative support', 'Support for the family'],
     duration: 'Planned with the treating oncologist',

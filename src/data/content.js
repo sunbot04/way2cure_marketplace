@@ -104,8 +104,8 @@ export const faqs = [
 ];
 
 export const team = [
-  { name: 'Dr. Ramesh R. Khandare', role: 'Director', hi: { role: 'डायरेक्टर' }, mr: { role: 'संचालक' } },
-  { name: 'Dr. Samidha Patil', role: 'Chief Operating Officer', hi: { role: 'चीफ़ ऑपरेटिंग ऑफ़िसर' }, mr: { role: 'मुख्य परिचालन अधिकारी' } },
-  { name: 'Dr. Pratik Biswas', role: 'Team Advisor · MS, DNB (General Surgeon)', hi: { role: 'टीम सलाहकार · MS, DNB (जनरल सर्जन)' }, mr: { role: 'टीम सल्लागार · MS, DNB (जनरल सर्जन)' } },
-  { name: 'Dr. Nishikant Rokade', role: 'Team Advisor · MS, DNB, Senior Consultant', hi: { role: 'टीम सलाहकार · MS, DNB, सीनियर कंसल्टेंट' }, mr: { role: 'टीम सल्लागार · MS, DNB, वरिष्ठ सल्लागार' } },
+  { name: 'Dr. Ramesh R. Khandare', photo: '/images/team/ramesh-khandare.webp', role: 'Director', hi: { role: 'डायरेक्टर' }, mr: { role: 'संचालक' } },
+  { name: 'Dr. Samidha Patil', photo: '/images/team/samidha-patil.webp', role: 'Chief Operating Officer', hi: { role: 'चीफ़ ऑपरेटिंग ऑफ़िसर' }, mr: { role: 'मुख्य परिचालन अधिकारी' } },
+  { name: 'Dr. Pratik Biswas', photo: '/images/team/pratik-biswas.webp', role: 'Team Advisor · MS, DNB (General Surgeon)', hi: { role: 'टीम सलाहकार · MS, DNB (जनरल सर्जन)' }, mr: { role: 'टीम सल्लागार · MS, DNB (जनरल सर्जन)' } },
+  { name: 'Dr. Nishikant Rokade', photo: '/images/team/nishikant-rokade.webp', role: 'Team Advisor · MS, DNB, Senior Consultant', hi: { role: 'टीम सलाहकार · MS, DNB, सीनियर कंसल्टेंट' }, mr: { role: 'टीम सल्लागार · MS, DNB, वरिष्ठ सल्लागार' } },
 ];

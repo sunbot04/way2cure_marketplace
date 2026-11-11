@@ -161,7 +161,22 @@ export const rxSteps = [
   },
 ];
 
-export function TrustStrip() {
+// Section heading: small eyebrow, H2, optional lead paragraph and an optional link on the right.
+export function SectionHead({ eyebrow, title, lead, action }) {
+  return (
+    <div className="section-head">
+      <div>
+        {eyebrow && <p className="eyebrow">{eyebrow}</p>}
+        <h2>{title}</h2>
+        {lead && <p className="lead">{lead}</p>}
+      </div>
+      {action && <div className="section-head-action">{action}</div>}
+    </div>
+  );
+}
+
+// Trust elements (guidelines p.11). `bare` renders just the list, for use inside another section.
+export function TrustStrip({ bare = false }) {
   const tr = useT(T);
   const items = [
     { icon: 'users', title: tr('happy', { n: SITE.happyPatients }), text: tr('happyText') },
@@ -171,19 +186,23 @@ export function TrustStrip() {
     { icon: 'shield', title: tr('privacy'), text: tr('privacyText') },
     { icon: 'support', title: tr('support'), text: tr('supportText', { phone: SITE.phone }) },
   ];
+  const list = (
+    <ul className={bare ? 'trust-list' : 'container trust-grid'}>
+      {items.map((i) => (
+        <li key={i.icon} className="trust-item">
+          <span className="trust-icon"><Icon name={i.icon} size={24} /></span>
+          <div>
+            <strong>{i.title}</strong>
+            <span>{i.text}</span>
+          </div>
+        </li>
+      ))}
+    </ul>
+  );
+  if (bare) return list;
   return (
     <section className="trust-strip" aria-label={tr('trustAria')}>
-      <div className="container trust-grid">
-        {items.map((i) => (
-          <div key={i.icon} className="trust-item">
-            <Icon name={i.icon} size={28} />
-            <div>
-              <strong>{i.title}</strong>
-              <span>{i.text}</span>
-            </div>
-          </div>
-        ))}
-      </div>
+      {list}
     </section>
   );
 }
@@ -229,13 +248,18 @@ export function ServiceCard({ service }) {
   const loc = useLoc();
   const s = loc(service);
   return (
-    <article className="card card-edge-top service-card" style={{ '--edge': service.edge }}>
-      <span className="service-icon"><Icon name={service.icon} size={28} /></span>
-      <h3>{s.name}</h3>
-      <p>{s.short}</p>
-      <Link to={`/care/${service.id}`} className="btn btn-urgent">
-        {tr('bookNow')}
-      </Link>
+    <article className="service-card" style={{ '--edge': service.edge }}>
+      <div className="service-media">
+        {service.image && <img src={service.image} alt="" loading="lazy" width="800" height="533" />}
+        <span className="service-icon"><Icon name={service.icon} size={26} /></span>
+      </div>
+      <div className="service-body">
+        <h3>{s.name}</h3>
+        <p>{s.short}</p>
+        <Link to={`/care/${service.id}`} className="btn btn-urgent">
+          {tr('bookNow')} <Icon name="arrow" size={18} />
+        </Link>
+      </div>
     </article>
   );
 }

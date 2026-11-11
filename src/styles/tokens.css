@@ -35,9 +35,18 @@
   --s4: 32px;
   --s6: 48px;
 
+  --s8: 64px;
+  --s12: 96px;
+
   --radius-btn: 8px;
   --radius-card: 12px;
-  --shadow: 0 2px 10px rgba(17, 77, 74, 0.08);
+  --radius-lg: 20px;
+  /* Soft, green-tinted elevation: resting, hover and floating */
+  --shadow: 0 1px 2px rgba(17, 77, 74, 0.06), 0 4px 16px rgba(17, 77, 74, 0.06);
+  --shadow-hover: 0 2px 4px rgba(17, 77, 74, 0.08), 0 12px 32px rgba(17, 77, 74, 0.12);
+  --shadow-float: 0 12px 40px rgba(17, 77, 74, 0.18);
+  --line: #e4ebe9;            /* hairline borders on white */
+  --green-dark: #0c3a38;      /* hover on deep green */
   --fade: 200ms ease;
   --maxw: 1200px;
 }

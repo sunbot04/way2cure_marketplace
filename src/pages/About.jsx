@@ -112,7 +112,11 @@ export default function About() {
               const m = loc(member);
               return (
                 <div key={member.name} className="card team-card">
-                  <span className="avatar" aria-hidden="true">{member.name.replace('Dr. ', '').split(' ').map((w) => w[0]).slice(0, 2).join('')}</span>
+                  {member.photo ? (
+                    <img className="team-photo" src={member.photo} alt="" loading="lazy" width="240" height="300" />
+                  ) : (
+                    <span className="avatar" aria-hidden="true">{member.name.replace('Dr. ', '').split(' ').map((w) => w[0]).slice(0, 2).join('')}</span>
+                  )}
                   <h3>{member.name}</h3>
                   <p className="small">{m.role}</p>
                 </div>
