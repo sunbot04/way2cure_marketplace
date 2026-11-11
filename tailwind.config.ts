@@ -30,17 +30,18 @@ export default {
       body: ['"Nunito Sans"', '"Noto Sans Devanagari"', 'Arial', 'sans-serif'],
     },
     fontSize: {
-      // Seniors first, so bigger than usual (p.6). Never below 16px except "small" (legal, captions).
-      small: ['14px', { lineHeight: '1.5' }],
-      base: ['16px', { lineHeight: '1.6' }],
-      body: ['18px', { lineHeight: '1.6' }],
-      lead: ['20px', { lineHeight: '1.6' }],
-      h3m: ['20px', { lineHeight: '1.3' }],
-      h3: ['22px', { lineHeight: '1.3' }],
-      h2m: ['24px', { lineHeight: '1.25' }],
-      h2: ['30px', { lineHeight: '1.2' }],
-      h1m: ['32px', { lineHeight: '1.2' }],
-      h1: ['40px', { lineHeight: '1.15' }],
+      // Seniors first, so bigger than usual on phones (p.6). In rem: desktop scales them down a little
+      // through the root font size in index.css.
+      small: ['0.875rem', { lineHeight: '1.5' }],
+      base: ['1rem', { lineHeight: '1.6' }],
+      body: ['1.125rem', { lineHeight: '1.6' }],
+      lead: ['1.25rem', { lineHeight: '1.6' }],
+      h3m: ['1.25rem', { lineHeight: '1.3' }],
+      h3: ['1.375rem', { lineHeight: '1.3' }],
+      h2m: ['1.5rem', { lineHeight: '1.25' }],
+      h2: ['1.875rem', { lineHeight: '1.2' }],
+      h1m: ['2rem', { lineHeight: '1.2' }],
+      h1: ['2.5rem', { lineHeight: '1.15' }],
     },
     extend: {
       borderRadius: { btn: '8px', card: '12px' },
@@ -50,7 +51,7 @@ export default {
       },
       maxWidth: { prose: '70ch', page: '1920px' },
       transitionDuration: { DEFAULT: '200ms' },
-      minHeight: { tap: '48px' },
+      minHeight: { tap: '3rem' },
       borderWidth: { edge: '5px' },
     },
   },

@@ -4,7 +4,6 @@ import Icon from '../components/Icon';
 import Button from '../components/ui/Button';
 import Tag from '../components/ui/Tag';
 import FAQAccordion from '../components/ui/FAQAccordion';
-import { Input } from '../components/ui/Field';
 import { ProductImage, SellerBadge } from '../components/commerce/ProductCard';
 import RxNotice from '../components/commerce/RxNotice';
 import AppPanel, { HelpBox } from '../components/commerce/AppPanel';
@@ -14,10 +13,13 @@ import { formatPrice, isServiceablePincode } from '../config/site';
 import { useCart } from '../context/CartContext';
 import { useLang, useT, useLoc, type Dict } from '../i18n/LangContext';
 import { ChoiceList, QtyStepper, type Choice } from '../components/commerce/Choice';
+import { Field, Input, Select } from '../components/ui/Field';
+import { DEFAULT_SUPPLY_DAYS, REMIND_DAYS_BEFORE, SUPPLY_OPTIONS, isSupply } from '../context/NotificationsContext';
 import NotFound from './NotFound';
 
 const T: Dict = {
   en: {
+    lastFor: 'How long should this order last?', days: '{n} days', remindNote: 'We will remind you {n} days before it runs out, on the bell at the top of the page.',
     shop: 'Shop', breadcrumb: 'Breadcrumb',
     rxNeeded: 'Rx needed', pharmVerified: 'Pharmacist verified', verifiedSeller: 'Verified seller', rent: 'Rent',
     buy: 'Buy', subscribeMonthly: 'Subscribe monthly', perMonth: '{price} / month', eachMonth: '{price} each month',
@@ -37,6 +39,7 @@ const T: Dict = {
     questions: 'Questions about this item', uploadYourRx: 'Upload your prescription',
   },
   hi: {
+    lastFor: 'यह ऑर्डर कितने दिन चलना चाहिए?', days: '{n} दिन', remindNote: 'ख़त्म होने से {n} दिन पहले हम पेज के ऊपर घंटी पर याद दिलाएँगे।',
     shop: 'खरीदारी', breadcrumb: 'आप यहाँ हैं',
     rxNeeded: 'पर्चा ज़रूरी', pharmVerified: 'फ़ार्मासिस्ट द्वारा जाँचा गया', verifiedSeller: 'सत्यापित विक्रेता', rent: 'किराये पर',
     buy: 'ख़रीदें', subscribeMonthly: 'हर महीने के लिए सब्सक्राइब करें', perMonth: '{price} / प्रति माह', eachMonth: '{price} हर महीने',
@@ -56,6 +59,7 @@ const T: Dict = {
     questions: 'इस सामान के बारे में सवाल', uploadYourRx: 'अपना पर्चा अपलोड करें',
   },
   mr: {
+    lastFor: 'ही ऑर्डर किती दिवस पुरावी?', days: '{n} दिवस', remindNote: 'संपण्याच्या {n} दिवस आधी आम्ही पानाच्या वरच्या घंटीवर आठवण करून देऊ.',
     shop: 'खरेदी', breadcrumb: 'तुम्ही इथे आहात',
     rxNeeded: 'प्रिस्क्रिप्शन आवश्यक', pharmVerified: 'फार्मासिस्टने तपासलेले', verifiedSeller: 'पडताळलेले विक्रेते', rent: 'भाड्याने',
     buy: 'विकत घ्या', subscribeMonthly: 'मासिक सदस्यता घ्या', perMonth: '{price} / दरमहा', eachMonth: '{price} दरमहा',
@@ -90,6 +94,7 @@ export default function Product() {
   const [pin, setPin] = useState('');
   const [pinResult, setPinResult] = useState<PinResult>(null);
   const [added, setAdded] = useState(false);
+  const [supplyDays, setSupplyDays] = useState(DEFAULT_SUPPLY_DAYS);
 
   if (!product) return <NotFound />;
   const p = loc(product);
@@ -108,7 +113,7 @@ export default function Product() {
   };
 
   const addToCart = () => {
-    add(product.id, mode, qty);
+    add(product.id, mode, qty, mode === 'buy' && isSupply(product.id) ? supplyDays : undefined);
     setAdded(true);
   };
 
@@ -119,11 +124,11 @@ export default function Product() {
       <Seo title={p.name} description={`${p.desc} ${product.rx ? tr('rxNeeded') + '.' : ''}`.trim()} />
       <nav aria-label={tr('breadcrumb')} className="mb-4">
         <ol className="flex flex-wrap items-center gap-1 text-small">
-          <li><Link to="/shop" className="inline-flex min-h-[44px] items-center">{tr('shop')}</Link></li>
+          <li><Link to="/shop" className="inline-flex min-h-[2.75rem] items-center">{tr('shop')}</Link></li>
           {cat && (
             <li className="inline-flex items-center gap-1">
               <Icon name="chevron" size={14} className="text-grey" />
-              <Link to={`/shop/${cat.slug}`} className="inline-flex min-h-[44px] items-center">{cat.name}</Link>
+              <Link to={`/shop/${cat.slug}`} className="inline-flex min-h-[2.75rem] items-center">{cat.name}</Link>
             </li>
           )}
           <li className="inline-flex items-center gap-1">
@@ -166,6 +171,13 @@ export default function Product() {
           {options.length === 1 && <p className="m-0 font-head text-h2m font-bold text-terracotta-deep">{options[0].detail}</p>}
           {mode === 'subscribe' && <p className="m-0 text-base text-grey">{tr('subNote')}</p>}
           {mode === 'rent' && <p className="m-0 text-base text-grey">{tr('rentNote')}</p>}
+          {mode === 'buy' && isSupply(product.id) && (
+            <Field id="supply" label={tr('lastFor')} hint={tr('remindNote', { n: REMIND_DAYS_BEFORE })}>
+              <Select id="supply" value={supplyDays} onChange={(e) => setSupplyDays(Number(e.target.value))} aria-describedby="supply-hint" className="max-w-[14rem]">
+                {SUPPLY_OPTIONS.map((d) => <option key={d} value={d}>{tr('days', { n: d })}</option>)}
+              </Select>
+            </Field>
+          )}
 
           <form onSubmit={checkPin} noValidate className="rounded-card bg-cream p-4">
             <label htmlFor="pin" className="mb-1.5 block font-bold text-green">{tr('checkPin')}</label>

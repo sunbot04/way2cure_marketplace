@@ -34,7 +34,7 @@ export default function PageHeader({ title, lead, crumbs, children, tone = 'crea
               <li key={i} className="inline-flex items-center gap-1">
                 {i > 0 && <Icon name="chevron" size={14} className={onGreen ? 'text-mint' : 'text-grey'} />}
                 {c.to ? (
-                  <Link to={c.to} className={`inline-flex min-h-[44px] items-center ${onGreen ? 'text-white' : ''}`}>{c.label}</Link>
+                  <Link to={c.to} className={`inline-flex min-h-[2.75rem] items-center ${onGreen ? 'text-white' : ''}`}>{c.label}</Link>
                 ) : (
                   <span aria-current="page" className={onGreen ? 'text-mint' : 'text-grey'}>{c.label}</span>
                 )}
@@ -43,7 +43,7 @@ export default function PageHeader({ title, lead, crumbs, children, tone = 'crea
           </ol>
         </nav>
       )}
-      <h1 className={`mb-3 ${image ? 'md:text-[48px] md:leading-tight' : ''} ${onGreen ? 'text-white' : ''}`}>{title}</h1>
+      <h1 className={`mb-3 ${image ? 'md:text-[3rem] md:leading-tight' : ''} ${onGreen ? 'text-white' : ''}`}>{title}</h1>
       {lead && <p className={`m-0 text-lead ${onGreen ? 'text-mint' : 'text-ink/80'}`}>{lead}</p>}
       {children && <div className="mt-6">{children}</div>}
     </>
@@ -61,8 +61,8 @@ export default function PageHeader({ title, lead, crumbs, children, tone = 'crea
           className="fade-b h-60 w-full object-cover sm:h-80 lg:fade-l lg:absolute lg:inset-y-0 lg:right-0 lg:h-full lg:w-[58%]"
           style={image.position ? { objectPosition: image.position } : undefined}
         />
-        <div className="container relative -mt-14 flex items-center pb-10 lg:mt-0 lg:min-h-[460px] lg:py-14">
-          <div className="max-w-[560px] 2xl:max-w-[640px]">{text}</div>
+        <div className="container relative -mt-14 flex items-center pb-10 lg:mt-0 lg:min-h-[28.75rem] lg:py-14">
+          <div className="max-w-[35rem] 2xl:max-w-[40rem]">{text}</div>
         </div>
       </section>
     );

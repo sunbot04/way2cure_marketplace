@@ -42,6 +42,10 @@ export type Service = Localized<ServiceText> & {
   icon: string;
   edge: Edge;
   specialised?: boolean;
+  /** Newly launched: shown with a "New" tag and a mustard outline so it stands out. */
+  isNew?: boolean;
+  /** A related page shown as a secondary link on the card (dementia care -> Safe-zone band). */
+  related?: string;
 };
 
 export interface PlanText { name: string; often: string; points: string[] }

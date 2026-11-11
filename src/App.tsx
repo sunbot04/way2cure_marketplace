@@ -25,6 +25,7 @@ const FamilyProfiles = lazy(() => import('./pages/FamilyProfiles'));
 const Addresses = lazy(() => import('./pages/Addresses'));
 const Privacy = lazy(() => import('./pages/Privacy'));
 const Terms = lazy(() => import('./pages/Terms'));
+const Notifications = lazy(() => import('./pages/Notifications'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 function ScrollToTop() {
@@ -61,6 +62,7 @@ export default function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/help" element={<Help />} />
           <Route path="/account" element={<Account />} />
+          <Route path="/notifications" element={<Notifications />} />
           <Route path="/account/family" element={<FamilyProfiles />} />
           <Route path="/account/addresses" element={<Addresses />} />
           <Route path="/legal" element={<Navigate to="/terms" replace />} />

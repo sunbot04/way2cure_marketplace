@@ -176,10 +176,10 @@ export default function Home() {
           fetchPriority="high"
           className="fade-b h-72 w-full object-cover object-[65%_center] sm:h-96 lg:fade-l lg:absolute lg:inset-y-0 lg:right-0 lg:h-full lg:w-[60%]"
         />
-        <div className="container relative -mt-16 flex items-center pb-14 sm:-mt-20 lg:mt-0 lg:min-h-[640px] lg:py-20 2xl:min-h-[700px]">
-          <div className="max-w-[560px] 2xl:max-w-[640px]">
-            <h1 className="mb-5 text-[34px] leading-[1.12] text-white md:text-[52px] 2xl:text-[60px]">{t('heroTitle')}</h1>
-            <p className="mb-8 text-lead text-mint md:text-[22px] md:leading-relaxed">{t('heroText')}</p>
+        <div className="container relative -mt-16 flex items-center pb-14 sm:-mt-20 lg:mt-0 lg:min-h-[40rem] lg:py-20 2xl:min-h-[43.75rem]">
+          <div className="max-w-[35rem] 2xl:max-w-[40rem]">
+            <h1 className="mb-5 text-[2.125rem] leading-[1.12] text-white md:text-[3.25rem] 2xl:text-[3.75rem]">{t('heroTitle')}</h1>
+            <p className="mb-8 text-lead text-mint md:text-[1.375rem] md:leading-relaxed">{t('heroText')}</p>
             <div className="flex flex-col gap-3 sm:flex-row">
               <Button to="/shop/medicines" variant="light"><Icon name="pill" /> {t('orderMedicines')}</Button>
               <Button to="/care/nurse" variant="outline-light"><Icon name="stethoscope" /> {t('bookNurse')}</Button>
@@ -263,12 +263,12 @@ export default function Home() {
           <div className="relative">
             <img src="/images/nurse-portrait.webp" alt="" width={900} height={600} loading="lazy" className="fade-all aspect-[4/3] w-full object-cover object-[60%_center]" />
             <div className="absolute bottom-4 right-2 grid h-32 w-32 place-content-center rounded-full bg-white text-center shadow-raised md:bottom-10 md:right-6 md:h-40 md:w-40">
-              <strong className="font-head text-[36px] leading-none text-terracotta-deep md:text-[44px]">{SITE.happyPatients}</strong>
+              <strong className="font-head text-[2.25rem] leading-none text-terracotta-deep md:text-[2.75rem]">{SITE.happyPatients}</strong>
               <span className="mt-1 px-3 text-small font-bold leading-tight text-green">{tr('badgeText')}</span>
             </div>
           </div>
           <div>
-            <h2 className="md:text-[40px] md:leading-tight">{tr('aboutTitle')}</h2>
+            <h2 className="md:text-[2.5rem] md:leading-tight">{tr('aboutTitle')}</h2>
             <p className="text-lead text-ink/80">{tr('aboutText')}</p>
             <ul className="my-8 grid gap-3">
               {(['aboutP1', 'aboutP2', 'aboutP3'] as const).map((k) => (

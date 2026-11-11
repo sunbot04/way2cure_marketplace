@@ -7,7 +7,7 @@ import { LAYOUT } from './copy';
 // Mobile only (p.8, p.9): bottom bar Home · Shop · Rx · Care, with "Call us" as the last tab
 // so the phone line is always one tap away without a floating button covering the page.
 // Account sits in the header on mobile.
-const item = 'grid min-h-[64px] content-center justify-items-center gap-0.5 px-0.5 py-2 text-center text-small font-bold no-underline';
+const item = 'grid min-h-[4rem] content-center justify-items-center gap-0.5 px-0.5 py-2 text-center text-small font-bold no-underline';
 
 export default function MobileTabBar() {
   const { t } = useLang();

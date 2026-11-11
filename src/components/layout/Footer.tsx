@@ -8,7 +8,7 @@ import { LAYOUT } from './copy';
 // Footer (guidelines p.9 item 9): Support · Company · Visit us (Vashi) · legal links,
 // plus the pharmacy licence line required on p.11.
 const heading = 'mb-3 font-body text-small font-bold tracking-wide text-mustard';
-const link = 'inline-flex min-h-[40px] items-center gap-2 text-white no-underline hover:underline';
+const link = 'inline-flex min-h-[2.5rem] items-center gap-2 text-white no-underline hover:underline';
 
 export default function Footer() {
   const { t } = useLang();

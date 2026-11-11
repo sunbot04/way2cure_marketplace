@@ -14,6 +14,7 @@ import { QtyStepper } from '../components/commerce/Choice';
 
 const T: Dict = {
   en: {
+    lasts: 'Lasts {n} days · reminder set',
     orderSummary: 'Order summary', rentMonth: 'rent, 1 month', monthly: 'monthly',
     items: 'Items', delivery: 'Delivery', free: 'Free', totalToPay: 'Total to pay',
     freeAbove: 'Free delivery on orders above {amount}.',
@@ -26,6 +27,7 @@ const T: Dict = {
     remove: 'Remove', continue: 'Continue to checkout',
   },
   hi: {
+    lasts: '{n} दिन चलेगा · रिमाइंडर सेट',
     orderSummary: 'ऑर्डर का सारांश', rentMonth: 'किराया, 1 महीना', monthly: 'हर महीने',
     items: 'सामान', delivery: 'डिलिवरी', free: 'मुफ़्त', totalToPay: 'कुल भुगतान',
     freeAbove: '{amount} से ज़्यादा के ऑर्डर पर डिलिवरी मुफ़्त।',
@@ -38,6 +40,7 @@ const T: Dict = {
     remove: 'हटाएँ', continue: 'चेकआउट पर आगे बढ़ें',
   },
   mr: {
+    lasts: '{n} दिवस पुरेल · आठवण ठरली',
     orderSummary: 'ऑर्डरचा सारांश', rentMonth: 'भाडे, 1 महिना', monthly: 'दरमहा',
     items: 'वस्तू', delivery: 'डिलिव्हरी', free: 'मोफत', totalToPay: 'एकूण भरायची रक्कम',
     freeAbove: '{amount} पेक्षा जास्त ऑर्डरवर डिलिव्हरी मोफत.',
@@ -131,6 +134,7 @@ export default function Cart() {
                       {p.rx && <Tag kind="rx">{tr('rxNeeded')}</Tag>}
                       {l.mode === 'rent' && <Tag kind="rent">{tr('rentMonthly')}</Tag>}
                       {l.mode === 'subscribe' && <Tag kind="subscribe">{tr('monthlyPlan')}</Tag>}
+                      {l.mode === 'buy' && l.supplyDays && <Tag kind="status">{tr('lasts', { n: l.supplyDays })}</Tag>}
                     </div>
                   </div>
                   <div className="flex flex-wrap items-center gap-x-5 gap-y-2 sm:justify-end">

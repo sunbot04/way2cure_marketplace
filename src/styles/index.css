@@ -33,8 +33,11 @@
   }
 
   html { -webkit-text-size-adjust: 100%; overflow-x: clip; }
+  /* Everything is sized in rem. Phones keep the full senior-friendly size; on desktop screens the
+     whole site is about 10% smaller so it does not look oversized at 100% browser zoom. */
+  @media (min-width: 1024px) { html { font-size: 90.625%; } }
   body {
-    @apply bg-cream pb-[72px] font-body text-body text-ink antialiased lg:pb-0;
+    @apply bg-cream pb-[4.5rem] font-body text-body text-ink antialiased lg:pb-0;
     overflow-x: clip; /* room above: the mobile bottom tab bar */
   }
   :lang(hi) body, :lang(mr) body { font-family: 'Noto Sans Devanagari', 'Nunito Sans', Arial, sans-serif; }

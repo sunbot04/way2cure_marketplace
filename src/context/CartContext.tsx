@@ -2,7 +2,8 @@ import { createContext, useContext, useEffect, useMemo, useState, type ReactNode
 import { getProduct, unitPrice, type Product, type PurchaseMode } from '../data';
 import { SITE } from '../config/site';
 
-export interface CartItem { id: string; mode: PurchaseMode; qty: number }
+/** supplyDays: how long this order should last. Used for refill reminders (see NotificationsContext). */
+export interface CartItem { id: string; mode: PurchaseMode; qty: number; supplyDays?: number }
 export interface CartLine extends CartItem { product: Product; unit: number; total: number }
 
 /** Stored as a code, shown in the reader's language. */
@@ -24,7 +25,7 @@ interface CartValue {
   deliveryFee: number;
   total: number;
   hasRx: boolean;
-  add: (id: string, mode?: PurchaseMode, qty?: number) => void;
+  add: (id: string, mode?: PurchaseMode, qty?: number, supplyDays?: number) => void;
   setQty: (id: string, mode: PurchaseMode, qty: number) => void;
   remove: (id: string, mode: PurchaseMode) => void;
   clear: () => void;
@@ -71,11 +72,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const value = useMemo<CartValue>(() => {
     const same = (a: CartItem, id: string, mode: PurchaseMode) => a.id === id && a.mode === mode;
 
-    const add = (id: string, mode: PurchaseMode = 'buy', qty = 1) =>
+    const add = (id: string, mode: PurchaseMode = 'buy', qty = 1, supplyDays?: number) =>
       setItems((prev) => {
         const found = prev.find((x) => same(x, id, mode));
-        if (found) return prev.map((x) => (same(x, id, mode) ? { ...x, qty: x.qty + qty } : x));
-        return [...prev, { id, mode, qty }];
+        if (found) return prev.map((x) => (same(x, id, mode) ? { ...x, qty: x.qty + qty, supplyDays: supplyDays ?? x.supplyDays } : x));
+        return [...prev, { id, mode, qty, ...(supplyDays ? { supplyDays } : {}) }];
       });
 
     const setQty = (id: string, mode: PurchaseMode, qty: number) =>
@@ -119,7 +120,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         setItems([]);
         return order;
       },
-      reorder: (order) => order.items.forEach((x) => add(x.id, x.mode, x.qty)),
+      reorder: (order) => order.items.forEach((x) => add(x.id, x.mode, x.qty, x.supplyDays)),
     };
   }, [items, orders]);
 

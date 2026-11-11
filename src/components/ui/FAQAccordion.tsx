@@ -9,7 +9,7 @@ export default function FAQAccordion({ items }: { items: Faq[] }) {
     <div className="grid gap-2">
       {items.map(loc).map((f) => (
         <details key={f.q} className="group rounded-card bg-white shadow-card">
-          <summary className="flex min-h-[56px] cursor-pointer list-none items-center justify-between gap-3 px-5 py-4 font-bold text-green [&::-webkit-details-marker]:hidden">
+          <summary className="flex min-h-[3.5rem] cursor-pointer list-none items-center justify-between gap-3 px-5 py-4 font-bold text-green [&::-webkit-details-marker]:hidden">
             {f.q}
             <Icon name="plus" className="shrink-0 text-terracotta-deep transition-transform group-open:rotate-45" />
           </summary>

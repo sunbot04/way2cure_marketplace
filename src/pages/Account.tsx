@@ -138,7 +138,7 @@ export default function Account() {
           <ul className="divide-y divide-mint overflow-hidden rounded-card bg-white shadow-card">
             {sections.map((s) => (
               <li key={s.key}>
-                <Link to={s.to} className="flex min-h-[72px] items-center gap-4 px-5 py-4 text-ink no-underline transition-colors hover:bg-cream">
+                <Link to={s.to} className="flex min-h-[4.5rem] items-center gap-4 px-5 py-4 text-ink no-underline transition-colors hover:bg-cream">
                   <Icon name={s.icon} size={26} className="shrink-0 text-terracotta-deep" />
                   <span className="grid flex-1 leading-snug">
                     <strong className="text-green">{tr(`${s.key}.title`)}</strong>

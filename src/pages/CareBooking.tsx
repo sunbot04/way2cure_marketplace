@@ -1,6 +1,9 @@
 import { useState, type ChangeEvent, type FormEvent } from 'react';
 import { useParams } from 'react-router-dom';
 import Icon from '../components/Icon';
+import { COPY } from '../components/copy';
+import Tag from '../components/ui/Tag';
+import { Link } from 'react-router-dom';
 import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
 import InfoBand from '../components/ui/InfoBand';
@@ -369,6 +372,7 @@ export default function CareBooking() {
               </p>
               <p className="m-0 text-small text-grey">{tr('price')}</p>
             </Card>
+            {service.related === '/safe-zone' && <BandPanel />}
             {service.specialised && (
               <InfoBand icon="stethoscope">
                 <strong>{tr('doctorLed')}</strong> {tr('suitability')}
@@ -379,5 +383,28 @@ export default function CareBooking() {
         </div>
       </div>
     </>
+  );
+}
+
+/** Dementia care: the Safe-zone band, explained where families book. */
+function BandPanel() {
+  const tc = useT(COPY);
+  return (
+    <section aria-labelledby="band" className="rounded-card bg-green p-6 text-white">
+      <div className="mb-3 flex flex-wrap items-center gap-3">
+        <span className="grid h-11 w-11 place-items-center rounded-full bg-white/10 text-mustard"><Icon name="watch" size={22} /></span>
+        <h2 id="band" className="m-0 font-body text-h3m text-white md:text-h3">{tc('bandTitle')}</h2>
+        <Tag kind="launch">{tc('bandSoon')}</Tag>
+      </div>
+      <p className="text-base text-mint">{tc('bandText')}</p>
+      <ul className="mb-5 grid gap-2 text-base">
+        {(['bandP1', 'bandP2', 'bandP3', 'bandP4'] as const).map((k) => (
+          <li key={k} className="flex items-start gap-2"><Icon name="check" size={18} className="mt-1 shrink-0 text-mustard" /> {tc(k)}</li>
+        ))}
+      </ul>
+      <Link to="/safe-zone" className="inline-flex min-h-[2.75rem] items-center gap-2 font-bold text-white">
+        {tc('bandMore')} <Icon name="arrow" size={18} />
+      </Link>
+    </section>
   );
 }

@@ -15,6 +15,7 @@ const COLOURS: Step['colour'][] = ['green', 'sage', 'terracotta-deep', 'mustard'
 
 const T: Dict = {
   en: {
+    bookDementia: 'Book dementia care at home',
     seoDesc: 'A safe-zone band for people living with dementia, coming soon from Way2Cure. Family gets an alert when the wearer leaves the safe zone. Used only with consent.',
     eyebrow: 'Coming soon · Dementia care',
     title: 'Safe-zone band',
@@ -32,6 +33,7 @@ const T: Dict = {
     readyBtn: 'Tell me when it is ready',
   },
   hi: {
+    bookDementia: 'घर पर डिमेंशिया केयर बुक करें',
     seoDesc: 'डिमेंशिया से जूझ रहे लोगों के लिए सेफ़-ज़ोन बैंड, जल्द ही Way2Cure पर। पहनने वाला सेफ़ ज़ोन से बाहर जाए तो परिवार को अलर्ट मिलता है। सिर्फ़ सहमति से इस्तेमाल।',
     eyebrow: 'जल्द आ रहा है · डिमेंशिया (भूलने की बीमारी) में देखभाल',
     title: 'सेफ़-ज़ोन बैंड',
@@ -49,6 +51,7 @@ const T: Dict = {
     readyBtn: 'तैयार होने पर मुझे बताएँ',
   },
   mr: {
+    bookDementia: 'घरी डिमेन्शिया काळजी बुक करा',
     seoDesc: 'डिमेन्शिया असलेल्या व्यक्तींसाठी सेफ-झोन बँड, लवकरच Way2Cure वर. बँड घालणारी व्यक्ती सेफ झोनबाहेर गेल्यास कुटुंबाला अलर्ट मिळतो. फक्त संमतीनेच वापर.',
     eyebrow: 'लवकरच येत आहे · डिमेन्शिया (विस्मरणाचा आजार) काळजी',
     title: 'सेफ-झोन बँड',
@@ -75,7 +78,10 @@ export default function SafeZone() {
     <>
       <Seo title={tr('title')} description={tr('seoDesc')} />
       <PageHeader title={tr('title')} lead={tr('intro')} crumbs={[{ label: t('home'), to: '/' }, { label: tr('title') }]}>
-        <Tag kind="launch">{tr('eyebrow')}</Tag>
+        <div className="flex flex-wrap items-center gap-4">
+          <Tag kind="launch">{tr('eyebrow')}</Tag>
+          <Button to="/care/dementia" variant="outline" compact><Icon name="memory" size={18} /> {tr('bookDementia')}</Button>
+        </div>
       </PageHeader>
 
       <section className="py-10 md:py-14">

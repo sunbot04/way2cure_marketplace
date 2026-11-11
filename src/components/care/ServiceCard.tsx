@@ -1,5 +1,7 @@
+import { Link } from 'react-router-dom';
 import Icon from '../Icon';
 import Button from '../ui/Button';
+import Tag from '../ui/Tag';
 import { useLoc, useT } from '../../i18n/LangContext';
 import type { Service } from '../../data';
 import { COPY } from '../copy';
@@ -10,7 +12,10 @@ export default function ServiceCard({ service, showDuration = false }: { service
   const loc = useLoc();
   const s = loc(service);
   return (
-    <article className="group flex w-full flex-col overflow-hidden rounded-card bg-white shadow-card">
+    <article className={`group relative flex w-full flex-col overflow-hidden rounded-card bg-white shadow-card ${service.isNew ? 'ring-2 ring-mustard' : ''}`}>
+      {service.isNew && (
+        <span className="absolute left-4 top-4 z-10"><Tag kind="launch">{tr('newTag')}</Tag></span>
+      )}
       {service.image && (
         <img src={service.image} alt="" loading="lazy" width={1200} height={800} className="fade-card aspect-[3/2] w-full object-cover" />
       )}
@@ -25,6 +30,11 @@ export default function ServiceCard({ service, showDuration = false }: { service
             <Icon name="clock" size={18} className="mt-1 shrink-0 text-sage" />
             <span><strong className="text-green">{tr('typicalDuration')}:</strong> {s.duration}</span>
           </p>
+        )}
+        {service.related && (
+          <Link to={service.related} className="mb-4 inline-flex min-h-[2.75rem] items-center gap-2 self-start font-bold">
+            <Icon name="watch" size={18} /> {tr('bandLink')} <Icon name="arrow" size={16} />
+          </Link>
         )}
         <Button to={`/care/${service.id}`} variant="urgent" block>{tr('bookNow')}</Button>
       </div>

@@ -142,7 +142,7 @@ const T: Dict = {
 
 type Errors = Partial<Record<'name' | 'phone', string>>;
 
-const channel = 'flex min-h-[72px] items-center gap-4 rounded-card bg-white p-5 text-ink no-underline shadow-card transition-colors hover:bg-cream';
+const channel = 'flex min-h-[4.5rem] items-center gap-4 rounded-card bg-white p-5 text-ink no-underline shadow-card transition-colors hover:bg-cream';
 
 export default function Contact() {
   const tr = useT(T);

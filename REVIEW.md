@@ -69,5 +69,14 @@ Each place is marked `// TODO: API`.
     - **Photo edges:** photos fade softly into their background through CSS masks (`fade-l`, `fade-b`, `fade-card`, `fade-all` in `src/styles/index.css`). The hero and page-header photos fade into the panel, care-card photos fade into the white card, and the About photo fades out on all sides.
     - **Section backgrounds:** homepage sections share one cream background, and the mint subscriptions area fades in and out. These soft fades depart from the brief's "no gradients" rule. They are used only to blend edges, never as decoration.
     - **Trust strip:** a soft row between hairlines instead of a solid band.
+  - **Smaller desktop scale** (client request: the site looked oversized at 100% zoom). All sizes are now in rem. From 1024 px the root font size is 90.6%, so text, spacing and icons are about 10% smaller. Body text is about 16 px, and the small top-bar links are about 40 px tall, below the 48 px tap guideline. Phones keep the full senior-friendly sizes.
+  - **Dementia care:** a new specialised service (`/care/dementia`), listed first under Specialised care. It has a "New" tag and a mustard outline, and the Care Services menu shows a "New" pill. It mentions the Safe-zone band as coming soon. It reuses the homepage hero photo until a dementia-care photo is shot.
+  - **Notifications:**
+    - **Where they appear:** a bell beside the cart shows the unread count and opens `/notifications`.
+    - **Refill reminders:** for refillable supplies (regular medicines, diapers, supplements), the product page asks "How long should this order last?" (15/30/60/90 days). A reminder appears 3 days before the supply runs out, with a "Reorder now" button. It drops off once the item is ordered again.
+    - **Plan and order updates:** monthly plans get a "next delivery" reminder, and every order gets a status update.
+    - **Today's limits:** reminders are computed in the browser from saved orders. They show on the bell, on the page and, if the visitor allows it, as a browser alert while the site is open.
+    - **Testing:** opening `/notifications?demo=1` shows controls that move time forward.
+    - **TODO: API:** run the same rules on the server and send SMS / WhatsApp / push, so families are reminded when the site is closed.
   - **Phones:** "Call us" is the last tab of the bottom bar, not a floating button over the content. Account is in the header.
 - **Mission and vision on About:** these are now headings with no label above, per the anti-template rule. The words "Our mission" and "Our vision" open the paragraph text instead.

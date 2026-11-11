@@ -45,7 +45,7 @@ export default function StepList({ steps, layout = 'row', current, className = '
             className={`relative flex items-start gap-4 ${row ? 'md:flex-col md:gap-3' : ''}`}
           >
             {!row && i < steps.length - 1 && (
-              <span aria-hidden="true" className="absolute left-[27px] top-14 h-[calc(100%-32px)] w-0.5 bg-mint" />
+              <span aria-hidden="true" className="absolute left-[1.6875rem] top-14 h-[calc(100%-32px)] w-0.5 bg-mint" />
             )}
             <span
               className={`relative grid h-14 w-14 shrink-0 place-items-center rounded-full font-head text-h2m font-bold ${

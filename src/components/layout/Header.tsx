@@ -3,6 +3,7 @@ import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import Icon from '../Icon';
 import { buttonClass } from '../ui/Button';
 import { useCart } from '../../context/CartContext';
+import { useNotifications } from '../../context/NotificationsContext';
 import { languages, useLang, useLoc, useT } from '../../i18n/LangContext';
 import { categories, services, shopViews, subscriptionPlans } from '../../data';
 import { SITE } from '../../config/site';
@@ -12,7 +13,7 @@ import { LAYOUT } from './copy';
 function TopBar() {
   const { lang, setLang, t } = useLang();
   const tr = useT(LAYOUT);
-  const link = 'inline-flex min-h-[44px] items-center gap-1.5 text-white no-underline hover:underline';
+  const link = 'inline-flex min-h-[2.75rem] items-center gap-1.5 text-white no-underline hover:underline';
   return (
     <div className="bg-green text-small text-white">
       <div className="container flex h-11 items-center justify-between gap-4">
@@ -33,7 +34,7 @@ function TopBar() {
                 lang={l.code}
                 aria-pressed={lang === l.code}
                 onClick={() => setLang(l.code)}
-                className={`min-h-[44px] px-2 ${i > 0 ? 'border-l border-white/30' : ''} ${
+                className={`min-h-[2.75rem] px-2 ${i > 0 ? 'border-l border-white/30' : ''} ${
                   lang === l.code ? 'font-bold text-white underline decoration-2 underline-offset-4' : 'text-mint hover:text-white'
                 }`}
               >
@@ -57,7 +58,7 @@ function NavMenu({ to, label, children, wide = false }: { to: string; label: str
       </NavLink>
       <div
         className={`invisible absolute left-0 top-full z-50 hidden rounded-card border border-line bg-white p-6 opacity-0 shadow-raised transition-opacity group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100 lg:block ${
-          wide ? 'w-[640px]' : 'w-max min-w-[300px]'
+          wide ? 'w-[40rem]' : 'w-max min-w-[18.75rem]'
         }`}
       >
         {children}
@@ -72,11 +73,12 @@ const navLinkClass = (active: boolean) =>
   }`;
 
 const panelTitle = 'mb-3 text-small font-bold text-grey';
-const panelLink = 'flex min-h-[44px] items-center gap-2.5 rounded-btn px-2.5 font-semibold text-green no-underline hover:bg-cream';
+const panelLink = 'flex min-h-[2.75rem] items-center gap-2.5 rounded-btn px-2.5 font-semibold text-green no-underline hover:bg-cream';
 const panelAll = 'mt-4 flex items-center gap-1.5 border-t border-line pt-4 font-bold';
 
 export default function Header() {
   const { count } = useCart();
+  const { unread } = useNotifications();
   const { t } = useLang();
   const tr = useT(LAYOUT);
   const loc = useLoc();
@@ -92,7 +94,7 @@ export default function Header() {
   }, [location.pathname]);
 
   return (
-    <header className="relative z-40 bg-white lg:sticky lg:top-[-44px]">
+    <header className="relative z-40 bg-white lg:sticky lg:top-[-2.75rem]">
       <TopBar />
       <div className="border-b border-line bg-white">
         <div className="container grid grid-cols-[auto_1fr_auto] items-center gap-x-4 gap-y-3 py-3 [grid-template-areas:'brand_._actions''search_search_search'] lg:gap-x-10 lg:py-4 lg:[grid-template-areas:'brand_search_actions']">
@@ -103,7 +105,7 @@ export default function Header() {
 
           <form
             role="search"
-            className="flex w-full max-w-[960px] items-center gap-2 justify-self-stretch rounded-btn border border-grey/40 bg-cream py-0.5 pl-3 pr-0.5 focus-within:border-green [grid-area:search] focus-within:outline focus-within:outline-[3px] focus-within:outline-offset-2 focus-within:outline-terracotta-deep"
+            className="flex w-full max-w-[60rem] items-center gap-2 justify-self-stretch rounded-btn border border-grey/40 bg-cream py-0.5 pl-3 pr-0.5 focus-within:border-green [grid-area:search] focus-within:outline focus-within:outline-[3px] focus-within:outline-offset-2 focus-within:outline-terracotta-deep"
             onSubmit={(e) => { e.preventDefault(); navigate(`/shop?q=${encodeURIComponent(q.trim())}`); }}
           >
             <label htmlFor="site-search" className="sr-only">{t('search')}</label>
@@ -114,22 +116,27 @@ export default function Header() {
               value={q}
               onChange={(e) => setQ(e.target.value)}
               placeholder={t('searchPlaceholder')}
-              className="min-h-[44px] min-w-0 flex-1 border-0 bg-transparent p-0 text-body text-ink focus:outline-none"
+              className="min-h-[2.75rem] min-w-0 flex-1 border-0 bg-transparent p-0 text-body text-ink focus:outline-none"
             />
             <button type="submit" className={buttonClass('primary', { compact: true })}>{t('search')}</button>
           </form>
 
           <div className="flex items-center gap-1 [grid-area:actions]">
-            <Link to="/account" className="flex min-h-tap min-w-[48px] items-center justify-center gap-1.5 rounded-btn px-2 font-bold text-green no-underline hover:bg-cream">
+            <Link to="/account" className="flex min-h-tap min-w-[3rem] items-center justify-center gap-1.5 rounded-btn px-2 font-bold text-green no-underline hover:bg-cream">
               <Icon name="user" /> <span className="hidden lg:inline">{t('login')}</span>
             </Link>
-            <Link to="/cart" aria-label={tr('cartAria', { count })} className="relative flex min-h-tap min-w-[48px] items-center justify-center gap-1.5 rounded-btn px-2 font-bold text-green no-underline hover:bg-cream">
-              <Icon name="cart" /> <span className="hidden lg:inline">{t('cart')}</span>
-              {count > 0 && (
-                <span aria-hidden="true" className="absolute left-7 top-0.5 grid h-[22px] min-w-[22px] place-items-center rounded-full border-2 border-white bg-terracotta-deep px-1.5 text-small font-bold text-white">
-                  {count}
-                </span>
-              )}
+            <Link to="/cart" aria-label={tr('cartAria', { count })} className="relative flex min-h-tap min-w-[3rem] items-center justify-center gap-3 rounded-btn px-2 font-bold text-green no-underline hover:bg-cream">
+              <span className="relative">
+                <Icon name="cart" />
+                {count > 0 && <span aria-hidden="true" className="absolute -right-2.5 -top-2 grid h-[1.25rem] min-w-[1.25rem] place-items-center rounded-full border-2 border-white bg-terracotta-deep px-1 text-[0.75rem] font-bold leading-none text-white">{count}</span>}
+              </span>
+              <span className="hidden lg:inline">{t('cart')}</span>
+            </Link>
+            <Link to="/notifications" aria-label={tr('notifAria', { count: unread })} title={tr('notif')} className="relative flex min-h-tap min-w-[3rem] items-center justify-center rounded-btn px-2 font-bold text-green no-underline hover:bg-cream">
+              <span className="relative">
+                <Icon name="bell" />
+                {unread > 0 && <span aria-hidden="true" className="absolute -right-2.5 -top-2 grid h-[1.25rem] min-w-[1.25rem] place-items-center rounded-full border-2 border-white bg-terracotta-deep px-1 text-[0.75rem] font-bold leading-none text-white">{unread}</span>}
+              </span>
             </Link>
             <button
               type="button"
@@ -176,6 +183,7 @@ export default function Header() {
                         <li key={s.id}>
                           <Link to={`/care/${s.id}`} className={`${panelLink} whitespace-nowrap`}>
                             <Icon name={s.icon} size={18} className="shrink-0 text-terracotta-deep" /> {s.name}
+                            {s.isNew && <span className="rounded-full bg-mustard px-2 py-0.5 text-small font-bold text-green">{tr('newTag')}</span>}
                           </Link>
                         </li>
                       ))}

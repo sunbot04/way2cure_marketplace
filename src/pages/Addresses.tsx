@@ -220,7 +220,7 @@ export default function Addresses() {
                 <Input id="ad-area" autoComplete="address-line2" value={f.area} onChange={set('area')} invalid={!!errors.area}
                   aria-describedby={describedBy('ad-area', { error: errors.area })} />
               </Field>
-              <Field id="ad-pin" label={tr('pincode')} error={err('pincode')} className="sm:max-w-[240px]">
+              <Field id="ad-pin" label={tr('pincode')} error={err('pincode')} className="sm:max-w-[15rem]">
                 <Input id="ad-pin" inputMode="numeric" maxLength={6} autoComplete="postal-code" value={f.pincode} invalid={!!errors.pincode}
                   aria-describedby={describedBy('ad-pin', { error: errors.pincode })}
                   onChange={(e) => setF({ ...f, pincode: e.target.value.replace(/\D/g, '') })} />

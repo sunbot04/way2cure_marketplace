@@ -225,6 +225,49 @@
     }
   },
   {
+    "id": "dementia",
+    "image": "/images/hero-care.webp",
+    "name": "Dementia care",
+    "icon": "memory",
+    "edge": "var(--mustard)",
+    "specialised": true,
+    "isNew": true,
+    "short": "Trained caretakers for memory loss, plus the Safe-zone band: family gets an instant alert if your loved one walks out of the safe area.",
+    "includes": [
+      "Safe-zone band: an alert to family phones if they wander out of the safe area (coming soon)",
+      "Help with daily routines, meals and hygiene",
+      "Medicine reminders and supervision",
+      "Safety at home and fall prevention",
+      "Calm support during confusion or agitation"
+    ],
+    "duration": "12 or 24-hour shifts, or a live-in caretaker",
+    "hi": {
+      "name": "डिमेंशिया केयर",
+      "short": "याददाश्त की समस्या के लिए प्रशिक्षित केयरटेकर, साथ में सेफ़-ज़ोन बैंड: अपने प्रियजन के सुरक्षित दायरे से बाहर जाते ही परिवार को तुरंत अलर्ट।",
+      "includes": [
+        "सेफ़-ज़ोन बैंड: सुरक्षित दायरे से बाहर जाने पर परिवार के फ़ोन पर अलर्ट (जल्द ही)",
+        "रोज़ की दिनचर्या, खाने और साफ़-सफ़ाई में मदद",
+        "दवा की याद दिलाना और निगरानी",
+        "घर में सुरक्षा और गिरने से बचाव",
+        "उलझन या बेचैनी के समय शांत सहारा"
+      ],
+      "duration": "12 या 24 घंटे की शिफ़्ट, या घर पर रहने वाला केयरटेकर"
+    },
+    "mr": {
+      "name": "डिमेन्शिया काळजी",
+      "short": "स्मृतिभ्रंशासाठी प्रशिक्षित केअरटेकर, सोबत सेफ-झोन बँड: प्रियजन सुरक्षित क्षेत्राबाहेर गेल्यास कुटुंबाला लगेच अलर्ट.",
+      "includes": [
+        "सेफ-झोन बँड: सुरक्षित क्षेत्राबाहेर गेल्यास कुटुंबाच्या फोनवर अलर्ट (लवकरच)",
+        "रोजची दिनचर्या, जेवण आणि स्वच्छतेसाठी मदत",
+        "औषधांची आठवण आणि देखरेख",
+        "घरातील सुरक्षितता आणि पडण्यापासून बचाव",
+        "गोंधळ किंवा अस्वस्थतेच्या वेळी शांत आधार"
+      ],
+      "duration": "12 किंवा 24 तासांची शिफ्ट, किंवा घरी राहणारा केअरटेकर"
+    },
+    "related": "/safe-zone"
+  },
+  {
     "id": "icu",
     "image": "/images/care-icu.webp",
     "name": "ICU at home",
