@@ -21,13 +21,14 @@ const T: Dict = {
     refillTitle: 'Time to reorder {name}',
     refillText: 'Your {days}-day supply runs out on {date}. Reorder now so it arrives in time.',
     reorder: 'Reorder now',
-    reordered: 'Added to your cart.',
+    reordered: 'Added to cart',
     deliveryTitle: 'Next delivery: {name}',
     deliveryText: 'Your monthly plan delivers again on {date}. Need a change? Pause or edit before then.',
     managePlan: 'Manage plan',
     orderTitle: 'Order {id} placed',
     orderRx: 'A pharmacist is checking your prescription. We will call if anything is unclear.',
     orderPacked: 'Your order is packed and will be on its way soon.',
+    orderDelivered: 'Your order was delivered.',
     viewOrder: 'View order',
     upcoming: 'Coming up',
     upcomingLead: 'We remind you {n} days before each supply runs out or each plan delivery.',
@@ -38,7 +39,7 @@ const T: Dict = {
     shopDaily: 'Shop daily care',
     allRead: 'You are all caught up.',
     howTitle: 'How you get reminders',
-    howText: 'Reminders show here and on the bell at the top of every page. Turn on alerts to also get them on this device while the site is open.',
+    howText: 'Reminders show here and on your account page. Turn on alerts to also get them on this device while the site is open.',
     smsSoon: 'SMS and WhatsApp reminders are coming soon.',
     enableAlerts: 'Turn on alerts',
     alertsOn: 'Alerts are on for this device.',
@@ -56,13 +57,14 @@ const T: Dict = {
     refillTitle: '{name} दोबारा मँगाने का समय',
     refillText: 'आपकी {days} दिन की सप्लाई {date} को ख़त्म होगी। अभी मँगाएँ ताकि समय पर पहुँचे।',
     reorder: 'अभी दोबारा मँगाएँ',
-    reordered: 'आपके कार्ट में डाल दिया गया।',
+    reordered: 'कार्ट में डाला',
     deliveryTitle: 'अगली डिलिवरी: {name}',
     deliveryText: 'आपका मासिक प्लान {date} को फिर से डिलिवर करेगा। कुछ बदलना है? उससे पहले रोकें या बदलें।',
     managePlan: 'प्लान बदलें',
     orderTitle: 'ऑर्डर {id} हो गया',
     orderRx: 'फ़ार्मासिस्ट आपका पर्चा जाँच रहे हैं। कुछ साफ़ न हो तो हम कॉल करेंगे।',
     orderPacked: 'आपका ऑर्डर पैक हो गया है और जल्द ही रवाना होगा।',
+    orderDelivered: 'आपका ऑर्डर पहुँच गया है।',
     viewOrder: 'ऑर्डर देखें',
     upcoming: 'आगे आने वाले',
     upcomingLead: 'हर सप्लाई ख़त्म होने या प्लान की डिलिवरी से {n} दिन पहले हम याद दिलाते हैं।',
@@ -73,7 +75,7 @@ const T: Dict = {
     shopDaily: 'रोज़ की देखभाल का सामान देखें',
     allRead: 'सब पढ़ लिया गया है।',
     howTitle: 'रिमाइंडर कैसे मिलते हैं',
-    howText: 'रिमाइंडर यहाँ और हर पेज के ऊपर घंटी पर दिखते हैं। अलर्ट चालू करें ताकि साइट खुली होने पर इस डिवाइस पर भी मिलें।',
+    howText: 'रिमाइंडर यहाँ और आपके खाते के पेज पर दिखते हैं। अलर्ट चालू करें ताकि साइट खुली होने पर इस डिवाइस पर भी मिलें।',
     smsSoon: 'SMS और व्हाट्सऐप रिमाइंडर जल्द आ रहे हैं।',
     enableAlerts: 'अलर्ट चालू करें',
     alertsOn: 'इस डिवाइस पर अलर्ट चालू हैं।',
@@ -91,13 +93,14 @@ const T: Dict = {
     refillTitle: '{name} पुन्हा मागवण्याची वेळ',
     refillText: 'तुमचा {days} दिवसांचा साठा {date} रोजी संपेल. वेळेत पोहोचण्यासाठी आत्ताच मागवा.',
     reorder: 'आत्ताच पुन्हा मागवा',
-    reordered: 'तुमच्या कार्टमध्ये टाकले.',
+    reordered: 'कार्टमध्ये टाकले',
     deliveryTitle: 'पुढील डिलिव्हरी: {name}',
     deliveryText: 'तुमचा मासिक प्लॅन {date} रोजी पुन्हा डिलिव्हर करेल. काही बदलायचे आहे? त्याआधी थांबवा किंवा बदला.',
     managePlan: 'प्लॅन बदला',
     orderTitle: 'ऑर्डर {id} झाली',
     orderRx: 'फार्मासिस्ट तुमचे प्रिस्क्रिप्शन तपासत आहेत. काही अस्पष्ट असल्यास आम्ही कॉल करू.',
     orderPacked: 'तुमची ऑर्डर पॅक झाली आहे आणि लवकरच निघेल.',
+    orderDelivered: 'तुमची ऑर्डर पोहोचली आहे.',
     viewOrder: 'ऑर्डर पाहा',
     upcoming: 'पुढे येणारे',
     upcomingLead: 'प्रत्येक साठा संपण्याच्या किंवा प्लॅनच्या डिलिव्हरीच्या {n} दिवस आधी आम्ही आठवण करून देतो.',
@@ -108,7 +111,7 @@ const T: Dict = {
     shopDaily: 'दैनंदिन काळजीच्या वस्तू पाहा',
     allRead: 'सर्व वाचून झाले आहे.',
     howTitle: 'आठवण कशी मिळते',
-    howText: 'आठवणी इथे आणि प्रत्येक पानाच्या वरच्या घंटीवर दिसतात. साइट उघडी असताना या डिव्हाइसवरही मिळवण्यासाठी अलर्ट चालू करा.',
+    howText: 'आठवणी इथे आणि तुमच्या खात्याच्या पानावर दिसतात. साइट उघडी असताना या डिव्हाइसवरही मिळवण्यासाठी अलर्ट चालू करा.',
     smsSoon: 'SMS आणि व्हॉट्सॲप आठवणी लवकरच येत आहेत.',
     enableAlerts: 'अलर्ट चालू करा',
     alertsOn: 'या डिव्हाइसवर अलर्ट चालू आहेत.',
@@ -119,7 +122,7 @@ const T: Dict = {
 const ICON: Record<Note['kind'], string> = { refill: 'refresh', delivery: 'truck', order: 'package' };
 
 export default function Notifications() {
-  const { lang } = useLang();
+  const { lang, t } = useLang();
   const tr = useT(T);
   const loc = useLoc();
   const { add } = useCart();
@@ -159,7 +162,8 @@ export default function Notifications() {
       action = <Button compact variant="outline" to="/subscriptions#manage">{tr('managePlan')}</Button>;
     } else {
       title = tr('orderTitle', { id: n.orderId });
-      text = (n as OrderNote).status === 'awaiting-pharmacist' ? tr('orderRx') : tr('orderPacked');
+      const status = (n as OrderNote).status;
+      text = status === 'awaiting-pharmacist' ? tr('orderRx') : status === 'delivered' ? tr('orderDelivered') : tr('orderPacked');
       action = <Button compact variant="outline" to="/account">{tr('viewOrder')}</Button>;
     }
     return (
@@ -190,7 +194,7 @@ export default function Notifications() {
   return (
     <>
       <Seo title={tr('title')} description={tr('seoDesc')} noindex />
-      <PageHeader title={tr('title')} lead={tr('lead')} crumbs={[{ label: tr('home'), to: '/' }, { label: tr('title') }]} />
+      <PageHeader title={tr('title')} lead={tr('lead')} crumbs={[{ label: tr('home'), to: '/' }, { label: t('account'), to: '/account' }, { label: tr('title') }]} />
 
       <div className="container grid gap-10 pb-16 lg:grid-cols-[1.6fr_1fr] lg:gap-14">
         <section aria-labelledby="feed">

@@ -1,13 +1,15 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { getProduct, unitPrice, type Product, type PurchaseMode } from '../data';
 import { SITE } from '../config/site';
+import useAccountStore from '../hooks/useAccountStore';
+import { demoOrders } from '../data/demoAccount';
 
 /** supplyDays: how long this order should last. Used for refill reminders (see NotificationsContext). */
 export interface CartItem { id: string; mode: PurchaseMode; qty: number; supplyDays?: number }
 export interface CartLine extends CartItem { product: Product; unit: number; total: number }
 
 /** Stored as a code, shown in the reader's language. */
-export type OrderStatus = 'awaiting-pharmacist' | 'packed';
+export type OrderStatus = 'awaiting-pharmacist' | 'packed' | 'delivered';
 
 export interface Order {
   id: string;
@@ -59,15 +61,20 @@ function write(key: string, value: unknown) {
 // Orders saved by earlier versions stored the status as English text.
 const normaliseOrder = (o: Order): Order => ({
   ...o,
-  status: o.status === 'awaiting-pharmacist' || String(o.status).startsWith('Waiting') ? 'awaiting-pharmacist' : 'packed',
+  status: o.status === 'delivered' ? 'delivered'
+    : o.status === 'awaiting-pharmacist' || String(o.status).startsWith('Waiting') ? 'awaiting-pharmacist' : 'packed',
 });
+
+const NO_ORDERS: Order[] = [];
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>(() => read(CART_KEY, []));
-  const [orders, setOrders] = useState<Order[]>(() => read<Order[]>(ORDERS_KEY, []).map(normaliseOrder));
+  // Orders belong to the signed-in account (the guest's own when signed out). The cart stays with
+  // the browser, so signing in keeps what is in it.
+  const [savedOrders, setOrders] = useAccountStore<Order[]>(ORDERS_KEY, NO_ORDERS, demoOrders);
+  const orders = useMemo(() => savedOrders.map(normaliseOrder), [savedOrders]);
 
   useEffect(() => { write(CART_KEY, items); }, [items]);
-  useEffect(() => { write(ORDERS_KEY, orders); }, [orders]);
 
   const value = useMemo<CartValue>(() => {
     const same = (a: CartItem, id: string, mode: PurchaseMode) => a.id === id && a.mode === mode;

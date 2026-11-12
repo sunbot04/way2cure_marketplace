@@ -9,9 +9,9 @@ import { LAYOUT } from './copy';
 
 // Footer (p.9 item 9, p.11): deep green, 4 columns, licence line, app badges, socials, language.
 const EXTRA: Dict = {
-  en: { getApp: 'Get the Way2Cure app', appText: 'Upload prescriptions, track doses and orders.', follow: 'Follow Way2Cure', care: 'Care & support', notifications: 'Notifications & reminders' },
-  hi: { getApp: 'Way2Cure ऐप पाएँ', appText: 'पर्चे अपलोड करें, डोज़ और ऑर्डर ट्रैक करें।', follow: 'Way2Cure को फ़ॉलो करें', care: 'देखभाल और मदद', notifications: 'सूचनाएँ और रिमाइंडर' },
-  mr: { getApp: 'Way2Cure ॲप मिळवा', appText: 'प्रिस्क्रिप्शन अपलोड करा, डोस आणि ऑर्डर ट्रॅक करा.', follow: 'Way2Cure ला फॉलो करा', care: 'काळजी आणि मदत', notifications: 'सूचना आणि आठवणी' },
+  en: { getApp: 'Get the Way2Cure app', appText: 'Upload prescriptions, track doses and orders.', follow: 'Follow Way2Cure', care: 'Care & support' },
+  hi: { getApp: 'Way2Cure ऐप पाएँ', appText: 'पर्चे अपलोड करें, डोज़ और ऑर्डर ट्रैक करें।', follow: 'Way2Cure को फ़ॉलो करें', care: 'देखभाल और मदद' },
+  mr: { getApp: 'Way2Cure ॲप मिळवा', appText: 'प्रिस्क्रिप्शन अपलोड करा, डोस आणि ऑर्डर ट्रॅक करा.', follow: 'Way2Cure ला फॉलो करा', care: 'काळजी आणि मदत' },
 };
 
 const heading = 'mb-4 font-body text-small font-bold text-mustard';
@@ -65,7 +65,6 @@ export default function Footer() {
             <li><Link to="/care" className={link}>{tr('bookCare')}</Link></li>
             <li><Link to="/subscriptions" className={link}>{tr('manageSubs')}</Link></li>
             <li><Link to="/account" className={link}>{tr('orders')}</Link></li>
-            <li><Link to="/notifications" className={link}>{tx('notifications')}</Link></li>
             <li><Link to="/help" className={link}>{tr('help')}</Link></li>
             <li><Link to="/safe-zone" className={link}>{tr('safeZone')}</Link></li>
           </ul>

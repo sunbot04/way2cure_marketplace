@@ -4,7 +4,6 @@ import { AnimatePresence, m } from 'motion/react';
 import Icon from '../Icon';
 import { buttonClass } from '../ui/Button';
 import { useCart } from '../../context/CartContext';
-import { useNotifications } from '../../context/NotificationsContext';
 import { useAuth } from '../../context/AuthContext';
 import { languages, useLang, useLoc, useT } from '../../i18n/LangContext';
 import { categories, services, shopViews, subscriptionPlans } from '../../data';
@@ -16,7 +15,8 @@ import { LAYOUT } from './copy';
 // A slim utility strip (helpline, WhatsApp, home care site, language), then a floating rounded
 // bar inset from the screen edges. Transparent over the page at the top; white with a soft shadow
 // once you scroll, when the strip slides away and the bar gets a little shorter.
-// Phone number and "Upload prescription" stay visible in the bar.
+// The bar's right side keeps only search, cart and account. Calling is the floating button on every
+// page; "Upload prescription" is a main menu item; notifications live inside the signed-in account.
 // Height is fixed and matched by --header-space in index.css.
 
 function Utility() {
@@ -88,7 +88,6 @@ const badge = 'absolute -right-0.5 -top-0.5 grid h-5 min-w-[1.25rem] place-items
 
 export default function Header() {
   const { count } = useCart();
-  const { unread } = useNotifications();
   const { user } = useAuth();
   const { t } = useLang();
   const tr = useT(LAYOUT);
@@ -151,6 +150,9 @@ export default function Header() {
                   </ul>
                   <Link to="/shop" className={panelAll}>{tr('allProducts')} <Icon name="arrow" size={16} className="transition-transform duration-micro group-hover/all:translate-x-[3px]" /></Link>
                 </NavMenu>
+                <NavLink to="/prescription" className={({ isActive }) => navLinkClass(isActive)}>
+                  <Icon name="rx" size={17} className="text-terracotta-deep" /> {t('uploadRx')}
+                </NavLink>
                 <NavMenu to="/care" label={t('care')}>
                   <div className="grid grid-cols-2 gap-2">
                     {[false, true].map((special) => (
@@ -192,27 +194,15 @@ export default function Header() {
                 <button type="button" aria-expanded={searchOpen} aria-controls="site-search-panel" onClick={() => setSearchOpen((s) => !s)} className={iconBtn} aria-label={t('search')}>
                   <Icon name={searchOpen ? 'close' : 'search'} size={21} />
                 </button>
-                <a href={SITE.phoneHref} className="mx-1 hidden min-h-tap items-center gap-2 whitespace-nowrap rounded-full px-2 font-bold text-green no-underline hover:bg-mist lg:inline-flex">
-                  <span className="grid h-8 w-8 place-items-center rounded-full bg-terracotta-deep text-white"><Icon name="phone" size={15} /></span>
-                  {SITE.phone}
-                </a>
                 <Link to="/cart" aria-label={tr('cartAria', { count })} className={iconBtn}>
                   <Icon name="cart" size={21} />
                   {count > 0 && <m.span key={count} {...pulse} aria-hidden="true" className={badge}>{count}</m.span>}
-                </Link>
-                <Link to="/notifications" aria-label={tr('notifAria', { count: unread })} title={tr('notif')} className={iconBtn}>
-                  <Icon name="bell" size={21} />
-                  {unread > 0 && <span aria-hidden="true" className={badge}>{unread}</span>}
                 </Link>
                 {/* Signed in: account. Signed out: login (OTP). */}
                 <Link to={user ? '/account' : '/login'} aria-label={user ? t('account') : t('login')} title={user ? t('account') : t('login')} className={`${iconBtn} hidden sm:grid`}>
                   <Icon name="user" size={21} />
                   {user && <span aria-hidden="true" className="absolute bottom-1 right-1 h-2.5 w-2.5 rounded-full border-2 border-white bg-sage" />}
                 </Link>
-                {/* Prescription upload: always visible as its own button (p.8) */}
-                <NavLink to="/prescription" className={`${buttonClass('urgent', { compact: true })} ml-2 hidden whitespace-nowrap md:inline-flex`}>
-                  <Icon name="rx" size={18} /> {t('uploadRx')}
-                </NavLink>
                 <button
                   type="button"
                   aria-expanded={open}
@@ -258,6 +248,7 @@ export default function Header() {
                     {[
                       ['/', t('home'), 'home'],
                       ['/shop', t('shop'), 'pill'],
+                      ['/prescription', t('uploadRx'), 'rx'],
                       ['/care', t('care'), 'stethoscope'],
                       ['/subscriptions', t('subscriptions'), 'refresh'],
                       ['/about', t('about'), 'users'],
@@ -271,9 +262,6 @@ export default function Header() {
                       </li>
                     ))}
                   </ul>
-                  <NavLink to="/prescription" className={`${buttonClass('urgent', { block: true })} mt-3 md:hidden`}>
-                    <Icon name="rx" size={20} /> {t('uploadRx')}
-                  </NavLink>
                 </m.nav>
               )}
             </AnimatePresence>

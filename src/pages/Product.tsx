@@ -124,7 +124,7 @@ export default function Product() {
   // Adds to the cart and confirms with a toast (with a "View cart" link); the cart badge pulses.
   const addToCart = () => {
     add(product.id, mode, qty, mode === 'buy' && isSupply(product.id) ? supplyDays : undefined);
-    showToast(p.name);
+    showToast();
   };
 
   const when = deliveryLabel(product.deliveryHours, lang);

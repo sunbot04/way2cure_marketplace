@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect } from 'react';
+import { Suspense, lazy, useEffect, type ReactNode } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
@@ -7,6 +7,7 @@ import { m } from 'motion/react';
 import { pageFade } from './lib/motion';
 import { LAYOUT } from './components/layout/copy';
 import { useT } from './i18n/LangContext';
+import { useAuth } from './context/AuthContext';
 // Every page, the homepage included, loads its own code, so no page downloads another's.
 const Home = lazy(() => import('./pages/Home'));
 const Styleguide = lazy(() => import('./pages/Styleguide'));
@@ -31,6 +32,14 @@ const Terms = lazy(() => import('./pages/Terms'));
 const Notifications = lazy(() => import('./pages/Notifications'));
 const Login = lazy(() => import('./pages/Login'));
 const NotFound = lazy(() => import('./pages/NotFound'));
+
+// Pages that belong to the signed-in account (inner pages). Signed out, they send you to log in
+// and bring you back afterwards.
+function RequireLogin({ children }: { children: ReactNode }) {
+  const { user } = useAuth();
+  const { pathname } = useLocation();
+  return user ? <>{children}</> : <Navigate to={`/login?next=${encodeURIComponent(pathname)}`} replace />;
+}
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -74,7 +83,7 @@ export default function App() {
           <Route path="/account" element={<Account />} />
           <Route path="/login" element={<Login mode="login" />} />
           <Route path="/signup" element={<Login mode="signup" />} />
-          <Route path="/notifications" element={<Notifications />} />
+          <Route path="/notifications" element={<RequireLogin><Notifications /></RequireLogin>} />
           <Route path="/account/family" element={<FamilyProfiles />} />
           <Route path="/account/addresses" element={<Addresses />} />
           <Route path="/legal" element={<Navigate to="/terms" replace />} />

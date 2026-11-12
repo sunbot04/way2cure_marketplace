@@ -34,7 +34,7 @@ export default function StyleguideMotion() {
           <Icon name={reduce ? 'check' : 'clock'} size={18} /> Reduced motion: {reduce ? 'on' : 'off'}
         </Button>
         <Button variant="outline" compact onClick={() => setRun((n) => n + 1)}><Icon name="refresh" size={18} /> Replay</Button>
-        <Button variant="outline" compact onClick={() => toast({ message: 'Added to your cart.', action: { label: 'View cart', to: '/cart' } })}>
+        <Button variant="outline" compact onClick={() => toast({ message: 'Added to cart', action: { label: 'View cart', to: '/cart' } })}>
           <Icon name="cart" size={18} /> Show a toast
         </Button>
       </div>

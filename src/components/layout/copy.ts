@@ -3,8 +3,6 @@ import type { Dict } from '../../i18n/LangContext';
 // Copy for the header, footer and mobile bars.
 export const LAYOUT: Dict = {
   en: {
-    notif: 'Notifications',
-    notifAria: 'Notifications, {count} new',
     newTag: 'New',
     skip: 'Skip to main content',
     label: 'Marketplace',
@@ -38,8 +36,6 @@ export const LAYOUT: Dict = {
     rights: '© {year} Way2Cure. All rights reserved.',
   },
   hi: {
-    notif: 'सूचनाएँ',
-    notifAria: 'सूचनाएँ, {count} नई',
     newTag: 'नया',
     skip: 'मुख्य सामग्री पर जाएँ',
     label: 'मार्केटप्लेस',
@@ -73,8 +69,6 @@ export const LAYOUT: Dict = {
     rights: '© {year} Way2Cure. सर्वाधिकार सुरक्षित।',
   },
   mr: {
-    notif: 'सूचना',
-    notifAria: 'सूचना, {count} नवीन',
     newTag: 'नवीन',
     skip: 'मुख्य मजकुराकडे जा',
     label: 'मार्केटप्लेस',

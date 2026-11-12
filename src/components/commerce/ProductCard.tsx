@@ -10,18 +10,19 @@ import { useCart } from '../../context/CartContext';
 import { useToast } from '../../context/ToastContext';
 import { COPY } from '../copy';
 
-// Toast copy for "added to cart" (the header cart badge pulses on its own when the count changes).
+// Toast copy for "added to cart": kept short on purpose (the button itself already says "Added",
+// and the header cart badge pulses when the count changes).
 export const CART_TOAST: Dict = {
-  en: { added: '{name} added to your cart.', view: 'View cart' },
-  hi: { added: '{name} आपके कार्ट में डाल दिया गया।', view: 'कार्ट देखें' },
-  mr: { added: '{name} तुमच्या कार्टमध्ये टाकले.', view: 'कार्ट पाहा' },
+  en: { added: 'Added to cart', view: 'View cart' },
+  hi: { added: 'कार्ट में डाला', view: 'कार्ट देखें' },
+  mr: { added: 'कार्टमध्ये टाकले', view: 'कार्ट पाहा' },
 };
 
-/** Show the "added to your cart" toast with a View cart link. */
+/** Show the short "Added to cart" toast with a View cart link. */
 export function useCartToast() {
   const toast = useToast();
   const tt = useT(CART_TOAST);
-  return (name: string) => toast({ message: tt('added', { name }), action: { label: tt('view'), to: '/cart' } });
+  return () => toast({ message: tt('added'), action: { label: tt('view'), to: '/cart' } });
 }
 
 /**
@@ -82,7 +83,7 @@ export default function ProductCard({ product }: { product: Product }) {
   const onAdd = () => {
     add(product.id);
     setAdded(true);
-    showToast(p.name);
+    showToast();
   };
 
   return (

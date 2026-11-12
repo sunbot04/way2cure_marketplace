@@ -9,13 +9,16 @@ import Seo from '../components/layout/Seo';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { SITE } from '../config/site';
+import { DEMO_CODE, DEMO_ENABLED, DEMO_PHONE, formatPhone } from '../data/demoAccount';
 import { crossfade, fadeRise, stagger } from '../lib/motion';
 import { useT, type Dict } from '../i18n/LangContext';
 
 // Log in / sign up with a mobile number and a one-time code (guidelines p.10: phone OTP, no
 // passwords). Two steps: number (and name, for sign up), then the 6-digit code.
 // TODO: API: POST /auth/otp { phone } to send the SMS, POST /auth/verify { phone, code } to sign in.
-// Until then any 6 digits are accepted and the session lives in this browser (AuthContext).
+// Until then (AuthContext): Log in works for the demo account and for numbers signed up in this
+// browser, the code is always 123456, and the session lives in this browser. The demo account
+// box below the form logs straight in to the sample account (data/demoAccount.ts).
 
 const RESEND_SECONDS = 30;
 const CODE_LENGTH = 6;
@@ -34,7 +37,12 @@ const T: Dict = {
     otpLabel: '6-digit code', digit: 'Digit {n} of 6',
     verifyLogin: 'Log in', verifySignup: 'Create my account',
     resendIn: 'You can ask for a new code in {s} seconds.', resend: 'Send a new code', resent: 'We sent a new code to +91 {phone}.',
-    demo: 'Demo: any 6 digits work until SMS codes are switched on.',
+    demo: 'Demo: the code is 123456 until SMS codes are switched on.',
+    errNoAccount: 'There is no account with this number yet. Check the number, or create an account below.',
+    errExists: 'There is already an account with this number. Please log in instead.',
+    errOtpWrong: 'That code is not right. Please check it and try again.',
+    demoTitle: 'Demo account', demoText: 'See the signed-in pages with sample orders, family members and reminders.',
+    demoCreds: 'Mobile {phone} · Code {code}', demoButton: 'Use demo account',
     errName: 'Please add your name, so our team knows who to ask for.',
     errPhone: 'Please enter a 10-digit mobile number that starts with 6, 7, 8 or 9.',
     errOtp: 'Please enter all 6 digits of the code we sent.',
@@ -66,7 +74,12 @@ const T: Dict = {
     otpLabel: '6 अंकों का कोड', digit: '6 में से अंक {n}',
     verifyLogin: 'लॉग इन करें', verifySignup: 'मेरा खाता बनाएँ',
     resendIn: '{s} सेकंड बाद आप नया कोड माँग सकते हैं।', resend: 'नया कोड भेजें', resent: 'हमने +91 {phone} पर नया कोड भेजा है।',
-    demo: 'डेमो: जब तक SMS कोड चालू नहीं होते, कोई भी 6 अंक चलेंगे।',
+    demo: 'डेमो: जब तक SMS कोड चालू नहीं होते, कोड 123456 है।',
+    errNoAccount: 'इस नंबर से अभी कोई खाता नहीं है। नंबर जाँचें, या नीचे नया खाता बनाएँ।',
+    errExists: 'इस नंबर से खाता पहले से बना हुआ है। कृपया लॉग इन करें।',
+    errOtpWrong: 'यह कोड सही नहीं है। कृपया जाँचकर फिर से डालें।',
+    demoTitle: 'डेमो खाता', demoText: 'सैंपल ऑर्डर, परिवार के सदस्यों और रिमाइंडर के साथ लॉग इन वाले पेज देखें।',
+    demoCreds: 'मोबाइल {phone} · कोड {code}', demoButton: 'डेमो खाता इस्तेमाल करें',
     errName: 'कृपया अपना नाम लिखें, ताकि हमारी टीम जान सके कि किससे बात करनी है।',
     errPhone: 'कृपया 6, 7, 8 या 9 से शुरू होने वाला 10 अंकों का मोबाइल नंबर लिखें।',
     errOtp: 'कृपया हमारे भेजे कोड के सभी 6 अंक डालें।',
@@ -98,7 +111,12 @@ const T: Dict = {
     otpLabel: '6 अंकी कोड', digit: '6 पैकी अंक {n}',
     verifyLogin: 'लॉग इन करा', verifySignup: 'माझे खाते तयार करा',
     resendIn: '{s} सेकंदांनंतर तुम्ही नवा कोड मागू शकता.', resend: 'नवा कोड पाठवा', resent: 'आम्ही +91 {phone} वर नवा कोड पाठवला आहे.',
-    demo: 'डेमो: SMS कोड सुरू होईपर्यंत कोणतेही 6 अंक चालतील.',
+    demo: 'डेमो: SMS कोड सुरू होईपर्यंत कोड 123456 आहे.',
+    errNoAccount: 'या नंबरने अजून खाते नाही. नंबर तपासा, किंवा खाली नवीन खाते तयार करा.',
+    errExists: 'या नंबरने खाते आधीच आहे. कृपया लॉग इन करा.',
+    errOtpWrong: 'हा कोड बरोबर नाही. कृपया तपासून पुन्हा टाका.',
+    demoTitle: 'डेमो खाते', demoText: 'नमुना ऑर्डर, कुटुंबातील सदस्य आणि आठवणींसह लॉग इन नंतरची पाने पाहा.',
+    demoCreds: 'मोबाइल {phone} · कोड {code}', demoButton: 'डेमो खाते वापरा',
     errName: 'कृपया तुमचे नाव लिहा, म्हणजे आमच्या टीमला कोणाशी बोलायचे ते कळेल.',
     errPhone: 'कृपया 6, 7, 8 किंवा 9 ने सुरू होणारा 10 अंकी मोबाइल नंबर लिहा.',
     errOtp: 'कृपया आम्ही पाठवलेल्या कोडचे सर्व 6 अंक टाका.',
@@ -126,7 +144,7 @@ const safeNext = (next: string | null) => (next && next.startsWith('/') && !next
 
 export default function Login({ mode }: { mode: 'login' | 'signup' }) {
   const tr = useT(T);
-  const { user, signIn, signOut } = useAuth();
+  const { user, findAccount, checkCode, signIn, signUp, signInDemo, signOut } = useAuth();
   const toast = useToast();
   const navigate = useNavigate();
   const [params] = useSearchParams();
@@ -159,6 +177,8 @@ export default function Login({ mode }: { mode: 'login' | 'signup' }) {
     const er: Errors = {};
     if (signup && name.trim().length < 2) er.name = 'errName';
     if (!/^[6-9]\d{9}$/.test(phone)) er.phone = 'errPhone';
+    else if (!signup && !findAccount(phone)) er.phone = 'errNoAccount';
+    else if (signup && findAccount(phone)) er.phone = 'errExists';
     setErrors(er);
     if (Object.keys(er).length) return;
     // TODO: API: POST /auth/otp { phone }
@@ -207,10 +227,18 @@ export default function Login({ mode }: { mode: 'login' | 'signup' }) {
     e.preventDefault();
     if (code.join('').length !== CODE_LENGTH) { setErrors({ otp: 'errOtp' }); return; }
     // TODO: API: POST /auth/verify { phone, code } -> session
-    const u = signIn(phone, signup ? name : undefined);
-    toast({ message: u.name ? tr('welcome', { name: u.name.split(' ')[0] }) : tr('welcomeBack') });
+    if (!checkCode(code.join(''))) { setErrors({ otp: 'errOtpWrong' }); return; }
+    const u = signup ? signUp(phone, name) : signIn(phone);
+    if (!u) { setStep('phone'); setErrors({ phone: 'errNoAccount' }); return; }
+    welcome(u.name);
+  };
+
+  const welcome = (fullName: string) => {
+    toast({ message: fullName ? tr('welcome', { name: fullName.split(' ')[0] }) : tr('welcomeBack') });
     navigate(next, { replace: true });
   };
+
+  const logInDemo = () => welcome(signInDemo().name);
 
   const err = (k: keyof Errors) => (errors[k] ? tr(errors[k]!) : undefined);
   const other = signup
@@ -331,6 +359,18 @@ export default function Login({ mode }: { mode: 'login' | 'signup' }) {
                 </p>
               )}
             </m.div>
+
+            {DEMO_ENABLED && !user && (
+              <m.div variants={fadeRise} className="mt-5 flex gap-4 rounded-panel border-2 border-dashed border-sage/50 bg-sage-tint/60 p-5 md:p-6">
+                <span aria-hidden="true" className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-white text-green"><Icon name="userCheck" size={22} /></span>
+                <div className="min-w-0 flex-1">
+                  <p className="m-0 font-bold text-green">{tr('demoTitle')}</p>
+                  <p className="m-0 text-base text-ink/80">{tr('demoText')}</p>
+                  <p className="m-0 mt-1 text-small font-semibold text-green">{tr('demoCreds', { phone: formatPhone(DEMO_PHONE), code: DEMO_CODE })}</p>
+                  <Button variant="outline" compact onClick={logInDemo} className="mt-4">{tr('demoButton')} <Icon name="arrow" size={18} /></Button>
+                </div>
+              </m.div>
+            )}
 
             <m.div variants={fadeRise} className="mt-6 grid gap-3 text-base text-ink/80">
               <p className="m-0 flex items-start gap-2">

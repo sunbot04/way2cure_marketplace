@@ -137,7 +137,7 @@ The site is drawn entirely in the browser. Nothing paints until about 119 KB of 
   - **Interface feedback:**
     - the FAQ opens with an animated height and a rotating chevron;
     - pages fade on route change;
-    - an add-to-cart toast appears and the cart badge pulses;
+    - a short "Added to cart · View cart" toast appears and the cart badge pulses;
     - skeleton grids show while the Shop "loads".
 - **What it never does:** no bounce, spin, auto-play, marquee, carousel, parallax on text, cursor-follower, confetti, typing effect or glassmorphism. Only transform and opacity are animated. The FAQ panel height is the one exception, and only on the panel the user opens.
 - **If JavaScript fails:** content is in the DOM from the start and only fades in. Inner-page H1s paint immediately.
@@ -151,10 +151,10 @@ The site is drawn entirely in the browser. Nothing paints until about 119 KB of 
   - floating Call and WhatsApp buttons on every page. On phones they appear after the first screen and respect safe-area insets.
 - **Header:**
   - A floating rounded bar, inset from the edges. It is transparent at the top and turns white with a shadow on scroll, when it also gets slightly shorter.
-  - The phone number and "Upload Prescription" are always visible.
+  - The right side has only search, cart and account. Calling is the floating button, "Upload Prescription" is a main menu item next to Shop, and notifications sit inside the signed-in account (`/notifications` asks you to log in first).
   - The dropdowns are compact and open from the left edge of their item.
 - **Landing page** (REO360-style structure):
-  - Hero: a real photo of an Indian grandmother in an arch, the code-built dose sachet, the app on a phone, a 15,000+ card and a "Pharmacist verified" card.
+  - Hero: a real photo of a smiling Indian elderly couple in an arch, the code-built dose sachet, the app on a phone, a 15,000+ card and a "Pharmacist verified" card.
   - Then, in order:
     - quick paths;
     - "Sound familiar?" photo cards;
@@ -188,7 +188,8 @@ The site is drawn entirely in the browser. Nothing paints until about 119 KB of 
 | 16–20 px radii on cards and panels (PDF: 12 px) | The brief's polish spec: soft 16–20 px radii. Buttons keep 8 px. |
 | Floating Call and WhatsApp buttons instead of a sticky bottom bar on mobile | Client request: no app-style bottom navigation on the website. |
 | Mobile bottom tab bar (Home, Shop, Rx, Care, Account) removed | Same client request. These links are in the header menu. |
-| "Upload Prescription" is a filled terracotta button in the header, plus a link in the hero (the PDF has it as a hero button) | The hero's two buttons are "Order medicines" and "Book a nurse", as the brief asks. Upload stays one tap away in the header. |
+| "Upload Prescription" is a main menu item (with the Rx icon) and a link in the hero, not a header button (PDF p.8: always-visible button) | Client request: fewer calls to action on the right of the header. It is still one tap away on every page, and in the mobile menu. |
+| No phone number in the header bar; no notification bell | Client request. Calling is the floating button on every page (and the helpline in the top strip); notifications belong to the signed-in account. |
 | Stat wording "15,000+ patients cared for" (brief: "families") | The PDF only confirms "15K+ happy patients". There are no unconfirmed numbers. |
 | Hindi and Marathi translations kept | Client request. They are flagged for native review. |
 | Evening dose colour is Terracotta Deep | Needed for white text contrast. The PDF allows it (p.13). |
@@ -216,3 +217,18 @@ These features work in this browser only for now:
 - callback requests, care bookings and prescription reading.
 
 Refill reminders should also go out by SMS and WhatsApp from a server, so families are reminded even when the site is closed.
+
+### Demo account (until the backend exists)
+
+- **Log in:** mobile **98765 43210**, code **123456**, or the **Use demo account** button on `/login` and `/signup`.
+- **Who it is:** Rohan Patil, who looks after his parents in Thane. The account comes with sample data:
+  - 6 orders (one waiting for the pharmacist, one packed, four delivered);
+  - a refill reminder that is already due (adult diapers and underpads);
+  - a monthly plan;
+  - 2 family members and 2 addresses.
+- **How it behaves:**
+  - Log in only works for the demo account and for numbers signed up in the same browser. The code is always 123456.
+  - Each account keeps its own orders, family members, addresses and read reminders in that browser.
+  - "Reset demo data" on the account page puts the sample data back.
+- **Where it lives:** `src/data/demoAccount.ts`.
+- **Before launch:** set `VITE_DEMO_ACCOUNT=off` to remove the account and the button, then replace the sign-in with the real OTP API.

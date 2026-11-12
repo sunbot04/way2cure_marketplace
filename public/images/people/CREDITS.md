@@ -7,7 +7,7 @@ real Way2Cure patients and staff, with written consent, read as more trustworthy
 
 | File | Used on | Source |
 |---|---|---|
-| grandmother-smiling-sari.webp | Home hero (arch photo) | https://www.pexels.com/photo/elderly-woman-with-nose-piercing-14672684/ |
+| elderly-couple-smiling.webp | Home hero (arch photo) | https://www.pexels.com/photo/portrait-of-elderly-couple-in-traditional-clothing-19811308/ (Ekam Juneja) |
 | grandmother-glasses.webp | Home, "Sound familiar?" card 1 | https://www.pexels.com/photo/portrait-of-an-elderly-woman-with-glasses-35854304/ |
 | grandfather-turban.webp | Home, "Sound familiar?" card 2 | https://www.pexels.com/photo/portrait-of-a-man-smiling-19424220/ |
 | grandmother-errand.webp | Home, "Sound familiar?" card 3 | https://www.pexels.com/photo/portrait-of-elderly-indian-woman-18786324/ |

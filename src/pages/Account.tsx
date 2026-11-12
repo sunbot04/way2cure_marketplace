@@ -12,6 +12,7 @@ import { useAuth } from '../context/AuthContext';
 import { useNotifications } from '../context/NotificationsContext';
 import { useToast } from '../context/ToastContext';
 import { getProduct } from '../data';
+import { resetDemoData } from '../data/demoAccount';
 import { formatPrice } from '../config/site';
 import { VIEWPORT, tReveal } from '../lib/motion';
 import { formatDate, useLang, useLoc, useT, type Dict } from '../i18n/LangContext';
@@ -32,7 +33,7 @@ const T: Dict = {
     order: 'Order {id}',
     items: '{n} items',
     reorder: 'Reorder',
-    reordered: 'Added to your cart.', viewCart: 'View cart',
+    reordered: 'Added to cart', viewCart: 'View cart',
     emptyTitle: 'No orders yet.',
     emptyText: 'When you place an order, it shows here with live tracking. Next time, reorder in one tap.',
     orderMedicines: 'Order medicines',
@@ -40,6 +41,8 @@ const T: Dict = {
     progress: 'Order progress',
     'status:awaiting-pharmacist': 'Waiting for pharmacist check',
     'status:packed': 'Packed, arriving today',
+    'status:delivered': 'Delivered',
+    demoNote: 'This is the demo account. Anything you change stays in this browser.', demoReset: 'Reset demo data',
     stepPlaced: 'Placed', stepChecked: 'Pharmacist check', stepPacked: 'Packed', stepDelivered: 'Delivered',
     'rx.title': 'Prescriptions', 'rx.text': 'Upload and see past prescriptions in the app',
     'subs.title': 'Subscriptions', 'subs.text': 'Pause, change or cancel your plans',
@@ -65,7 +68,7 @@ const T: Dict = {
     order: 'ऑर्डर {id}',
     items: '{n} सामान',
     reorder: 'फिर से ऑर्डर करें',
-    reordered: 'आपके कार्ट में डाल दिया गया।', viewCart: 'कार्ट देखें',
+    reordered: 'कार्ट में डाला', viewCart: 'कार्ट देखें',
     emptyTitle: 'अभी तक कोई ऑर्डर नहीं।',
     emptyText: 'ऑर्डर करने पर वह यहाँ लाइव ट्रैकिंग के साथ दिखेगा। अगली बार एक टैप में फिर से ऑर्डर करें।',
     orderMedicines: 'दवाइयाँ मँगाएँ',
@@ -73,6 +76,8 @@ const T: Dict = {
     progress: 'ऑर्डर की स्थिति',
     'status:awaiting-pharmacist': 'फ़ार्मासिस्ट की जाँच बाकी है',
     'status:packed': 'पैक हो गया, आज पहुँचेगा',
+    'status:delivered': 'पहुँच गया',
+    demoNote: 'यह डेमो खाता है। आप जो भी बदलेंगे, वह सिर्फ़ इस ब्राउज़र में रहेगा।', demoReset: 'डेमो डेटा रीसेट करें',
     stepPlaced: 'ऑर्डर हुआ', stepChecked: 'फ़ार्मासिस्ट जाँच', stepPacked: 'पैक हुआ', stepDelivered: 'पहुँच गया',
     'rx.title': 'पर्चे', 'rx.text': 'ऐप में पर्चा अपलोड करें और पुराने पर्चे देखें',
     'subs.title': 'सब्सक्रिप्शन', 'subs.text': 'अपने प्लान रोकें, बदलें या रद्द करें',
@@ -98,7 +103,7 @@ const T: Dict = {
     order: 'ऑर्डर {id}',
     items: '{n} वस्तू',
     reorder: 'पुन्हा ऑर्डर करा',
-    reordered: 'तुमच्या कार्टमध्ये टाकले.', viewCart: 'कार्ट पाहा',
+    reordered: 'कार्टमध्ये टाकले', viewCart: 'कार्ट पाहा',
     emptyTitle: 'अजून कोणतीही ऑर्डर नाही.',
     emptyText: 'तुम्ही ऑर्डर केल्यावर ती इथे लाइव्ह ट्रॅकिंगसह दिसेल. पुढच्या वेळी एका टॅपमध्ये पुन्हा ऑर्डर करा.',
     orderMedicines: 'औषधे मागवा',
@@ -106,6 +111,8 @@ const T: Dict = {
     progress: 'ऑर्डरची स्थिती',
     'status:awaiting-pharmacist': 'फार्मासिस्टची तपासणी बाकी',
     'status:packed': 'पॅक झाले, आज पोहोचेल',
+    'status:delivered': 'पोहोचले',
+    demoNote: 'हे डेमो खाते आहे. तुम्ही जे बदलाल ते फक्त या ब्राउझरमध्ये राहील.', demoReset: 'डेमो डेटा रीसेट करा',
     stepPlaced: 'ऑर्डर झाली', stepChecked: 'फार्मासिस्ट तपासणी', stepPacked: 'पॅक झाले', stepDelivered: 'पोहोचले',
     'rx.title': 'प्रिस्क्रिप्शन', 'rx.text': 'ॲपमध्ये प्रिस्क्रिप्शन अपलोड करा आणि जुनी प्रिस्क्रिप्शन पाहा',
     'subs.title': 'सदस्यता', 'subs.text': 'तुमच्या योजना थांबवा, बदला किंवा रद्द करा',
@@ -130,14 +137,14 @@ const sections = [
 
 const STEPS = ['stepPlaced', 'stepChecked', 'stepPacked', 'stepDelivered'];
 // How far along each stored status is (0-based index of the last completed step).
-const PROGRESS: Record<string, number> = { 'awaiting-pharmacist': 0, packed: 2 };
+const PROGRESS: Record<string, number> = { 'awaiting-pharmacist': 0, packed: 2, delivered: 3 };
 
 const initials = (name: string) => name.trim().split(/\s+/).map((w) => w[0]).slice(0, 2).join('').toUpperCase();
 
 export default function Account() {
   // TODO: API: GET /orders for the signed-in user (orders are kept in this browser for now).
   const { orders, reorder } = useCart();
-  const { user, signOut } = useAuth();
+  const { user, isDemo, signOut } = useAuth();
   const { unread } = useNotifications();
   const toast = useToast();
   const { lang } = useLang();
@@ -178,6 +185,15 @@ export default function Account() {
                   <Button variant="outline" compact onClick={() => { signOut(); toast({ message: tr('signedOut') }); }}>
                     <Icon name="close" size={18} /> {tr('signOut')}
                   </Button>
+                  {/* Demo account: say so, and let testers put the sample data back */}
+                  {isDemo && (
+                    <div className="flex w-full flex-wrap items-center gap-x-3 border-t border-line pt-3 text-small text-grey">
+                      <span className="inline-flex items-center gap-2"><Icon name="info" size={16} className="shrink-0 text-sage" /> {tr('demoNote')}</span>
+                      <button type="button" onClick={() => { resetDemoData(); window.location.reload(); }} className="inline-flex min-h-[2.75rem] items-center gap-1.5 font-bold text-terracotta-deep underline underline-offset-[3px]">
+                        <Icon name="refresh" size={15} /> {tr('demoReset')}
+                      </button>
+                    </div>
+                  )}
                 </div>
               ) : (
                 <div className="grid gap-5 rounded-panel bg-white p-6 shadow-card md:grid-cols-[auto_1fr] md:items-center md:p-8">
@@ -258,7 +274,7 @@ export default function Account() {
             <Reveal>
               <h2 className="mb-4 font-head text-h2m md:text-h2">{tr('yourAccount')}</h2>
               <ul className="divide-y divide-line overflow-hidden rounded-panel bg-white shadow-card">
-                {sections.map((s) => (
+                {sections.filter((s) => user || s.key !== 'notif').map((s) => (
                   <li key={s.key}>
                     <Link to={s.to} className="group flex min-h-[4.5rem] items-center gap-4 px-5 py-4 text-ink no-underline transition-colors duration-micro hover:bg-mist">
                       <span className="grid h-10 w-10 shrink-0 place-items-center rounded-btn bg-mist text-green transition-colors duration-micro group-hover:bg-white">

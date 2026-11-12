@@ -1,5 +1,8 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { useCart, type Order } from './CartContext';
+import { useAuth } from './AuthContext';
+import useAccountStore from '../hooks/useAccountStore';
+import { demoReadIds } from '../data/demoAccount';
 import { getProduct, type PurchaseMode } from '../data';
 import { useLang, useLoc, useT, type Dict } from '../i18n/LangContext';
 
@@ -9,7 +12,7 @@ import { useLang, useLoc, useT, type Dict } from '../i18n/LangContext';
 //  · order     an order was placed / is waiting for the pharmacist
 // Refill and delivery reminders appear REMIND_DAYS_BEFORE days before the date.
 // TODO: API: the same rules should run on the server and send SMS / WhatsApp / push, so families
-// are reminded even when the site is closed. On the web today they show on the bell, the
+// are reminded even when the site is closed. On the web today they show on the account page, the
 // notifications page and, if allowed, as a browser alert while the site is open.
 
 export const REMIND_DAYS_BEFORE = 3;
@@ -21,6 +24,7 @@ const DAY = 24 * 60 * 60 * 1000;
 const READ_KEY = 'w2c-notif-read';
 const PUSHED_KEY = 'w2c-notif-pushed';
 const DEMO_KEY = 'w2c-demo-days';
+const NO_IDS: string[] = [];
 
 export interface Reminder {
   id: string;
@@ -125,10 +129,11 @@ const PUSH: Dict = {
 
 export function NotificationsProvider({ children }: { children: ReactNode }) {
   const { orders } = useCart();
+  const { user } = useAuth();
   const { lang } = useLang();
   const loc = useLoc();
   const tp = useT(PUSH);
-  const [read, setRead] = useState<string[]>(() => readStore(READ_KEY, []));
+  const [read, setRead] = useAccountStore<string[]>(READ_KEY, NO_IDS, demoReadIds);
   const [demoDays, setDemoDaysState] = useState<number>(() => readStore(DEMO_KEY, 0));
   const [tick, setTick] = useState(() => Date.now());
 
@@ -137,10 +142,10 @@ export function NotificationsProvider({ children }: { children: ReactNode }) {
     const t = window.setInterval(() => setTick(Date.now()), 60_000);
     return () => window.clearInterval(t);
   }, []);
-  useEffect(() => { writeStore(READ_KEY, read); }, [read]);
 
   const now = tick + demoDays * DAY;
-  const { due, upcoming } = useMemo(() => buildNotes(orders, now), [orders, now]);
+  // Reminders belong to the signed-in account: none (and no browser alerts) while signed out.
+  const { due, upcoming } = useMemo(() => (user ? buildNotes(orders, now) : { due: [], upcoming: [] }), [user, orders, now]);
   const unread = due.filter((n) => !read.includes(n.id)).length;
 
   // Browser alerts for new refill / delivery reminders, once each, if the family allowed them.

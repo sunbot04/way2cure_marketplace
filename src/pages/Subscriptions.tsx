@@ -8,6 +8,7 @@ import PlanCard from '../components/plans/PlanCard';
 import SachetExplorer from '../components/brand/SachetExplorer';
 import { HelpBox } from '../components/commerce/AppPanel';
 import PageHeader from '../components/layout/PageHeader';
+import { useAuth } from '../context/AuthContext';
 import Seo from '../components/layout/Seo';
 import { subscriptionPlans } from '../data';
 import { formatDate, useLang, useLoc, useT, type Dict } from '../i18n/LangContext';
@@ -114,6 +115,7 @@ const T: Dict = {
 
 export default function Subscriptions() {
   const { lang, t } = useLang();
+  const { user } = useAuth();
   const tr = useT(T);
   const loc = useLoc();
   const [plans, setPlans] = useState<SamplePlan[]>(SAMPLE_PLANS);
@@ -222,11 +224,14 @@ export default function Subscriptions() {
               <h2 className="mb-4 text-section">{tr('manageTitle')}</h2>
               <p className="m-0 text-lead text-ink/75">{tr('manageLead')}</p>
             </Reveal>
-            <Reveal>
-              <Link to="/notifications" className="group inline-flex min-h-tap items-center gap-2 font-bold">
-                <Icon name="bell" size={18} /> {tr('reminders')} <Icon name="arrow" size={18} />
-              </Link>
-            </Reveal>
+            {/* Reminders belong to the signed-in account, so the link shows only after login */}
+            {user && (
+              <Reveal>
+                <Link to="/notifications" className="group inline-flex min-h-tap items-center gap-2 font-bold">
+                  <Icon name="bell" size={18} /> {tr('reminders')} <Icon name="arrow" size={18} />
+                </Link>
+              </Reveal>
+            )}
           </div>
           <Stagger className="grid gap-5 md:grid-cols-2">
             {plans.map((plan) => {
