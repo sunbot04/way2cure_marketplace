@@ -1,7 +1,7 @@
 import { useEffect, useState, type ChangeEvent, type FormEvent } from 'react';
+import { AnimatePresence, m } from 'motion/react';
 import Icon from '../components/Icon';
 import Button from '../components/ui/Button';
-import Card from '../components/ui/Card';
 import InfoBand from '../components/ui/InfoBand';
 import StepList, { type Step } from '../components/ui/StepList';
 import { Field, Input, describedBy } from '../components/ui/Field';
@@ -10,7 +10,8 @@ import PageHeader from '../components/layout/PageHeader';
 import Seo from '../components/layout/Seo';
 import { useCart, type Order } from '../context/CartContext';
 import { useLang, useT, type Dict, type Lang } from '../i18n/LangContext';
-import { isServiceablePincode, formatPrice } from '../config/site';
+import { crossfade, fadeRise } from '../lib/motion';
+import { isServiceablePincode, formatPrice, SITE } from '../config/site';
 import { OrderSummary } from './Cart';
 import { ChoiceList } from '../components/commerce/Choice';
 
@@ -44,6 +45,7 @@ const PAY: ({ id: string } & Record<Lang, [string, string]>)[] = [
 
 const T: Dict = {
   en: {
+    failedHelp: 'If it keeps happening, call {phone} and we will complete the order with you.', cart: 'Cart', stepOf: 'Step {n} of 4',
     thanks: 'Thank you. Your order is placed.', orderNo: 'Order number',
     rxCheck: 'A pharmacist will check your prescription first. If anything is unclear, they will call you on {phone}. We will send updates on SMS and WhatsApp.',
     arriving: 'Arriving {slot}. Share the OTP with the rider. Updates come on SMS and WhatsApp.',
@@ -70,6 +72,7 @@ const T: Dict = {
     back: 'Back', sendCode: 'Send code', pay: 'Pay {amount}', continue: 'Continue',
   },
   hi: {
+    failedHelp: 'अगर ऐसा बार-बार हो, तो {phone} पर कॉल करें, हम आपके साथ ऑर्डर पूरा कर देंगे।', cart: 'कार्ट', stepOf: 'कदम {n} / 4',
     thanks: 'धन्यवाद। आपका ऑर्डर हो गया है।', orderNo: 'ऑर्डर नंबर',
     rxCheck: 'फ़ार्मासिस्ट पहले आपका पर्चा जाँचेंगे। कुछ भी साफ़ न हो, तो वे आपको {phone} पर कॉल करेंगे। हम SMS और WhatsApp पर जानकारी भेजते रहेंगे।',
     arriving: '{slot} पहुँचेगा। राइडर को OTP बताएँ। जानकारी SMS और WhatsApp पर मिलती रहेगी।',
@@ -96,6 +99,7 @@ const T: Dict = {
     back: 'पीछे', sendCode: 'कोड भेजें', pay: '{amount} का भुगतान करें', continue: 'आगे बढ़ें',
   },
   mr: {
+    failedHelp: 'असे वारंवार होत असल्यास, {phone} वर कॉल करा, आम्ही तुमच्यासोबत ऑर्डर पूर्ण करू.', cart: 'कार्ट', stepOf: 'पायरी {n} / 4',
     thanks: 'धन्यवाद. तुमची ऑर्डर झाली आहे.', orderNo: 'ऑर्डर नंबर',
     rxCheck: 'फार्मासिस्ट आधी तुमचे प्रिस्क्रिप्शन तपासतील. काही स्पष्ट नसल्यास, ते तुम्हाला {phone} वर कॉल करतील. आम्ही SMS आणि WhatsApp वर माहिती पाठवत राहू.',
     arriving: '{slot} पोहोचेल. रायडरला OTP सांगा. माहिती SMS आणि WhatsApp वर मिळत राहील.',
@@ -169,14 +173,14 @@ export default function Checkout() {
   if (order) {
     const slot = slotLabel((order.slotId as string) || form.slot, lang);
     return (
-      <div className="container py-10 md:py-16">
+      <div className="container py-12 md:py-20">
         {seo}
-        <Card edge="var(--sage)" edgeSide="top" className="max-w-3xl md:p-10">
-          <span className="mb-4 grid h-16 w-16 place-items-center rounded-full bg-sage-tint text-green">
-            <Icon name="check" size={36} />
+        <m.div initial="hidden" animate="show" variants={fadeRise} className="max-w-3xl rounded-panel bg-white p-8 shadow-card md:p-12">
+          <span className="mb-6 grid h-16 w-16 place-items-center rounded-full bg-sage text-white">
+            <Icon name="check" size={34} />
           </span>
           <h1>{tr('thanks')}</h1>
-          <p className="text-lead">{tr('orderNo')} <strong className="text-green">{order.id}</strong> · {formatPrice(order.total)}</p>
+          <p className="text-lead text-ink/80">{tr('orderNo')} <strong className="text-green">{order.id}</strong> · {formatPrice(order.total)}</p>
           {order.status === 'awaiting-pharmacist' ? (
             <InfoBand icon="rx">{tr('rxCheck', { phone: form.phone })}</InfoBand>
           ) : (
@@ -186,18 +190,19 @@ export default function Checkout() {
             <Button to="/account">{tr('track')}</Button>
             <Button to="/shop" variant="outline">{tr('keepShopping')}</Button>
           </div>
-        </Card>
+        </m.div>
       </div>
     );
   }
 
   if (!count) {
     return (
-      <div className="container py-10 md:py-16">
+      <div className="container py-12 md:py-20">
         {seo}
-        <div className="max-w-2xl rounded-card bg-white p-8 shadow-card">
+        <div className="max-w-2xl rounded-panel bg-white p-8 shadow-card md:p-12">
+          <span className="mb-6 grid h-16 w-16 place-items-center rounded-full bg-mist text-green"><Icon name="cart" size={30} /></span>
           <h1 className="text-h2m md:text-h2">{tr('empty')}</h1>
-          <Button to="/shop/medicines">{tr('orderMedicines')}</Button>
+          <Button to="/shop/medicines"><Icon name="pill" size={18} /> {tr('orderMedicines')}</Button>
         </div>
       </div>
     );
@@ -241,22 +246,31 @@ export default function Checkout() {
     }
   };
 
-  const stepHeading = 'mb-4 font-body text-h3m';
+  const stepHeading = 'mb-4 font-body text-h3m md:text-h3';
 
   return (
     <>
       {seo}
-      <PageHeader title={tr('title')} lead={tr('intro')} />
-      <div className="container py-8 md:py-12">
-        <StepList steps={STEPS} current={step} className="mb-10" />
-        <div className="grid gap-8 lg:grid-cols-[1fr_380px]">
-          <form className="grid content-start gap-5 rounded-card bg-white p-5 shadow-card md:p-8" onSubmit={next} noValidate>
+      <PageHeader title={tr('title')} lead={tr('intro')} crumbs={[{ label: tr('cart'), to: '/cart' }, { label: tr('title') }]} />
+      <div className="container pb-20">
+        <div className="mb-10 rounded-panel bg-white p-5 shadow-card md:p-7">
+          <StepList steps={STEPS} current={step} />
+        </div>
+        <div className="grid gap-8 lg:grid-cols-[1fr_24rem] lg:gap-10">
+          <form className="grid content-start gap-5 rounded-panel bg-white p-6 shadow-card md:p-9" onSubmit={next} noValidate>
+            <p className="m-0 text-small font-semibold text-terracotta-deep">{tr('stepOf', { n: step + 1 })}</p>
             {failed && (
-              <div role="alert" className="flex items-start gap-3 rounded-card border-2 border-terracotta-deep bg-white p-4 font-bold text-terracotta-deep">
-                <Icon name="warning" className="mt-0.5 shrink-0" /> {tr('failed')}
+              <div role="alert" className="flex items-start gap-4 rounded-tile border-2 border-terracotta-deep bg-cream p-5">
+                <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-terracotta-deep text-white"><Icon name="warning" size={20} /></span>
+                <span className="grid gap-1">
+                  <strong className="text-terracotta-deep">{tr('failed')}</strong>
+                  <span className="text-base text-ink/80">{tr('failedHelp', { phone: SITE.phone })}</span>
+                </span>
               </div>
             )}
 
+            <AnimatePresence mode="wait" initial={false}>
+            <m.div key={step} {...crossfade} className="grid content-start gap-5">
             {step === 0 && (
               <>
                 <h2 className={stepHeading}>{tr('phoneHead')}</h2>
@@ -278,7 +292,7 @@ export default function Checkout() {
             {step === 1 && (
               <>
                 <h2 className={stepHeading}>{tr('addressHead')}</h2>
-                <label className="flex min-h-tap cursor-pointer items-center gap-3 rounded-btn bg-cream px-4 py-3">
+                <label className="flex min-h-tap cursor-pointer items-center gap-3 rounded-tile border-2 border-line bg-mist px-4 py-3">
                   <input type="checkbox" checked={form.forFamily} onChange={set('forFamily')} className="h-5 w-5 shrink-0 accent-green" />
                   {tr('forFamily')}
                 </label>
@@ -338,11 +352,13 @@ export default function Checkout() {
                 <p className="m-0 flex items-center gap-1.5 text-small text-grey"><Icon name="lock" size={16} /> {tr('secure')}</p>
               </>
             )}
+            </m.div>
+            </AnimatePresence>
 
-            <div className="mt-2 flex flex-wrap gap-3">
+            <div className="mt-2 flex flex-wrap gap-3 border-t border-line pt-6">
               {step > 0 && <Button variant="outline" onClick={() => setStep(step - 1)}>{tr('back')}</Button>}
               <Button type="submit" className="flex-1">
-                {step === 0 && !form.otpSent ? tr('sendCode') : step === 3 ? tr('pay', { amount: formatPrice(total) }) : tr('continue')}
+                {step === 0 && !form.otpSent ? tr('sendCode') : step === 3 ? <><Icon name="lock" size={18} /> {tr('pay', { amount: formatPrice(total) })}</> : <>{tr('continue')} <Icon name="arrow" size={18} /></>}
               </Button>
             </div>
           </form>

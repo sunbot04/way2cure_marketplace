@@ -1,61 +1,88 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import Icon from '../components/Icon';
 import Button from '../components/ui/Button';
 import { Field, Select } from '../components/ui/Field';
+import { ProductCardSkeleton } from '../components/ui/Skeleton';
+import { Reveal, Stagger, StaggerItem } from '../components/motion/Reveal';
 import ProductCard from '../components/commerce/ProductCard';
 import RxNotice from '../components/commerce/RxNotice';
 import PageHeader from '../components/layout/PageHeader';
 import Seo from '../components/layout/Seo';
 import { categories, shopViews, products, type Product } from '../data';
-import { useT, useLoc, type Dict } from '../i18n/LangContext';
+import { SITE } from '../config/site';
+import { useLang, useT, useLoc, type Dict } from '../i18n/LangContext';
 import NotFound from './NotFound';
 
 const T: Dict = {
   en: {
     shop: 'Shop',
+    eyebrow: 'Way2Cure shop', catEyebrow: 'Shop by need',
+    shopTitle: 'Everything for care at home, *delivered to your door.*',
     resultsFor: 'Results for "{q}"',
     intro: 'Medicines, devices, daily care and more. Delivered in Mumbai, Navi Mumbai and Thane.',
-    filters: 'Filters', filter: 'Filter',
+    browse: 'Browse by need',
+    filters: 'Filters', filter: 'Filter', showFilters: 'Show filters', hideFilters: 'Hide filters', active: '{n} on',
     brand: 'Brand', allBrands: 'All brands',
     price: 'Price', anyPrice: 'Any price', under500: 'Under Rs. 500', mid: 'Rs. 500 to 2,000', over2000: 'Over Rs. 2,000',
     buyOrRent: 'Buy or rent', buy: 'Buy', rent: 'Rent',
     prescription: 'Prescription', rxAll: 'Rx and no Rx', rxNeeded: 'Rx needed', rxNo: 'No Rx needed',
     clear: 'Clear filters',
-    item: 'item', items: 'items',
+    item: 'item', items: 'items', loading: 'Loading products',
     sortBy: 'Sort by', popular: 'Most popular', priceLow: 'Price: low to high', priceHigh: 'Price: high to low', fastest: 'Fastest delivery',
     emptyTitle: 'We could not find that.',
     emptyText: 'Try a different word, or clear the filters. You can also call us and we will find it for you.',
+    allProducts: 'See all products', call: 'Call {phone}',
+    errorTitle: 'We could not load products.',
+    errorText: 'Your cart is safe. Please try again. If it keeps happening, call us and we will place the order for you.',
+    retry: 'Try again',
+    findTitle: 'Cannot find what you need?', findText: 'Tell us on WhatsApp or call. We will find it and deliver it.',
   },
   hi: {
     shop: 'खरीदारी',
+    eyebrow: 'Way2Cure शॉप', catEyebrow: 'ज़रूरत के हिसाब से खरीदें',
+    shopTitle: 'घर पर देखभाल की हर चीज़, *आपके दरवाज़े तक।*',
     resultsFor: '"{q}" के नतीजे',
     intro: 'दवाइयाँ, उपकरण, रोज़ की देखभाल और बहुत कुछ। मुंबई, नवी मुंबई और ठाणे में डिलिवरी।',
-    filters: 'फ़िल्टर', filter: 'फ़िल्टर',
+    browse: 'ज़रूरत के हिसाब से देखें',
+    filters: 'फ़िल्टर', filter: 'फ़िल्टर', showFilters: 'फ़िल्टर दिखाएँ', hideFilters: 'फ़िल्टर छिपाएँ', active: '{n} चालू',
     brand: 'ब्रांड', allBrands: 'सभी ब्रांड',
     price: 'कीमत', anyPrice: 'कोई भी कीमत', under500: 'Rs. 500 से कम', mid: 'Rs. 500 से 2,000', over2000: 'Rs. 2,000 से ज़्यादा',
     buyOrRent: 'ख़रीदें या किराये पर', buy: 'ख़रीदें', rent: 'किराये पर',
     prescription: 'पर्चा', rxAll: 'पर्चे वाली और बिना पर्चे वाली', rxNeeded: 'पर्चा ज़रूरी', rxNo: 'पर्चा ज़रूरी नहीं',
     clear: 'फ़िल्टर हटाएँ',
-    item: 'सामान', items: 'सामान',
+    item: 'सामान', items: 'सामान', loading: 'प्रोडक्ट लोड हो रहे हैं',
     sortBy: 'क्रम', popular: 'सबसे लोकप्रिय', priceLow: 'कीमत: कम से ज़्यादा', priceHigh: 'कीमत: ज़्यादा से कम', fastest: 'सबसे जल्दी डिलिवरी',
     emptyTitle: 'हमें यह नहीं मिला।',
     emptyText: 'कोई दूसरा शब्द आज़माएँ, या फ़िल्टर हटाएँ। आप हमें कॉल भी कर सकते हैं, हम आपके लिए ढूँढ देंगे।',
+    allProducts: 'सभी प्रोडक्ट देखें', call: 'कॉल करें {phone}',
+    errorTitle: 'हम प्रोडक्ट लोड नहीं कर पाए।',
+    errorText: 'आपका कार्ट सुरक्षित है। कृपया फिर से कोशिश करें। अगर ऐसा बार-बार हो, तो हमें कॉल करें, हम आपके लिए ऑर्डर कर देंगे।',
+    retry: 'फिर से कोशिश करें',
+    findTitle: 'जो चाहिए वह नहीं मिल रहा?', findText: 'हमें व्हाट्सऐप पर बताएँ या कॉल करें। हम ढूँढकर पहुँचा देंगे।',
   },
   mr: {
     shop: 'खरेदी',
+    eyebrow: 'Way2Cure शॉप', catEyebrow: 'गरजेनुसार खरेदी करा',
+    shopTitle: 'घरच्या काळजीसाठी सर्व काही, *तुमच्या दारात.*',
     resultsFor: '"{q}" साठी निकाल',
     intro: 'औषधे, उपकरणे, दैनंदिन काळजी आणि बरेच काही. मुंबई, नवी मुंबई आणि ठाणे येथे डिलिव्हरी.',
-    filters: 'फिल्टर', filter: 'फिल्टर',
+    browse: 'गरजेनुसार पाहा',
+    filters: 'फिल्टर', filter: 'फिल्टर', showFilters: 'फिल्टर दाखवा', hideFilters: 'फिल्टर लपवा', active: '{n} चालू',
     brand: 'ब्रँड', allBrands: 'सर्व ब्रँड',
     price: 'किंमत', anyPrice: 'कोणतीही किंमत', under500: 'Rs. 500 पेक्षा कमी', mid: 'Rs. 500 ते 2,000', over2000: 'Rs. 2,000 पेक्षा जास्त',
     buyOrRent: 'विकत की भाड्याने', buy: 'विकत घ्या', rent: 'भाड्याने',
     prescription: 'प्रिस्क्रिप्शन', rxAll: 'प्रिस्क्रिप्शनची आणि विना-प्रिस्क्रिप्शन', rxNeeded: 'प्रिस्क्रिप्शन आवश्यक', rxNo: 'प्रिस्क्रिप्शन आवश्यक नाही',
     clear: 'फिल्टर काढा',
-    item: 'वस्तू', items: 'वस्तू',
+    item: 'वस्तू', items: 'वस्तू', loading: 'उत्पादने लोड होत आहेत',
     sortBy: 'क्रम', popular: 'सर्वात लोकप्रिय', priceLow: 'किंमत: कमी ते जास्त', priceHigh: 'किंमत: जास्त ते कमी', fastest: 'सर्वात लवकर डिलिव्हरी',
     emptyTitle: 'आम्हाला हे सापडले नाही.',
     emptyText: 'दुसरा शब्द वापरून पाहा, किंवा फिल्टर काढा. तुम्ही आम्हाला कॉलही करू शकता, आम्ही तुमच्यासाठी शोधून देऊ.',
+    allProducts: 'सर्व उत्पादने पाहा', call: 'कॉल करा {phone}',
+    errorTitle: 'आम्ही उत्पादने लोड करू शकलो नाही.',
+    errorText: 'तुमचे कार्ट सुरक्षित आहे. कृपया पुन्हा प्रयत्न करा. असे वारंवार होत असल्यास, आम्हाला कॉल करा, आम्ही तुमच्यासाठी ऑर्डर करू.',
+    retry: 'पुन्हा प्रयत्न करा',
+    findTitle: 'हवे ते सापडत नाही?', findText: 'आम्हाला व्हॉट्सॲपवर सांगा किंवा कॉल करा. आम्ही शोधून पोहोचवू.',
   },
 };
 
@@ -79,19 +106,31 @@ const sorters: Record<SortKey, (a: Product, b: Product) => number> = {
 const searchText = (p: Product) =>
   [p, p.hi, p.mr].filter(Boolean).map((x) => `${x!.name ?? ''} ${x!.desc ?? ''}`).join(' ') + ` ${p.brand} ${p.cat}`;
 
+// Simulated catalogue loading time, so the skeleton grid can be seen.
+// TODO: API: replace with the real catalogue request; keep the skeleton while it is in flight.
+const LOAD_MS = 500;
+
+const grid = 'grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5 xl:grid-cols-4';
+
 export default function Shop() {
+  const { t } = useLang();
   const tr = useT(T);
   const loc = useLoc();
   const { category } = useParams();
-  const [params] = useSearchParams();
+  const [params, setParams] = useSearchParams();
   const rawQ = (params.get('q') || '').trim();
   const q = rawQ.toLowerCase();
+  // Demo only: /shop?fail=1 shows the error state.
+  const fail = params.get('fail') === '1';
 
   const [brand, setBrand] = useState('all');
   const [price, setPrice] = useState('all');
   const [buyRent, setBuyRent] = useState('all');
   const [rx, setRx] = useState('all');
   const [sort, setSort] = useState<SortKey>('popular');
+  const [showFilters, setShowFilters] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [attempt, setAttempt] = useState(0);
 
   const view = categories.find((c) => c.slug === category) || shopViews.find((c) => c.slug === category);
 
@@ -120,108 +159,185 @@ export default function Shop() {
     return [...list].sort((a, b) => (b.chronic ? 1 : 0) - (a.chronic ? 1 : 0) || sorters[sort](a, b));
   }, [base, brand, price, buyRent, rx, sort]);
 
+  // Skeleton on first load and whenever the category, search or a filter changes (not on sort).
+  useEffect(() => {
+    setLoading(true);
+    const timer = window.setTimeout(() => setLoading(false), LOAD_MS);
+    return () => window.clearTimeout(timer);
+  }, [category, q, brand, price, buyRent, rx, fail, attempt]);
+
   if (category && !view) return <NotFound />;
 
   const v = view ? loc(view) : undefined;
-  const title = q ? tr('resultsFor', { q: rawQ }) : v ? v.name : tr('shop');
+  const plainTitle = q ? tr('resultsFor', { q: rawQ }) : v ? v.name : tr('shop');
+  const title = q || v ? plainTitle : tr('shopTitle');
   const lead = v ? v.blurb : tr('intro');
   const reset = () => { setBrand('all'); setPrice('all'); setBuyRent('all'); setRx('all'); };
-  const filtered = brand !== 'all' || price !== 'all' || buyRent !== 'all' || rx !== 'all';
+  const activeCount = [brand, price, buyRent, rx].filter((x) => x !== 'all').length;
+  const retry = () => {
+    if (fail) {
+      const next = new URLSearchParams(params);
+      next.delete('fail');
+      setParams(next, { replace: true });
+    } else setAttempt((n) => n + 1);
+  };
+  const gridKey = [category, q, brand, price, buyRent, rx, sort, attempt].join('|');
+  const skeletons = Math.min(8, Math.max(4, shown.length));
 
   return (
     <>
-      <Seo title={title} description={lead} noindex={!!q} />
+      <Seo title={plainTitle} description={lead} noindex={!!q} />
       <PageHeader
+        eyebrow={q ? undefined : v ? tr('catEyebrow') : tr('eyebrow')}
         title={title}
         lead={lead}
-        crumbs={category || q ? [{ label: tr('shop'), to: '/shop' }, { label: title }] : undefined}
+        crumbs={[{ label: t('home'), to: '/' }, ...(category || q ? [{ label: tr('shop'), to: '/shop' }, { label: plainTitle }] : [{ label: tr('shop') }])]}
       />
 
-      <div className="container py-8 md:py-12">
-        {!category && !q && (
-          <ul className="mb-12 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
-            {[...categories, ...shopViews].map(loc).map((c) => (
-              <li key={c.slug}>
-                <Link
-                  to={`/shop/${c.slug}`}
-                  className="flex h-full items-start gap-4 rounded-card border border-line bg-white p-4 text-ink no-underline transition-colors hover:border-green md:p-5"
+      {!category && !q && (
+        <section aria-labelledby="browse" className="pb-12 md:pb-16">
+          <div className="container">
+            <h2 id="browse" className="sr-only">{tr('browse')}</h2>
+            <Stagger as="ul" className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-5">
+              {[...categories, ...shopViews].map(loc).map((c) => (
+                <StaggerItem as="li" key={c.slug}>
+                  <Link
+                    to={`/shop/${c.slug}`}
+                    className="group flex h-full flex-col gap-4 rounded-tile border border-line bg-white p-5 text-ink no-underline transition-[transform,box-shadow] duration-micro ease-soft hover:-translate-y-1 hover:shadow-raised"
+                  >
+                    <span className="grid h-12 w-12 place-items-center rounded-btn bg-mist text-green"><Icon name={c.icon} size={24} /></span>
+                    <span className="grid gap-1">
+                      <strong className="text-body leading-snug text-green">{c.name}</strong>
+                      <span className="hidden text-base text-grey md:block">{c.blurb}</span>
+                    </span>
+                    <Icon name="arrow" size={18} className="mt-auto text-terracotta-deep" />
+                  </Link>
+                </StaggerItem>
+              ))}
+            </Stagger>
+          </div>
+        </section>
+      )}
+
+      <section aria-label={tr('shop')} className="bg-mist py-12 md:py-16">
+        <div className="container">
+          {(category === 'medicines' || base.some((p) => p.rx)) && <RxNotice light className="mb-8" />}
+
+          <div className="grid gap-8 lg:grid-cols-[17rem_1fr]">
+            <aside aria-labelledby="filter-heading" className="self-start rounded-panel bg-white p-5 shadow-card lg:sticky lg:top-28 lg:p-6">
+              <div className="flex items-center justify-between gap-3">
+                <h2 id="filter-heading" className="m-0 flex items-center gap-2 font-body text-h3m">
+                  <Icon name="filter" size={20} className="text-sage" /> {tr('filter')}
+                  {activeCount > 0 && <span className="ml-2 rounded-full bg-green px-2 py-0.5 align-middle text-small font-bold text-white">{tr('active', { n: activeCount })}</span>}
+                </h2>
+                <button
+                  type="button"
+                  aria-expanded={showFilters}
+                  aria-controls="filter-fields"
+                  onClick={() => setShowFilters((s) => !s)}
+                  className="inline-flex min-h-tap items-center gap-1.5 rounded-btn px-2 font-bold text-green hover:bg-mist lg:hidden"
                 >
-                  <span className="grid h-12 w-12 shrink-0 place-items-center rounded-btn bg-sage-tint text-green">
-                    <Icon name={c.icon} size={26} />
-                  </span>
-                  <span className="grid flex-1 gap-1">
-                    <strong className="leading-snug text-green">{c.name}</strong>
-                    <span className="hidden text-base text-grey md:block">{c.blurb}</span>
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        )}
-
-        {(category === 'medicines' || base.some((p) => p.rx)) && <RxNotice className="mb-8" />}
-
-        <div className="grid gap-8 lg:grid-cols-[260px_1fr]">
-          <aside aria-labelledby="filter-heading" className="self-start rounded-card bg-white p-5 shadow-card lg:sticky lg:top-24">
-            <h2 id="filter-heading" className="mb-4 font-body text-h3m">{tr('filter')}</h2>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
-              <Field id="f-brand" label={tr('brand')}>
-                <Select id="f-brand" value={brand} onChange={(e) => setBrand(e.target.value)}>
-                  <option value="all">{tr('allBrands')}</option>
-                  {brands.map((b) => <option key={b}>{b}</option>)}
-                </Select>
-              </Field>
-              <Field id="f-price" label={tr('price')}>
-                <Select id="f-price" value={price} onChange={(e) => setPrice(e.target.value)}>
-                  {priceBands.map((b) => <option key={b.id} value={b.id}>{tr(b.label)}</option>)}
-                </Select>
-              </Field>
-              <Field id="f-mode" label={tr('buyOrRent')}>
-                <Select id="f-mode" value={buyRent} onChange={(e) => setBuyRent(e.target.value)}>
-                  <option value="all">{tr('buyOrRent')}</option>
-                  <option value="buy">{tr('buy')}</option>
-                  <option value="rent">{tr('rent')}</option>
-                </Select>
-              </Field>
-              <Field id="f-rx" label={tr('prescription')}>
-                <Select id="f-rx" value={rx} onChange={(e) => setRx(e.target.value)}>
-                  <option value="all">{tr('rxAll')}</option>
-                  <option value="rx">{tr('rxNeeded')}</option>
-                  <option value="otc">{tr('rxNo')}</option>
-                </Select>
-              </Field>
-            </div>
-            {filtered && <Button variant="outline" block compact className="mt-5" onClick={reset}>{tr('clear')}</Button>}
-          </aside>
-
-          <div>
-            <div className="mb-5 flex flex-wrap items-end justify-between gap-4">
-              <p className="m-0 text-body" aria-live="polite">
-                <strong>{shown.length}</strong> {shown.length === 1 ? tr('item') : tr('items')}
-              </p>
-              <Field id="f-sort" label={tr('sortBy')} className="w-full sm:w-64">
-                <Select id="f-sort" value={sort} onChange={(e) => setSort(e.target.value as SortKey)}>
-                  <option value="popular">{tr('popular')}</option>
-                  <option value="price-low">{tr('priceLow')}</option>
-                  <option value="price-high">{tr('priceHigh')}</option>
-                  <option value="delivery">{tr('fastest')}</option>
-                </Select>
-              </Field>
-            </div>
-            {shown.length ? (
-              <ul className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 xl:grid-cols-4 2xl:grid-cols-5">
-                {shown.map((p) => <li key={p.id} className="grid"><ProductCard product={p} /></li>)}
-              </ul>
-            ) : (
-              <div className="rounded-card bg-white p-8 shadow-card">
-                <h3>{tr('emptyTitle')}</h3>
-                <p>{tr('emptyText')}</p>
-                <Button onClick={reset}>{tr('clear')}</Button>
+                  {showFilters ? tr('hideFilters') : tr('showFilters')}
+                  <Icon name="chevronDown" size={18} className={`transition-transform duration-micro ${showFilters ? 'rotate-180' : ''}`} />
+                </button>
               </div>
-            )}
+              <div id="filter-fields" className={`${showFilters ? 'grid' : 'hidden'} mt-5 gap-4 sm:grid-cols-2 lg:grid lg:grid-cols-1`}>
+                <Field id="f-brand" label={tr('brand')}>
+                  <Select id="f-brand" value={brand} onChange={(e) => setBrand(e.target.value)}>
+                    <option value="all">{tr('allBrands')}</option>
+                    {brands.map((b) => <option key={b}>{b}</option>)}
+                  </Select>
+                </Field>
+                <Field id="f-price" label={tr('price')}>
+                  <Select id="f-price" value={price} onChange={(e) => setPrice(e.target.value)}>
+                    {priceBands.map((b) => <option key={b.id} value={b.id}>{tr(b.label)}</option>)}
+                  </Select>
+                </Field>
+                <Field id="f-mode" label={tr('buyOrRent')}>
+                  <Select id="f-mode" value={buyRent} onChange={(e) => setBuyRent(e.target.value)}>
+                    <option value="all">{tr('buyOrRent')}</option>
+                    <option value="buy">{tr('buy')}</option>
+                    <option value="rent">{tr('rent')}</option>
+                  </Select>
+                </Field>
+                <Field id="f-rx" label={tr('prescription')}>
+                  <Select id="f-rx" value={rx} onChange={(e) => setRx(e.target.value)}>
+                    <option value="all">{tr('rxAll')}</option>
+                    <option value="rx">{tr('rxNeeded')}</option>
+                    <option value="otc">{tr('rxNo')}</option>
+                  </Select>
+                </Field>
+                {activeCount > 0 && (
+                  <Button variant="outline" block compact className="sm:col-span-2 lg:col-span-1" onClick={reset}>
+                    <Icon name="close" size={16} /> {tr('clear')}
+                  </Button>
+                )}
+              </div>
+            </aside>
+
+            <div className="min-w-0">
+              <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
+                <p className="m-0 text-body" aria-live="polite">
+                  {loading ? <span className="text-grey">{tr('loading')}…</span> : !fail && <><strong className="text-green">{shown.length}</strong> {shown.length === 1 ? tr('item') : tr('items')}</>}
+                </p>
+                <Field id="f-sort" label={tr('sortBy')} className="w-full sm:w-64">
+                  <Select id="f-sort" value={sort} onChange={(e) => setSort(e.target.value as SortKey)}>
+                    <option value="popular">{tr('popular')}</option>
+                    <option value="price-low">{tr('priceLow')}</option>
+                    <option value="price-high">{tr('priceHigh')}</option>
+                    <option value="delivery">{tr('fastest')}</option>
+                  </Select>
+                </Field>
+              </div>
+
+              {loading ? (
+                <ul aria-busy="true" aria-label={tr('loading')} className={grid}>
+                  {Array.from({ length: skeletons }, (_, i) => <li key={i}><ProductCardSkeleton /></li>)}
+                </ul>
+              ) : fail ? (
+                <Reveal>
+                  <div role="alert" className="rounded-panel bg-white p-8 shadow-card md:p-10">
+                    <span className="mb-5 grid h-14 w-14 place-items-center rounded-full bg-cream text-terracotta-deep"><Icon name="warning" size={26} /></span>
+                    <h3 className="font-head text-h2m">{tr('errorTitle')}</h3>
+                    <p className="text-ink/80">{tr('errorText')}</p>
+                    <div className="mt-6 flex flex-wrap gap-3">
+                      <Button onClick={retry}><Icon name="refresh" size={18} /> {tr('retry')}</Button>
+                      <Button href={SITE.phoneHref} variant="outline"><Icon name="phone" size={18} /> {tr('call', { phone: SITE.phone })}</Button>
+                    </div>
+                  </div>
+                </Reveal>
+              ) : shown.length ? (
+                <Stagger as="ul" key={gridKey} className={grid}>
+                  {shown.map((p) => <StaggerItem as="li" key={p.id} className="grid"><ProductCard product={p} /></StaggerItem>)}
+                </Stagger>
+              ) : (
+                <Reveal>
+                  <div className="rounded-panel bg-white p-8 shadow-card md:p-10">
+                    <span className="mb-5 grid h-14 w-14 place-items-center rounded-full bg-mist text-green"><Icon name="search" size={26} /></span>
+                    <h3 className="font-head text-h2m">{tr('emptyTitle')}</h3>
+                    <p className="text-ink/80">{tr('emptyText')}</p>
+                    <div className="mt-6 flex flex-wrap gap-3">
+                      {activeCount > 0 ? <Button onClick={reset}>{tr('clear')}</Button> : <Button to="/shop">{tr('allProducts')} <Icon name="arrow" size={18} /></Button>}
+                      <Button href={SITE.phoneHref} variant="outline"><Icon name="phone" size={18} /> {tr('call', { phone: SITE.phone })}</Button>
+                    </div>
+                  </div>
+                </Reveal>
+              )}
+
+              <Reveal className="mt-12 flex flex-wrap items-center justify-between gap-5 rounded-panel border border-line bg-white p-6 md:p-8">
+                <div>
+                  <h2 className="mb-1 font-body text-h3m">{tr('findTitle')}</h2>
+                  <p className="m-0 text-base text-grey">{tr('findText')}</p>
+                </div>
+                <div className="flex flex-wrap gap-3">
+                  <Button href={SITE.whatsappHref} external variant="outline" compact><Icon name="whatsapp" size={18} /> {t('whatsapp')}</Button>
+                  <Button href={SITE.phoneHref} variant="urgent" compact><Icon name="phone" size={18} /> {tr('call', { phone: SITE.phone })}</Button>
+                </div>
+              </Reveal>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
     </>
   );
 }

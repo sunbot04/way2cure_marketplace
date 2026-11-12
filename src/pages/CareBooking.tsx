@@ -1,20 +1,20 @@
 import { useState, type ChangeEvent, type FormEvent } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import { AnimatePresence, m } from 'motion/react';
 import Icon from '../components/Icon';
 import { COPY } from '../components/copy';
 import Tag from '../components/ui/Tag';
-import { Link } from 'react-router-dom';
 import Button from '../components/ui/Button';
-import Card from '../components/ui/Card';
-import InfoBand from '../components/ui/InfoBand';
-import StepList, { type Step } from '../components/ui/StepList';
+import { type Step } from '../components/ui/StepList';
 import { Field, Input, Select, Textarea, describedBy } from '../components/ui/Field';
+import { Reveal } from '../components/motion/Reveal';
 import { HelpBox } from '../components/commerce/AppPanel';
 import PageHeader from '../components/layout/PageHeader';
 import Seo from '../components/layout/Seo';
 import { getService, services } from '../data';
 import { isServiceablePincode, SITE } from '../config/site';
-import { useLang, useLoc, useT, type Dict } from '../i18n/LangContext';
+import { formatDate, useLang, useLoc, useT, type Dict } from '../i18n/LangContext';
+import { crossfade, fadeRise } from '../lib/motion';
 import NotFound from './NotFound';
 
 // Care booking (guidelines p.8, p.12): four steps, then a request. Nothing is charged online;
@@ -49,6 +49,17 @@ const RELATIONS = ['parent', 'spouse', 'grandparent', 'child', 'myself', 'other'
 
 const T: Dict = {
   en: {
+    stepOf: 'Step {n} of 4',
+    progress: 'Booking steps',
+    sending: 'Sending…',
+    errSend: 'That did not go through. Nothing was booked. Please try again, or call us on {phone}.',
+    summary: 'Your request',
+    sPatient: 'Patient', sStart: 'Starts', sWhere: 'Where', sContact: 'We will contact',
+    whatNext: 'What happens next',
+    next1: 'A care coordinator calls or messages you, usually within 30 minutes during the day.',
+    next2: 'You agree the nurse or doctor, the timing and the price together.',
+    next3: 'Care begins on the date you chose.',
+    doneEyebrow: 'Request received',
     seoTitle: 'Book {service}',
     seoDesc: 'Request {service} at home in Mumbai, Navi Mumbai or Thane. Our care team calls you back to confirm the nurse or doctor, timing and price. Nothing is charged until you confirm.',
     bgCheck: 'Every nurse and caretaker is trained and background-checked.',
@@ -94,6 +105,17 @@ const T: Dict = {
     suitability: 'Suitability is assessed by the treating doctor before care begins.',
   },
   hi: {
+    stepOf: 'कदम {n} / 4',
+    progress: 'बुकिंग के कदम',
+    sending: 'भेज रहे हैं…',
+    errSend: 'यह नहीं हो पाया। कोई बुकिंग नहीं हुई। कृपया फिर से कोशिश करें, या हमें {phone} पर कॉल करें।',
+    summary: 'आपका अनुरोध',
+    sPatient: 'मरीज़', sStart: 'शुरुआत', sWhere: 'कहाँ', sContact: 'हम संपर्क करेंगे',
+    whatNext: 'आगे क्या होगा',
+    next1: 'केयर कोऑर्डिनेटर आपको कॉल या मैसेज करेंगे, दिन में आमतौर पर 30 मिनट के अंदर।',
+    next2: 'आप साथ मिलकर नर्स या डॉक्टर, समय और कीमत तय करते हैं।',
+    next3: 'आपकी चुनी तारीख पर देखभाल शुरू होती है।',
+    doneEyebrow: 'अनुरोध मिल गया',
     seoTitle: '{service} बुक करें',
     seoDesc: 'मुंबई, नवी मुंबई या ठाणे में घर पर {service} के लिए अनुरोध भेजें। हमारी केयर टीम आपको कॉल करके नर्स या डॉक्टर, समय और कीमत पक्की करती है। पक्का करने तक कोई पैसा नहीं लिया जाता।',
     bgCheck: 'हर नर्स और केयरटेकर प्रशिक्षित है और उसकी बैकग्राउंड जाँच हुई है।',
@@ -139,6 +161,17 @@ const T: Dict = {
     suitability: 'देखभाल शुरू होने से पहले, इलाज करने वाले डॉक्टर तय करते हैं कि यह मरीज़ के लिए सही है या नहीं।',
   },
   mr: {
+    stepOf: 'पायरी {n} / 4',
+    progress: 'बुकिंगच्या पायऱ्या',
+    sending: 'पाठवत आहोत…',
+    errSend: 'हे झाले नाही. कोणतेही बुकिंग झालेले नाही. कृपया पुन्हा प्रयत्न करा, किंवा आम्हाला {phone} वर कॉल करा.',
+    summary: 'तुमची विनंती',
+    sPatient: 'रुग्ण', sStart: 'सुरुवात', sWhere: 'कुठे', sContact: 'आम्ही संपर्क करू',
+    whatNext: 'पुढे काय होईल',
+    next1: 'केअर कोऑर्डिनेटर तुम्हाला कॉल किंवा मेसेज करतील, दिवसा साधारण 30 मिनिटांत.',
+    next2: 'तुम्ही मिळून नर्स किंवा डॉक्टर, वेळ आणि किंमत ठरवता.',
+    next3: 'तुम्ही निवडलेल्या तारखेला काळजी सुरू होते.',
+    doneEyebrow: 'विनंती मिळाली',
     seoTitle: '{service} बुक करा',
     seoDesc: 'मुंबई, नवी मुंबई किंवा ठाणे येथे घरी {service} साठी विनंती पाठवा. आमची केअर टीम तुम्हाला कॉल करून नर्स किंवा डॉक्टर, वेळ आणि किंमत निश्चित करते. तुम्ही निश्चित करेपर्यंत कोणतेही पैसे घेतले जात नाहीत.',
     bgCheck: 'प्रत्येक नर्स आणि केअरटेकर प्रशिक्षित आहे आणि त्यांची पार्श्वभूमी तपासलेली आहे.',
@@ -203,7 +236,7 @@ function Options({ name, legend, values, value, label, onChange }: {
       {values.map((v) => {
         const on = value === v;
         return (
-          <label key={v} className={`flex min-h-tap cursor-pointer items-center gap-3 rounded-btn border-2 px-4 py-3 ${on ? 'border-green bg-sage-tint' : 'border-mint bg-white hover:border-sage'}`}>
+          <label key={v} className={`flex min-h-tap cursor-pointer items-center gap-3 rounded-tile border-2 px-4 py-3 transition-colors duration-micro ${on ? 'border-green bg-mist' : 'border-line bg-white hover:border-sage'}`}>
             <input type="radio" name={name} value={v} checked={on} onChange={onChange} className="h-5 w-5 shrink-0 accent-green" />
             <span className={on ? 'font-bold text-green' : ''}>{label(v)}</span>
             {on && <Icon name="check" size={20} className="ml-auto text-green" />}
@@ -222,6 +255,8 @@ export default function CareBooking() {
   const initial = getService(serviceId);
   const [step, setStep] = useState(0);
   const [done, setDone] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [sendError, setSendError] = useState(false);
   const [errors, setErrors] = useState<Partial<Record<keyof Form, string>>>({});
   const [f, setF] = useState<Form>({
     service: serviceId, patient: '', age: '', relation: 'parent', date: today(), time: TIMES[0],
@@ -254,30 +289,68 @@ export default function CareBooking() {
   const err = (k: keyof Form) => (errors[k] ? tr(errors[k]!) : undefined);
   const aria = (k: keyof Form, hint = false) => ({ 'aria-describedby': describedBy(k, { hint, error: errors[k] }), invalid: !!errors[k] });
 
-  const next = (ev: FormEvent) => {
+  const next = async (ev: FormEvent) => {
     ev.preventDefault();
     if (!validate()) return;
-    // TODO: API: POST the booking request to the care team queue.
-    if (step < 3) setStep(step + 1);
-    else setDone(true);
+    if (step < 3) { setStep(step + 1); return; }
+    setSending(true);
+    setSendError(false);
+    try {
+      await sendRequest(f);
+      setDone(true);
+    } catch {
+      setSendError(true);
+    } finally {
+      setSending(false);
+    }
   };
 
   const seo = <Seo title={tr('seoTitle', { service: service.name })} description={tr('seoDesc', { service: service.name })} />;
 
   if (done) {
+    const rows: [string, string][] = [
+      [tr('service'), service.name],
+      [tr('sPatient'), f.patient + (f.age ? `, ${f.age}` : '')],
+      [tr('sStart'), `${formatDate(f.date, lang, { day: 'numeric', month: 'long' })} · ${tr(f.time)}`],
+      [tr('sWhere'), `${f.area}, ${f.pincode}`],
+      [tr('sContact'), `${f.contactBy === 'whatsapp' ? tr('whatsapp') : tr('call')} · ${f.phone}`],
+    ];
     return (
-      <div className="container py-12 md:py-16">
+      <section className="section">
         {seo}
-        <Card className="max-w-2xl" edge="var(--sage)" edgeSide="top" role="status" aria-live="polite">
-          <span className="mb-4 grid h-16 w-16 place-items-center rounded-full bg-sage-tint text-green">
-            <Icon name="check" size={36} />
-          </span>
-          <h1>{tr('doneTitle', { service: lang === 'en' ? service.name.toLowerCase() : service.name })}</h1>
-          <p className="text-lead">{tr(f.contactBy === 'whatsapp' ? 'doneWhatsapp' : 'doneCall', { phone: f.phone })}</p>
-          <p>{tr('doneCharge')} <a href={SITE.phoneHref}>{SITE.phone}</a>.</p>
-          <Button to="/">{tr('backHome')}</Button>
-        </Card>
-      </div>
+        <div className="container grid items-start gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:gap-16">
+          <m.div initial="hidden" animate="show" variants={fadeRise} role="status" aria-live="polite">
+            <span className="mb-6 grid h-16 w-16 place-items-center rounded-full bg-sage text-white shadow-raised">
+              <Icon name="check" size={34} />
+            </span>
+            <p className="mb-3 text-small font-semibold text-terracotta-deep">{tr('doneEyebrow')}</p>
+            <h1 className="mb-4 text-section">{tr('doneTitle', { service: lang === 'en' ? service.name.toLowerCase() : service.name })}</h1>
+            <p className="text-lead text-ink/80">{tr(f.contactBy === 'whatsapp' ? 'doneWhatsapp' : 'doneCall', { phone: f.phone })}</p>
+            <h2 className="mb-4 mt-10 text-h3m md:text-h3">{tr('whatNext')}</h2>
+            <ol className="mb-8 grid gap-4">
+              {['next1', 'next2', 'next3'].map((k, i) => (
+                <li key={k} className="flex items-start gap-4">
+                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-green font-bold text-white">{i + 1}</span>
+                  <span className="pt-1">{tr(k)}</span>
+                </li>
+              ))}
+            </ol>
+            <p>{tr('doneCharge')} <a href={SITE.phoneHref}>{SITE.phone}</a>.</p>
+            <Button to="/">{tr('backHome')} <Icon name="arrow" size={18} /></Button>
+          </m.div>
+          <Reveal className="rounded-panel bg-white p-6 shadow-card md:p-8">
+            <h2 className="mb-4 text-h3m md:text-h3">{tr('summary')}</h2>
+            <dl className="m-0 grid gap-3">
+              {rows.map(([k, v]) => (
+                <div key={k} className="grid gap-0.5 border-b border-line pb-3 last:border-0 last:pb-0">
+                  <dt className="text-small text-grey">{k}</dt>
+                  <dd className="m-0 font-bold text-green">{v}</dd>
+                </div>
+              ))}
+            </dl>
+          </Reveal>
+        </div>
+      </section>
     );
   }
 
@@ -285,112 +358,171 @@ export default function CareBooking() {
     <>
       {seo}
       <PageHeader
+        tone="mist"
+        eyebrow={tr('eyebrow')}
         title={service.name}
         lead={service.short}
         crumbs={[{ label: t('home'), to: '/' }, { label: t('care'), to: '/care' }, { label: tr('eyebrow') }]}
       />
-      <div className="container py-10">
-        <StepList steps={STEPS} current={step} className="mb-10" />
-        <div className="grid items-start gap-8 lg:grid-cols-[1.6fr_1fr]">
-          <Card as="form" onSubmit={next} noValidate className="grid gap-5">
-            {step === 0 && (
-              <>
-                <Field id="service" label={tr('service')}>
-                  <Select id="service" value={f.service} onChange={set('service')}>
-                    {services.map((s) => <option key={s.id} value={s.id}>{loc(s).name}</option>)}
-                  </Select>
-                </Field>
-                <Field id="patient" label={tr('patient')} error={err('patient')}>
-                  <Input id="patient" value={f.patient} onChange={set('patient')} {...aria('patient')} />
-                </Field>
-                <div className="grid gap-5 sm:grid-cols-[1fr_2fr]">
-                  <Field id="age" label={tr('age')}>
-                    <Input id="age" inputMode="numeric" maxLength={3} value={f.age} onChange={digits('age')} />
-                  </Field>
-                  <Field id="relation" label={tr('relationLabel')}>
-                    <Select id="relation" value={f.relation} onChange={set('relation')}>
-                      {RELATIONS.map((r) => <option key={r} value={r}>{tr(r)}</option>)}
-                    </Select>
-                  </Field>
-                </div>
-              </>
-            )}
-            {step === 1 && (
-              <>
-                <Field id="date" label={tr('date')} error={err('date')}>
-                  <Input id="date" type="date" min={today()} value={f.date} onChange={set('date')} {...aria('date')} />
-                </Field>
-                <Options name="time" legend={tr('timeLegend')} values={TIMES} value={f.time} label={tr} onChange={set('time')} />
-              </>
-            )}
-            {step === 2 && (
-              <>
-                <Field id="area" label={tr('area')} error={err('area')}>
-                  <Input id="area" autoComplete="street-address" value={f.area} onChange={set('area')} {...aria('area')} />
-                </Field>
-                <Field id="pincode" label={tr('pincode')} error={err('pincode')}>
-                  <Input id="pincode" inputMode="numeric" autoComplete="postal-code" maxLength={6} value={f.pincode} onChange={digits('pincode')} {...aria('pincode')} />
-                </Field>
-                <Field id="notes" label={tr('notes')} hint={tr('notesHint')}>
-                  <Textarea id="notes" rows={3} value={f.notes} onChange={set('notes')} aria-describedby={describedBy('notes', { hint: true })} />
-                </Field>
-              </>
-            )}
-            {step === 3 && (
-              <>
-                <Field id="name" label={tr('name')} error={err('name')}>
-                  <Input id="name" autoComplete="name" value={f.name} onChange={set('name')} {...aria('name')} />
-                </Field>
-                <Field id="phone" label={tr('phone')} error={err('phone')}>
-                  <Input id="phone" type="tel" inputMode="numeric" autoComplete="tel-national" maxLength={10} value={f.phone} onChange={digits('phone')} {...aria('phone')} />
-                </Field>
-                <Options name="contactBy" legend={tr('contactLegend')} values={['call', 'whatsapp']} value={f.contactBy} label={tr} onChange={set('contactBy')} />
-              </>
-            )}
-            <div className="flex flex-wrap gap-3 pt-2">
-              {step > 0 && <Button variant="outline" onClick={() => setStep(step - 1)}>{tr('back')}</Button>}
-              <Button type="submit" variant={step === 3 ? 'urgent' : 'primary'} className="flex-1">
-                {step === 3 ? tr('request') : tr('continue')}
-              </Button>
-            </div>
-          </Card>
+      <section className="pb-20 pt-10 md:pb-28">
+        <div className="container grid items-start gap-8 lg:grid-cols-[1.55fr_1fr] lg:gap-12">
+          <Reveal className="rounded-panel bg-white p-6 shadow-card md:p-9">
+            {/* Step indicator: four labelled steps and a line that fills as you go */}
+            <nav aria-label={tr('progress')} className="mb-8">
+              <ol className="relative grid grid-cols-4 gap-2">
+                <span aria-hidden="true" className="absolute left-5 right-5 top-5 h-0.5 rounded-full bg-mint sm:left-[12.5%] sm:right-[12.5%]" />
+                <span
+                  aria-hidden="true"
+                  className="absolute left-5 right-5 top-5 h-0.5 origin-left rounded-full bg-terracotta-deep transition-transform duration-slow ease-soft sm:left-[12.5%] sm:right-[12.5%]"
+                  style={{ transform: `scaleX(${step / (STEPS.length - 1)})` }}
+                />
+                {STEPS.map(loc).map((st, i) => {
+                  const state = i < step ? 'done' : i === step ? 'current' : 'todo';
+                  return (
+                    <li key={i} aria-current={state === 'current' ? 'step' : undefined} className="relative grid justify-items-start gap-2 sm:justify-items-center">
+                      <span
+                        className={`grid h-10 w-10 place-items-center rounded-full border-2 font-bold transition-colors duration-slow ${
+                          state === 'todo' ? 'border-mint bg-white text-grey' : 'border-green bg-green text-white'
+                        }`}
+                      >
+                        {state === 'done' ? <Icon name="check" size={18} /> : i + 1}
+                      </span>
+                      <span className={`hidden text-center text-small font-bold sm:block ${state === 'todo' ? 'text-grey' : 'text-green'}`}>{st.title}</span>
+                    </li>
+                  );
+                })}
+              </ol>
+            </nav>
 
-          <aside className="grid gap-4">
-            <Card edge={service.edge} edgeSide="top">
-              <h2 className="mb-3 font-body text-h3m md:text-h3">{tr('included')}</h2>
-              <ul className="mb-4 grid gap-2">
-                {service.includes.map((i) => (
-                  <li key={i} className="flex items-start gap-2"><Icon name="check" size={20} className="mt-1 shrink-0 text-sage" /> {i}</li>
-                ))}
-              </ul>
-              <p className="mb-2 flex items-start gap-2 text-base">
-                <Icon name="clock" size={18} className="mt-1 shrink-0 text-sage" />
-                <span><strong className="text-green">{tr('duration')}</strong> {service.duration}</span>
-              </p>
-              <p className="mb-2 flex items-start gap-2 text-base">
-                <Icon name="userCheck" size={18} className="mt-1 shrink-0 text-sage" /> {tr('bgCheck')}
-              </p>
-              <p className="m-0 text-small text-grey">{tr('price')}</p>
-            </Card>
-            {service.related === '/safe-zone' && <BandPanel />}
+            <form onSubmit={next} noValidate className="grid gap-5">
+              <div>
+                <p className="mb-1 text-small font-semibold text-terracotta-deep">{tr('stepOf', { n: step + 1 })}</p>
+                <h2 className="m-0 text-h3m md:text-h3">{loc(STEPS[step]).title} <span className="font-normal text-grey">· {loc(STEPS[step]).text}</span></h2>
+              </div>
+              <AnimatePresence mode="wait" initial={false}>
+                <m.div key={step} {...crossfade} className="grid gap-5">
+                  {step === 0 && (
+                    <>
+                      <Field id="service" label={tr('service')}>
+                        <Select id="service" value={f.service} onChange={set('service')}>
+                          {services.map((s) => <option key={s.id} value={s.id}>{loc(s).name}</option>)}
+                        </Select>
+                      </Field>
+                      <Field id="patient" label={tr('patient')} error={err('patient')}>
+                        <Input id="patient" value={f.patient} onChange={set('patient')} {...aria('patient')} />
+                      </Field>
+                      <div className="grid gap-5 sm:grid-cols-[1fr_2fr]">
+                        <Field id="age" label={tr('age')}>
+                          <Input id="age" inputMode="numeric" maxLength={3} value={f.age} onChange={digits('age')} />
+                        </Field>
+                        <Field id="relation" label={tr('relationLabel')}>
+                          <Select id="relation" value={f.relation} onChange={set('relation')}>
+                            {RELATIONS.map((r) => <option key={r} value={r}>{tr(r)}</option>)}
+                          </Select>
+                        </Field>
+                      </div>
+                    </>
+                  )}
+                  {step === 1 && (
+                    <>
+                      <Field id="date" label={tr('date')} error={err('date')}>
+                        <Input id="date" type="date" min={today()} value={f.date} onChange={set('date')} {...aria('date')} />
+                      </Field>
+                      <Options name="time" legend={tr('timeLegend')} values={TIMES} value={f.time} label={tr} onChange={set('time')} />
+                    </>
+                  )}
+                  {step === 2 && (
+                    <>
+                      <Field id="area" label={tr('area')} error={err('area')}>
+                        <Input id="area" autoComplete="street-address" value={f.area} onChange={set('area')} {...aria('area')} />
+                      </Field>
+                      <Field id="pincode" label={tr('pincode')} error={err('pincode')}>
+                        <Input id="pincode" inputMode="numeric" autoComplete="postal-code" maxLength={6} value={f.pincode} onChange={digits('pincode')} {...aria('pincode')} />
+                      </Field>
+                      <Field id="notes" label={tr('notes')} hint={tr('notesHint')}>
+                        <Textarea id="notes" rows={3} value={f.notes} onChange={set('notes')} aria-describedby={describedBy('notes', { hint: true })} />
+                      </Field>
+                    </>
+                  )}
+                  {step === 3 && (
+                    <>
+                      <Field id="name" label={tr('name')} error={err('name')}>
+                        <Input id="name" autoComplete="name" value={f.name} onChange={set('name')} {...aria('name')} />
+                      </Field>
+                      <Field id="phone" label={tr('phone')} error={err('phone')}>
+                        <Input id="phone" type="tel" inputMode="numeric" autoComplete="tel-national" maxLength={10} value={f.phone} onChange={digits('phone')} {...aria('phone')} />
+                      </Field>
+                      <Options name="contactBy" legend={tr('contactLegend')} values={['call', 'whatsapp']} value={f.contactBy} label={tr} onChange={set('contactBy')} />
+                    </>
+                  )}
+                </m.div>
+              </AnimatePresence>
+              {sendError && (
+                <p role="alert" className="m-0 flex items-start gap-2 rounded-tile bg-terracotta-deep/10 p-4 text-base font-bold text-terracotta-deep">
+                  <Icon name="warning" size={20} className="mt-0.5 shrink-0" /> {tr('errSend', { phone: SITE.phone })}
+                </p>
+              )}
+              <div className="flex flex-wrap gap-3 border-t border-line pt-6">
+                {step > 0 && <Button variant="outline" onClick={() => setStep(step - 1)} disabled={sending}>{tr('back')}</Button>}
+                <Button type="submit" variant={step === 3 ? 'urgent' : 'primary'} className="flex-1" disabled={sending} aria-busy={sending}>
+                  {sending ? tr('sending') : step === 3 ? tr('request') : tr('continue')}
+                  {!sending && <Icon name="arrow" size={18} />}
+                </Button>
+              </div>
+            </form>
+          </Reveal>
+
+          <aside className="grid gap-5">
+            <Reveal className="overflow-hidden rounded-panel bg-white shadow-card">
+              {service.image && (
+                <img src={service.image} alt="" width={1200} height={800} loading="lazy" className="fade-card aspect-[16/9] w-full object-cover" />
+              )}
+              <div className={`p-6 ${service.image ? '-mt-6 pt-0' : ''}`}>
+                <h2 className="relative mb-3 text-h3m md:text-h3">{tr('included')}</h2>
+                <ul className="mb-5 grid gap-2.5">
+                  {service.includes.map((i) => (
+                    <li key={i} className="flex items-start gap-2.5 text-base">
+                      <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-sage-tint text-green"><Icon name="check" size={14} /></span> {i}
+                    </li>
+                  ))}
+                </ul>
+                <div className="grid gap-2 rounded-tile bg-mist/70 p-4 text-base">
+                  <p className="m-0 flex items-start gap-2">
+                    <Icon name="clock" size={18} className="mt-1 shrink-0 text-green" />
+                    <span><strong className="text-green">{tr('duration')}</strong> {service.duration}</span>
+                  </p>
+                  <p className="m-0 flex items-start gap-2">
+                    <Icon name="userCheck" size={18} className="mt-1 shrink-0 text-green" /> {tr('bgCheck')}
+                  </p>
+                </div>
+                <p className="mb-0 mt-4 text-small text-grey">{tr('price')}</p>
+              </div>
+            </Reveal>
+            {service.related === '/safe-zone' && <Reveal><BandPanel /></Reveal>}
             {service.specialised && (
-              <InfoBand icon="stethoscope">
-                <strong>{tr('doctorLed')}</strong> {tr('suitability')}
-              </InfoBand>
+              <Reveal className="flex items-start gap-3 rounded-tile border border-mint bg-white p-5 text-base">
+                <span className="grid h-10 w-10 shrink-0 place-items-center rounded-btn bg-mist text-green"><Icon name="stethoscope" size={20} /></span>
+                <span className="pt-1"><strong className="text-green">{tr('doctorLed')}</strong> {tr('suitability')}</span>
+              </Reveal>
             )}
-            <HelpBox />
+            <Reveal><HelpBox /></Reveal>
           </aside>
         </div>
-      </div>
+      </section>
     </>
   );
+}
+
+/** TODO: API: POST the booking request to the care team queue. Throws if it does not go through. */
+async function sendRequest(_form: Form): Promise<void> {
+  return Promise.resolve();
 }
 
 /** Dementia care: the Safe-zone band, explained where families book. */
 function BandPanel() {
   const tc = useT(COPY);
   return (
-    <section aria-labelledby="band" className="rounded-card bg-green p-6 text-white">
+    <section aria-labelledby="band" className="rounded-panel bg-green p-6 text-white shadow-card">
       <div className="mb-3 flex flex-wrap items-center gap-3">
         <span className="grid h-11 w-11 place-items-center rounded-full bg-white/10 text-mustard"><Icon name="watch" size={22} /></span>
         <h2 id="band" className="m-0 font-body text-h3m text-white md:text-h3">{tc('bandTitle')}</h2>
@@ -402,7 +534,7 @@ function BandPanel() {
           <li key={k} className="flex items-start gap-2"><Icon name="check" size={18} className="mt-1 shrink-0 text-mustard" /> {tc(k)}</li>
         ))}
       </ul>
-      <Link to="/safe-zone" className="inline-flex min-h-[2.75rem] items-center gap-2 font-bold text-white">
+      <Link to="/safe-zone" className="group inline-flex min-h-[2.75rem] items-center gap-2 font-bold text-white">
         {tc('bandMore')} <Icon name="arrow" size={18} />
       </Link>
     </section>

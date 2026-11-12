@@ -1,22 +1,34 @@
 import { useState } from 'react';
+import { m } from 'motion/react';
 import Icon from '../components/Icon';
 import Button from '../components/ui/Button';
-import Card from '../components/ui/Card';
-import InfoBand from '../components/ui/InfoBand';
-import SectionHeading from '../components/ui/SectionHeading';
-import StepList from '../components/ui/StepList';
+import Accent, { Eyebrow } from '../components/ui/Accent';
 import { Field, Input } from '../components/ui/Field';
 import AppPanel, { HelpBox } from '../components/commerce/AppPanel';
 import PageHeader from '../components/layout/PageHeader';
 import Seo from '../components/layout/Seo';
-import { RX_STEPS } from './Home';
+import RxStory from '../components/home/RxStory';
+import { Reveal, Stagger, StaggerItem } from '../components/motion/Reveal';
+import { RX_STEPS } from '../data/rxSteps';
+import { SITE } from '../config/site';
+import { VIEWPORT, tReveal } from '../lib/motion';
 import { useLang, useLoc, useT, type Dict } from '../i18n/LangContext';
 
-// Prescription orders (guidelines p.8, p.11). Upload happens in the app only (pitch deck p.10);
-// this page explains the flow and shows how the AI-read list and order tracking look.
+// Prescription orders (guidelines p.8, p.10, p.11). Upload happens in the app only (pitch deck
+// p.10); this page explains the flow (scroll-linked story, as on the homepage) and shows how the
+// AI-read list and order tracking look. "AI assists, pharmacist decides" wherever AI reads a
+// prescription.
 
 const T: Dict = {
   en: {
+    titleAccent: 'Upload your prescription. *A pharmacist checks it.*',
+    aiTitleAccent: 'AI assists, _pharmacist decides._',
+    howLead: 'Four steps from your prescription to your door. If anything is unclear, the pharmacist calls you before packing.',
+    getApp: 'Get the app', callOrder: 'Call {phone} to order',
+    appTitle: 'Upload in the Way2Cure app',
+    tryEyebrow: 'Inside the app', tryTitle: 'You check the list. *We keep you posted.*',
+    knowEyebrow: 'Rules we follow',
+    emptyList: 'You removed every medicine from the example.', resetList: 'Show the example again',
     seoTitle: 'Upload a prescription',
     seoDesc: 'Upload your prescription in the Way2Cure app. AI lists the medicines, a registered pharmacist verifies every order, and we deliver in Mumbai, Navi Mumbai and Thane.',
     eyebrow: 'Prescription orders',
@@ -49,6 +61,14 @@ const T: Dict = {
     s0: 'Uploaded', s1: 'List confirmed', s2: 'Pharmacist checked', s3: 'Out for delivery', s4: 'Delivered',
   },
   hi: {
+    titleAccent: 'अपना पर्चा अपलोड करें। *फ़ार्मासिस्ट उसे जाँचेंगे।*',
+    aiTitleAccent: 'AI मदद करता है, _फ़ैसला फ़ार्मासिस्ट करते हैं।_',
+    howLead: 'आपके पर्चे से आपके दरवाज़े तक चार कदम। कुछ भी साफ़ न हो तो पैक करने से पहले फ़ार्मासिस्ट आपको कॉल करते हैं।',
+    getApp: 'ऐप पाएँ', callOrder: 'ऑर्डर के लिए {phone} पर कॉल करें',
+    appTitle: 'Way2Cure ऐप में अपलोड करें',
+    tryEyebrow: 'ऐप के अंदर', tryTitle: 'लिस्ट आप जाँचते हैं। *हर अपडेट हम देते हैं।*',
+    knowEyebrow: 'हम ये नियम मानते हैं',
+    emptyList: 'आपने उदाहरण से सभी दवाइयाँ हटा दीं।', resetList: 'उदाहरण फिर से दिखाएँ',
     seoTitle: 'पर्चा अपलोड करें',
     seoDesc: 'Way2Cure ऐप में अपना पर्चा अपलोड करें। AI दवाइयों की लिस्ट बनाता है, हर ऑर्डर को रजिस्टर्ड फ़ार्मासिस्ट जाँचते हैं, और हम मुंबई, नवी मुंबई और ठाणे में डिलिवरी करते हैं।',
     eyebrow: 'पर्चे वाले ऑर्डर',
@@ -81,6 +101,14 @@ const T: Dict = {
     s0: 'अपलोड हुआ', s1: 'लिस्ट कन्फ़र्म', s2: 'फ़ार्मासिस्ट ने जाँचा', s3: 'डिलिवरी के लिए निकला', s4: 'पहुँच गया',
   },
   mr: {
+    titleAccent: 'तुमचे प्रिस्क्रिप्शन अपलोड करा. *फार्मासिस्ट ते तपासतील.*',
+    aiTitleAccent: 'AI मदत करते, _निर्णय फार्मासिस्ट घेतात._',
+    howLead: 'तुमच्या प्रिस्क्रिप्शनपासून तुमच्या दारापर्यंत चार पायऱ्या. काही अस्पष्ट असल्यास पॅक करण्यापूर्वी फार्मासिस्ट तुम्हाला कॉल करतात.',
+    getApp: 'ॲप मिळवा', callOrder: 'ऑर्डरसाठी {phone} वर कॉल करा',
+    appTitle: 'Way2Cure ॲपमध्ये अपलोड करा',
+    tryEyebrow: 'ॲपच्या आत', tryTitle: 'यादी तुम्ही तपासता. *प्रत्येक अपडेट आम्ही देतो.*',
+    knowEyebrow: 'आम्ही हे नियम पाळतो',
+    emptyList: 'तुम्ही उदाहरणातील सर्व औषधे काढली.', resetList: 'उदाहरण पुन्हा दाखवा',
     seoTitle: 'प्रिस्क्रिप्शन अपलोड करा',
     seoDesc: 'Way2Cure ॲपमध्ये तुमचे प्रिस्क्रिप्शन अपलोड करा. AI औषधांची यादी करते, प्रत्येक ऑर्डर नोंदणीकृत फार्मासिस्ट तपासतात, आणि आम्ही मुंबई, नवी मुंबई आणि ठाणे येथे डिलिव्हरी करतो.',
     eyebrow: 'प्रिस्क्रिप्शनच्या ऑर्डर',
@@ -131,6 +159,8 @@ const SAMPLE: RxLine[] = [
 const STATUS = ['s0', 's1', 's2', 's3', 's4'];
 const CURRENT = 2;
 
+const KNOW = [['rx', 'know1'], ['verified', 'know2'], ['warning', 'know3'], ['lock', 'know4']] as const;
+
 export default function Prescription() {
   const { t } = useLang();
   const tr = useT(T);
@@ -140,124 +170,188 @@ export default function Prescription() {
 
   // Once a field is edited by hand, the typed text replaces the translations in every language.
   const update = (id: number, key: keyof RxLineText, value: string) =>
-    setList((l) => l.map((m) => (m.id === id ? { ...m, [key]: value, hi: { ...m.hi, [key]: value }, mr: { ...m.mr, [key]: value } } : m)));
+    setList((l) => l.map((x) => (x.id === id ? { ...x, [key]: value, hi: { ...x.hi, [key]: value }, mr: { ...x.mr, [key]: value } } : x)));
+
+  const actionBtn = 'inline-flex min-h-tap items-center gap-1.5 rounded-btn px-3 font-bold text-terracotta-deep transition-colors duration-micro hover:bg-mist';
 
   return (
     <>
       <Seo title={tr('seoTitle')} description={tr('seoDesc')} />
-      <PageHeader tone="white" title={tr('title')} lead={tr('intro')} crumbs={[{ label: t('home'), to: '/' }, { label: tr('eyebrow') }]} />
+      <PageHeader
+        eyebrow={tr('eyebrow')}
+        title={tr('titleAccent')}
+        lead={tr('intro')}
+        crumbs={[{ label: t('home'), to: '/' }, { label: tr('eyebrow') }]}
+      >
+        <div className="grid gap-5">
+          <p className="m-0 flex items-start gap-2 text-base font-semibold text-terracotta-deep">
+            <Icon name="rx" size={18} className="mt-0.5 shrink-0" /> {tr('know1')}
+          </p>
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <Button href="#get-app"><Icon name="phoneApp" size={20} /> {tr('getApp')}</Button>
+            <Button href={SITE.phoneHref} variant="outline"><Icon name="phone" size={20} /> {tr('callOrder', { phone: SITE.phone })}</Button>
+          </div>
+        </div>
+      </PageHeader>
 
-      <section className="py-10">
-        <div className="container grid items-start gap-6 lg:grid-cols-[1.3fr_1fr]">
-          <AppPanel />
-          <div className="grid gap-4">
-            <InfoBand icon="sparkles">
-              <strong>{tr('aiTitle')}</strong> {tr('aiText')}
-            </InfoBand>
-            <HelpBox />
+      {/* App-only upload */}
+      <section id="get-app" className="bg-white py-14 lg:py-20">
+        <div className="container grid items-start gap-6 lg:grid-cols-[1.35fr_1fr] lg:gap-8">
+          <Reveal><AppPanel title={tr('appTitle')} headingLevel={2} /></Reveal>
+          <div className="grid gap-6">
+            <Reveal className="rounded-panel bg-mist p-6">
+              <span className="mb-4 grid h-11 w-11 place-items-center rounded-btn bg-white text-green"><Icon name="sparkles" size={22} /></span>
+              <h2 className="mb-2 font-body text-h3m md:text-h3">{tr('aiTitle')}</h2>
+              <p className="m-0 text-ink/80">{tr('aiText')}</p>
+            </Reveal>
+            <Reveal><HelpBox /></Reveal>
           </div>
         </div>
       </section>
 
-      <section className="bg-white py-12 md:py-16">
+      {/* How it works: pinned scroll story on desktop, stepper on phones */}
+      <section className="section bg-mist">
         <div className="container">
-          <SectionHeading title={tr('howItWorks')} />
-          <StepList steps={RX_STEPS} />
+          <RxStory
+            steps={RX_STEPS.map(loc)}
+            heading={
+              <Reveal>
+                <Eyebrow>{tr('howItWorks')}</Eyebrow>
+                <h2 className="mb-4 text-section"><Accent text={tr('aiTitleAccent')} /></h2>
+                <p className="m-0 text-lead text-ink/75">{tr('howLead')}</p>
+              </Reveal>
+            }
+          />
         </div>
       </section>
 
-      <section className="py-12 md:py-16">
-        <div className="container grid gap-12 lg:grid-cols-2">
-          <div>
-            <h2>{tr('checkTitle')}</h2>
-            <p>{tr('checkText')}</p>
-            <Card padded={false}>
-              <div className="flex items-center justify-between gap-3 border-b border-mint px-5 py-4">
-                <strong className="text-green">{tr('medicinesFound')}</strong>
-                <span className="text-small text-grey">{tr('example')}</span>
-              </div>
-              <ul className="divide-y divide-mint">
-                {list.map((item) => {
-                  const m = loc(item);
-                  return (
-                    <li key={m.id} className="px-5 py-4">
-                      {editing === m.id ? (
-                        <div className="grid gap-3">
-                          <Field id={`rx-${m.id}-name`} label={tr('medicine')}>
-                            <Input id={`rx-${m.id}-name`} value={m.name} onChange={(e) => update(m.id, 'name', e.target.value)} />
-                          </Field>
-                          <div className="grid gap-3 sm:grid-cols-2">
-                            <Field id={`rx-${m.id}-dose`} label={tr('howOften')}>
-                              <Input id={`rx-${m.id}-dose`} value={m.dose} onChange={(e) => update(m.id, 'dose', e.target.value)} />
-                            </Field>
-                            <Field id={`rx-${m.id}-days`} label={tr('howLong')}>
-                              <Input id={`rx-${m.id}-days`} value={m.days} onChange={(e) => update(m.id, 'days', e.target.value)} />
-                            </Field>
-                          </div>
-                          <div><Button compact onClick={() => setEditing(null)}>{tr('done')}</Button></div>
-                        </div>
-                      ) : (
-                        <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
-                          <div className="grid">
-                            <strong className="text-green">{m.name}</strong>
-                            <span className="text-base text-grey">{m.dose} · {m.days}</span>
-                          </div>
-                          <div className="flex gap-1">
-                            <button type="button" className="inline-flex min-h-tap items-center gap-1.5 rounded-btn px-3 font-bold text-terracotta-deep hover:bg-cream"
-                              aria-label={tr('editAria', { name: m.name })} onClick={() => setEditing(m.id)}>
-                              <Icon name="edit" size={18} /> {tr('edit')}
-                            </button>
-                            <button type="button" className="inline-flex min-h-tap items-center gap-1.5 rounded-btn px-3 font-bold text-terracotta-deep hover:bg-cream"
-                              aria-label={tr('removeAria', { name: m.name })} onClick={() => setList((l) => l.filter((x) => x.id !== m.id))}>
-                              <Icon name="trash" size={18} /> {tr('remove')}
-                            </button>
-                          </div>
-                        </div>
-                      )}
-                    </li>
-                  );
-                })}
-              </ul>
-              <p className="m-0 border-t border-mint px-5 py-4 text-base text-grey">{tr('unclear')}</p>
-            </Card>
-          </div>
-
-          <div>
-            <h2>{tr('followTitle')}</h2>
-            <p>{tr('followText')}</p>
-            <Card edge="var(--sage)">
-              <p className="mb-4"><strong className="text-green">{tr('order', { id: 'W2C204518' })}</strong> · <span className="text-grey">{tr('example')}</span></p>
-              <div
-                className="mb-5 h-2.5 overflow-hidden rounded-full bg-mint"
-                role="progressbar" aria-valuemin={0} aria-valuemax={STATUS.length - 1} aria-valuenow={CURRENT} aria-valuetext={tr(STATUS[CURRENT])}
-              >
-                <span className="block h-full w-1/2 rounded-full bg-sage" />
-              </div>
-              <ol className="grid gap-3">
-                {STATUS.map((s, i) => (
-                  <li key={s} className={`flex items-center gap-3 ${i <= CURRENT ? 'font-bold text-green' : 'text-grey'}`}>
-                    <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-full ${i <= CURRENT ? 'bg-sage text-green' : 'bg-cream text-grey'}`}>
-                      <Icon name={i <= CURRENT ? 'check' : 'clock'} size={18} />
-                    </span>
-                    {tr(s)}
-                  </li>
-                ))}
-              </ol>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-mint py-12 md:py-16">
+      {/* Inside the app: the editable AI-read list and the order tracker */}
+      <section className="section">
         <div className="container">
-          <h2>{tr('goodToKnow')}</h2>
-          <ul className="grid gap-x-10 gap-y-4 md:grid-cols-2">
-            {['know1', 'know2', 'know3', 'know4'].map((k) => (
-              <li key={k} className="flex items-start gap-3 text-green">
-                <Icon name="check" className="mt-1 shrink-0" /> <span>{tr(k)}</span>
-              </li>
+          <Reveal className="mb-12 max-w-2xl">
+            <Eyebrow>{tr('tryEyebrow')}</Eyebrow>
+            <h2 className="m-0 text-section"><Accent text={tr('tryTitle')} /></h2>
+          </Reveal>
+          <div className="grid items-start gap-8 lg:grid-cols-2">
+            <Reveal className="grid gap-4">
+              <div>
+                <h3 className="mb-1">{tr('checkTitle')}</h3>
+                <p className="m-0 text-ink/80">{tr('checkText')}</p>
+              </div>
+              <div className="overflow-hidden rounded-panel bg-white shadow-card">
+                <div className="flex items-center justify-between gap-3 border-b border-line px-5 py-4">
+                  <strong className="flex items-center gap-2 text-green"><Icon name="sparkles" size={18} className="text-mustard" /> {tr('medicinesFound')}</strong>
+                  <span className="rounded-full bg-mist px-2.5 py-0.5 text-small font-semibold text-grey">{tr('example')}</span>
+                </div>
+                {list.length ? (
+                  <ul className="divide-y divide-line" aria-live="polite">
+                    {list.map((item) => {
+                      const x = loc(item);
+                      return (
+                        <li key={x.id} className="px-5 py-4">
+                          {editing === x.id ? (
+                            <div className="grid gap-3">
+                              <Field id={`rx-${x.id}-name`} label={tr('medicine')}>
+                                <Input id={`rx-${x.id}-name`} value={x.name} onChange={(e) => update(x.id, 'name', e.target.value)} />
+                              </Field>
+                              <div className="grid gap-3 sm:grid-cols-2">
+                                <Field id={`rx-${x.id}-dose`} label={tr('howOften')}>
+                                  <Input id={`rx-${x.id}-dose`} value={x.dose} onChange={(e) => update(x.id, 'dose', e.target.value)} />
+                                </Field>
+                                <Field id={`rx-${x.id}-days`} label={tr('howLong')}>
+                                  <Input id={`rx-${x.id}-days`} value={x.days} onChange={(e) => update(x.id, 'days', e.target.value)} />
+                                </Field>
+                              </div>
+                              <div><Button compact onClick={() => setEditing(null)}><Icon name="check" size={18} /> {tr('done')}</Button></div>
+                            </div>
+                          ) : (
+                            <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+                              <div className="flex items-center gap-3">
+                                <span className="grid h-10 w-10 shrink-0 place-items-center rounded-btn bg-mist text-green"><Icon name="pill" size={18} /></span>
+                                <span className="grid">
+                                  <strong className="text-green">{x.name}</strong>
+                                  <span className="text-base text-grey">{x.dose} · {x.days}</span>
+                                </span>
+                              </div>
+                              <div className="flex gap-1">
+                                <button type="button" className={actionBtn} aria-label={tr('editAria', { name: x.name })} onClick={() => setEditing(x.id)}>
+                                  <Icon name="edit" size={18} /> {tr('edit')}
+                                </button>
+                                <button type="button" className={actionBtn} aria-label={tr('removeAria', { name: x.name })} onClick={() => setList((l) => l.filter((y) => y.id !== x.id))}>
+                                  <Icon name="trash" size={18} /> {tr('remove')}
+                                </button>
+                              </div>
+                            </div>
+                          )}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                ) : (
+                  <div className="grid justify-items-start gap-3 px-5 py-6" aria-live="polite">
+                    <p className="m-0 text-ink/80">{tr('emptyList')}</p>
+                    <Button compact variant="outline" onClick={() => setList(SAMPLE)}><Icon name="refresh" size={18} /> {tr('resetList')}</Button>
+                  </div>
+                )}
+                <p className="m-0 flex items-start gap-2 border-t border-line bg-cream/60 px-5 py-4 text-base text-ink/80">
+                  <Icon name="phone" size={18} className="mt-1 shrink-0 text-terracotta-deep" /> {tr('unclear')}
+                </p>
+              </div>
+            </Reveal>
+
+            <Reveal className="grid gap-4">
+              <div>
+                <h3 className="mb-1">{tr('followTitle')}</h3>
+                <p className="m-0 text-ink/80">{tr('followText')}</p>
+              </div>
+              <div className="rounded-panel bg-white p-6 shadow-card">
+                <p className="mb-4 flex flex-wrap items-center justify-between gap-2">
+                  <strong className="text-green">{tr('order', { id: 'W2C204518' })}</strong>
+                  <span className="rounded-full bg-mist px-2.5 py-0.5 text-small font-semibold text-grey">{tr('example')}</span>
+                </p>
+                <div
+                  className="relative mb-6 h-2 overflow-hidden rounded-full bg-mint"
+                  role="progressbar" aria-label={tr('order', { id: 'W2C204518' })} aria-valuemin={0} aria-valuemax={STATUS.length - 1} aria-valuenow={CURRENT} aria-valuetext={tr(STATUS[CURRENT])}
+                >
+                  <m.span
+                    className="absolute inset-0 origin-left rounded-full bg-sage"
+                    initial={{ scaleX: 0 }}
+                    whileInView={{ scaleX: CURRENT / (STATUS.length - 1) }}
+                    viewport={VIEWPORT}
+                    transition={tReveal}
+                  />
+                </div>
+                <Stagger as="ol" className="grid gap-3">
+                  {STATUS.map((st, i) => (
+                    <StaggerItem as="li" key={st} className={`flex items-center gap-3 ${i <= CURRENT ? 'font-bold text-green' : 'text-grey'}`}>
+                      <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-full ${i < CURRENT ? 'bg-sage text-white' : i === CURRENT ? 'bg-green text-white' : 'bg-mist text-grey'}`}>
+                        <Icon name={i <= CURRENT ? 'check' : 'clock'} size={18} />
+                      </span>
+                      {tr(st)}
+                    </StaggerItem>
+                  ))}
+                </Stagger>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* Rules we follow (guidelines p.11) */}
+      <section className="section bg-white">
+        <div className="container">
+          <Reveal className="mb-10 max-w-2xl">
+            <Eyebrow>{tr('knowEyebrow')}</Eyebrow>
+            <h2 className="m-0 text-section">{tr('goodToKnow')}</h2>
+          </Reveal>
+          <Stagger as="ul" className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {KNOW.map(([icon, k]) => (
+              <StaggerItem as="li" key={k} className="rounded-tile border border-mint bg-white p-6">
+                <span className="mb-4 grid h-12 w-12 place-items-center rounded-btn bg-mist text-green"><Icon name={icon} size={22} /></span>
+                <p className="m-0 text-base text-ink">{tr(k)}</p>
+              </StaggerItem>
             ))}
-          </ul>
+          </Stagger>
         </div>
       </section>
     </>

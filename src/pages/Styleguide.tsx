@@ -17,7 +17,8 @@ import PlanCard from '../components/plans/PlanCard';
 import DoseDay from '../components/plans/DoseDay';
 import TrustStrip from '../components/trust/TrustStrip';
 import Seo from '../components/layout/Seo';
-import { RX_STEPS } from './Home';
+import { RX_STEPS } from '../data/rxSteps';
+import StyleguideMotion from './StyleguideMotion';
 import { faqs, getProduct, getService } from '../data';
 
 // Internal design-system review page (not linked from the site, not indexed).
@@ -60,6 +61,8 @@ export default function Styleguide() {
       <p className="text-lead text-grey">
         Tokens and components from the Brand &amp; Website Guidelines v1.0. Every page is built only from these pieces.
       </p>
+
+      <StyleguideMotion />
 
       <Block title="Colour" note="Usage mix: about 60% cream and white, 25% deep green, 10% mint, 5% accents.">
         <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">

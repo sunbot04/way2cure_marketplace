@@ -19,6 +19,7 @@ export default {
       sage: { DEFAULT: v('sage'), tint: v('sage-tint') }, // illustrations, dividers, success
       mint: v('mint'), // info bands, soft panels, borders
       cream: v('cream'), // page background
+      mist: v('mist'), // #EEF4F2 mint-tinted section background
       ink: v('ink'), // body text
       grey: v('grey'), // secondary text
       line: v('line'), // hairline borders on white
@@ -42,15 +43,22 @@ export default {
       h2: ['1.875rem', { lineHeight: '1.2' }],
       h1m: ['2rem', { lineHeight: '1.2' }],
       h1: ['2.5rem', { lineHeight: '1.15' }],
+      // Display sizes for the landing page only (hero 56–64px desktop / 36–40px mobile,
+      // section headings ~44px). Inner pages keep the guideline scale above.
+      display: ['clamp(2.25rem, 1.35rem + 3.6vw, 4rem)', { lineHeight: '1.06', letterSpacing: '-0.02em' }],
+      section: ['clamp(1.75rem, 1.25rem + 1.9vw, 2.75rem)', { lineHeight: '1.12', letterSpacing: '-0.015em' }],
     },
     extend: {
-      borderRadius: { btn: '8px', card: '12px' },
+      borderRadius: { btn: '8px', card: '12px', tile: '16px', panel: '20px' },
       boxShadow: {
         card: '0 1px 2px rgb(17 77 74 / 0.06), 0 4px 16px rgb(17 77 74 / 0.06)',
         raised: '0 12px 32px rgb(17 77 74 / 0.14)',
+        float: '0 18px 48px -12px rgb(17 77 74 / 0.28), 0 2px 6px rgb(17 77 74 / 0.06)',
+        header: '0 8px 30px -10px rgb(17 77 74 / 0.22)',
       },
-      maxWidth: { prose: '70ch', page: '1920px' },
-      transitionDuration: { DEFAULT: '200ms' },
+      maxWidth: { prose: '70ch', page: '84rem' }, // 1344px box = 1280px of content inside the 32px gutters
+      transitionDuration: { DEFAULT: '180ms', micro: '180ms', slow: '300ms' }, // = DURATION.micro in src/lib/motion.ts
+      transitionTimingFunction: { soft: 'cubic-bezier(0.22, 1, 0.36, 1)' }, // = EASE in src/lib/motion.ts
       minHeight: { tap: '3rem' },
       borderWidth: { edge: '5px' },
     },

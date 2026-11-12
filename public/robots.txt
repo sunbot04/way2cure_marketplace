@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /account
+Disallow: /cart
+Disallow: /checkout
+Disallow: /notifications
+Disallow: /styleguide
+
+Sitemap: https://way2cure.com/sitemap.xml

@@ -2,10 +2,13 @@ import { Suspense, lazy, useEffect } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
-import MobileTabBar from './components/layout/MobileTabBar';
+import FloatingHelp from './components/layout/FloatingHelp';
+import { m } from 'motion/react';
+import { pageFade } from './lib/motion';
 import { LAYOUT } from './components/layout/copy';
 import { useT } from './i18n/LangContext';
-import Home from './pages/Home';
+// Every page, the homepage included, loads its own code, so no page downloads another's.
+const Home = lazy(() => import('./pages/Home'));
 const Styleguide = lazy(() => import('./pages/Styleguide'));
 const Shop = lazy(() => import('./pages/Shop'));
 const Product = lazy(() => import('./pages/Product'));
@@ -26,6 +29,7 @@ const Addresses = lazy(() => import('./pages/Addresses'));
 const Privacy = lazy(() => import('./pages/Privacy'));
 const Terms = lazy(() => import('./pages/Terms'));
 const Notifications = lazy(() => import('./pages/Notifications'));
+const Login = lazy(() => import('./pages/Login'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 function ScrollToTop() {
@@ -38,13 +42,19 @@ function ScrollToTop() {
 
 export default function App() {
   const tr = useT(LAYOUT);
+  const { pathname } = useLocation();
   return (
     <>
       <a href="#main" className="sr-only-focusable fixed left-4 top-4 z-50 rounded-btn bg-green px-4 py-3 font-bold text-white">{tr('skip')}</a>
       <ScrollToTop />
       <Header />
+      {/* Room for the fixed floating header (same height as --header-space). The homepage hero
+          makes its own room so it can run up under the transparent header. */}
+      {pathname !== '/' && <div aria-hidden="true" className="h-[var(--header-space)]" />}
       <main id="main" tabIndex={-1}>
-        <Suspense fallback={<div className="container py-12" role="status">Loading…</div>}>
+        {/* Full-height fallback: keeps the footer below the fold while a page loads, so nothing jumps (CLS) */}
+        <Suspense fallback={<div className="container min-h-screen py-12" role="status"><span className="sr-only">Loading…</span></div>}>
+        <m.div key={pathname} {...pageFade}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/shop" element={<Shop />} />
@@ -62,6 +72,8 @@ export default function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/help" element={<Help />} />
           <Route path="/account" element={<Account />} />
+          <Route path="/login" element={<Login mode="login" />} />
+          <Route path="/signup" element={<Login mode="signup" />} />
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/account/family" element={<FamilyProfiles />} />
           <Route path="/account/addresses" element={<Addresses />} />
@@ -71,10 +83,11 @@ export default function App() {
           <Route path="/styleguide" element={<Styleguide />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
+        </m.div>
         </Suspense>
       </main>
       <Footer />
-      <MobileTabBar />
+      <FloatingHelp />
     </>
   );
 }

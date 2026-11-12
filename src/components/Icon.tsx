@@ -5,7 +5,7 @@ import {
   Sun, Sunrise, Sunset, Moon, Phone, MessageCircle, ShoppingCart, Search, Home, FileText,
   Check, ArrowRight, Clock, Truck, Lock, Calendar, MapPin, Menu, X, Plus, Minus, Bell,
   BadgeCheck, Users, Headphones, Smartphone, ScanLine, Sparkles, UserCheck, Trash2, Pencil,
-  Info, AlertTriangle, ChevronRight, ChevronDown, Globe, Watch, Mail, ExternalLink, QrCode, Puzzle,
+  Info, AlertTriangle, ChevronRight, ChevronDown, Globe, Watch, Mail, ExternalLink, QrCode, Puzzle, SlidersHorizontal,
   type LucideIcon,
 } from 'lucide-react';
 
@@ -19,7 +19,7 @@ const map: Record<string, LucideIcon> = {
   close: X, plus: Plus, minus: Minus, bell: Bell, verified: BadgeCheck, users: Users, support: Headphones,
   phoneApp: Smartphone, scan: ScanLine, sparkles: Sparkles, userCheck: UserCheck, trash: Trash2,
   edit: Pencil, info: Info, warning: AlertTriangle, chevron: ChevronRight, globe: Globe, watch: Watch,
-  mail: Mail, user: UserRound, chevronDown: ChevronDown, external: ExternalLink, qr: QrCode, memory: Puzzle,
+  mail: Mail, user: UserRound, chevronDown: ChevronDown, external: ExternalLink, qr: QrCode, memory: Puzzle, filter: SlidersHorizontal,
 };
 
 export interface IconProps {
@@ -32,11 +32,13 @@ export interface IconProps {
 
 export default function Icon({ name, size = 24, className, label }: IconProps) {
   const C = map[name] || Info;
+  // Arrows nudge 3px right when their link, button or card (.group) is hovered.
+  const nudge = name === 'arrow' ? 'shrink-0 transition-transform duration-micro group-hover:translate-x-[3px]' : '';
   return (
     <C
       size={`${size / 16}rem`}
       strokeWidth={2}
-      className={className}
+      className={[nudge, className].filter(Boolean).join(' ') || undefined}
       aria-hidden={label ? undefined : true}
       aria-label={label}
       role={label ? 'img' : undefined}

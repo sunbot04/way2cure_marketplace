@@ -16,7 +16,8 @@ const VARIANTS: Record<ButtonVariant, string> = {
 
 export const buttonClass = (variant: ButtonVariant = 'primary', opts: { block?: boolean; compact?: boolean } = {}) =>
   [
-    'inline-flex min-h-tap items-center justify-center gap-2 rounded-btn border-2 text-center font-bold leading-tight no-underline transition-colors',
+    // group: arrow icons inside nudge 3px right on hover; active: press state scales to 0.98
+    'group inline-flex min-h-tap items-center justify-center gap-2 rounded-btn border-2 text-center font-bold leading-tight no-underline transition-[color,background-color,border-color,transform] duration-micro active:scale-[0.98] disabled:active:scale-100',
     opts.compact ? 'px-4 py-2 text-base' : 'px-6 py-2.5 text-body',
     'disabled:cursor-not-allowed disabled:border-mint disabled:bg-mint disabled:text-grey',
     opts.block ? 'w-full' : '',

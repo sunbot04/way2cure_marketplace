@@ -1,4 +1,5 @@
 import Icon from '../Icon';
+import { StaggerItem, Stagger } from '../motion/Reveal';
 import type { Lang } from '../../data';
 import { useLang } from '../../i18n/LangContext';
 
@@ -17,15 +18,15 @@ export function DoseColumn({ slot, pills }: { slot: DoseSlot; pills: string[] })
   const { lang } = useLang();
   const s = SLOTS[slot];
   return (
-    <section className="overflow-hidden rounded-card bg-white shadow-card" aria-label={s.label[lang]}>
-      <h3 className={`m-0 flex items-center gap-2 px-4 py-3 text-h3m ${s.head}`}>
+    <section className="h-full overflow-hidden rounded-tile bg-white shadow-card" aria-label={s.label[lang]}>
+      <h3 className={`m-0 flex items-center gap-2 px-5 py-3.5 text-h3m ${s.head}`}>
         <Icon name={s.icon} /> {s.label[lang]}
         <span className="ml-auto text-base font-semibold">{s.time[lang]}</span>
       </h3>
-      <ul className="grid gap-2 p-4">
+      <ul className="grid gap-2.5 p-5">
         {pills.map((p, i) => (
-          <li key={`${p}-${i}`} className="flex items-center gap-2">
-            <Icon name="pill" size={18} className="shrink-0 text-terracotta-deep" /> {p}
+          <li key={`${p}-${i}`} className="flex items-center gap-2.5">
+            <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-mist text-green"><Icon name="pill" size={14} /></span> {p}
           </li>
         ))}
       </ul>
@@ -36,8 +37,10 @@ export function DoseColumn({ slot, pills }: { slot: DoseSlot; pills: string[] })
 /** One day of sachets, morning to night. Medicine names stay as printed on the pack. */
 export default function DoseDay({ day }: { day: Record<DoseSlot, string[]> }) {
   return (
-    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-      {(Object.keys(SLOTS) as DoseSlot[]).map((slot) => <DoseColumn key={slot} slot={slot} pills={day[slot]} />)}
-    </div>
+    <Stagger className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {(Object.keys(SLOTS) as DoseSlot[]).map((slot) => (
+        <StaggerItem key={slot}><DoseColumn slot={slot} pills={day[slot]} /></StaggerItem>
+      ))}
+    </Stagger>
   );
 }

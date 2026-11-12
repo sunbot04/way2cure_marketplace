@@ -1,84 +1,95 @@
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { AnimatePresence, m } from 'motion/react';
 import Icon from '../Icon';
 import { buttonClass } from '../ui/Button';
 import { useCart } from '../../context/CartContext';
 import { useNotifications } from '../../context/NotificationsContext';
+import { useAuth } from '../../context/AuthContext';
 import { languages, useLang, useLoc, useT } from '../../i18n/LangContext';
 import { categories, services, shopViews, subscriptionPlans } from '../../data';
 import { SITE } from '../../config/site';
+import { crossfade, pulse } from '../../lib/motion';
 import { LAYOUT } from './copy';
 
-// Utility bar (guidelines p.8): helpline, WhatsApp, home care site, language switch, in one slim row.
-function TopBar() {
+// Header (guidelines p.8, references: DawaTime floating header).
+// A slim utility strip (helpline, WhatsApp, home care site, language), then a floating rounded
+// bar inset from the screen edges. Transparent over the page at the top; white with a soft shadow
+// once you scroll, when the strip slides away and the bar gets a little shorter.
+// Phone number and "Upload prescription" stay visible in the bar.
+// Height is fixed and matched by --header-space in index.css.
+
+function Utility() {
   const { lang, setLang, t } = useLang();
   const tr = useT(LAYOUT);
-  const link = 'inline-flex min-h-[2.75rem] items-center gap-1.5 text-white no-underline hover:underline';
+  const link = 'inline-flex min-h-[2.75rem] items-center gap-1.5 font-semibold text-green no-underline hover:underline';
   return (
-    <div className="bg-green text-small text-white">
-      <div className="container flex h-11 items-center justify-between gap-4">
-        <div className="flex items-center gap-5">
-          <a href={SITE.phoneHref} className={link}>
-            <Icon name="phone" size={16} /> <span className="hidden sm:inline">{tr('helpline')}</span> <strong>{SITE.phone}</strong>
-          </a>
-          <a href={SITE.whatsappHref} className={`${link} hidden sm:inline-flex`} target="_blank" rel="noreferrer"><Icon name="whatsapp" size={16} /> {t('whatsapp')}</a>
-        </div>
-        <div className="flex items-center gap-5">
-          <a href={SITE.homeCareUrl} className={`${link} hidden md:inline-flex`}>{t('homeCareSite')} <Icon name="external" size={14} /></a>
-          {/* Language switch stays visible in the header, never hidden in a menu (p.12) */}
-          <div className="flex items-center" role="group" aria-label={t('language')}>
-            {languages.map((l, i) => (
-              <button
-                key={l.code}
-                type="button"
-                lang={l.code}
-                aria-pressed={lang === l.code}
-                onClick={() => setLang(l.code)}
-                className={`min-h-[2.75rem] px-2 ${i > 0 ? 'border-l border-white/30' : ''} ${
-                  lang === l.code ? 'font-bold text-white underline decoration-2 underline-offset-4' : 'text-mint hover:text-white'
-                }`}
-              >
-                {l.label}
-              </button>
-            ))}
-          </div>
+    <div className="container flex h-11 items-center justify-between gap-4 text-small">
+      <div className="flex items-center gap-5">
+        <a href={SITE.phoneHref} className={link}>
+          <Icon name="phone" size={15} /> <span className="hidden sm:inline">{tr('helpline')}</span> <strong>{SITE.phone}</strong>
+        </a>
+        <a href={SITE.whatsappHref} target="_blank" rel="noreferrer" className={`${link} hidden sm:inline-flex`}>
+          <Icon name="whatsapp" size={15} /> {t('whatsapp')}
+        </a>
+      </div>
+      <div className="flex items-center gap-5">
+        <a href={SITE.homeCareUrl} className={`${link} hidden md:inline-flex`}>{t('homeCareSite')} <Icon name="external" size={13} /></a>
+        {/* Language switch stays visible in the header, never hidden in a menu (p.12) */}
+        <div role="group" aria-label={t('language')} className="flex items-center">
+          {languages.map((l, i) => (
+            <button
+              key={l.code}
+              type="button"
+              lang={l.code}
+              aria-pressed={lang === l.code}
+              onClick={() => setLang(l.code)}
+              className={`min-h-[2.75rem] px-2 ${i > 0 ? 'border-l border-green/20' : ''} ${
+                lang === l.code ? 'font-bold text-green underline decoration-terracotta decoration-2 underline-offset-4' : 'text-grey hover:text-green'
+              }`}
+            >
+              {l.label}
+            </button>
+          ))}
         </div>
       </div>
     </div>
   );
 }
 
-// A top-level menu item with a dropdown panel (desktop: opens on hover or keyboard focus).
-// On mobile the item is a plain link to the section page.
 function NavMenu({ to, label, children, wide = false }: { to: string; label: string; children: ReactNode; wide?: boolean }) {
   return (
     <div className="group relative">
       <NavLink to={to} className={({ isActive }) => navLinkClass(isActive)}>
-        {label} <Icon name="chevronDown" size={16} className="hidden text-grey lg:block" />
+        {label} <Icon name="chevronDown" size={15} className="text-grey transition-transform duration-micro group-hover:rotate-180" />
       </NavLink>
+      {/* Opens from the left edge of the menu item, so it never runs off the screen */}
       <div
-        className={`invisible absolute left-0 top-full z-50 hidden rounded-card border border-line bg-white p-6 opacity-0 shadow-raised transition-opacity group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100 lg:block ${
-          wide ? 'w-[40rem]' : 'w-max min-w-[18.75rem]'
+        className={`invisible absolute -left-3 top-full z-50 translate-y-1 pt-2 opacity-0 transition-[opacity,transform] duration-micro ease-soft group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 ${
+          wide ? 'w-[27rem]' : 'w-max min-w-[15rem] max-w-[32rem]'
         }`}
       >
-        {children}
+        <div className="rounded-tile border border-line bg-white p-3 shadow-float">{children}</div>
       </div>
     </div>
   );
 }
 
 const navLinkClass = (active: boolean) =>
-  `flex min-h-tap items-center gap-1 whitespace-nowrap rounded-btn px-3 font-semibold no-underline lg:rounded-none lg:border-b-[3px] lg:px-0 ${
-    active ? 'bg-sage-tint text-green lg:border-terracotta lg:bg-transparent' : 'text-ink hover:text-green lg:border-transparent'
+  `relative flex min-h-tap items-center gap-1 whitespace-nowrap text-base font-semibold no-underline transition-colors duration-micro after:absolute after:inset-x-0 after:bottom-2 after:h-0.5 after:origin-left after:rounded-full after:bg-terracotta after:transition-transform after:duration-micro ${
+    active ? 'text-green after:scale-x-100' : 'text-ink hover:text-green after:scale-x-0 hover:after:scale-x-100'
   }`;
 
-const panelTitle = 'mb-3 text-small font-bold text-grey';
-const panelLink = 'flex min-h-[2.75rem] items-center gap-2.5 rounded-btn px-2.5 font-semibold text-green no-underline hover:bg-cream';
-const panelAll = 'mt-4 flex items-center gap-1.5 border-t border-line pt-4 font-bold';
+const panelTitle = 'mb-1 px-2 pt-1 text-small font-semibold text-grey';
+const panelLink = 'flex min-h-[2.75rem] items-center gap-2 rounded-btn px-2 text-base font-semibold text-green no-underline hover:bg-mist';
+const panelAll = 'group/all mx-2 mt-2 flex min-h-[2.75rem] items-center gap-1.5 border-t border-line pt-2 text-base font-bold no-underline hover:underline';
+const iconBtn = 'relative grid h-11 w-11 place-items-center rounded-full text-green no-underline transition-colors duration-micro hover:bg-mist';
+const badge = 'absolute -right-0.5 -top-0.5 grid h-5 min-w-[1.25rem] place-items-center rounded-full border-2 border-white bg-terracotta-deep px-1 text-[0.7rem] font-bold leading-none text-white';
 
 export default function Header() {
   const { count } = useCart();
   const { unread } = useNotifications();
+  const { user } = useAuth();
   const { t } = useLang();
   const tr = useT(LAYOUT);
   const loc = useLoc();
@@ -86,136 +97,188 @@ export default function Header() {
   const location = useLocation();
   const [q, setQ] = useState('');
   const [open, setOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const searchRef = useRef<HTMLInputElement>(null);
 
-  // Close the mobile menu and any open dropdown after navigating.
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  // Close menus after navigating.
   useEffect(() => {
     setOpen(false);
+    setSearchOpen(false);
     if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
   }, [location.pathname]);
 
+  useEffect(() => { if (searchOpen) searchRef.current?.focus(); }, [searchOpen]);
+
+  const solid = scrolled || open || searchOpen;
+
   return (
-    <header className="relative z-40 bg-white lg:sticky lg:top-[-2.75rem]">
-      <TopBar />
-      <div className="border-b border-line bg-white">
-        <div className="container grid grid-cols-[auto_1fr_auto] items-center gap-x-4 gap-y-3 py-3 [grid-template-areas:'brand_._actions''search_search_search'] lg:gap-x-10 lg:py-4 lg:[grid-template-areas:'brand_search_actions']">
-          <Link to="/" aria-label={tr('homeAria')} className="flex min-h-tap items-center gap-3 no-underline [grid-area:brand]">
-            {/* Official logo: 36px high on mobile, 44px on desktop (p.4) */}
-            <img src="/logo.png" alt="Way2Cure" width={132} height={44} className="h-9 w-auto lg:h-11" />
-          </Link>
-
-          <form
-            role="search"
-            className="flex w-full max-w-[60rem] items-center gap-2 justify-self-stretch rounded-btn border border-grey/40 bg-cream py-0.5 pl-3 pr-0.5 focus-within:border-green [grid-area:search] focus-within:outline focus-within:outline-[3px] focus-within:outline-offset-2 focus-within:outline-terracotta-deep"
-            onSubmit={(e) => { e.preventDefault(); navigate(`/shop?q=${encodeURIComponent(q.trim())}`); }}
+    <header className="fixed inset-x-0 top-0 z-40">
+      <div className={`transition-transform duration-slow ease-soft ${scrolled ? '-translate-y-11' : ''}`}>
+        <Utility />
+        <div className="px-2 pt-2 lg:px-3 lg:pt-3">
+          <div
+            className={`mx-auto max-w-[86rem] rounded-tile transition-[background-color,box-shadow] duration-slow ease-soft ${
+              solid ? 'bg-white shadow-header' : 'bg-transparent'
+            }`}
           >
-            <label htmlFor="site-search" className="sr-only">{t('search')}</label>
-            <Icon name="search" className="shrink-0 text-grey" />
-            <input
-              id="site-search"
-              type="search"
-              value={q}
-              onChange={(e) => setQ(e.target.value)}
-              placeholder={t('searchPlaceholder')}
-              className="min-h-[2.75rem] min-w-0 flex-1 border-0 bg-transparent p-0 text-body text-ink focus:outline-none"
-            />
-            <button type="submit" className={buttonClass('primary', { compact: true })}>{t('search')}</button>
-          </form>
+            <div className={`flex items-center gap-2 px-3 transition-[height] duration-slow ease-soft lg:gap-4 lg:px-5 ${scrolled ? 'h-16' : 'h-[4.5rem] lg:h-20'}`}>
+              <Link to="/" aria-label={tr('homeAria')} className="mr-2 flex min-h-tap shrink-0 items-center no-underline xl:mr-6">
+                {/* Official logo: 36px high on mobile, 44px on desktop (p.4) */}
+                <img src="/logo.png" alt="Way2Cure" width={132} height={44} className={`w-auto transition-[height] duration-slow ${scrolled ? 'h-9' : 'h-9 lg:h-11'}`} />
+              </Link>
 
-          <div className="flex items-center gap-1 [grid-area:actions]">
-            <Link to="/account" className="flex min-h-tap min-w-[3rem] items-center justify-center gap-1.5 rounded-btn px-2 font-bold text-green no-underline hover:bg-cream">
-              <Icon name="user" /> <span className="hidden lg:inline">{t('login')}</span>
-            </Link>
-            <Link to="/cart" aria-label={tr('cartAria', { count })} className="relative flex min-h-tap min-w-[3rem] items-center justify-center gap-3 rounded-btn px-2 font-bold text-green no-underline hover:bg-cream">
-              <span className="relative">
-                <Icon name="cart" />
-                {count > 0 && <span aria-hidden="true" className="absolute -right-2.5 -top-2 grid h-[1.25rem] min-w-[1.25rem] place-items-center rounded-full border-2 border-white bg-terracotta-deep px-1 text-[0.75rem] font-bold leading-none text-white">{count}</span>}
-              </span>
-              <span className="hidden lg:inline">{t('cart')}</span>
-            </Link>
-            <Link to="/notifications" aria-label={tr('notifAria', { count: unread })} title={tr('notif')} className="relative flex min-h-tap min-w-[3rem] items-center justify-center rounded-btn px-2 font-bold text-green no-underline hover:bg-cream">
-              <span className="relative">
-                <Icon name="bell" />
-                {unread > 0 && <span aria-hidden="true" className="absolute -right-2.5 -top-2 grid h-[1.25rem] min-w-[1.25rem] place-items-center rounded-full border-2 border-white bg-terracotta-deep px-1 text-[0.75rem] font-bold leading-none text-white">{unread}</span>}
-              </span>
-            </Link>
-            <button
-              type="button"
-              aria-expanded={open}
-              aria-controls="main-nav"
-              onClick={() => setOpen((o) => !o)}
-              className="flex min-h-tap items-center gap-1.5 rounded-btn border-2 border-green px-3 font-bold text-green lg:hidden"
-            >
-              <Icon name={open ? 'close' : 'menu'} /> {t('menu')}
-            </button>
+              {/* Desktop navigation (p.8). Below 1280px it lives in the menu. The logo links home. */}
+              <nav aria-label={tr('mainNav')} className="hidden items-center gap-6 xl:flex">
+                <NavMenu to="/shop" label={t('shop')} wide>
+                  <p className={panelTitle}>{tr('shopBy')}</p>
+                  <ul className="grid grid-cols-2 gap-x-1">
+                    {[...categories, ...shopViews].map(loc).map((c) => (
+                      <li key={c.slug}>
+                        <Link to={`/shop/${c.slug}`} className="flex min-h-[2.75rem] items-center gap-2.5 rounded-btn px-2 py-1 text-base font-semibold text-green no-underline hover:bg-mist">
+                          <span className="grid h-8 w-8 shrink-0 place-items-center rounded-btn bg-mist"><Icon name={c.icon} size={16} /></span>
+                          {c.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                  <Link to="/shop" className={panelAll}>{tr('allProducts')} <Icon name="arrow" size={16} className="transition-transform duration-micro group-hover/all:translate-x-[3px]" /></Link>
+                </NavMenu>
+                <NavMenu to="/care" label={t('care')}>
+                  <div className="grid grid-cols-2 gap-2">
+                    {[false, true].map((special) => (
+                      <div key={String(special)}>
+                        <p className={panelTitle}>{special ? tr('careSpecial') : tr('careHome')}</p>
+                        <ul className="grid gap-0.5">
+                          {services.filter((s) => !!s.specialised === special).map(loc).map((s) => (
+                            <li key={s.id}>
+                              <Link to={`/care/${s.id}`} className={`${panelLink} whitespace-nowrap`}>
+                                <Icon name={s.icon} size={16} className="shrink-0 text-sage" /> {s.name}
+                                {s.isNew && <span className="rounded-full bg-mustard px-1.5 py-px text-[0.7rem] font-bold text-green">{tr('newTag')}</span>}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                  <Link to="/care" className={panelAll}>{tr('allCare')} <Icon name="arrow" size={16} className="transition-transform duration-micro group-hover/all:translate-x-[3px]" /></Link>
+                </NavMenu>
+                <NavMenu to="/subscriptions" label={t('subscriptions')}>
+                  <p className={panelTitle}>{tr('plans')}</p>
+                  <ul className="grid gap-0.5">
+                    {subscriptionPlans.map(loc).map((p) => (
+                      <li key={p.id}>
+                        <Link to={p.id === 'sachets' ? '/subscriptions/dose-sachets' : '/subscriptions'} className={panelLink}>
+                          <Icon name={p.icon} size={16} className="shrink-0 text-sage" /> {p.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                  <Link to="/subscriptions#manage" className={panelAll}>{tr('managePlan')} <Icon name="arrow" size={16} className="transition-transform duration-micro group-hover/all:translate-x-[3px]" /></Link>
+                </NavMenu>
+                <NavLink to="/about" className={({ isActive }) => navLinkClass(isActive)}>{t('about')}</NavLink>
+                <NavLink to="/contact" className={({ isActive }) => navLinkClass(isActive)}>{t('contact')}</NavLink>
+              </nav>
+
+              <div className="ml-auto flex items-center gap-1">
+                <button type="button" aria-expanded={searchOpen} aria-controls="site-search-panel" onClick={() => setSearchOpen((s) => !s)} className={iconBtn} aria-label={t('search')}>
+                  <Icon name={searchOpen ? 'close' : 'search'} size={21} />
+                </button>
+                <a href={SITE.phoneHref} className="mx-1 hidden min-h-tap items-center gap-2 whitespace-nowrap rounded-full px-2 font-bold text-green no-underline hover:bg-mist lg:inline-flex">
+                  <span className="grid h-8 w-8 place-items-center rounded-full bg-terracotta-deep text-white"><Icon name="phone" size={15} /></span>
+                  {SITE.phone}
+                </a>
+                <Link to="/cart" aria-label={tr('cartAria', { count })} className={iconBtn}>
+                  <Icon name="cart" size={21} />
+                  {count > 0 && <m.span key={count} {...pulse} aria-hidden="true" className={badge}>{count}</m.span>}
+                </Link>
+                <Link to="/notifications" aria-label={tr('notifAria', { count: unread })} title={tr('notif')} className={iconBtn}>
+                  <Icon name="bell" size={21} />
+                  {unread > 0 && <span aria-hidden="true" className={badge}>{unread}</span>}
+                </Link>
+                {/* Signed in: account. Signed out: login (OTP). */}
+                <Link to={user ? '/account' : '/login'} aria-label={user ? t('account') : t('login')} title={user ? t('account') : t('login')} className={`${iconBtn} hidden sm:grid`}>
+                  <Icon name="user" size={21} />
+                  {user && <span aria-hidden="true" className="absolute bottom-1 right-1 h-2.5 w-2.5 rounded-full border-2 border-white bg-sage" />}
+                </Link>
+                {/* Prescription upload: always visible as its own button (p.8) */}
+                <NavLink to="/prescription" className={`${buttonClass('urgent', { compact: true })} ml-2 hidden whitespace-nowrap md:inline-flex`}>
+                  <Icon name="rx" size={18} /> {t('uploadRx')}
+                </NavLink>
+                <button
+                  type="button"
+                  aria-expanded={open}
+                  aria-controls="mobile-menu"
+                  aria-label={t('menu')}
+                  onClick={() => setOpen((o) => !o)}
+                  className="ml-1 flex min-h-[2.75rem] items-center gap-1.5 rounded-full border-2 border-green px-3 text-base font-bold text-green xl:hidden"
+                >
+                  <Icon name={open ? 'close' : 'menu'} size={20} /> <span className="hidden sm:inline">{t('menu')}</span>
+                </button>
+              </div>
+            </div>
+
+            <AnimatePresence initial={false}>
+              {searchOpen && (
+                <m.div id="site-search-panel" {...crossfade} className="px-3 pb-3 lg:px-5 lg:pb-4">
+                  <form
+                    role="search"
+                    className="flex items-center gap-2 rounded-btn border-2 border-green bg-cream py-1 pl-4 pr-1"
+                    onSubmit={(e) => { e.preventDefault(); navigate(`/shop?q=${encodeURIComponent(q.trim())}`); }}
+                  >
+                    <label htmlFor="site-search" className="sr-only">{t('search')}</label>
+                    <Icon name="search" className="shrink-0 text-grey" />
+                    <input
+                      ref={searchRef}
+                      id="site-search"
+                      type="search"
+                      value={q}
+                      onChange={(e) => setQ(e.target.value)}
+                      placeholder={t('searchPlaceholder')}
+                      className="min-h-[2.75rem] min-w-0 flex-1 border-0 bg-transparent p-0 text-body text-ink focus:outline-none"
+                    />
+                    <button type="submit" className={buttonClass('primary', { compact: true })}>{t('search')}</button>
+                  </form>
+                </m.div>
+              )}
+            </AnimatePresence>
+
+            <AnimatePresence initial={false}>
+              {open && (
+                <m.nav id="mobile-menu" aria-label={tr('mainNav')} {...crossfade} className="max-h-[calc(100dvh-8rem)] overflow-y-auto border-t border-line px-3 pb-4 pt-2 xl:hidden">
+                  <ul className="grid gap-0.5">
+                    {[
+                      ['/', t('home'), 'home'],
+                      ['/shop', t('shop'), 'pill'],
+                      ['/care', t('care'), 'stethoscope'],
+                      ['/subscriptions', t('subscriptions'), 'refresh'],
+                      ['/about', t('about'), 'users'],
+                      ['/contact', t('contact'), 'phone'],
+                      [user ? '/account' : '/login', user ? t('account') : t('login'), 'user'],
+                    ].map(([to, label, icon]) => (
+                      <li key={to}>
+                        <NavLink to={to} end={to === '/'} className={({ isActive }) => `flex min-h-tap items-center gap-3 rounded-btn px-3 text-body font-semibold no-underline ${isActive ? 'bg-mist text-green' : 'text-ink hover:bg-mist'}`}>
+                          <Icon name={icon} size={20} className="text-sage" /> {label}
+                        </NavLink>
+                      </li>
+                    ))}
+                  </ul>
+                  <NavLink to="/prescription" className={`${buttonClass('urgent', { block: true })} mt-3 md:hidden`}>
+                    <Icon name="rx" size={20} /> {t('uploadRx')}
+                  </NavLink>
+                </m.nav>
+              )}
+            </AnimatePresence>
           </div>
         </div>
-
-        {/* Main nav (p.8): Home · Shop · Care Services · Subscriptions · Upload Prescription · About · Contact */}
-        <nav id="main-nav" aria-label={tr('mainNav')} className={`border-t border-line ${open ? 'block' : 'hidden'} lg:block`}>
-          <div className="container grid gap-1 pb-4 pt-2 lg:flex lg:items-center lg:gap-8 lg:py-0">
-            <NavLink to="/" end className={({ isActive }) => navLinkClass(isActive)}>{t('home')}</NavLink>
-
-            <NavMenu to="/shop" label={t('shop')} wide>
-              <p className={panelTitle}>{tr('shopBy')}</p>
-              <ul className="grid grid-cols-2 gap-x-4 gap-y-1">
-                {[...categories, ...shopViews].map(loc).map((c) => (
-                  <li key={c.slug}>
-                    <Link to={`/shop/${c.slug}`} className="flex items-start gap-3 rounded-btn p-2.5 no-underline hover:bg-cream">
-                      <Icon name={c.icon} size={22} className="mt-0.5 shrink-0 text-terracotta-deep" />
-                      <span className="grid leading-snug">
-                        <strong className="text-green">{c.name}</strong>
-                        <small className="text-small text-grey">{c.blurb}</small>
-                      </span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-              <Link to="/shop" className={panelAll}>{tr('allProducts')} <Icon name="arrow" size={18} /></Link>
-            </NavMenu>
-
-            <NavMenu to="/care" label={t('care')}>
-              <div className="grid grid-cols-2 gap-6">
-                {[false, true].map((special) => (
-                  <div key={String(special)}>
-                    <p className={panelTitle}>{special ? tr('careSpecial') : tr('careHome')}</p>
-                    <ul className="grid gap-0.5">
-                      {services.filter((s) => !!s.specialised === special).map(loc).map((s) => (
-                        <li key={s.id}>
-                          <Link to={`/care/${s.id}`} className={`${panelLink} whitespace-nowrap`}>
-                            <Icon name={s.icon} size={18} className="shrink-0 text-terracotta-deep" /> {s.name}
-                            {s.isNew && <span className="rounded-full bg-mustard px-2 py-0.5 text-small font-bold text-green">{tr('newTag')}</span>}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-              <Link to="/care" className={panelAll}>{tr('allCare')} <Icon name="arrow" size={18} /></Link>
-            </NavMenu>
-
-            <NavMenu to="/subscriptions" label={t('subscriptions')}>
-              <p className={panelTitle}>{tr('plans')}</p>
-              <ul className="grid gap-0.5">
-                {subscriptionPlans.map(loc).map((p) => (
-                  <li key={p.id}>
-                    <Link to={p.id === 'sachets' ? '/subscriptions/dose-sachets' : '/subscriptions'} className={panelLink}>
-                      <Icon name={p.icon} size={18} className="shrink-0 text-terracotta-deep" /> {p.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-              <Link to="/subscriptions#manage" className={panelAll}>{tr('managePlan')} <Icon name="arrow" size={18} /></Link>
-            </NavMenu>
-
-            <NavLink to="/about" className={({ isActive }) => navLinkClass(isActive)}>{t('about')}</NavLink>
-            <NavLink to="/contact" className={({ isActive }) => navLinkClass(isActive)}>{t('contact')}</NavLink>
-            {/* Prescription upload: always visible, set apart at the end of the bar (p.8) */}
-            <NavLink to="/prescription" className="mt-2 flex min-h-tap items-center gap-2 whitespace-nowrap rounded-btn border-2 border-terracotta-deep px-4 font-bold text-terracotta-deep no-underline hover:bg-terracotta-deep hover:text-white lg:my-1.5 lg:ml-auto lg:mt-1.5">
-              <Icon name="rx" size={20} /> {t('uploadRx')}
-            </NavLink>
-          </div>
-        </nav>
       </div>
     </header>
   );

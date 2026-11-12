@@ -1,10 +1,14 @@
 import { useState, type FormEvent } from 'react';
+import { AnimatePresence, m } from 'motion/react';
 import Icon from '../components/Icon';
 import PageHeader from '../components/layout/PageHeader';
 import Seo, { medicalBusinessLd } from '../components/layout/Seo';
 import Button from '../components/ui/Button';
+import Accent, { Eyebrow } from '../components/ui/Accent';
 import { Field, Input, Select, describedBy } from '../components/ui/Field';
+import { Reveal, Stagger, StaggerItem } from '../components/motion/Reveal';
 import { SITE } from '../config/site';
+import { crossfade } from '../lib/motion';
 import { useT, type Dict } from '../i18n/LangContext';
 
 // Select options are stored by id so a language switch never breaks the form.
@@ -20,7 +24,18 @@ const T: Dict = {
     areasText: "Nursing and elder care pages for each area we serve.",
     homeCareIn: "Home care in {place}",
     eyebrow: 'Contact',
-    title: "We're family, not just care",
+    title: "We're family, *not just care.*",
+    open247: 'Phone and WhatsApp are answered 24/7, every day of the year.',
+    emailText: 'We reply within one working day.',
+    directions: 'Get directions',
+    officesEyebrow: 'Visit us',
+    areasEyebrow: 'Where we work',
+    formEyebrow: 'Call back',
+    checkOne: 'Please check the field marked below.',
+    checkMany: 'Please check the {n} fields marked below.',
+    another: 'Send another request',
+    formNote: 'We use your number only to call you back about this request.',
+    whatsappNow: 'Prefer to chat? Message us on WhatsApp',
     intro: 'Call, WhatsApp or ask us to call you. We can place an order or book care for you over the phone.',
     callUs: 'Call us, 24/7',
     whatsapp: 'WhatsApp',
@@ -62,7 +77,18 @@ const T: Dict = {
     areasText: "हर इलाके के लिए नर्सिंग और बुज़ुर्गों की देखभाल के पेज।",
     homeCareIn: "{place} में घर पर देखभाल",
     eyebrow: 'संपर्क',
-    title: 'हम सिर्फ़ देखभाल नहीं, परिवार हैं',
+    title: 'हम सिर्फ़ देखभाल नहीं, *परिवार हैं।*',
+    open247: 'फ़ोन और व्हाट्सऐप पर 24/7, साल के हर दिन जवाब मिलता है।',
+    emailText: 'हम एक कामकाजी दिन में जवाब देते हैं।',
+    directions: 'रास्ता देखें',
+    officesEyebrow: 'हमसे मिलें',
+    areasEyebrow: 'हम कहाँ काम करते हैं',
+    formEyebrow: 'कॉल बैक',
+    checkOne: 'कृपया नीचे निशान लगी जानकारी जाँचें।',
+    checkMany: 'कृपया नीचे निशान लगी {n} जानकारियाँ जाँचें।',
+    another: 'एक और अनुरोध भेजें',
+    formNote: 'हम आपका नंबर सिर्फ़ इसी अनुरोध के बारे में वापस कॉल करने के लिए इस्तेमाल करते हैं।',
+    whatsappNow: 'चैट करना पसंद है? हमें व्हाट्सऐप पर मैसेज करें',
     intro: 'कॉल करें, व्हाट्सऐप करें या हमें कॉल करने को कहें। हम फ़ोन पर ही आपके लिए ऑर्डर कर सकते हैं या देखभाल बुक कर सकते हैं।',
     callUs: 'कॉल करें, 24/7',
     whatsapp: 'व्हाट्सऐप',
@@ -104,7 +130,18 @@ const T: Dict = {
     areasText: "आम्ही सेवा देत असलेल्या प्रत्येक भागासाठी नर्सिंग आणि ज्येष्ठांच्या काळजीची पाने.",
     homeCareIn: "{place} मध्ये घरी काळजी",
     eyebrow: 'संपर्क',
-    title: 'आम्ही फक्त काळजी नाही, कुटुंब आहोत',
+    title: 'आम्ही फक्त काळजी नाही, *कुटुंब आहोत.*',
+    open247: 'फोन आणि व्हॉट्सॲपवर 24/7, वर्षाच्या प्रत्येक दिवशी उत्तर मिळते.',
+    emailText: 'आम्ही एका कामकाजाच्या दिवसात उत्तर देतो.',
+    directions: 'रस्ता पाहा',
+    officesEyebrow: 'आम्हाला भेटा',
+    areasEyebrow: 'आम्ही कुठे काम करतो',
+    formEyebrow: 'कॉल बॅक',
+    checkOne: 'कृपया खाली खूण केलेली माहिती तपासा.',
+    checkMany: 'कृपया खाली खूण केलेल्या {n} माहिती तपासा.',
+    another: 'आणखी एक विनंती पाठवा',
+    formNote: 'आम्ही तुमचा नंबर फक्त या विनंतीबद्दल परत कॉल करण्यासाठी वापरतो.',
+    whatsappNow: 'चॅट करायला आवडते? आम्हाला व्हॉट्सॲपवर मेसेज करा',
     intro: 'कॉल करा, व्हॉट्सॲप करा किंवा आम्हाला कॉल करायला सांगा. आम्ही फोनवरच तुमच्यासाठी ऑर्डर करू शकतो किंवा काळजी बुक करू शकतो.',
     callUs: 'कॉल करा, 24/7',
     whatsapp: 'व्हॉट्सॲप',
@@ -142,11 +179,15 @@ const T: Dict = {
 
 type Errors = Partial<Record<'name' | 'phone', string>>;
 
-const channel = 'flex min-h-[4.5rem] items-center gap-4 rounded-card bg-white p-5 text-ink no-underline shadow-card transition-colors hover:bg-cream';
+const channel =
+  'group flex h-full flex-col gap-4 rounded-panel border border-line bg-white p-6 text-ink no-underline transition-[transform,box-shadow] duration-micro ease-soft hover:-translate-y-1 hover:shadow-raised';
+
+const mapsUrl = (address: string) => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
 
 export default function Contact() {
   const tr = useT(T);
-  const [f, setF] = useState({ name: '', phone: '', topic: 'medicines', time: 'asap' });
+  const empty = { name: '', phone: '', topic: 'medicines', time: 'asap' };
+  const [f, setF] = useState(empty);
   const [errors, setErrors] = useState<Errors>({});
   const [sent, setSent] = useState(false);
 
@@ -162,104 +203,169 @@ export default function Contact() {
 
   // Errors are stored as keys so they show in the current language.
   const err = (k: keyof Errors) => (errors[k] ? tr(errors[k]!) : undefined);
+  const nErrors = Object.keys(errors).length;
 
   return (
     <>
-      <Seo title={tr('title')} description={tr('seoDesc')} jsonLd={medicalBusinessLd} />
-      <PageHeader title={tr('title')} lead={tr('intro')} />
+      <Seo title={tr('eyebrow')} description={tr('seoDesc')} jsonLd={medicalBusinessLd} />
+      <PageHeader eyebrow={tr('eyebrow')} title={tr('title')} lead={tr('intro')}>
+        <p className="m-0 flex items-center gap-2 text-base font-semibold text-green">
+          <span className="grid h-7 w-7 place-items-center rounded-full bg-sage-tint"><Icon name="clock" size={15} /></span>
+          {tr('open247')}
+        </p>
+      </PageHeader>
 
-      <div className="container grid items-start gap-10 py-10 md:py-14 lg:grid-cols-2 lg:gap-14">
-        <div>
-          <h2>{tr('reach')}</h2>
-          <ul className="grid gap-3">
-            <li>
+      {/* Three ways to reach us */}
+      <section className="bg-white py-12 lg:py-16">
+        <div className="container">
+          <h2 className="sr-only">{tr('reach')}</h2>
+          <Stagger as="ul" className="grid gap-4 md:grid-cols-3 md:gap-5">
+            <StaggerItem as="li">
               <a href={SITE.phoneHref} className={channel}>
-                <Icon name="phone" size={32} className="shrink-0 text-terracotta-deep" />
-                <span className="grid"><strong className="text-green">{tr('callUs')}</strong><span className="text-lead font-bold">{SITE.phoneDisplay}</span></span>
+                <span className="grid h-12 w-12 place-items-center rounded-btn bg-terracotta-deep text-white"><Icon name="phone" size={24} /></span>
+                <span className="grid gap-1">
+                  <strong className="text-green">{tr('callUs')}</strong>
+                  <span className="font-head text-h2m font-bold text-ink">{SITE.phoneDisplay}</span>
+                </span>
+                <Icon name="arrow" size={18} className="mt-auto text-terracotta-deep" />
               </a>
-            </li>
-            <li>
+            </StaggerItem>
+            <StaggerItem as="li">
               <a href={SITE.whatsappHref} target="_blank" rel="noreferrer" className={channel}>
-                <Icon name="whatsapp" size={32} className="shrink-0 text-green" />
-                <span className="grid"><strong className="text-green">{tr('whatsapp')}</strong><span>{tr('whatsappText')}</span></span>
+                <span className="grid h-12 w-12 place-items-center rounded-btn bg-green text-white"><Icon name="whatsapp" size={24} /></span>
+                <span className="grid gap-1">
+                  <strong className="text-green">{tr('whatsapp')}</strong>
+                  <span className="text-ink/80">{tr('whatsappText')}</span>
+                </span>
+                <Icon name="arrow" size={18} className="mt-auto text-terracotta-deep" />
               </a>
-            </li>
-            <li>
+            </StaggerItem>
+            <StaggerItem as="li">
               <a href={`mailto:${SITE.email}`} className={channel}>
-                <Icon name="mail" size={32} className="shrink-0 text-green" />
-                <span className="grid"><strong className="text-green">{tr('email')}</strong><span className="break-all">{SITE.email}</span></span>
+                <span className="grid h-12 w-12 place-items-center rounded-btn bg-mist text-green"><Icon name="mail" size={24} /></span>
+                <span className="grid gap-1">
+                  <strong className="text-green">{tr('email')}</strong>
+                  <span className="break-all text-ink">{SITE.email}</span>
+                  <span className="text-base text-grey">{tr('emailText')}</span>
+                </span>
+                <Icon name="arrow" size={18} className="mt-auto text-terracotta-deep" />
               </a>
-            </li>
-          </ul>
-
-          <h2 className="mt-12">{tr('offices')}</h2>
-          <ul className="grid gap-5">
-            {SITE.offices.map((o) => (
-              <li key={o.name} className="flex items-start gap-3">
-                <Icon name="pin" size={24} className="mt-1 shrink-0 text-terracotta-deep" />
-                <address className="not-italic">
-                  <strong className="block text-green">{tr(`office:${o.name}`)}</strong>
-                  {o.address}
-                </address>
-              </li>
-            ))}
-          </ul>
-
-          <h2 className="mt-12">{tr('areas')}</h2>
-          <p>{tr('areasText')}</p>
-          <ul className="flex flex-wrap gap-x-6">
-            {SITE.homeCareLocations.map((l) => (
-              <li key={l.name}>
-                <a href={l.href} className="inline-flex min-h-tap items-center gap-1.5 font-bold">
-                  {tr('homeCareIn', { place: l.name })} <Icon name="external" size={16} />
-                </a>
-              </li>
-            ))}
-          </ul>
+            </StaggerItem>
+          </Stagger>
         </div>
+      </section>
 
-        <div className="rounded-card bg-white p-6 shadow-card md:p-8" style={{ borderTop: '5px solid var(--terracotta)' }}>
-          <div aria-live="polite">
-            {sent && (
-              <>
-                <h2 className="flex items-center gap-2">
-                  <Icon name="check" size={28} className="shrink-0 text-sage" /> {tr('thanks', { name: f.name.trim().split(' ')[0] })}
-                </h2>
-                <p className="m-0">{tr('willCall', { phone: f.phone, time: tr(`when.${f.time}`) })}</p>
-              </>
-            )}
+      <section className="section pt-14 lg:pt-20">
+        <div className="container grid items-start gap-12 lg:grid-cols-[1fr_1.05fr] lg:gap-16">
+          <div className="grid gap-14">
+            {/* Offices */}
+            <div>
+              <Reveal>
+                <Eyebrow>{tr('officesEyebrow')}</Eyebrow>
+                <h2 className="mb-6 text-section">{tr('offices')}</h2>
+              </Reveal>
+              <Stagger as="ul" className="grid gap-4">
+                {SITE.offices.map((o) => (
+                  <StaggerItem as="li" key={o.name} className="flex items-start gap-4 rounded-panel bg-white p-5 shadow-card">
+                    <span className="grid h-11 w-11 shrink-0 place-items-center rounded-btn bg-mist text-green"><Icon name="pin" size={22} /></span>
+                    <div className="grid gap-1">
+                      <address className="not-italic">
+                        <strong className="block text-green">{tr(`office:${o.name}`)}</strong>
+                        <span className="text-ink/80">{o.address}</span>
+                      </address>
+                      <a href={mapsUrl(o.address)} target="_blank" rel="noreferrer" className="group inline-flex min-h-[2.75rem] items-center gap-1.5 self-start font-bold">
+                        {tr('directions')} <Icon name="external" size={16} />
+                      </a>
+                    </div>
+                  </StaggerItem>
+                ))}
+              </Stagger>
+            </div>
+
+            {/* Home care areas */}
+            <div>
+              <Reveal>
+                <Eyebrow>{tr('areasEyebrow')}</Eyebrow>
+                <h2 className="mb-3 text-section">{tr('areas')}</h2>
+                <p className="mb-6 text-ink/80">{tr('areasText')}</p>
+              </Reveal>
+              <Stagger as="ul" className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
+                {SITE.homeCareLocations.map((l) => (
+                  <StaggerItem as="li" key={l.name}>
+                    <a href={l.href} className="group flex min-h-tap items-center gap-2 rounded-tile border border-line bg-white px-4 py-3 font-bold text-green no-underline transition-[transform,box-shadow] duration-micro ease-soft hover:-translate-y-0.5 hover:shadow-raised">
+                      <Icon name="pin" size={18} className="shrink-0 text-sage" />
+                      <span className="flex-1">{tr('homeCareIn', { place: l.name })}</span>
+                      <Icon name="external" size={15} className="text-terracotta-deep" />
+                    </a>
+                  </StaggerItem>
+                ))}
+              </Stagger>
+            </div>
           </div>
-          {!sent && (
-            <form onSubmit={submit} noValidate className="grid gap-5">
-              <div>
-                <h2 className="mb-2">{tr('formTitle')}</h2>
-                <p className="m-0">{tr('formText')}</p>
-              </div>
-              <Field id="c-name" label={tr('name')} error={err('name')}>
-                <Input id="c-name" autoComplete="name" value={f.name} invalid={!!errors.name}
-                  aria-describedby={describedBy('c-name', { error: errors.name })}
-                  onChange={(e) => setF({ ...f, name: e.target.value })} />
-              </Field>
-              <Field id="c-phone" label={tr('phone')} error={err('phone')}>
-                <Input id="c-phone" type="tel" inputMode="numeric" maxLength={10} autoComplete="tel-national" value={f.phone} invalid={!!errors.phone}
-                  aria-describedby={describedBy('c-phone', { error: errors.phone })}
-                  onChange={(e) => setF({ ...f, phone: e.target.value.replace(/\D/g, '') })} />
-              </Field>
-              <Field id="c-topic" label={tr('topicLabel')}>
-                <Select id="c-topic" value={f.topic} onChange={(e) => setF({ ...f, topic: e.target.value })}>
-                  {TOPICS.map((o) => <option key={o} value={o}>{tr(`topic.${o}`)}</option>)}
-                </Select>
-              </Field>
-              <Field id="c-time" label={tr('timeLabel')}>
-                <Select id="c-time" value={f.time} onChange={(e) => setF({ ...f, time: e.target.value })}>
-                  {TIMES.map((o) => <option key={o} value={o}>{tr(`time.${o}`)}</option>)}
-                </Select>
-              </Field>
-              <Button type="submit" block>{tr('submit')}</Button>
-            </form>
-          )}
+
+          {/* Call-back form */}
+          <Reveal className="rounded-panel bg-white p-6 shadow-raised md:p-8 lg:sticky lg:top-28">
+            <AnimatePresence mode="wait" initial={false}>
+              {sent ? (
+                <m.div key="sent" {...crossfade} role="status" className="grid justify-items-start gap-4 py-4">
+                  <span className="grid h-14 w-14 place-items-center rounded-full bg-sage text-white"><Icon name="check" size={28} /></span>
+                  <h2 className="m-0 text-section"><Accent text={`*${tr('thanks', { name: f.name.trim().split(' ')[0] })}*`} /></h2>
+                  <p className="m-0 text-lead text-ink/80">{tr('willCall', { phone: f.phone, time: tr(`when.${f.time}`) })}</p>
+                  <a href={SITE.whatsappHref} target="_blank" rel="noreferrer" className="group inline-flex min-h-tap items-center gap-2 font-bold">
+                    <Icon name="whatsapp" size={20} /> {tr('whatsappNow')} <Icon name="arrow" size={16} />
+                  </a>
+                  <Button variant="outline" compact onClick={() => { setF(empty); setSent(false); }}>{tr('another')}</Button>
+                </m.div>
+              ) : (
+                <m.form key="form" {...crossfade} onSubmit={submit} noValidate className="grid gap-5">
+                  <div>
+                    <Eyebrow>{tr('formEyebrow')}</Eyebrow>
+                    <h2 className="mb-2 text-section">{tr('formTitle')}</h2>
+                    <p className="m-0 text-ink/80">{tr('formText')}</p>
+                  </div>
+                  <p aria-live="polite" className="m-0 empty:hidden">
+                    {nErrors > 0 && (
+                      <span className="flex items-center gap-2 rounded-btn bg-terracotta-deep/10 px-4 py-3 font-bold text-terracotta-deep">
+                        <Icon name="warning" size={18} /> {nErrors === 1 ? tr('checkOne') : tr('checkMany', { n: nErrors })}
+                      </span>
+                    )}
+                  </p>
+                  <Field id="c-name" label={tr('name')} error={err('name')}>
+                    <Input id="c-name" autoComplete="name" value={f.name} invalid={!!errors.name}
+                      aria-describedby={describedBy('c-name', { error: errors.name })}
+                      onChange={(e) => setF({ ...f, name: e.target.value })} />
+                  </Field>
+                  <Field id="c-phone" label={tr('phone')} error={err('phone')}>
+                    <div className="flex items-stretch">
+                      <span aria-hidden="true" className="grid min-h-tap place-items-center rounded-l-btn border-2 border-r-0 border-green bg-mist px-3 font-bold text-green">+91</span>
+                      <Input id="c-phone" type="tel" inputMode="numeric" maxLength={10} autoComplete="tel-national" value={f.phone} invalid={!!errors.phone}
+                        className="rounded-l-none"
+                        aria-describedby={describedBy('c-phone', { error: errors.phone })}
+                        onChange={(e) => setF({ ...f, phone: e.target.value.replace(/\D/g, '') })} />
+                    </div>
+                  </Field>
+                  <div className="grid gap-5 sm:grid-cols-2">
+                    <Field id="c-topic" label={tr('topicLabel')}>
+                      <Select id="c-topic" value={f.topic} onChange={(e) => setF({ ...f, topic: e.target.value })}>
+                        {TOPICS.map((o) => <option key={o} value={o}>{tr(`topic.${o}`)}</option>)}
+                      </Select>
+                    </Field>
+                    <Field id="c-time" label={tr('timeLabel')}>
+                      <Select id="c-time" value={f.time} onChange={(e) => setF({ ...f, time: e.target.value })}>
+                        {TIMES.map((o) => <option key={o} value={o}>{tr(`time.${o}`)}</option>)}
+                      </Select>
+                    </Field>
+                  </div>
+                  <Button type="submit" variant="urgent" block><Icon name="phone" size={20} /> {tr('submit')}</Button>
+                  <p className="m-0 flex items-start gap-2 text-small text-grey">
+                    <Icon name="shield" size={16} className="mt-0.5 shrink-0 text-sage" /> {tr('formNote')}
+                  </p>
+                </m.form>
+              )}
+            </AnimatePresence>
+          </Reveal>
         </div>
-      </div>
+      </section>
     </>
   );
 }

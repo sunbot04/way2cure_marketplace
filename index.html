@@ -9,12 +9,19 @@
       content="Way2Cure: care at home, now with everything seniors need. Nurses, doctors and ICU care at home, plus medicines, devices and daily care delivered across Mumbai, Navi Mumbai and Thane."
     />
     <link rel="icon" type="image/png" href="/logo.png" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Lora:wght@700&family=Noto+Sans+Devanagari:wght@400;700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&display=swap"
-      rel="stylesheet"
-    />
+    <!-- Self-hosted fonts (src/styles/fonts.css). Preload the two every page uses first. -->
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/lora-normal-700-latin.woff2" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/nunito-sans-normal-400-latin.woff2" crossorigin />
+    <script>
+      // Homepage only: start loading the hero photo while the app code downloads (faster LCP).
+      if (location.pathname === '/') {
+        var l = document.createElement('link');
+        l.rel = 'preload'; l.as = 'image'; l.fetchPriority = 'high';
+        l.setAttribute('imagesrcset', '/images/people/grandmother-smiling-sari-sm.webp 440w, /images/people/grandmother-smiling-sari.webp 720w');
+        l.setAttribute('imagesizes', '(min-width: 1024px) 424px, 270px');
+        document.head.appendChild(l);
+      }
+    </script>
     <title>Way2Cure | Home care & senior marketplace in Mumbai</title>
   </head>
   <body>

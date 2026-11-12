@@ -18,6 +18,7 @@
     --c-sage-tint: 220 235 232;   /* #DCEBE8 light sage behind small green text (keeps 4.5:1) */
     --c-mint: 200 216 213;        /* #C8D8D5 info bands, soft panels, borders */
     --c-cream: 246 241 233;       /* #F6F1E9 page */
+    --c-mist: 238 244 242;        /* #EEF4F2 mint-tinted section background */
     --c-white: 255 255 255;       /* #FFFFFF cards */
     --c-ink: 31 42 42;            /* #1F2A2A text */
     --c-grey: 94 107 107;         /* #5E6B6B secondary text */
@@ -32,13 +33,14 @@
     --mint: rgb(var(--c-mint));
   }
 
-  html { -webkit-text-size-adjust: 100%; overflow-x: clip; }
-  /* Everything is sized in rem. Phones keep the full senior-friendly size; on desktop screens the
-     whole site is about 10% smaller so it does not look oversized at 100% browser zoom. */
-  @media (min-width: 1024px) { html { font-size: 90.625%; } }
+  html { -webkit-text-size-adjust: 100%; overflow-x: clip; scroll-padding-top: 6.5rem; }
+  /* Height of the fixed floating header (utility strip + gap + bar), see Header.tsx */
+  :root { --header-space: 7.75rem; }
+  @media (min-width: 1024px) { :root { --header-space: 8.5rem; } }
+  @keyframes w2c-pulse { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
   body {
-    @apply bg-cream pb-[4.5rem] font-body text-body text-ink antialiased lg:pb-0;
-    overflow-x: clip; /* room above: the mobile bottom tab bar */
+    @apply bg-cream font-body text-body text-ink antialiased;
+    overflow-x: clip;
   }
   :lang(hi) body, :lang(mr) body { font-family: 'Noto Sans Devanagari', 'Nunito Sans', Arial, sans-serif; }
 
@@ -72,6 +74,26 @@
 }
 
 @layer components {
-  .container { @apply mx-auto w-full max-w-page px-4 md:px-8 xl:px-16; }
+  .container { @apply mx-auto w-full max-w-page px-4 md:px-8; }
+  /* Vertical rhythm: 72px mobile / 120px desktop between sections */
+  .section { @apply py-[4.5rem] lg:py-[7.5rem]; }
+  /* Long pages: let the browser skip style/layout/paint for sections far below the screen until
+     they come near (big win on low-end phones). The browser remembers each section's real height. */
+  .cv-auto { content-visibility: auto; contain-intrinsic-size: auto 56rem; }
+  /* One emphasised phrase per key heading: Lora Italic (Devanagari has no italic, so colour only) */
+  .accent { font-style: italic; }
+  /* On deep green, terracotta-deep fails contrast (1.8:1): accents switch to mustard (5.1:1) */
+  .bg-green .accent { color: rgb(var(--c-mustard)); }
+  :lang(hi) .accent, :lang(mr) .accent { font-style: normal; }
+  /* Printed-paper grain for the dose sachet */
+  .paper {
+    background-color: #fbf8f1;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.35 0 0 0 0 0.3 0 0 0 0 0.22 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+      linear-gradient(115deg, rgb(255 255 255 / 0.55) 0%, rgb(255 255 255 / 0) 38%, rgb(0 0 0 / 0.025) 100%);
+  }
+  /* Heat-seal crimp lines along the sachet edges */
+  .crimp { background-image: repeating-linear-gradient(90deg, rgb(0 0 0 / 0.05) 0 1px, transparent 1px 4px); }
+  .crimp-y { background-image: repeating-linear-gradient(0deg, rgb(0 0 0 / 0.045) 0 1px, transparent 1px 4px); }
   .sr-only-focusable:not(:focus) { @apply sr-only; }
 }

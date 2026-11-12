@@ -58,7 +58,7 @@ export const COPY: Dict = {
     pause: 'Pause plan',
     resume: 'Resume plan',
     change: 'Change plan',
-    reminder: 'We send a reminder 2 days before each order.',
+    reminder: 'We send a reminder 3 days before each order.',
   },
   hi: {
     bandLink: 'सेफ़-ज़ोन बैंड कैसे काम करता है',
@@ -115,7 +115,7 @@ export const COPY: Dict = {
     pause: 'प्लान रोकें',
     resume: 'प्लान फिर शुरू करें',
     change: 'प्लान बदलें',
-    reminder: 'हर ऑर्डर से 2 दिन पहले हम आपको याद दिलाते हैं।',
+    reminder: 'हर ऑर्डर से 3 दिन पहले हम आपको याद दिलाते हैं।',
   },
   mr: {
     bandLink: 'सेफ-झोन बँड कसा काम करतो',
@@ -172,6 +172,6 @@ export const COPY: Dict = {
     pause: 'प्लॅन थांबवा',
     resume: 'प्लॅन पुन्हा सुरू करा',
     change: 'प्लॅन बदला',
-    reminder: 'प्रत्येक ऑर्डरच्या 2 दिवस आधी आम्ही आठवण करून देतो.',
+    reminder: 'प्रत्येक ऑर्डरच्या 3 दिवस आधी आम्ही आठवण करून देतो.',
   },
 };
