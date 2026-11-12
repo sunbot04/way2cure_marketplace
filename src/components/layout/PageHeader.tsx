@@ -2,12 +2,12 @@ import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { m } from 'motion/react';
 import Icon from '../Icon';
-import Accent, { Eyebrow } from '../ui/Accent';
+import Accent from '../ui/Accent';
 import { fadeRise, stagger } from '../../lib/motion';
 
-// Top of every inner page: breadcrumb, optional eyebrow, the one H1 (a string title may carry ONE
+// Top of every inner page: breadcrumb, the one H1 (a string title may carry ONE
 // *italic* or _underlined_ accent, see ui/Accent), a lead line and optional actions. Enters on load
-// with the shared fade-rise. Tone "green" is for pages that open on one strong message.
+// with the shared fade-rise. Tone "green" (the charcoal main colour) is for pages that open on one strong message.
 // With `image`, the header becomes a full-width split: text on the left, the photo fading in from
 // the right edge of the screen.
 export interface Crumb { label: string; to?: string }
@@ -15,7 +15,6 @@ export interface Crumb { label: string; to?: string }
 interface Props {
   title: ReactNode;
   lead?: ReactNode;
-  eyebrow?: string;
   crumbs?: Crumb[];
   children?: ReactNode;
   tone?: 'cream' | 'white' | 'green' | 'mist';
@@ -29,7 +28,7 @@ const tones = {
   green: 'bg-green text-white',
 };
 
-export default function PageHeader({ title, lead, eyebrow, crumbs, children, tone = 'cream', image }: Props) {
+export default function PageHeader({ title, lead, crumbs, children, tone = 'cream', image }: Props) {
   const onGreen = tone === 'green';
   const text = (
     <m.div initial="hidden" animate="show" variants={stagger()}>
@@ -49,7 +48,6 @@ export default function PageHeader({ title, lead, eyebrow, crumbs, children, ton
           </ol>
         </m.nav>
       )}
-      {eyebrow && <m.div variants={fadeRise}><Eyebrow light={onGreen}>{eyebrow}</Eyebrow></m.div>}
       {/* The H1 paints at once (it is the page's main content); breadcrumb, lead and actions fade in */}
       <h1 className={`mb-4 text-section md:text-[3rem] md:leading-[1.08] ${onGreen ? 'text-white' : ''}`}>
         {typeof title === 'string' ? <Accent text={title} onLoad underlineDelay={0.5} /> : title}

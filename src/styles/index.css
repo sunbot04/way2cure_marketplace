@@ -3,26 +3,31 @@
 @tailwind utilities;
 
 /*
-  Way2Cure brand tokens (Brand & Website Guidelines v1.0, p.5).
+  Way2Cure colour tokens: the "Charcoal & Crimson" palette (chosen by the client; it replaces the
+  deep green / terracotta / cream of Brand & Website Guidelines v1.0, p.5).
+  Token NAMES are roles kept from the first palette, so every component keeps working:
+    green = main colour (now charcoal), terracotta-deep = secondary colour (now crimson),
+    mustard = highlight (yellow), sage = soft colour (sky blue), cream = page (white).
   Space-separated RGB so Tailwind can apply opacity. A white-label partner overrides these only.
+  Every text pairing passes WCAG AA (4.5:1); see /styleguide for the ratios.
 */
 @layer base {
   :root {
-    --c-green: 17 77 74;          /* #114D4A deep green */
-    --c-green-dark: 12 58 56;     /* #0C3A38 hover on deep green */
-    --c-terracotta: 224 123 95;   /* #E07B5F accents only: never small text, never white text on it */
-    --c-terracotta-deep: 184 71 42; /* #B8472A links, Rx tags, booking / urgent buttons */
-    --c-terracotta-darker: 156 58 33; /* #9C3A21 hover on urgent buttons */
-    --c-mustard: 234 179 75;      /* #EAB34B badges, offers, ratings (green text on it) */
-    --c-sage: 112 169 161;        /* #70A9A1 illustrations, dividers, success */
-    --c-sage-tint: 220 235 232;   /* #DCEBE8 light sage behind small green text (keeps 4.5:1) */
-    --c-mint: 200 216 213;        /* #C8D8D5 info bands, soft panels, borders */
-    --c-cream: 246 241 233;       /* #F6F1E9 page */
-    --c-mist: 238 244 242;        /* #EEF4F2 mint-tinted section background */
+    --c-green: 38 52 69;          /* #263445 charcoal: headings, primary buttons, footer, dark bands */
+    --c-green-dark: 25 35 47;     /* #19232F hover on charcoal */
+    --c-terracotta: 255 90 110;   /* #FF5A6E light crimson: decoration only (underlines, lines), never text */
+    --c-terracotta-deep: 200 16 46; /* #C8102E crimson: links, accent words, Rx tags, call / urgent buttons */
+    --c-terracotta-darker: 160 12 36; /* #A00C24 hover on crimson buttons */
+    --c-mustard: 255 200 61;      /* #FFC83D yellow: badges, offers, big numbers on charcoal (dark text on it) */
+    --c-sage: 58 143 214;         /* #3A8FD6 sky blue: icons, success ticks, afternoon dose (dark text on it) */
+    --c-sage-tint: 231 240 250;   /* #E7F0FA light sky panel behind small charcoal text */
+    --c-mint: 211 223 236;        /* #D3DFEC soft panels and borders; light text on charcoal bands */
+    --c-cream: 255 255 255;       /* #FFFFFF page */
+    --c-mist: 241 245 249;        /* #F1F5F9 light grey-blue section background */
     --c-white: 255 255 255;       /* #FFFFFF cards */
-    --c-ink: 31 42 42;            /* #1F2A2A text */
-    --c-grey: 94 107 107;         /* #5E6B6B secondary text */
-    --c-line: 228 235 233;        /* #E4EBE9 hairlines on white */
+    --c-ink: 27 36 48;            /* #1B2430 text */
+    --c-grey: 85 97 112;          /* #556170 secondary text */
+    --c-line: 226 232 239;        /* #E2E8EF hairlines on white */
 
     /* Colour references used by data files (category edges, step colours) */
     --green: rgb(var(--c-green));
@@ -82,7 +87,7 @@
   .cv-auto { content-visibility: auto; contain-intrinsic-size: auto 56rem; }
   /* One emphasised phrase per key heading: Lora Italic (Devanagari has no italic, so colour only) */
   .accent { font-style: italic; }
-  /* On deep green, terracotta-deep fails contrast (1.8:1): accents switch to mustard (5.1:1) */
+  /* On charcoal, crimson fails contrast (2.2:1): accents switch to yellow (9.6:1) */
   .bg-green .accent { color: rgb(var(--c-mustard)); }
   :lang(hi) .accent, :lang(mr) .accent { font-style: normal; }
   /* Printed-paper grain for the dose sachet */

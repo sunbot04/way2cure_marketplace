@@ -2,7 +2,7 @@ import { forwardRef, type InputHTMLAttributes, type ReactNode, type SelectHTMLAt
 import Icon from '../Icon';
 
 // Form fields (guidelines p.7): label always above the field, 2px green border,
-// terracotta-deep message below on error, in plain words.
+// crimson message below on error, in plain words.
 const control = (error?: boolean) =>
   [
     'block w-full min-h-tap rounded-btn border-2 bg-white px-3 py-2 text-body text-ink placeholder:text-grey/80',

@@ -3,8 +3,8 @@ import { m } from 'motion/react';
 import { DURATION, EASE, VIEWPORT } from '../../lib/motion';
 
 // Headings with ONE emphasised phrase (max one accent per section):
-//   *phrase*  -> Lora Italic in terracotta deep
-//   _phrase_  -> a hand-drawn terracotta underline that draws on (SVG pathLength)
+//   *phrase*  -> Lora Italic in crimson (yellow on charcoal bands)
+//   _phrase_  -> a hand-drawn light-crimson underline that draws on (SVG pathLength)
 // Copy stays a plain string in the translation files, e.g. 'Care at home, *now with everything*'.
 
 export function HandUnderline({ children, delay = 0, onLoad = false }: { children: ReactNode; delay?: number; onLoad?: boolean }) {
@@ -44,15 +44,5 @@ export default function Accent({ text, underlineDelay = 0, onLoad = false }: { t
         return <Fragment key={i}>{p}</Fragment>;
       })}
     </>
-  );
-}
-
-/** Small section label: a short line + text, terracotta deep, 14px semibold. Not a pill. */
-export function Eyebrow({ children, light = false, className = '' }: { children: ReactNode; light?: boolean; className?: string }) {
-  return (
-    <p className={`mb-4 flex items-center gap-3 text-small font-semibold ${light ? 'text-mustard' : 'text-terracotta-deep'} ${className}`}>
-      <span aria-hidden="true" className="h-0.5 w-8 shrink-0 rounded-full bg-current" />
-      {children}
-    </p>
   );
 }

@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { m } from 'motion/react';
 import Icon from '../components/Icon';
 import Button from '../components/ui/Button';
-import Accent, { Eyebrow } from '../components/ui/Accent';
+import Accent from '../components/ui/Accent';
 import FAQAccordion from '../components/ui/FAQAccordion';
 import { Reveal, Stagger, StaggerItem } from '../components/motion/Reveal';
 import CountUp from '../components/motion/CountUp';
@@ -22,33 +22,32 @@ import { fadeRise, lineMask, stagger } from '../lib/motion';
 
 // Landing page (references: REO360 layout and device mockup, DawaTime sachet and problem cards,
 // ProCare stat card and care cards), following the 9-part homepage blueprint on guidelines p.9.
-// Section backgrounds step cream -> white -> cream -> mist -> ... so sections read as distinct.
+// Section backgrounds alternate white and mist, with one charcoal band, so sections read as distinct.
 
 
 const T: Dict = {
   en: {
     seoTitle: 'Way2Cure | Care at home and everything seniors need, Mumbai',
     seoDesc: 'Nurses, doctors and ICU care at home, plus medicines, medical devices and daily care delivered in Mumbai, Navi Mumbai and Thane. Pharmacist-verified orders. Call 7400400908, 24/7.',
-    heroEyebrow: 'Trusted home care across Mumbai, Navi Mumbai & Thane',
     h1a: 'Care at home,', h1b: 'now with', h1c: '*everything seniors need.*',
     heroSub: 'Nurses, doctors and ICU care at home. Medicines, devices and daily care delivered to your door.',
     rxLink: 'Have a prescription? Upload it in the Way2Cure app',
     trust1: 'Pharmacist verified', trust2: 'Verified nurses', trust3: '24/7 support {phone}',
-    quickEyebrow: 'Shop by need', quickTitle: 'Everything for care at home, *in one place.*', quickLead: 'Delivered across Mumbai, Navi Mumbai and Thane.', allProducts: 'All products',
-    probEyebrow: 'Sound familiar?', probTitle: "Looking after a parent's medicines can feel like *a second job.*", howWeHelp: 'How Way2Cure helps',
+    quickTitle: 'Everything for care at home, *in one place.*', quickLead: 'Delivered across Mumbai, Navi Mumbai and Thane.', allProducts: 'All products',
+    probTitle: "Looking after a parent's medicines can feel like *a second job.*", howWeHelp: 'How Way2Cure helps',
     p1a: 'Ten strips. Three doctors.', p1b: 'One confused morning.', p1s: 'Every doctor adds a strip, and nobody writes one simple schedule.', p1f: 'One pharmacist-checked schedule, sorted by time of day.',
     p2a: 'Did Papa take', p2b: 'his evening dose?', p2s: "You're at work across town. He says yes. You're never quite sure.", p2f: 'Each dose sealed in its own labelled sachet, so a missed one is easy to spot.',
     p3a: 'Pharmacy runs', p3b: 'every other day.', p3s: 'Every strip runs out on a different date, so the trips never stop.', p3f: 'Refills arrive together, with a reminder 3 days before they run out.',
-    rxEyebrow: 'How prescriptions work', rxTitle: 'AI assists, _pharmacist decides._',
+    rxTitle: 'AI assists, _pharmacist decides._',
     rxLead: 'Four steps from your prescription to your door. If anything is unclear, the pharmacist calls you before packing.',
     appOnly: 'Prescription upload is in the Way2Cure app.', seeHow: 'See how it works',
-    careEyebrow: 'Care at home', careTitle: "Trained people, *at your parent's side.*", careLead: 'Nurses, doctors and caretakers, background-checked and sent to your home.',
+    careTitle: "Trained people, *at your parent's side.*", careLead: 'Nurses, doctors and caretakers, background-checked and sent to your home.',
     careNote: 'Suitability is assessed by the treating doctor before care begins.', allCare: 'See all care services',
-    sachetEyebrow: 'Dose sachets', sachetTitle: 'Every dose, *in its own sachet.*',
+    sachetTitle: 'Every dose, *in its own sachet.*',
     sachetText: 'We sort your medicines by time of day and seal each dose in a sachet labelled with the name, the time and what is inside.',
     tear: 'Tear one, take the dose.', sachetTabs: 'Choose a time of day', sachetCta: 'How dose sachets work',
     subTitle: 'Subscribe once. We remember for you.', subLead: 'We schedule each delivery and remind you before it. Pause or change anytime, with no fee.', seePlans: 'See plans',
-    trustEyebrow: 'Why families trust Way2Cure', trustBig: 'patients cared for across Mumbai, Navi Mumbai and Thane.',
+    trustBig: 'patients cared for across Mumbai, Navi Mumbai and Thane.',
     trustText: 'Real nurses, licensed pharmacies and a real person on the phone, day or night.',
     families: 'Families we care for', familyAlt: 'Three generations of a family together', storiesSoon: 'We will share real stories from families here, with their written permission.',
     shareStory: 'Have a story to share? Tell us on WhatsApp', questions: 'Common questions', allQuestions: 'All questions',
@@ -57,26 +56,25 @@ const T: Dict = {
   hi: {
     seoTitle: 'Way2Cure | घर पर देखभाल और बुज़ुर्गों की हर ज़रूरत, मुंबई',
     seoDesc: 'घर पर नर्स, डॉक्टर और आईसीयू देखभाल, साथ ही मुंबई, नवी मुंबई और ठाणे में दवाइयाँ, मेडिकल उपकरण और रोज़ की देखभाल का सामान। फ़ार्मासिस्ट द्वारा जाँचे गए ऑर्डर। 24/7 कॉल करें 7400400908।',
-    heroEyebrow: 'मुंबई, नवी मुंबई और ठाणे में भरोसेमंद होम केयर',
     h1a: 'घर पर देखभाल, अब', h1b: '*बुज़ुर्गों की हर ज़रूरत*', h1c: 'के साथ।',
     heroSub: 'घर पर नर्स, डॉक्टर और आईसीयू देखभाल। दवाइयाँ, उपकरण और रोज़ की ज़रूरतें आपके दरवाज़े तक।',
     rxLink: 'पर्चा है? उसे Way2Cure ऐप में अपलोड करें',
     trust1: 'फ़ार्मासिस्ट द्वारा जाँचा गया', trust2: 'जाँचे-परखे नर्स', trust3: '24/7 मदद {phone}',
-    quickEyebrow: 'ज़रूरत के हिसाब से खरीदें', quickTitle: 'घर पर देखभाल की हर चीज़, *एक ही जगह।*', quickLead: 'मुंबई, नवी मुंबई और ठाणे में डिलिवरी।', allProducts: 'सभी प्रोडक्ट',
-    probEyebrow: 'क्या यह जाना-पहचाना लगता है?', probTitle: 'माता-पिता की दवाइयाँ सँभालना *एक दूसरी नौकरी* जैसा लगता है।', howWeHelp: 'Way2Cure कैसे मदद करता है',
+    quickTitle: 'घर पर देखभाल की हर चीज़, *एक ही जगह।*', quickLead: 'मुंबई, नवी मुंबई और ठाणे में डिलिवरी।', allProducts: 'सभी प्रोडक्ट',
+    probTitle: 'माता-पिता की दवाइयाँ सँभालना *एक दूसरी नौकरी* जैसा लगता है।', howWeHelp: 'Way2Cure कैसे मदद करता है',
     p1a: 'दस पत्ते। तीन डॉक्टर।', p1b: 'एक उलझी हुई सुबह।', p1s: 'हर डॉक्टर एक नया पत्ता जोड़ देता है, पर कोई एक आसान समय-सारणी नहीं लिखता।', p1f: 'फ़ार्मासिस्ट द्वारा जाँची गई एक समय-सारणी, दिन के समय के अनुसार।',
     p2a: 'क्या पापा ने', p2b: 'शाम की दवा ली?', p2s: 'आप शहर के दूसरे छोर पर काम पर हैं। वे कहते हैं हाँ। पर आप कभी पक्का नहीं जानते।', p2f: 'हर डोज़ अपने लेबल वाले सैशे में बंद, ताकि छूटी डोज़ आसानी से दिखे।',
     p3a: 'हर दूसरे दिन', p3b: 'फ़ार्मेसी के चक्कर।', p3s: 'हर पत्ता अलग तारीख़ पर ख़त्म होता है, इसलिए चक्कर कभी रुकते नहीं।', p3f: 'रीफ़िल एक साथ आते हैं, ख़त्म होने से 3 दिन पहले रिमाइंडर के साथ।',
-    rxEyebrow: 'पर्चे वाले ऑर्डर कैसे काम करते हैं', rxTitle: 'AI मदद करता है, _फ़ैसला फ़ार्मासिस्ट करते हैं।_',
+    rxTitle: 'AI मदद करता है, _फ़ैसला फ़ार्मासिस्ट करते हैं।_',
     rxLead: 'आपके पर्चे से आपके दरवाज़े तक चार कदम। कुछ भी साफ़ न हो तो पैक करने से पहले फ़ार्मासिस्ट आपको कॉल करते हैं।',
     appOnly: 'पर्चा Way2Cure ऐप में अपलोड होता है।', seeHow: 'देखें यह कैसे काम करता है',
-    careEyebrow: 'घर पर देखभाल', careTitle: 'प्रशिक्षित लोग, *आपके अपनों के साथ।*', careLead: 'नर्स, डॉक्टर और केयरटेकर, जाँचे-परखे और आपके घर भेजे गए।',
+    careTitle: 'प्रशिक्षित लोग, *आपके अपनों के साथ।*', careLead: 'नर्स, डॉक्टर और केयरटेकर, जाँचे-परखे और आपके घर भेजे गए।',
     careNote: 'देखभाल शुरू होने से पहले, इलाज करने वाले डॉक्टर तय करते हैं कि यह मरीज़ के लिए सही है या नहीं।', allCare: 'सभी देखभाल सेवाएँ देखें',
-    sachetEyebrow: 'डोज़ सैशे', sachetTitle: 'हर डोज़, *उसके अपने सैशे में।*',
+    sachetTitle: 'हर डोज़, *उसके अपने सैशे में।*',
     sachetText: 'हम आपकी दवाइयों को दिन के समय के अनुसार छाँटते हैं और हर डोज़ को एक सैशे में बंद करते हैं, जिस पर नाम, समय और अंदर की दवाएँ लिखी होती हैं।',
     tear: 'एक फाड़ें, डोज़ लें।', sachetTabs: 'दिन का समय चुनें', sachetCta: 'डोज़ सैशे कैसे काम करते हैं',
     subTitle: 'एक बार सब्सक्राइब करें। याद हम रखेंगे।', subLead: 'हम हर डिलिवरी तय करते हैं और उससे पहले याद दिलाते हैं। जब चाहें रोकें या बदलें, कोई शुल्क नहीं।', seePlans: 'प्लान देखें',
-    trustEyebrow: 'परिवार Way2Cure पर भरोसा क्यों करते हैं', trustBig: 'मरीज़ों की देखभाल, मुंबई, नवी मुंबई और ठाणे में।',
+    trustBig: 'मरीज़ों की देखभाल, मुंबई, नवी मुंबई और ठाणे में।',
     trustText: 'असली नर्स, लाइसेंस वाली फ़ार्मेसी और फ़ोन पर एक असली इंसान, दिन हो या रात।',
     families: 'जिन परिवारों की हम देखभाल करते हैं', familyAlt: 'एक परिवार की तीन पीढ़ियाँ साथ में', storiesSoon: 'परिवारों की सच्ची कहानियाँ हम यहाँ उनकी लिखित अनुमति से साझा करेंगे।',
     shareStory: 'आपके पास कोई कहानी है? हमें व्हाट्सऐप पर बताएँ', questions: 'आम सवाल', allQuestions: 'सभी सवाल',
@@ -85,26 +83,25 @@ const T: Dict = {
   mr: {
     seoTitle: 'Way2Cure | घरी काळजी आणि ज्येष्ठांना लागणारे सर्व काही, मुंबई',
     seoDesc: 'घरी नर्स, डॉक्टर आणि आयसीयू काळजी, तसेच मुंबई, नवी मुंबई आणि ठाणे येथे औषधे, वैद्यकीय उपकरणे आणि दैनंदिन काळजीच्या वस्तू. फार्मासिस्टने तपासलेल्या ऑर्डर. 24/7 कॉल करा 7400400908.',
-    heroEyebrow: 'मुंबई, नवी मुंबई आणि ठाणे येथे विश्वासू होम केअर',
     h1a: 'घरी काळजी, आता', h1b: '*ज्येष्ठांना लागणाऱ्या*', h1c: '*सर्व गोष्टींसह.*',
     heroSub: 'घरी नर्स, डॉक्टर आणि आयसीयू काळजी. औषधे, उपकरणे आणि रोजच्या गरजा तुमच्या दारात.',
     rxLink: 'प्रिस्क्रिप्शन आहे? ते Way2Cure ॲपमध्ये अपलोड करा',
     trust1: 'फार्मासिस्टने तपासलेले', trust2: 'पडताळलेल्या नर्स', trust3: '24/7 मदत {phone}',
-    quickEyebrow: 'गरजेनुसार खरेदी करा', quickTitle: 'घरच्या काळजीसाठी सर्व काही, *एकाच ठिकाणी.*', quickLead: 'मुंबई, नवी मुंबई आणि ठाणे येथे डिलिव्हरी.', allProducts: 'सर्व उत्पादने',
-    probEyebrow: 'हे ओळखीचे वाटते का?', probTitle: 'आई-वडिलांची औषधे सांभाळणे *दुसऱ्या नोकरीसारखे* वाटू शकते.', howWeHelp: 'Way2Cure कशी मदत करते',
+    quickTitle: 'घरच्या काळजीसाठी सर्व काही, *एकाच ठिकाणी.*', quickLead: 'मुंबई, नवी मुंबई आणि ठाणे येथे डिलिव्हरी.', allProducts: 'सर्व उत्पादने',
+    probTitle: 'आई-वडिलांची औषधे सांभाळणे *दुसऱ्या नोकरीसारखे* वाटू शकते.', howWeHelp: 'Way2Cure कशी मदत करते',
     p1a: 'दहा पट्ट्या. तीन डॉक्टर.', p1b: 'एक गोंधळलेली सकाळ.', p1s: 'प्रत्येक डॉक्टर एक नवी पट्टी जोडतात, पण कोणीही एक सोपे वेळापत्रक लिहीत नाही.', p1f: 'फार्मासिस्टने तपासलेले एकच वेळापत्रक, दिवसाच्या वेळेनुसार.',
     p2a: 'बाबांनी संध्याकाळचा', p2b: 'डोस घेतला का?', p2s: 'तुम्ही शहराच्या दुसऱ्या टोकाला कामावर आहात. ते हो म्हणतात. पण तुम्हाला कधीच खात्री नसते.', p2f: 'प्रत्येक डोस स्वतःच्या लेबल लावलेल्या सॅशेमध्ये, म्हणजे राहिलेला डोस सहज दिसतो.',
     p3a: 'दर दुसऱ्या दिवशी', p3b: 'फार्मसीच्या फेऱ्या.', p3s: 'प्रत्येक पट्टी वेगळ्या तारखेला संपते, म्हणून फेऱ्या कधीच थांबत नाहीत.', p3f: 'रिफिल एकत्र येतात, संपण्याच्या 3 दिवस आधी आठवणीसह.',
-    rxEyebrow: 'प्रिस्क्रिप्शन ऑर्डर कशी होते', rxTitle: 'AI मदत करते, _निर्णय फार्मासिस्ट घेतात._',
+    rxTitle: 'AI मदत करते, _निर्णय फार्मासिस्ट घेतात._',
     rxLead: 'तुमच्या प्रिस्क्रिप्शनपासून तुमच्या दारापर्यंत चार पायऱ्या. काही अस्पष्ट असल्यास पॅक करण्यापूर्वी फार्मासिस्ट तुम्हाला कॉल करतात.',
     appOnly: 'प्रिस्क्रिप्शन Way2Cure ॲपमध्ये अपलोड करता येते.', seeHow: 'हे कसे होते ते पाहा',
-    careEyebrow: 'घरी काळजी', careTitle: 'प्रशिक्षित माणसे, *तुमच्या प्रियजनांच्या सोबत.*', careLead: 'नर्स, डॉक्टर आणि केअरटेकर, पार्श्वभूमी तपासलेले आणि तुमच्या घरी पाठवलेले.',
+    careTitle: 'प्रशिक्षित माणसे, *तुमच्या प्रियजनांच्या सोबत.*', careLead: 'नर्स, डॉक्टर आणि केअरटेकर, पार्श्वभूमी तपासलेले आणि तुमच्या घरी पाठवलेले.',
     careNote: 'काळजी सुरू होण्यापूर्वी, उपचार करणारे डॉक्टर ती रुग्णासाठी योग्य आहे का ते ठरवतात.', allCare: 'सर्व काळजी सेवा पाहा',
-    sachetEyebrow: 'डोस सॅशे', sachetTitle: 'प्रत्येक डोस, *त्याच्या स्वतःच्या सॅशेमध्ये.*',
+    sachetTitle: 'प्रत्येक डोस, *त्याच्या स्वतःच्या सॅशेमध्ये.*',
     sachetText: 'आम्ही तुमची औषधे दिवसाच्या वेळेनुसार लावतो आणि प्रत्येक डोस एका सॅशेमध्ये बंद करतो, ज्यावर नाव, वेळ आणि आतील औषधे लिहिलेली असतात.',
     tear: 'एक फाडा, डोस घ्या.', sachetTabs: 'दिवसाची वेळ निवडा', sachetCta: 'डोस सॅशे कसे काम करतात',
     subTitle: 'एकदा सदस्यता घ्या. आठवण आम्ही ठेवू.', subLead: 'आम्ही प्रत्येक डिलिव्हरी ठरवतो आणि त्याआधी आठवण करून देतो. कधीही थांबवा किंवा बदला, कोणतेही शुल्क नाही.', seePlans: 'प्लॅन पाहा',
-    trustEyebrow: 'कुटुंबे Way2Cure वर विश्वास का ठेवतात', trustBig: 'रुग्णांची काळजी, मुंबई, नवी मुंबई आणि ठाणे येथे.',
+    trustBig: 'रुग्णांची काळजी, मुंबई, नवी मुंबई आणि ठाणे येथे.',
     trustText: 'खऱ्या नर्स, परवानाधारक फार्मसी आणि फोनवर एक खरी व्यक्ती, दिवस असो वा रात्र.',
     families: 'आम्ही काळजी घेत असलेली कुटुंबे', familyAlt: 'एका कुटुंबाच्या तीन पिढ्या एकत्र', storiesSoon: 'कुटुंबांच्या खऱ्या गोष्टी आम्ही त्यांच्या लेखी परवानगीने इथे सांगू.',
     shareStory: 'तुमच्याकडे सांगण्यासारखी गोष्ट आहे? आम्हाला व्हॉट्सॲपवर सांगा', questions: 'नेहमीचे प्रश्न', allQuestions: 'सर्व प्रश्न',
@@ -120,11 +117,10 @@ const PROBLEMS: { art: Art; k: string; image: string; position: string }[] = [
 ];
 const CARE_IDS = ['nurse', 'doctor', 'elder', 'dementia', 'icu', 'ventilator', 'stroke', 'cancer'];
 
-/** Section heading block: eyebrow, H2 with one accent, optional lead. */
-function Heading({ eyebrow, title, lead, light = false, className = '' }: { eyebrow: string; title: string; lead?: string; light?: boolean; className?: string }) {
+/** Section heading block: H2 with one accent, optional lead. */
+function Heading({ title, lead, light = false, className = '' }: { title: string; lead?: string; light?: boolean; className?: string }) {
   return (
     <Reveal className={className}>
-      <Eyebrow light={light}>{eyebrow}</Eyebrow>
       <h2 className={`mb-4 text-section ${light ? 'text-white' : ''}`}><Accent text={title} /></h2>
       {lead && <p className={`m-0 text-lead ${light ? 'text-mint' : 'text-ink/75'}`}>{lead}</p>}
     </Reveal>
@@ -153,7 +149,6 @@ export default function Home() {
       <section className="relative overflow-hidden pt-[var(--header-space)]">
         <div className="container grid items-center gap-10 pb-16 pt-6 lg:grid-cols-[1.02fr_0.98fr] lg:gap-8 lg:pb-24 lg:pt-10">
           <m.div initial="hidden" animate="show" variants={stagger(0.05)}>
-            <m.div variants={fadeRise}><Eyebrow>{tr('heroEyebrow')}</Eyebrow></m.div>
             <m.h1 variants={stagger()} className="mb-6 text-display">
               {(['h1a', 'h1b', 'h1c'] as const).map((k) => (
                 <span key={k} className="block overflow-hidden pb-[0.1em]">
@@ -187,7 +182,7 @@ export default function Home() {
       <section className="cv-auto section bg-white">
         <div className="container">
           <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
-            <Heading eyebrow={tr('quickEyebrow')} title={tr('quickTitle')} lead={tr('quickLead')} className="max-w-2xl" />
+            <Heading title={tr('quickTitle')} lead={tr('quickLead')} className="max-w-2xl" />
             <Reveal><Link to="/shop" className="group inline-flex min-h-tap items-center gap-1.5 font-bold">{tr('allProducts')} <Icon name="arrow" size={18} /></Link></Reveal>
           </div>
           <Stagger as="ul" className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5 xl:grid-cols-6">
@@ -213,7 +208,7 @@ export default function Home() {
       {/* "Sound familiar?": the family's problems, then how we solve each */}
       <section className="cv-auto section">
         <div className="container">
-          <Heading eyebrow={tr('probEyebrow')} title={tr('probTitle')} className="mb-12 max-w-3xl" />
+          <Heading title={tr('probTitle')} className="mb-12 max-w-3xl" />
           {/* Phones: swipe sideways through the cards; tablet and up: a grid */}
           <Stagger as="ul" className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-4 [scrollbar-width:thin] md:mx-0 md:grid md:grid-cols-3 md:gap-6 md:overflow-visible md:px-0 md:pb-0">
             {PROBLEMS.map(({ art, k, image, position }) => (
@@ -228,7 +223,7 @@ export default function Home() {
         <div className="container">
           <RxStory
             steps={RX_STEPS.map(loc)}
-            heading={<Heading eyebrow={tr('rxEyebrow')} title={tr('rxTitle')} lead={tr('rxLead')} />}
+            heading={<Heading title={tr('rxTitle')} lead={tr('rxLead')} />}
             footer={
               <Reveal className="mt-4 rounded-panel bg-white p-6 shadow-card lg:ml-[4.5rem]">
                 <p className="mb-4 flex items-center gap-2 font-bold text-green"><Icon name="phoneApp" size={20} /> {tr('appOnly')}</p>
@@ -244,7 +239,7 @@ export default function Home() {
       <section className="cv-auto section bg-white">
         <div className="container">
           <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
-            <Heading eyebrow={tr('careEyebrow')} title={tr('careTitle')} lead={tr('careLead')} className="max-w-2xl" />
+            <Heading title={tr('careTitle')} lead={tr('careLead')} className="max-w-2xl" />
             <Reveal><Link to="/care" className="group inline-flex min-h-tap items-center gap-1.5 font-bold">{tr('allCare')} <Icon name="arrow" size={18} /></Link></Reveal>
           </div>
           <Stagger as="ul" className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-4 [scrollbar-width:thin] sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-5 sm:overflow-visible sm:px-0 sm:pb-0 xl:grid-cols-4">
@@ -259,7 +254,7 @@ export default function Home() {
         <div className="container">
           <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
             <div>
-              <Heading eyebrow={tr('sachetEyebrow')} title={tr('sachetTitle')} lead={tr('sachetText')} />
+              <Heading title={tr('sachetTitle')} lead={tr('sachetText')} />
               <Reveal>
                 <p className="mb-6 mt-6 font-head text-h2m font-bold text-terracotta-deep">{tr('tear')}</p>
                 <Link to="/subscriptions/dose-sachets" className="group inline-flex min-h-tap items-center gap-1.5 font-bold">{tr('sachetCta')} <Icon name="arrow" size={18} /></Link>
@@ -298,7 +293,6 @@ export default function Home() {
       <section aria-label={tc('trustAria')} className="cv-auto section bg-green text-white">
         <div className="container grid gap-12 lg:grid-cols-[1fr_1.15fr] lg:items-center lg:gap-20">
           <Reveal>
-            <Eyebrow light>{tr('trustEyebrow')}</Eyebrow>
             <p className="m-0 font-head text-[clamp(3.5rem,2rem+6vw,6.5rem)] font-bold leading-none text-mustard">
               <CountUp to={15000} suffix="+" />
             </p>

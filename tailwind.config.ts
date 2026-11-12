@@ -1,8 +1,9 @@
 import type { Config } from 'tailwindcss';
 
-// Way2Cure design tokens (Brand & Website Guidelines v1.0, pp. 5-7).
-// Colours come from CSS variables in src/styles/index.css so a white-label partner
-// can recolour the whole site in one place (guidelines p.14, phase 4).
+// Way2Cure design tokens (Brand & Website Guidelines v1.0, pp. 5-7; colours: the client's
+// "Charcoal & Crimson" palette). Colours come from CSS variables in src/styles/index.css so the whole
+// site can be recoloured in one place (guidelines p.14, phase 4). Colour names are roles kept from the
+// first palette: green = main colour (charcoal), terracotta-deep = secondary (crimson), and so on.
 const v = (name: string) => `rgb(var(--c-${name}) / <alpha-value>)`;
 
 export default {
@@ -13,13 +14,13 @@ export default {
       transparent: 'transparent',
       current: 'currentColor',
       white: v('white'),
-      green: { DEFAULT: v('green'), dark: v('green-dark') }, // headings, header, footer, primary buttons
-      terracotta: { DEFAULT: v('terracotta'), deep: v('terracotta-deep'), darker: v('terracotta-darker') }, // accents only / links, Rx, urgent
-      mustard: v('mustard'), // badges, offers, ratings: green text on it
-      sage: { DEFAULT: v('sage'), tint: v('sage-tint') }, // illustrations, dividers, success
-      mint: v('mint'), // info bands, soft panels, borders
-      cream: v('cream'), // page background
-      mist: v('mist'), // #EEF4F2 mint-tinted section background
+      green: { DEFAULT: v('green'), dark: v('green-dark') }, // main colour, charcoal: headings, header, footer, primary buttons
+      terracotta: { DEFAULT: v('terracotta'), deep: v('terracotta-deep'), darker: v('terracotta-darker') }, // secondary, crimson: decoration / links, Rx, urgent
+      mustard: v('mustard'), // highlight, yellow: badges, offers, ratings (dark text on it)
+      sage: { DEFAULT: v('sage'), tint: v('sage-tint') }, // soft colour, sky blue: icons, success (dark text on it)
+      mint: v('mint'), // soft panels, borders, light text on charcoal
+      cream: v('cream'), // page background (white)
+      mist: v('mist'), // #F1F5F9 light grey-blue section background
       ink: v('ink'), // body text
       grey: v('grey'), // secondary text
       line: v('line'), // hairline borders on white
@@ -51,10 +52,11 @@ export default {
     extend: {
       borderRadius: { btn: '8px', card: '12px', tile: '16px', panel: '20px' },
       boxShadow: {
-        card: '0 1px 2px rgb(17 77 74 / 0.06), 0 4px 16px rgb(17 77 74 / 0.06)',
-        raised: '0 12px 32px rgb(17 77 74 / 0.14)',
-        float: '0 18px 48px -12px rgb(17 77 74 / 0.28), 0 2px 6px rgb(17 77 74 / 0.06)',
-        header: '0 8px 30px -10px rgb(17 77 74 / 0.22)',
+        // Soft shadows tinted with the charcoal main colour (--c-green)
+        card: '0 1px 2px rgb(38 52 69 / 0.06), 0 4px 16px rgb(38 52 69 / 0.06)',
+        raised: '0 12px 32px rgb(38 52 69 / 0.14)',
+        float: '0 18px 48px -12px rgb(38 52 69 / 0.28), 0 2px 6px rgb(38 52 69 / 0.06)',
+        header: '0 8px 30px -10px rgb(38 52 69 / 0.22)',
       },
       maxWidth: { prose: '70ch', page: '84rem' }, // 1344px box = 1280px of content inside the 32px gutters
       transitionDuration: { DEFAULT: '180ms', micro: '180ms', slow: '300ms' }, // = DURATION.micro in src/lib/motion.ts

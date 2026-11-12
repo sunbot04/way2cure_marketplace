@@ -16,10 +16,10 @@ const Apple = () => (
 );
 const Play = () => (
   <svg viewBox="0 0 24 24" className="h-6 w-6 shrink-0" aria-hidden="true">
-    <path d="M4 2.6 13.6 12 4 21.4c-.3-.2-.5-.6-.5-1V3.6c0-.4.2-.8.5-1z" fill="#70A9A1" />
-    <path d="m16.7 8.9-3.1 3.1L4 2.6c.2-.1.6-.1 1 .1l11.7 6.2z" fill="#EAB34B" />
-    <path d="m16.7 15.1-11.7 6.2c-.4.2-.8.2-1 .1l9.6-9.4 3.1 3.1z" fill="#E07B5F" />
-    <path d="m20.3 10.9-3.6-2-3.1 3.1 3.1 3.1 3.6-2c.8-.5.8-1.7 0-2.2z" fill="#C8D8D5" />
+    <path d="M4 2.6 13.6 12 4 21.4c-.3-.2-.5-.6-.5-1V3.6c0-.4.2-.8.5-1z" className="fill-sage" />
+    <path d="m16.7 8.9-3.1 3.1L4 2.6c.2-.1.6-.1 1 .1l11.7 6.2z" className="fill-mustard" />
+    <path d="m16.7 15.1-11.7 6.2c-.4.2-.8.2-1 .1l9.6-9.4 3.1 3.1z" className="fill-terracotta" />
+    <path d="m20.3 10.9-3.6-2-3.1 3.1 3.1 3.1 3.6-2c.8-.5.8-1.7 0-2.2z" className="fill-mint" />
   </svg>
 );
 

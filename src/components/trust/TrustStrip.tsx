@@ -1,5 +1,4 @@
 import Icon from '../Icon';
-import { Eyebrow } from '../ui/Accent';
 import CountUp from '../motion/CountUp';
 import { Reveal, Stagger, StaggerItem } from '../motion/Reveal';
 import { useT, type Dict } from '../../i18n/LangContext';
@@ -7,13 +6,13 @@ import { SITE } from '../../config/site';
 import { COPY } from '../copy';
 
 // Trust elements (guidelines p.9 item 7 and p.11). Real numbers only: 15K+ is confirmed.
-// band = deep green section like the homepage trust block (count-up + five trust tiles).
+// band = charcoal section like the homepage trust block (count-up + five trust tiles).
 // list = plain list for use inside another section.
 
 const T: Dict = {
-  en: { eyebrow: 'Why families trust Way2Cure', big: 'patients cared for across Mumbai, Navi Mumbai and Thane.', text: 'Real nurses, licensed pharmacies and a real person on the phone, day or night.' },
-  hi: { eyebrow: 'परिवार Way2Cure पर भरोसा क्यों करते हैं', big: 'मरीज़ों की देखभाल, मुंबई, नवी मुंबई और ठाणे में।', text: 'असली नर्स, लाइसेंस वाली फ़ार्मेसी और फ़ोन पर एक असली इंसान, दिन हो या रात।' },
-  mr: { eyebrow: 'कुटुंबे Way2Cure वर विश्वास का ठेवतात', big: 'रुग्णांची काळजी, मुंबई, नवी मुंबई आणि ठाणे येथे.', text: 'खऱ्या नर्स, परवानाधारक फार्मसी आणि फोनवर एक खरी व्यक्ती, दिवस असो वा रात्र.' },
+  en: { big: 'patients cared for across Mumbai, Navi Mumbai and Thane.', text: 'Real nurses, licensed pharmacies and a real person on the phone, day or night.' },
+  hi: { big: 'मरीज़ों की देखभाल, मुंबई, नवी मुंबई और ठाणे में।', text: 'असली नर्स, लाइसेंस वाली फ़ार्मेसी और फ़ोन पर एक असली इंसान, दिन हो या रात।' },
+  mr: { big: 'रुग्णांची काळजी, मुंबई, नवी मुंबई आणि ठाणे येथे.', text: 'खऱ्या नर्स, परवानाधारक फार्मसी आणि फोनवर एक खरी व्यक्ती, दिवस असो वा रात्र.' },
 };
 
 export default function TrustStrip({ variant = 'band' }: { variant?: 'band' | 'list' }) {
@@ -47,7 +46,6 @@ export default function TrustStrip({ variant = 'band' }: { variant?: 'band' | 'l
     <section aria-label={tr('trustAria')} className="section bg-green text-white">
       <div className="container grid gap-12 lg:grid-cols-[1fr_1.15fr] lg:items-center lg:gap-20">
         <Reveal>
-          <Eyebrow light>{tx('eyebrow')}</Eyebrow>
           <p className="m-0 font-head text-[clamp(3.5rem,2rem+6vw,6.5rem)] font-bold leading-none text-mustard">
             <CountUp to={15000} suffix="+" />
           </p>

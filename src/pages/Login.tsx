@@ -3,7 +3,7 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { AnimatePresence, m } from 'motion/react';
 import Icon from '../components/Icon';
 import Button from '../components/ui/Button';
-import Accent, { Eyebrow } from '../components/ui/Accent';
+import Accent from '../components/ui/Accent';
 import { Field, Input, describedBy } from '../components/ui/Field';
 import Seo from '../components/layout/Seo';
 import { useAuth } from '../context/AuthContext';
@@ -27,7 +27,6 @@ const T: Dict = {
   en: {
     seoLogin: 'Log in', seoSignup: 'Sign up',
     seoDesc: 'Log in to Way2Cure with your mobile number and a one-time code. No password needed.',
-    eyebrowLogin: 'Log in', eyebrowSignup: 'Sign up',
     titleLogin: 'Welcome *back.*', titleSignup: 'One account for *the whole family.*',
     leadLogin: 'Log in with your mobile number. We send you a one-time code, so there is no password to remember.',
     leadSignup: 'Sign up with your mobile number. Order for yourself or your parents, and follow every order and visit in one place.',
@@ -53,7 +52,6 @@ const T: Dict = {
     privacyLink: 'Privacy policy',
     welcome: 'Welcome, {name}. You are signed in.', welcomeBack: 'You are signed in.',
     signedInAs: 'You are signed in as {name}.', signedInPhone: 'Mobile: +91 {phone}', goAccount: 'Go to my account', signOut: 'Log out', signedOut: 'You are logged out.',
-    panelEyebrow: 'Why families sign up',
     panelTitle: 'Look after your parents, even from another city.',
     p1: 'Order medicines and book nurses for your parents',
     p2: 'Refill reminders before supplies run out',
@@ -64,7 +62,6 @@ const T: Dict = {
   hi: {
     seoLogin: 'लॉग इन', seoSignup: 'साइन अप',
     seoDesc: 'अपने मोबाइल नंबर और एक बार के कोड से Way2Cure में लॉग इन करें। पासवर्ड की ज़रूरत नहीं।',
-    eyebrowLogin: 'लॉग इन', eyebrowSignup: 'साइन अप',
     titleLogin: 'फिर से *स्वागत है।*', titleSignup: 'पूरे परिवार के लिए *एक खाता।*',
     leadLogin: 'अपने मोबाइल नंबर से लॉग इन करें। हम आपको एक बार का कोड भेजते हैं, इसलिए कोई पासवर्ड याद रखने की ज़रूरत नहीं।',
     leadSignup: 'अपने मोबाइल नंबर से साइन अप करें। अपने लिए या माता-पिता के लिए ऑर्डर करें, और हर ऑर्डर और विज़िट एक ही जगह देखें।',
@@ -90,7 +87,6 @@ const T: Dict = {
     privacyLink: 'प्राइवेसी पॉलिसी',
     welcome: 'स्वागत है, {name}। आप लॉग इन हो गए हैं।', welcomeBack: 'आप लॉग इन हो गए हैं।',
     signedInAs: 'आप {name} के रूप में लॉग इन हैं।', signedInPhone: 'मोबाइल: +91 {phone}', goAccount: 'मेरे खाते पर जाएँ', signOut: 'लॉग आउट', signedOut: 'आप लॉग आउट हो गए हैं।',
-    panelEyebrow: 'परिवार साइन अप क्यों करते हैं',
     panelTitle: 'दूसरे शहर से भी अपने माता-पिता का ख़याल रखें।',
     p1: 'माता-पिता के लिए दवाइयाँ मँगाएँ और नर्स बुक करें',
     p2: 'सामान ख़त्म होने से पहले रीफ़िल रिमाइंडर',
@@ -101,7 +97,6 @@ const T: Dict = {
   mr: {
     seoLogin: 'लॉग इन', seoSignup: 'साइन अप',
     seoDesc: 'तुमच्या मोबाइल नंबर आणि एकदाच वापरायच्या कोडने Way2Cure मध्ये लॉग इन करा. पासवर्डची गरज नाही.',
-    eyebrowLogin: 'लॉग इन', eyebrowSignup: 'साइन अप',
     titleLogin: 'पुन्हा *स्वागत आहे.*', titleSignup: 'संपूर्ण कुटुंबासाठी *एकच खाते.*',
     leadLogin: 'तुमच्या मोबाइल नंबरने लॉग इन करा. आम्ही तुम्हाला एकदाच वापरायचा कोड पाठवतो, त्यामुळे पासवर्ड लक्षात ठेवायची गरज नाही.',
     leadSignup: 'तुमच्या मोबाइल नंबरने साइन अप करा. स्वतःसाठी किंवा आई-वडिलांसाठी ऑर्डर करा, आणि प्रत्येक ऑर्डर व भेट एकाच ठिकाणी पाहा.',
@@ -127,7 +122,6 @@ const T: Dict = {
     privacyLink: 'गोपनीयता धोरण',
     welcome: 'स्वागत आहे, {name}. तुम्ही लॉग इन झाला आहात.', welcomeBack: 'तुम्ही लॉग इन झाला आहात.',
     signedInAs: 'तुम्ही {name} म्हणून लॉग इन आहात.', signedInPhone: 'मोबाइल: +91 {phone}', goAccount: 'माझ्या खात्यावर जा', signOut: 'लॉग आउट', signedOut: 'तुम्ही लॉग आउट झाला आहात.',
-    panelEyebrow: 'कुटुंबे साइन अप का करतात',
     panelTitle: 'दुसऱ्या शहरातूनही आई-वडिलांची काळजी घ्या.',
     p1: 'आई-वडिलांसाठी औषधे मागवा आणि नर्स बुक करा',
     p2: 'साठा संपण्यापूर्वी रिफिलची आठवण',
@@ -252,7 +246,6 @@ export default function Login({ mode }: { mode: 'login' | 'signup' }) {
         <div className="container grid items-stretch gap-10 lg:grid-cols-[1fr_1fr] lg:gap-12">
           {/* Form */}
           <m.div initial="hidden" animate="show" variants={stagger()} className="grid content-start">
-            <m.div variants={fadeRise}><Eyebrow>{signup ? tr('eyebrowSignup') : tr('eyebrowLogin')}</Eyebrow></m.div>
             <m.h1 variants={fadeRise} className="mb-4 text-section md:text-[3rem] md:leading-[1.08]">
               <Accent text={signup ? tr('titleSignup') : tr('titleLogin')} />
             </m.h1>
@@ -401,7 +394,6 @@ export default function Login({ mode }: { mode: 'login' | 'signup' }) {
             />
             <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-green via-green/70 via-45% to-transparent" />
             <div className="absolute inset-x-0 bottom-0 p-8 text-white">
-              <Eyebrow light>{tr('panelEyebrow')}</Eyebrow>
               <p className="mb-5 font-head text-h2 font-bold leading-tight text-white">{tr('panelTitle')}</p>
               <ul className="grid gap-2.5">
                 {(['p1', 'p2', 'p3', 'p4'] as const).map((k) => (

@@ -16,13 +16,10 @@ export default function AppPanel({ title, text, className = '', headingLevel = 3
       <div className="hidden justify-self-start rounded-tile bg-mist p-4 lg:block">
         <div className="rounded-btn bg-white p-3 shadow-card">
           {/* TODO: client: point SITE.appUrl at the real app link so this code opens the app */}
-          <QRCodeSVG value={SITE.appUrl} size={140} fgColor="rgb(17 77 74)" bgColor="rgb(255 255 255)" level="M" title={tr('qrTitle')} />
+          <QRCodeSVG value={SITE.appUrl} size={140} fgColor="rgb(38 52 69)" bgColor="rgb(255 255 255)" level="M" title={tr('qrTitle')} />
         </div>
       </div>
       <div>
-        <p className="mb-3 flex items-center gap-2 text-small font-semibold text-terracotta-deep">
-          <Icon name="phoneApp" size={16} /> Way2Cure app
-        </p>
         {(() => { const H = headingLevel === 2 ? 'h2' : 'h3'; return <H className="mb-2 font-head text-h2m md:text-h2">{title ?? tr('openInApp')}</H>; })()}
         <p className="text-ink/80">{text ?? tr('qrText')}</p>
         <div className="my-5"><AppBadges /></div>

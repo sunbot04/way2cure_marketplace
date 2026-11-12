@@ -2,7 +2,7 @@ import type { ComponentType, ReactNode } from 'react';
 import { m, type Variants } from 'motion/react';
 import { VIEWPORT, fadeRise, stagger, tReveal } from '../../lib/motion';
 
-// Scroll reveals: fade + rise once when 20% in view (VIEWPORT). Content is in the DOM from the
+// Scroll reveals: fade + rise once, when the element scrolls into view (VIEWPORT). Content is in the DOM from the
 // start and only its opacity/transform animate, so it is always readable and clickable.
 
 type Tag = 'div' | 'section' | 'ul' | 'ol' | 'li' | 'p' | 'span' | 'article' | 'header' | 'figure' | 'nav' | 'aside';

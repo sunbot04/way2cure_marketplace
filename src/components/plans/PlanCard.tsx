@@ -20,9 +20,9 @@ interface Props {
 
 // Refill reminders go out 3 days before each order (NotificationsContext REMIND_DAYS_BEFORE).
 const T: Dict = {
-  en: { reminder: 'We remind you 3 days before each order, on the bell at the top of every page.' },
-  hi: { reminder: 'हर ऑर्डर से 3 दिन पहले हम हर पेज के ऊपर घंटी पर याद दिलाते हैं।' },
-  mr: { reminder: 'प्रत्येक ऑर्डरच्या 3 दिवस आधी आम्ही प्रत्येक पानाच्या वरच्या घंटीवर आठवण करून देतो.' },
+  en: { reminder: 'We remind you 3 days before each order. Reminders show in your account.' },
+  hi: { reminder: 'हर ऑर्डर से 3 दिन पहले हम याद दिलाते हैं। रिमाइंडर आपके खाते में दिखते हैं।' },
+  mr: { reminder: 'प्रत्येक ऑर्डरच्या 3 दिवस आधी आम्ही आठवण करून देतो. आठवणी तुमच्या खात्यात दिसतात.' },
 };
 
 export default function PlanCard({ what, often, nextDate, paused, icon = 'refresh', onTogglePause, changeHref = '/contact' }: Props) {

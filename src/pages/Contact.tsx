@@ -4,7 +4,7 @@ import Icon from '../components/Icon';
 import PageHeader from '../components/layout/PageHeader';
 import Seo, { medicalBusinessLd } from '../components/layout/Seo';
 import Button from '../components/ui/Button';
-import Accent, { Eyebrow } from '../components/ui/Accent';
+import Accent from '../components/ui/Accent';
 import { Field, Input, Select, describedBy } from '../components/ui/Field';
 import { Reveal, Stagger, StaggerItem } from '../components/motion/Reveal';
 import { SITE } from '../config/site';
@@ -28,9 +28,6 @@ const T: Dict = {
     open247: 'Phone and WhatsApp are answered 24/7, every day of the year.',
     emailText: 'We reply within one working day.',
     directions: 'Get directions',
-    officesEyebrow: 'Visit us',
-    areasEyebrow: 'Where we work',
-    formEyebrow: 'Call back',
     checkOne: 'Please check the field marked below.',
     checkMany: 'Please check the {n} fields marked below.',
     another: 'Send another request',
@@ -81,9 +78,6 @@ const T: Dict = {
     open247: 'फ़ोन और व्हाट्सऐप पर 24/7, साल के हर दिन जवाब मिलता है।',
     emailText: 'हम एक कामकाजी दिन में जवाब देते हैं।',
     directions: 'रास्ता देखें',
-    officesEyebrow: 'हमसे मिलें',
-    areasEyebrow: 'हम कहाँ काम करते हैं',
-    formEyebrow: 'कॉल बैक',
     checkOne: 'कृपया नीचे निशान लगी जानकारी जाँचें।',
     checkMany: 'कृपया नीचे निशान लगी {n} जानकारियाँ जाँचें।',
     another: 'एक और अनुरोध भेजें',
@@ -134,9 +128,6 @@ const T: Dict = {
     open247: 'फोन आणि व्हॉट्सॲपवर 24/7, वर्षाच्या प्रत्येक दिवशी उत्तर मिळते.',
     emailText: 'आम्ही एका कामकाजाच्या दिवसात उत्तर देतो.',
     directions: 'रस्ता पाहा',
-    officesEyebrow: 'आम्हाला भेटा',
-    areasEyebrow: 'आम्ही कुठे काम करतो',
-    formEyebrow: 'कॉल बॅक',
     checkOne: 'कृपया खाली खूण केलेली माहिती तपासा.',
     checkMany: 'कृपया खाली खूण केलेल्या {n} माहिती तपासा.',
     another: 'आणखी एक विनंती पाठवा',
@@ -208,7 +199,7 @@ export default function Contact() {
   return (
     <>
       <Seo title={tr('eyebrow')} description={tr('seoDesc')} jsonLd={medicalBusinessLd} />
-      <PageHeader eyebrow={tr('eyebrow')} title={tr('title')} lead={tr('intro')}>
+      <PageHeader title={tr('title')} lead={tr('intro')}>
         <p className="m-0 flex items-center gap-2 text-base font-semibold text-green">
           <span className="grid h-7 w-7 place-items-center rounded-full bg-sage-tint"><Icon name="clock" size={15} /></span>
           {tr('open247')}
@@ -261,7 +252,6 @@ export default function Contact() {
             {/* Offices */}
             <div>
               <Reveal>
-                <Eyebrow>{tr('officesEyebrow')}</Eyebrow>
                 <h2 className="mb-6 text-section">{tr('offices')}</h2>
               </Reveal>
               <Stagger as="ul" className="grid gap-4">
@@ -285,7 +275,6 @@ export default function Contact() {
             {/* Home care areas */}
             <div>
               <Reveal>
-                <Eyebrow>{tr('areasEyebrow')}</Eyebrow>
                 <h2 className="mb-3 text-section">{tr('areas')}</h2>
                 <p className="mb-6 text-ink/80">{tr('areasText')}</p>
               </Reveal>
@@ -319,7 +308,6 @@ export default function Contact() {
               ) : (
                 <m.form key="form" {...crossfade} onSubmit={submit} noValidate className="grid gap-5">
                   <div>
-                    <Eyebrow>{tr('formEyebrow')}</Eyebrow>
                     <h2 className="mb-2 text-section">{tr('formTitle')}</h2>
                     <p className="m-0 text-ink/80">{tr('formText')}</p>
                   </div>

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { MotionConfig } from 'motion/react';
 import Icon from '../components/Icon';
 import Button from '../components/ui/Button';
-import Accent, { Eyebrow } from '../components/ui/Accent';
+import Accent from '../components/ui/Accent';
 import { ProductCardSkeleton } from '../components/ui/Skeleton';
 import { Reveal, Stagger, StaggerItem } from '../components/motion/Reveal';
 import CountUp from '../components/motion/CountUp';
@@ -42,8 +42,7 @@ export default function StyleguideMotion() {
       <MotionConfig reducedMotion={reduce ? 'always' : 'user'}>
         <div key={run} className="grid gap-12">
           <div>
-            <h3>Eyebrow and accents (one per section)</h3>
-            <Eyebrow>How it works</Eyebrow>
+            <h3>Accents (one per section)</h3>
             <p className="m-0 font-head text-section font-bold text-green"><Accent text="Every dose, *in its own sachet.*" /></p>
             <p className="m-0 mt-4 font-head text-section font-bold text-green"><Accent text="AI assists, _pharmacist decides._" /></p>
           </div>

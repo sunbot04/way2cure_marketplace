@@ -7,7 +7,7 @@ import { categories } from '../../data';
 import { SITE } from '../../config/site';
 import { LAYOUT } from './copy';
 
-// Footer (p.9 item 9, p.11): deep green, 4 columns, licence line, app badges, socials, language.
+// Footer (p.9 item 9, p.11): charcoal, 4 columns, licence line, app badges, socials, language.
 const EXTRA: Dict = {
   en: { getApp: 'Get the Way2Cure app', appText: 'Upload prescriptions, track doses and orders.', follow: 'Follow Way2Cure', care: 'Care & support' },
   hi: { getApp: 'Way2Cure ऐप पाएँ', appText: 'पर्चे अपलोड करें, डोज़ और ऑर्डर ट्रैक करें।', follow: 'Way2Cure को फ़ॉलो करें', care: 'देखभाल और मदद' },
@@ -32,7 +32,7 @@ export default function Footer() {
     <footer className="bg-green text-mint">
       <div className="container grid gap-12 pb-12 pt-16 lg:grid-cols-[1.5fr_1fr_1fr_1.2fr] lg:gap-10 lg:pt-20">
         <div>
-          {/* White logo on deep green (p.4). TODO: client: swap in the official reversed logo file. */}
+          {/* White logo on charcoal (p.4). TODO: client: swap in the official reversed logo file. */}
           <img src="/logo.png" alt="Way2Cure" width={150} height={50} className="mb-6 h-11 w-auto [filter:brightness(0)_invert(1)]" />
           <p className="font-head text-h3m font-bold leading-snug text-white">{tr('promise')}</p>
           <p className="text-base">{tr('about')}</p>

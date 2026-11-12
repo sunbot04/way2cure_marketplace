@@ -20,7 +20,6 @@ import { formatDate, useLang, useLoc, useT, type Dict } from '../i18n/LangContex
 const T: Dict = {
   en: {
     seoTitle: 'My account',
-    eyebrow: 'Your account',
     titleIn: 'Hello, *{name}.*',
     titleOut: 'My orders & *tracking*',
     intro: "See your orders, reorder in one tap, and manage your family's care.",
@@ -55,7 +54,6 @@ const T: Dict = {
   },
   hi: {
     seoTitle: 'मेरा खाता',
-    eyebrow: 'आपका खाता',
     titleIn: 'नमस्ते, *{name}।*',
     titleOut: 'मेरे ऑर्डर और *ट्रैकिंग*',
     intro: 'अपने ऑर्डर देखें, एक टैप में फिर से ऑर्डर करें, और अपने परिवार की देखभाल संभालें।',
@@ -90,7 +88,6 @@ const T: Dict = {
   },
   mr: {
     seoTitle: 'माझे खाते',
-    eyebrow: 'तुमचे खाते',
     titleIn: 'नमस्कार, *{name}.*',
     titleOut: 'माझ्या ऑर्डर आणि *ट्रॅकिंग*',
     intro: 'तुमच्या ऑर्डर पाहा, एका टॅपमध्ये पुन्हा ऑर्डर करा, आणि तुमच्या कुटुंबाची काळजी सांभाळा.',
@@ -162,7 +159,6 @@ export default function Account() {
       <Seo title={tr('seoTitle')} description={tr('intro')} noindex />
       <PageHeader
         tone="mist"
-        eyebrow={tr('eyebrow')}
         title={firstName ? tr('titleIn', { name: firstName }) : tr('titleOut')}
         lead={tr('intro')}
       />

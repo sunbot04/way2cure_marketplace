@@ -12,10 +12,10 @@ export interface Step {
   mr?: { title?: string; text?: string };
 }
 
-// Number circle colours; light fills (sage, mustard) take green text for contrast.
+// Number circle colours; light fills (sky blue, yellow) take dark text for contrast.
 const DOT: Record<StepColour, string> = {
   green: 'bg-green text-white',
-  sage: 'bg-sage text-green',
+  sage: 'bg-sage text-ink',
   mustard: 'bg-mustard text-green',
   'terracotta-deep': 'bg-terracotta-deep text-white',
 };

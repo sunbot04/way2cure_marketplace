@@ -2,7 +2,7 @@ import type { ReactNode, ButtonHTMLAttributes } from 'react';
 import { Link } from 'react-router-dom';
 
 // Buttons (guidelines p.7): min height 48px, 8px radius, 18px bold.
-// primary = deep green · urgent = booking / urgent action (terracotta-deep) · outline = secondary.
+// primary = charcoal · urgent = booking / urgent action (crimson) · outline = secondary.
 // Use ONE primary button per section.
 export type ButtonVariant = 'primary' | 'urgent' | 'outline' | 'light' | 'outline-light';
 

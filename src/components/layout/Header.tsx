@@ -16,7 +16,8 @@ import { LAYOUT } from './copy';
 // bar inset from the screen edges. Transparent over the page at the top; white with a soft shadow
 // once you scroll, when the strip slides away and the bar gets a little shorter.
 // The bar's right side keeps only search, cart and account. Calling is the floating button on every
-// page; "Upload prescription" is a main menu item; notifications live inside the signed-in account.
+// page; "Upload a prescription" is the first option in the Shop menu (and a row in the mobile menu);
+// notifications live inside the signed-in account.
 // Height is fixed and matched by --header-space in index.css.
 
 function Utility() {
@@ -57,10 +58,13 @@ function Utility() {
   );
 }
 
-function NavMenu({ to, label, children, wide = false }: { to: string; label: string; children: ReactNode; wide?: boolean }) {
+function NavMenu({ to, label, children, wide = false, also = [] }: { to: string; label: string; children: ReactNode; wide?: boolean; also?: string[] }) {
+  // Also underlined on related pages that live in this menu (e.g. Shop on the prescription page)
+  const { pathname } = useLocation();
+  const related = also.some((p) => pathname.startsWith(p));
   return (
     <div className="group relative">
-      <NavLink to={to} className={({ isActive }) => navLinkClass(isActive)}>
+      <NavLink to={to} className={({ isActive }) => navLinkClass(isActive || related)}>
         {label} <Icon name="chevronDown" size={15} className="text-grey transition-transform duration-micro group-hover:rotate-180" />
       </NavLink>
       {/* Opens from the left edge of the menu item, so it never runs off the screen */}
@@ -136,7 +140,16 @@ export default function Header() {
 
               {/* Desktop navigation (p.8). Below 1280px it lives in the menu. The logo links home. */}
               <nav aria-label={tr('mainNav')} className="hidden items-center gap-6 xl:flex">
-                <NavMenu to="/shop" label={t('shop')} wide>
+                <NavMenu to="/shop" label={t('shop')} wide also={['/prescription']}>
+                  {/* Ordering with a prescription: the first, highlighted option of the Shop menu */}
+                  <Link to="/prescription" className="group/rx mb-3 flex items-center gap-3 rounded-btn bg-mist px-3 py-2.5 no-underline transition-colors duration-micro hover:bg-mint/60">
+                    <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-terracotta-deep text-white"><Icon name="rx" size={17} /></span>
+                    <span className="grid flex-1 leading-snug">
+                      <strong className="text-base text-green">{tr('rxTitle')}</strong>
+                      <span className="text-small text-grey">{tr('rxSub')}</span>
+                    </span>
+                    <Icon name="arrow" size={16} className="shrink-0 text-green transition-transform duration-micro group-hover/rx:translate-x-[3px]" />
+                  </Link>
                   <p className={panelTitle}>{tr('shopBy')}</p>
                   <ul className="grid grid-cols-2 gap-x-1">
                     {[...categories, ...shopViews].map(loc).map((c) => (
@@ -150,9 +163,6 @@ export default function Header() {
                   </ul>
                   <Link to="/shop" className={panelAll}>{tr('allProducts')} <Icon name="arrow" size={16} className="transition-transform duration-micro group-hover/all:translate-x-[3px]" /></Link>
                 </NavMenu>
-                <NavLink to="/prescription" className={({ isActive }) => navLinkClass(isActive)}>
-                  <Icon name="rx" size={17} className="text-terracotta-deep" /> {t('uploadRx')}
-                </NavLink>
                 <NavMenu to="/care" label={t('care')}>
                   <div className="grid grid-cols-2 gap-2">
                     {[false, true].map((special) => (

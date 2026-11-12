@@ -6,10 +6,10 @@ import Icon from '../Icon';
 export type TagKind = 'rx' | 'pharmacist' | 'seller' | 'subscribe' | 'rent' | 'launch' | 'status';
 
 const KINDS: Record<TagKind, string> = {
-  rx: 'bg-terracotta-deep text-white', // white on terracotta-deep 5.3:1
+  rx: 'bg-terracotta-deep text-white', // white on crimson 5.9:1
   pharmacist: 'bg-green text-white', // 9.6:1
   seller: 'bg-sage-tint text-green ring-1 ring-inset ring-sage',
-  subscribe: 'bg-mustard text-green', // green on mustard 5.1:1
+  subscribe: 'bg-mustard text-green', // charcoal on yellow 8.2:1
   rent: 'bg-mint text-green',
   launch: 'bg-mustard text-green',
   status: 'bg-sage-tint text-green',

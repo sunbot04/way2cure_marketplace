@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { m } from 'motion/react';
 import Icon from '../components/Icon';
 import Button from '../components/ui/Button';
-import Accent, { Eyebrow } from '../components/ui/Accent';
+import Accent from '../components/ui/Accent';
 import { Field, Input } from '../components/ui/Field';
 import AppPanel, { HelpBox } from '../components/commerce/AppPanel';
 import PageHeader from '../components/layout/PageHeader';
@@ -26,8 +26,7 @@ const T: Dict = {
     howLead: 'Four steps from your prescription to your door. If anything is unclear, the pharmacist calls you before packing.',
     getApp: 'Get the app', callOrder: 'Call {phone} to order',
     appTitle: 'Upload in the Way2Cure app',
-    tryEyebrow: 'Inside the app', tryTitle: 'You check the list. *We keep you posted.*',
-    knowEyebrow: 'Rules we follow',
+    tryTitle: 'You check the list. *We keep you posted.*',
     emptyList: 'You removed every medicine from the example.', resetList: 'Show the example again',
     seoTitle: 'Upload a prescription',
     seoDesc: 'Upload your prescription in the Way2Cure app. AI lists the medicines, a registered pharmacist verifies every order, and we deliver in Mumbai, Navi Mumbai and Thane.',
@@ -36,7 +35,6 @@ const T: Dict = {
     intro: 'Snap a photo of your prescription. We list the medicines, you confirm, and a registered pharmacist checks every order before it leaves the pharmacy.',
     aiTitle: 'AI assists, pharmacist decides.',
     aiText: 'Our system reads the prescription to save you typing. A registered pharmacist always makes the final check.',
-    howItWorks: 'How it works',
     checkTitle: 'You check the list first',
     checkText: 'After you upload, the app shows the medicines it found. Fix anything that looks wrong before you confirm. This example shows how the list looks.',
     medicinesFound: 'Medicines found',
@@ -66,8 +64,7 @@ const T: Dict = {
     howLead: 'आपके पर्चे से आपके दरवाज़े तक चार कदम। कुछ भी साफ़ न हो तो पैक करने से पहले फ़ार्मासिस्ट आपको कॉल करते हैं।',
     getApp: 'ऐप पाएँ', callOrder: 'ऑर्डर के लिए {phone} पर कॉल करें',
     appTitle: 'Way2Cure ऐप में अपलोड करें',
-    tryEyebrow: 'ऐप के अंदर', tryTitle: 'लिस्ट आप जाँचते हैं। *हर अपडेट हम देते हैं।*',
-    knowEyebrow: 'हम ये नियम मानते हैं',
+    tryTitle: 'लिस्ट आप जाँचते हैं। *हर अपडेट हम देते हैं।*',
     emptyList: 'आपने उदाहरण से सभी दवाइयाँ हटा दीं।', resetList: 'उदाहरण फिर से दिखाएँ',
     seoTitle: 'पर्चा अपलोड करें',
     seoDesc: 'Way2Cure ऐप में अपना पर्चा अपलोड करें। AI दवाइयों की लिस्ट बनाता है, हर ऑर्डर को रजिस्टर्ड फ़ार्मासिस्ट जाँचते हैं, और हम मुंबई, नवी मुंबई और ठाणे में डिलिवरी करते हैं।',
@@ -76,7 +73,6 @@ const T: Dict = {
     intro: 'अपने पर्चे की फ़ोटो लें। हम दवाइयों की लिस्ट बनाते हैं, आप उसे कन्फ़र्म करते हैं, और फ़ार्मेसी से निकलने से पहले हर ऑर्डर को एक रजिस्टर्ड फ़ार्मासिस्ट जाँचते हैं।',
     aiTitle: 'AI मदद करता है, फ़ैसला फ़ार्मासिस्ट करते हैं।',
     aiText: 'हमारा सिस्टम पर्चा पढ़ लेता है, ताकि आपको टाइप न करना पड़े। आख़िरी जाँच हमेशा एक रजिस्टर्ड फ़ार्मासिस्ट ही करते हैं।',
-    howItWorks: 'यह कैसे काम करता है',
     checkTitle: 'पहले आप लिस्ट देख लें',
     checkText: 'अपलोड के बाद ऐप पर्चे में मिली दवाइयाँ दिखाता है। कन्फ़र्म करने से पहले जो भी गलत लगे, उसे ठीक कर दें। यह उदाहरण दिखाता है कि लिस्ट कैसी दिखती है।',
     medicinesFound: 'मिली हुई दवाइयाँ',
@@ -106,8 +102,7 @@ const T: Dict = {
     howLead: 'तुमच्या प्रिस्क्रिप्शनपासून तुमच्या दारापर्यंत चार पायऱ्या. काही अस्पष्ट असल्यास पॅक करण्यापूर्वी फार्मासिस्ट तुम्हाला कॉल करतात.',
     getApp: 'ॲप मिळवा', callOrder: 'ऑर्डरसाठी {phone} वर कॉल करा',
     appTitle: 'Way2Cure ॲपमध्ये अपलोड करा',
-    tryEyebrow: 'ॲपच्या आत', tryTitle: 'यादी तुम्ही तपासता. *प्रत्येक अपडेट आम्ही देतो.*',
-    knowEyebrow: 'आम्ही हे नियम पाळतो',
+    tryTitle: 'यादी तुम्ही तपासता. *प्रत्येक अपडेट आम्ही देतो.*',
     emptyList: 'तुम्ही उदाहरणातील सर्व औषधे काढली.', resetList: 'उदाहरण पुन्हा दाखवा',
     seoTitle: 'प्रिस्क्रिप्शन अपलोड करा',
     seoDesc: 'Way2Cure ॲपमध्ये तुमचे प्रिस्क्रिप्शन अपलोड करा. AI औषधांची यादी करते, प्रत्येक ऑर्डर नोंदणीकृत फार्मासिस्ट तपासतात, आणि आम्ही मुंबई, नवी मुंबई आणि ठाणे येथे डिलिव्हरी करतो.',
@@ -116,7 +111,6 @@ const T: Dict = {
     intro: 'तुमच्या प्रिस्क्रिप्शनचा फोटो काढा. आम्ही औषधांची यादी करतो, तुम्ही ती निश्चित करता, आणि फार्मसीमधून निघण्यापूर्वी प्रत्येक ऑर्डर नोंदणीकृत फार्मासिस्ट तपासतात.',
     aiTitle: 'AI मदत करते, निर्णय फार्मासिस्ट घेतात.',
     aiText: 'तुम्हाला टाइप करावे लागू नये म्हणून आमची सिस्टम प्रिस्क्रिप्शन वाचते. शेवटची तपासणी नेहमी नोंदणीकृत फार्मासिस्टच करतात.',
-    howItWorks: 'हे कसे चालते',
     checkTitle: 'आधी तुम्ही यादी तपासा',
     checkText: 'अपलोड केल्यावर ॲप सापडलेली औषधे दाखवते. निश्चित करण्यापूर्वी काही चुकीचे वाटले तर ते दुरुस्त करा. यादी कशी दिसते ते हे उदाहरण दाखवते.',
     medicinesFound: 'सापडलेली औषधे',
@@ -178,7 +172,6 @@ export default function Prescription() {
     <>
       <Seo title={tr('seoTitle')} description={tr('seoDesc')} />
       <PageHeader
-        eyebrow={tr('eyebrow')}
         title={tr('titleAccent')}
         lead={tr('intro')}
         crumbs={[{ label: t('home'), to: '/' }, { label: tr('eyebrow') }]}
@@ -216,7 +209,6 @@ export default function Prescription() {
             steps={RX_STEPS.map(loc)}
             heading={
               <Reveal>
-                <Eyebrow>{tr('howItWorks')}</Eyebrow>
                 <h2 className="mb-4 text-section"><Accent text={tr('aiTitleAccent')} /></h2>
                 <p className="m-0 text-lead text-ink/75">{tr('howLead')}</p>
               </Reveal>
@@ -229,7 +221,6 @@ export default function Prescription() {
       <section className="section">
         <div className="container">
           <Reveal className="mb-12 max-w-2xl">
-            <Eyebrow>{tr('tryEyebrow')}</Eyebrow>
             <h2 className="m-0 text-section"><Accent text={tr('tryTitle')} /></h2>
           </Reveal>
           <div className="grid items-start gap-8 lg:grid-cols-2">
@@ -341,7 +332,6 @@ export default function Prescription() {
       <section className="section bg-white">
         <div className="container">
           <Reveal className="mb-10 max-w-2xl">
-            <Eyebrow>{tr('knowEyebrow')}</Eyebrow>
             <h2 className="m-0 text-section">{tr('goodToKnow')}</h2>
           </Reveal>
           <Stagger as="ul" className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">

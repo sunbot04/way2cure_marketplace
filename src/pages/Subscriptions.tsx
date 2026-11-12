@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Icon from '../components/Icon';
 import Button from '../components/ui/Button';
-import Accent, { Eyebrow } from '../components/ui/Accent';
+import Accent from '../components/ui/Accent';
 import { Reveal, Stagger, StaggerItem } from '../components/motion/Reveal';
 import PlanCard from '../components/plans/PlanCard';
 import SachetExplorer from '../components/brand/SachetExplorer';
@@ -14,7 +14,7 @@ import { subscriptionPlans } from '../data';
 import { formatDate, useLang, useLoc, useT, type Dict } from '../i18n/LangContext';
 
 // Subscriptions (guidelines p.8, p.10): what you get, how it runs, the dose sachets, and
-// manage / pause in plain view. Sections step cream -> white -> cream -> mist -> white -> cream.
+// manage / pause in plain view. Sections alternate white and mist.
 
 // Example plans so families can see how "manage / pause" works.
 // TODO: API: the signed-in family's plans from the account API.
@@ -40,22 +40,21 @@ const T: Dict = {
     seoTitle: 'Medicine and care subscriptions',
     seoDesc: 'Monthly medicines, adult diapers, dose sachets and regular home health checks, scheduled for you with a reminder before every order. Pause or change anytime.',
     crumb: 'Subscriptions',
-    eyebrow: 'Subscribe & save',
     title: 'Regular care, *on schedule.*',
     intro: 'Subscribe once. We schedule each delivery or visit and remind you before every order. Pause or change anytime, with no fee.',
     seePlans: 'See plans',
-    flowEyebrow: 'How it works', flowTitle: 'Set it up once. *We remember for you.*',
+    flowTitle: 'Set it up once. *We remember for you.*',
     flow1: 'Subscribe', flow1d: 'Choose a plan, or ask us to set one up on a call.',
     flow2: 'We schedule', flow2d: 'Every delivery or visit is planned ahead.',
     flow3: 'Reminder first', flow3d: 'You hear from us 3 days before each order.',
     flow4: 'Delivery or visit', flow4d: 'At your door, on time. Pause or change anytime.',
-    plansEyebrow: 'Plans', plansTitle: 'Pick what your family *needs regularly.*',
+    plansTitle: 'Pick what your family *needs regularly.*',
     howSachets: 'How sachets work', bookCheck: 'Book a home check', startPlan: 'Start a plan',
     freqNote: 'Frequencies are suggestions. You confirm the price before the first order.',
-    sachetEyebrow: 'Dose sachets', sachetTitle: 'Every dose, *in its own sachet.*',
+    sachetTitle: 'Every dose, *in its own sachet.*',
     sachetText: 'Medicines sorted by time of day and sealed one dose to a sachet, labelled with the name, the time and what is inside.',
     tear: 'Tear one, take the dose.', sachetTabs: 'Choose a time of day',
-    manageEyebrow: 'Your plans', manageTitle: 'Manage or pause a plan',
+    manageTitle: 'Manage or pause a plan',
     manageLead: 'Example shown until you log in. Pausing takes effect straight away.',
     paused: 'Paused', active: 'Active',
     info: 'Nothing is charged while a plan is paused. You can cancel anytime, with no fee.',
@@ -65,22 +64,21 @@ const T: Dict = {
     seoTitle: 'दवाइयों और देखभाल के सब्सक्रिप्शन',
     seoDesc: 'हर महीने की दवाइयाँ, बड़ों के डायपर, डोज़ सैशे और घर पर नियमित स्वास्थ्य जाँच, आपके लिए तय समय पर, हर ऑर्डर से पहले रिमाइंडर के साथ। जब चाहें रोकें या बदलें।',
     crumb: 'सब्सक्रिप्शन',
-    eyebrow: 'सब्सक्राइब करें और बचाएँ',
     title: 'नियमित देखभाल, *तय समय पर।*',
     intro: 'एक बार सब्सक्राइब करें। हम हर डिलीवरी या विज़िट का समय तय करते हैं और हर ऑर्डर से पहले याद दिलाते हैं। जब चाहें रोकें या बदलें, कोई शुल्क नहीं।',
     seePlans: 'प्लान देखें',
-    flowEyebrow: 'यह कैसे काम करता है', flowTitle: 'एक बार सेट करें। *याद हम रखेंगे।*',
+    flowTitle: 'एक बार सेट करें। *याद हम रखेंगे।*',
     flow1: 'सब्सक्राइब करें', flow1d: 'प्लान चुनें, या कॉल पर हमसे सेट करवाएँ।',
     flow2: 'हम समय तय करते हैं', flow2d: 'हर डिलीवरी या विज़िट पहले से तय होती है।',
     flow3: 'पहले रिमाइंडर', flow3d: 'हर ऑर्डर से 3 दिन पहले हम याद दिलाते हैं।',
     flow4: 'डिलीवरी या विज़िट', flow4d: 'आपके दरवाज़े पर, समय पर। जब चाहें रोकें या बदलें।',
-    plansEyebrow: 'प्लान', plansTitle: 'जो आपके परिवार को *नियमित रूप से चाहिए।*',
+    plansTitle: 'जो आपके परिवार को *नियमित रूप से चाहिए।*',
     howSachets: 'सैशे कैसे काम करते हैं', bookCheck: 'घर पर जाँच बुक करें', startPlan: 'प्लान शुरू करें',
     freqNote: 'कितनी बार, यह सिर्फ़ सुझाव है। पहले ऑर्डर से पहले आप कीमत पक्की करते हैं।',
-    sachetEyebrow: 'डोज़ सैशे', sachetTitle: 'हर डोज़, *उसके अपने सैशे में।*',
+    sachetTitle: 'हर डोज़, *उसके अपने सैशे में।*',
     sachetText: 'दवाइयाँ दिन के समय के अनुसार छाँटी जाती हैं और हर डोज़ एक सैशे में बंद होती है, जिस पर नाम, समय और अंदर की दवाएँ लिखी होती हैं।',
     tear: 'एक फाड़ें, डोज़ लें।', sachetTabs: 'दिन का समय चुनें',
-    manageEyebrow: 'आपके प्लान', manageTitle: 'प्लान बदलें या रोकें',
+    manageTitle: 'प्लान बदलें या रोकें',
     manageLead: 'लॉग इन करने तक उदाहरण दिखाया गया है। रोकना तुरंत लागू होता है।',
     paused: 'रुका हुआ', active: 'चालू',
     info: 'प्लान रुके रहने तक कोई पैसा नहीं लिया जाता। आप कभी भी, बिना किसी फ़ीस के, रद्द कर सकते हैं।',
@@ -90,22 +88,21 @@ const T: Dict = {
     seoTitle: 'औषधे आणि काळजीची सदस्यता',
     seoDesc: 'दरमहा औषधे, प्रौढांसाठी डायपर, डोस सॅशे आणि घरी नियमित आरोग्य तपासणी, तुमच्यासाठी ठरलेल्या वेळी, प्रत्येक ऑर्डरआधी आठवणीसह. कधीही थांबवा किंवा बदला.',
     crumb: 'सदस्यता',
-    eyebrow: 'सदस्यता घ्या आणि बचत करा',
     title: 'नियमित काळजी, *ठरलेल्या वेळेवर.*',
     intro: 'एकदा सदस्यता घ्या. आम्ही प्रत्येक डिलिव्हरी किंवा भेटीची वेळ ठरवतो आणि प्रत्येक ऑर्डरआधी आठवण करून देतो. कधीही थांबवा किंवा बदला, कोणतेही शुल्क नाही.',
     seePlans: 'प्लॅन पाहा',
-    flowEyebrow: 'हे कसे काम करते', flowTitle: 'एकदाच सेट करा. *आठवण आम्ही ठेवू.*',
+    flowTitle: 'एकदाच सेट करा. *आठवण आम्ही ठेवू.*',
     flow1: 'सदस्यता घ्या', flow1d: 'प्लॅन निवडा, किंवा कॉलवर आमच्याकडून सेट करून घ्या.',
     flow2: 'आम्ही वेळ ठरवतो', flow2d: 'प्रत्येक डिलिव्हरी किंवा भेट आधीच ठरलेली असते.',
     flow3: 'आधी आठवण', flow3d: 'प्रत्येक ऑर्डरच्या 3 दिवस आधी आम्ही आठवण करून देतो.',
     flow4: 'डिलिव्हरी किंवा भेट', flow4d: 'तुमच्या दारात, वेळेवर. कधीही थांबवा किंवा बदला.',
-    plansEyebrow: 'प्लॅन', plansTitle: 'तुमच्या कुटुंबाला *नियमित लागणारे.*',
+    plansTitle: 'तुमच्या कुटुंबाला *नियमित लागणारे.*',
     howSachets: 'सॅशे कसे काम करतात', bookCheck: 'घरी तपासणी बुक करा', startPlan: 'प्लॅन सुरू करा',
     freqNote: 'किती वेळा, हे फक्त सुचवलेले आहे. पहिल्या ऑर्डरआधी तुम्ही किंमत निश्चित करता.',
-    sachetEyebrow: 'डोस सॅशे', sachetTitle: 'प्रत्येक डोस, *त्याच्या स्वतःच्या सॅशेमध्ये.*',
+    sachetTitle: 'प्रत्येक डोस, *त्याच्या स्वतःच्या सॅशेमध्ये.*',
     sachetText: 'औषधे दिवसाच्या वेळेनुसार लावली जातात आणि प्रत्येक डोस एका सॅशेमध्ये बंद होतो, ज्यावर नाव, वेळ आणि आतील औषधे लिहिलेली असतात.',
     tear: 'एक फाडा, डोस घ्या.', sachetTabs: 'दिवसाची वेळ निवडा',
-    manageEyebrow: 'तुमचे प्लॅन', manageTitle: 'प्लॅन बदला किंवा थांबवा',
+    manageTitle: 'प्लॅन बदला किंवा थांबवा',
     manageLead: 'लॉग इन करेपर्यंत उदाहरण दाखवले आहे. थांबवणे लगेच लागू होते.',
     paused: 'थांबवलेला', active: 'सुरू',
     info: 'प्लॅन थांबवलेला असताना कोणतेही पैसे घेतले जात नाहीत. तुम्ही कधीही, कोणत्याही शुल्काशिवाय, रद्द करू शकता.',
@@ -128,7 +125,6 @@ export default function Subscriptions() {
       <PageHeader
         tone="cream"
         image={{ src: '/images/people/grandmother-errand.webp', position: '58% 30%' }}
-        eyebrow={tr('eyebrow')}
         title={tr('title')}
         lead={tr('intro')}
         crumbs={[{ label: t('home'), to: '/' }, { label: tr('crumb') }]}
@@ -143,7 +139,6 @@ export default function Subscriptions() {
       <section className="section bg-white">
         <div className="container">
           <Reveal className="mb-12 max-w-2xl">
-            <Eyebrow>{tr('flowEyebrow')}</Eyebrow>
             <h2 className="m-0 text-section"><Accent text={tr('flowTitle')} /></h2>
           </Reveal>
           <Stagger as="ol" className="relative grid gap-8 md:grid-cols-4 md:gap-6">
@@ -167,7 +162,6 @@ export default function Subscriptions() {
       <section id="plans" className="section scroll-mt-28">
         <div className="container">
           <Reveal className="mb-12 max-w-2xl">
-            <Eyebrow>{tr('plansEyebrow')}</Eyebrow>
             <h2 className="m-0 text-section"><Accent text={tr('plansTitle')} /></h2>
           </Reveal>
           <Stagger as="ul" className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
@@ -205,7 +199,6 @@ export default function Subscriptions() {
       <section className="section bg-mist">
         <div className="container grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
           <Reveal>
-            <Eyebrow>{tr('sachetEyebrow')}</Eyebrow>
             <h2 className="mb-4 text-section"><Accent text={tr('sachetTitle')} /></h2>
             <p className="text-lead text-ink/75">{tr('sachetText')}</p>
             <p className="mb-6 mt-6 font-head text-h2m font-bold text-terracotta-deep">{tr('tear')}</p>
@@ -220,7 +213,6 @@ export default function Subscriptions() {
         <div className="container">
           <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
             <Reveal className="max-w-2xl">
-              <Eyebrow>{tr('manageEyebrow')}</Eyebrow>
               <h2 className="mb-4 text-section">{tr('manageTitle')}</h2>
               <p className="m-0 text-lead text-ink/75">{tr('manageLead')}</p>
             </Reveal>

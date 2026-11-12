@@ -125,10 +125,10 @@ The site is drawn entirely in the browser. Nothing paints until about 119 KB of 
 
 - **Reduced motion:** `<LazyMotion features={domAnimation}>` and `<MotionConfig reducedMotion="user">` wrap the whole app.
 - **What it does:**
-  - **Homepage hero:** the eyebrow, then the H1 lines rising out of a clip, then the lead, buttons and proof points.
+  - **Homepage hero:** the H1 lines rising out of a clip, then the lead, buttons and proof points.
   - **Hero visual:** it arrives after the copy, with the floating cards last. The sachet then floats gently.
   - **Drawn underlines:** they draw on via `pathLength`.
-  - **Scroll reveals:** play once, when 20% of a section is in view.
+  - **Scroll reveals:** play once, as soon as a block scrolls into view (its top 10% up from the bottom of the screen). This works for blocks of any height; the earlier "20% in view" rule left the 28-product shop grid invisible on phones and zoomed screens. Shop cards reveal one by one.
   - **Prescription steps:** a pinned scroll story on desktop, and a stepper on phones.
   - **Sachet tabs:** crossfade between Morning, Afternoon, Evening and Night.
   - **The 15,000+ figure:** counts up (real number only).
@@ -151,7 +151,7 @@ The site is drawn entirely in the browser. Nothing paints until about 119 KB of 
   - floating Call and WhatsApp buttons on every page. On phones they appear after the first screen and respect safe-area insets.
 - **Header:**
   - A floating rounded bar, inset from the edges. It is transparent at the top and turns white with a shadow on scroll, when it also gets slightly shorter.
-  - The right side has only search, cart and account. Calling is the floating button, "Upload Prescription" is a main menu item next to Shop, and notifications sit inside the signed-in account (`/notifications` asks you to log in first).
+  - The right side has only search, cart and account. Calling is the floating button, "Upload a prescription" is the first, highlighted option in the Shop menu, and notifications sit inside the signed-in account (`/notifications` asks you to log in first).
   - The dropdowns are compact and open from the left edge of their item.
 - **Landing page** (REO360-style structure):
   - Hero: a real photo of a smiling Indian elderly couple in an arch, the code-built dose sachet, the app on a phone, a 15,000+ card and a "Pharmacist verified" card.
@@ -164,9 +164,9 @@ The site is drawn entirely in the browser. Nothing paints until about 119 KB of 
     - the trust section;
     - stories and FAQ;
     - a "Talk to a real person" card with a photo.
-- **All other pages:** rebuilt with the same system: eyebrow plus one accent per heading, section rhythm and alternating backgrounds, and empty, loading and error states in the brand voice.
+- **All other pages:** rebuilt with the same system: one accent per heading, section rhythm and alternating backgrounds, and empty, loading and error states in the brand voice.
 - **New pages:** Login and Signup, using phone and OTP, no passwords, with `?next=` redirect (demo: any 6 digits). The Account page shows a signed-in or signed-out state.
-- **Footer:** deep green, with 4 columns, the logo in white, app-store badges, social icons, the licence line and a language switch.
+- **Footer:** charcoal, with 4 columns, the logo in white, app-store badges, social icons, the licence line and a language switch.
 - **Removed from layout:** the 90% desktop scale from the previous round. Body text is back to the 18 px minimum, as the client approved.
 
 ## 6. Where it could still look generic
@@ -181,18 +181,19 @@ The site is drawn entirely in the browser. Nothing paints until about 119 KB of 
 | Deviation | Reason |
 |---|---|
 | Hero H1 56–64 px desktop, section headings about 44 px, inner-page H1 48 px | The brief treats the PDF's 40 px H1 as a minimum, for a landing page with a voice. |
-| Lora Italic accent phrase (one per section), and a hand-drawn terracotta underline | From the brief (DawaTime and REO360 references). Devanagari has no italic, so in Hindi and Marathi the accent is colour only. |
-| Accent phrases turn mustard on deep-green backgrounds | Terracotta Deep on Deep Green is 1.8:1 and fails AA. Mustard on green is 5.1:1. |
-| Section eyebrows (a short line plus a label) | The brief asks for them. The PDF does not cover them. They are not pills and use no emoji. |
-| Soft single-colour radial mint shape behind the hero; dark-to-transparent overlay on photo cards; masked photo edges on page headers | Used only for depth and blending, never as multi-colour decoration. |
+| Lora Italic accent phrase (one per section), and a hand-drawn light-crimson underline | From the brief (DawaTime and REO360 references). Devanagari has no italic, so in Hindi and Marathi the accent is colour only. |
+| Colour palette "Charcoal & Crimson" instead of the PDF's deep green, terracotta and cream (p.5): charcoal `#263445` main colour, crimson `#C8102E` secondary, yellow `#FFC83D` highlight, sky blue `#3A8FD6` soft colour, white pages with `#F1F5F9` sections | Client request: the green and beige looked dull. Chosen from screenshots of the real site in eleven palettes. Every text pairing passes WCAG AA; Lighthouse accessibility is 100 with the colour-contrast audit passing on all 13 pages checked. Built from the logo's own grey and red. The colour tokens keep their role names (`green` = main colour, `terracotta-deep` = secondary), see `src/styles/index.css`. |
+| Accent phrases turn yellow on charcoal bands | Crimson on charcoal is 2.2:1 and fails AA. Yellow on charcoal is 9.6:1. |
+| No eyebrows (the short line plus a small label) above page titles or section headings | The brief asked for them; removed at the client's request. The headings already say what each page and section is about, and the site reads cleaner and less template-like without them. |
+| Soft single-colour radial shape behind the hero; dark-to-transparent overlay on photo cards; masked photo edges on page headers | Used only for depth and blending, never as multi-colour decoration. |
 | 16–20 px radii on cards and panels (PDF: 12 px) | The brief's polish spec: soft 16–20 px radii. Buttons keep 8 px. |
 | Floating Call and WhatsApp buttons instead of a sticky bottom bar on mobile | Client request: no app-style bottom navigation on the website. |
 | Mobile bottom tab bar (Home, Shop, Rx, Care, Account) removed | Same client request. These links are in the header menu. |
-| "Upload Prescription" is a main menu item (with the Rx icon) and a link in the hero, not a header button (PDF p.8: always-visible button) | Client request: fewer calls to action on the right of the header. It is still one tap away on every page, and in the mobile menu. |
+| "Upload a prescription" is the first, highlighted option in the Shop menu and a link in the hero, not a header button (PDF p.8: always-visible button) | Client request: fewer calls to action in the header, and a main bar of plain, consistent items. It sits with the medicines, is in the mobile menu, and Shop stays underlined on the prescription page. |
 | No phone number in the header bar; no notification bell | Client request. Calling is the floating button on every page (and the helpline in the top strip); notifications belong to the signed-in account. |
 | Stat wording "15,000+ patients cared for" (brief: "families") | The PDF only confirms "15K+ happy patients". There are no unconfirmed numbers. |
 | Hindi and Marathi translations kept | Client request. They are flagged for native review. |
-| Evening dose colour is Terracotta Deep | Needed for white text contrast. The PDF allows it (p.13). |
+| Dose colours: morning yellow, afternoon sky blue, evening crimson, night charcoal | The PDF's four time-of-day colours (p.13) moved to the new palette. Always paired with the word; dark text on yellow and sky blue, white text on crimson and charcoal. |
 | Stock photography (Pexels) on the landing page | Client request for photos of elders before the shoot. Credited, and to be replaced (see section 6). |
 
 ## 8. Needs content from the client

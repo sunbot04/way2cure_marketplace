@@ -59,7 +59,6 @@ const T: Dict = {
     next1: 'A care coordinator calls or messages you, usually within 30 minutes during the day.',
     next2: 'You agree the nurse or doctor, the timing and the price together.',
     next3: 'Care begins on the date you chose.',
-    doneEyebrow: 'Request received',
     seoTitle: 'Book {service}',
     seoDesc: 'Request {service} at home in Mumbai, Navi Mumbai or Thane. Our care team calls you back to confirm the nurse or doctor, timing and price. Nothing is charged until you confirm.',
     bgCheck: 'Every nurse and caretaker is trained and background-checked.',
@@ -115,7 +114,6 @@ const T: Dict = {
     next1: 'केयर कोऑर्डिनेटर आपको कॉल या मैसेज करेंगे, दिन में आमतौर पर 30 मिनट के अंदर।',
     next2: 'आप साथ मिलकर नर्स या डॉक्टर, समय और कीमत तय करते हैं।',
     next3: 'आपकी चुनी तारीख पर देखभाल शुरू होती है।',
-    doneEyebrow: 'अनुरोध मिल गया',
     seoTitle: '{service} बुक करें',
     seoDesc: 'मुंबई, नवी मुंबई या ठाणे में घर पर {service} के लिए अनुरोध भेजें। हमारी केयर टीम आपको कॉल करके नर्स या डॉक्टर, समय और कीमत पक्की करती है। पक्का करने तक कोई पैसा नहीं लिया जाता।',
     bgCheck: 'हर नर्स और केयरटेकर प्रशिक्षित है और उसकी बैकग्राउंड जाँच हुई है।',
@@ -171,7 +169,6 @@ const T: Dict = {
     next1: 'केअर कोऑर्डिनेटर तुम्हाला कॉल किंवा मेसेज करतील, दिवसा साधारण 30 मिनिटांत.',
     next2: 'तुम्ही मिळून नर्स किंवा डॉक्टर, वेळ आणि किंमत ठरवता.',
     next3: 'तुम्ही निवडलेल्या तारखेला काळजी सुरू होते.',
-    doneEyebrow: 'विनंती मिळाली',
     seoTitle: '{service} बुक करा',
     seoDesc: 'मुंबई, नवी मुंबई किंवा ठाणे येथे घरी {service} साठी विनंती पाठवा. आमची केअर टीम तुम्हाला कॉल करून नर्स किंवा डॉक्टर, वेळ आणि किंमत निश्चित करते. तुम्ही निश्चित करेपर्यंत कोणतेही पैसे घेतले जात नाहीत.',
     bgCheck: 'प्रत्येक नर्स आणि केअरटेकर प्रशिक्षित आहे आणि त्यांची पार्श्वभूमी तपासलेली आहे.',
@@ -323,7 +320,6 @@ export default function CareBooking() {
             <span className="mb-6 grid h-16 w-16 place-items-center rounded-full bg-sage text-white shadow-raised">
               <Icon name="check" size={34} />
             </span>
-            <p className="mb-3 text-small font-semibold text-terracotta-deep">{tr('doneEyebrow')}</p>
             <h1 className="mb-4 text-section">{tr('doneTitle', { service: lang === 'en' ? service.name.toLowerCase() : service.name })}</h1>
             <p className="text-lead text-ink/80">{tr(f.contactBy === 'whatsapp' ? 'doneWhatsapp' : 'doneCall', { phone: f.phone })}</p>
             <h2 className="mb-4 mt-10 text-h3m md:text-h3">{tr('whatNext')}</h2>
@@ -359,7 +355,6 @@ export default function CareBooking() {
       {seo}
       <PageHeader
         tone="mist"
-        eyebrow={tr('eyebrow')}
         title={service.name}
         lead={service.short}
         crumbs={[{ label: t('home'), to: '/' }, { label: t('care'), to: '/care' }, { label: tr('eyebrow') }]}

@@ -1,7 +1,7 @@
 import Icon from '../components/Icon';
 import Button from '../components/ui/Button';
 import Tag from '../components/ui/Tag';
-import Accent, { Eyebrow } from '../components/ui/Accent';
+import Accent from '../components/ui/Accent';
 import { Reveal, Stagger, StaggerItem } from '../components/motion/Reveal';
 import PageHeader from '../components/layout/PageHeader';
 import Seo from '../components/layout/Seo';
@@ -18,14 +18,13 @@ const T: Dict = {
     bookDementia: 'Book dementia care at home',
     seoDesc: 'A safe-zone band for people living with dementia, coming soon from Way2Cure. Family gets an alert when the wearer leaves the safe zone. Used only with consent.',
     soon: 'Coming soon',
-    eyebrow: 'Dementia care',
     title: 'Safe-zone band',
     h1: 'The Safe-zone band. *Peace of mind at home.*',
     intro: 'For families caring for a loved one with dementia. Inside the safe zone: no alert. If they walk out: an instant alert on family phones.',
     artLabel: 'A dashed safe zone circle around a home. A dot outside the circle triggers an alert to family.',
     artZone: 'Safe zone',
     artAlert: 'Alert to family',
-    howEyebrow: 'How it works', howTitle: 'Simple for them. *Reassuring for you.*',
+    howTitle: 'Simple for them. *Reassuring for you.*',
     s1t: 'Set the safe zone', s1d: 'Family marks the boundary around home in the app.',
     s2t: 'Wear the band', s2d: 'A light arm band with built-in location tracking.',
     s3t: 'Instant alert', s3d: 'Family phones are alerted when the boundary is crossed.',
@@ -40,14 +39,13 @@ const T: Dict = {
     bookDementia: 'घर पर डिमेंशिया केयर बुक करें',
     seoDesc: 'डिमेंशिया से जूझ रहे लोगों के लिए सेफ़-ज़ोन बैंड, जल्द ही Way2Cure पर। पहनने वाला सेफ़ ज़ोन से बाहर जाए तो परिवार को अलर्ट मिलता है। सिर्फ़ सहमति से इस्तेमाल।',
     soon: 'जल्द आ रहा है',
-    eyebrow: 'डिमेंशिया (भूलने की बीमारी) में देखभाल',
     title: 'सेफ़-ज़ोन बैंड',
     h1: 'सेफ़-ज़ोन बैंड। *घर पर सुकून।*',
     intro: 'डिमेंशिया से जूझ रहे अपनों की देखभाल करने वाले परिवारों के लिए। सेफ़ ज़ोन के अंदर: कोई अलर्ट नहीं। बाहर जाते ही: परिवार के फ़ोन पर तुरंत अलर्ट।',
     artLabel: 'घर के चारों ओर सेफ़ ज़ोन का बिंदीदार घेरा। घेरे से बाहर का बिंदु परिवार को अलर्ट भेजता है।',
     artZone: 'सेफ़ ज़ोन',
     artAlert: 'परिवार को अलर्ट',
-    howEyebrow: 'यह कैसे काम करता है', howTitle: 'उनके लिए आसान। *आपके लिए भरोसा।*',
+    howTitle: 'उनके लिए आसान। *आपके लिए भरोसा।*',
     s1t: 'सेफ़ ज़ोन तय करें', s1d: 'परिवार ऐप में घर के आसपास की सीमा तय करता है।',
     s2t: 'बैंड पहनें', s2d: 'बाँह पर पहनने वाला हल्का बैंड, जिसमें लोकेशन ट्रैकिंग पहले से है।',
     s3t: 'तुरंत अलर्ट', s3d: 'सीमा पार होते ही परिवार के फ़ोन पर अलर्ट आता है।',
@@ -62,14 +60,13 @@ const T: Dict = {
     bookDementia: 'घरी डिमेन्शिया काळजी बुक करा',
     seoDesc: 'डिमेन्शिया असलेल्या व्यक्तींसाठी सेफ-झोन बँड, लवकरच Way2Cure वर. बँड घालणारी व्यक्ती सेफ झोनबाहेर गेल्यास कुटुंबाला अलर्ट मिळतो. फक्त संमतीनेच वापर.',
     soon: 'लवकरच येत आहे',
-    eyebrow: 'डिमेन्शिया (विस्मरणाचा आजार) काळजी',
     title: 'सेफ-झोन बँड',
     h1: 'सेफ-झोन बँड. *घरी मनःशांती.*',
     intro: 'डिमेन्शिया असलेल्या प्रियजनांची काळजी घेणाऱ्या कुटुंबांसाठी. सेफ झोनच्या आत: अलर्ट नाही. बाहेर गेल्यावर: कुटुंबाच्या फोनवर लगेच अलर्ट.',
     artLabel: 'घराभोवती सेफ झोनचे तुटक रेषेचे वर्तुळ. वर्तुळाबाहेरील ठिपका कुटुंबाला अलर्ट पाठवतो.',
     artZone: 'सेफ झोन',
     artAlert: 'कुटुंबाला अलर्ट',
-    howEyebrow: 'हे कसे काम करते', howTitle: 'त्यांच्यासाठी सोपे. *तुमच्यासाठी दिलासा.*',
+    howTitle: 'त्यांच्यासाठी सोपे. *तुमच्यासाठी दिलासा.*',
     s1t: 'सेफ झोन ठरवा', s1d: 'कुटुंब ॲपमध्ये घराभोवतीची सीमा ठरवते.',
     s2t: 'बँड घाला', s2d: 'हलका दंडावर घालायचा बँड, ज्यात लोकेशन ट्रॅकिंग आधीपासून आहे.',
     s3t: 'लगेच अलर्ट', s3d: 'सीमा ओलांडताच कुटुंबाच्या फोनवर अलर्ट येतो.',
@@ -91,7 +88,6 @@ export default function SafeZone() {
       <PageHeader
         tone="mist"
         image={{ src: '/images/people/hands-elderly-couple.webp', position: '50% 58%' }}
-        eyebrow={tr('eyebrow')}
         title={tr('h1')}
         lead={tr('intro')}
         crumbs={[{ label: t('home'), to: '/' }, { label: tr('title') }]}
@@ -107,7 +103,6 @@ export default function SafeZone() {
       <section className="section bg-white">
         <div className="container">
           <Reveal className="mb-12 max-w-2xl">
-            <Eyebrow>{tr('howEyebrow')}</Eyebrow>
             <h2 className="m-0 text-section"><Accent text={tr('howTitle')} /></h2>
           </Reveal>
           <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">

@@ -23,7 +23,7 @@ const T: Dict = {
   en: {
     usually: 'Usually arrives {when}', area: 'Mumbai, Navi Mumbai & Thane', about: 'About this item', rentFrom: 'or {price} / month to rent',
     eachMonthShort: 'every month', buyBox: 'Your order',
-    lastFor: 'How long should this order last?', days: '{n} days', remindNote: 'We will remind you {n} days before it runs out, on the bell at the top of the page.',
+    lastFor: 'How long should this order last?', days: '{n} days', remindNote: 'We will remind you {n} days before it runs out, in your account.',
     shop: 'Shop', breadcrumb: 'Breadcrumb',
     rxNeeded: 'Rx needed', pharmVerified: 'Pharmacist verified', verifiedSeller: 'Verified seller', rent: 'Rent',
     buy: 'Buy', subscribeMonthly: 'Subscribe monthly', perMonth: '{price} / month', eachMonth: '{price} each month',
@@ -45,7 +45,7 @@ const T: Dict = {
   hi: {
     usually: 'आमतौर पर {when} पहुँचता है', area: 'मुंबई, नवी मुंबई और ठाणे', about: 'इस सामान के बारे में', rentFrom: 'या किराये पर {price} / माह',
     eachMonthShort: 'हर महीने', buyBox: 'आपका ऑर्डर',
-    lastFor: 'यह ऑर्डर कितने दिन चलना चाहिए?', days: '{n} दिन', remindNote: 'ख़त्म होने से {n} दिन पहले हम पेज के ऊपर घंटी पर याद दिलाएँगे।',
+    lastFor: 'यह ऑर्डर कितने दिन चलना चाहिए?', days: '{n} दिन', remindNote: 'ख़त्म होने से {n} दिन पहले हम आपके खाते में याद दिलाएँगे।',
     shop: 'खरीदारी', breadcrumb: 'आप यहाँ हैं',
     rxNeeded: 'पर्चा ज़रूरी', pharmVerified: 'फ़ार्मासिस्ट द्वारा जाँचा गया', verifiedSeller: 'सत्यापित विक्रेता', rent: 'किराये पर',
     buy: 'ख़रीदें', subscribeMonthly: 'हर महीने के लिए सब्सक्राइब करें', perMonth: '{price} / प्रति माह', eachMonth: '{price} हर महीने',
@@ -67,7 +67,7 @@ const T: Dict = {
   mr: {
     usually: 'साधारणपणे {when} पोहोचते', area: 'मुंबई, नवी मुंबई आणि ठाणे', about: 'या वस्तूबद्दल', rentFrom: 'किंवा भाड्याने {price} / महिना',
     eachMonthShort: 'दरमहा', buyBox: 'तुमची ऑर्डर',
-    lastFor: 'ही ऑर्डर किती दिवस पुरावी?', days: '{n} दिवस', remindNote: 'संपण्याच्या {n} दिवस आधी आम्ही पानाच्या वरच्या घंटीवर आठवण करून देऊ.',
+    lastFor: 'ही ऑर्डर किती दिवस पुरावी?', days: '{n} दिवस', remindNote: 'संपण्याच्या {n} दिवस आधी आम्ही तुमच्या खात्यात आठवण करून देऊ.',
     shop: 'खरेदी', breadcrumb: 'तुम्ही इथे आहात',
     rxNeeded: 'प्रिस्क्रिप्शन आवश्यक', pharmVerified: 'फार्मासिस्टने तपासलेले', verifiedSeller: 'पडताळलेले विक्रेते', rent: 'भाड्याने',
     buy: 'विकत घ्या', subscribeMonthly: 'मासिक सदस्यता घ्या', perMonth: '{price} / दरमहा', eachMonth: '{price} दरमहा',

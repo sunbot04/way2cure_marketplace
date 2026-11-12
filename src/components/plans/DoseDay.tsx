@@ -4,12 +4,12 @@ import type { Lang } from '../../data';
 import { useLang } from '../../i18n/LangContext';
 
 // Dose sachets view (pitch deck p.8). Time-of-day colours from guidelines p.13, always with a word
-// label so it works for colour-blind readers. Light fills (mustard, sage) take green text.
+// label so it works for colour-blind readers. Light fills (yellow, sky blue) take dark text.
 export type DoseSlot = 'morning' | 'afternoon' | 'evening' | 'night';
 
 const SLOTS: Record<DoseSlot, { icon: string; head: string; label: Record<Lang, string>; time: Record<Lang, string> }> = {
   morning: { icon: 'sunrise', head: 'bg-dose-morning text-green', label: { en: 'Morning', hi: 'सुबह', mr: 'सकाळ' }, time: { en: '8 am', hi: 'सुबह 8 बजे', mr: 'सकाळी 8 वाजता' } },
-  afternoon: { icon: 'sun', head: 'bg-dose-afternoon text-green', label: { en: 'Afternoon', hi: 'दोपहर', mr: 'दुपार' }, time: { en: '1 pm', hi: 'दोपहर 1 बजे', mr: 'दुपारी 1 वाजता' } },
+  afternoon: { icon: 'sun', head: 'bg-dose-afternoon text-ink', label: { en: 'Afternoon', hi: 'दोपहर', mr: 'दुपार' }, time: { en: '1 pm', hi: 'दोपहर 1 बजे', mr: 'दुपारी 1 वाजता' } },
   evening: { icon: 'sunset', head: 'bg-dose-evening text-white', label: { en: 'Evening', hi: 'शाम', mr: 'संध्याकाळ' }, time: { en: '7 pm', hi: 'शाम 7 बजे', mr: 'संध्याकाळी 7 वाजता' } },
   night: { icon: 'moon', head: 'bg-dose-night text-white', label: { en: 'Night', hi: 'रात', mr: 'रात्र' }, time: { en: '10 pm', hi: 'रात 10 बजे', mr: 'रात्री 10 वाजता' } },
 };

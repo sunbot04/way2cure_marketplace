@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import Icon from '../Icon';
 
-// Info band (guidelines p.7): mint panel for one key message, e.g.
+// Info band (guidelines p.7): soft blue-grey panel for one key message, e.g.
 // "A registered pharmacist verifies every prescription order."
 export default function InfoBand({ icon = 'info', children, className = '' }: { icon?: string; children: ReactNode; className?: string }) {
   return (

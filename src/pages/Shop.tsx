@@ -17,7 +17,6 @@ import NotFound from './NotFound';
 const T: Dict = {
   en: {
     shop: 'Shop',
-    eyebrow: 'Way2Cure shop', catEyebrow: 'Shop by need',
     shopTitle: 'Everything for care at home, *delivered to your door.*',
     resultsFor: 'Results for "{q}"',
     intro: 'Medicines, devices, daily care and more. Delivered in Mumbai, Navi Mumbai and Thane.',
@@ -40,7 +39,6 @@ const T: Dict = {
   },
   hi: {
     shop: 'खरीदारी',
-    eyebrow: 'Way2Cure शॉप', catEyebrow: 'ज़रूरत के हिसाब से खरीदें',
     shopTitle: 'घर पर देखभाल की हर चीज़, *आपके दरवाज़े तक।*',
     resultsFor: '"{q}" के नतीजे',
     intro: 'दवाइयाँ, उपकरण, रोज़ की देखभाल और बहुत कुछ। मुंबई, नवी मुंबई और ठाणे में डिलिवरी।',
@@ -63,7 +61,6 @@ const T: Dict = {
   },
   mr: {
     shop: 'खरेदी',
-    eyebrow: 'Way2Cure शॉप', catEyebrow: 'गरजेनुसार खरेदी करा',
     shopTitle: 'घरच्या काळजीसाठी सर्व काही, *तुमच्या दारात.*',
     resultsFor: '"{q}" साठी निकाल',
     intro: 'औषधे, उपकरणे, दैनंदिन काळजी आणि बरेच काही. मुंबई, नवी मुंबई आणि ठाणे येथे डिलिव्हरी.',
@@ -188,7 +185,6 @@ export default function Shop() {
     <>
       <Seo title={plainTitle} description={lead} noindex={!!q} />
       <PageHeader
-        eyebrow={q ? undefined : v ? tr('catEyebrow') : tr('eyebrow')}
         title={title}
         lead={lead}
         crumbs={[{ label: t('home'), to: '/' }, ...(category || q ? [{ label: tr('shop'), to: '/shop' }, { label: plainTitle }] : [{ label: tr('shop') }])]}
@@ -307,9 +303,10 @@ export default function Shop() {
                   </div>
                 </Reveal>
               ) : shown.length ? (
-                <Stagger as="ul" key={gridKey} className={grid}>
-                  {shown.map((p) => <StaggerItem as="li" key={p.id} className="grid"><ProductCard product={p} /></StaggerItem>)}
-                </Stagger>
+                <ul key={gridKey} className={grid}>
+                  {/* Each card fades in as it scrolls into view; cards in a row follow each other closely */}
+                  {shown.map((p, i) => <Reveal as="li" key={p.id} delay={(i % 4) * 0.05} className="grid"><ProductCard product={p} /></Reveal>)}
+                </ul>
               ) : (
                 <Reveal>
                   <div className="rounded-panel bg-white p-8 shadow-card md:p-10">

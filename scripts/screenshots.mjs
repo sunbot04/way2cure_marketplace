@@ -23,7 +23,7 @@ const PAGES = [
   ['contact', '/contact'],
   ['login', '/login'],
   ['signup', '/signup'],
-  ['notifications', '/notifications'],
+  ['notifications', '/notifications', { signedIn: true }], // account page: needs a login
 ];
 const VIEWPORTS = [
   ['desktop', { width: 1440, height: 900 }],
@@ -45,11 +45,16 @@ if (!browser) throw new Error('Could not start Edge');
 for (const [vp, size] of VIEWPORTS) {
   const ctx = await browser.newContext({ viewport: size, deviceScaleFactor: 1, isMobile: vp === 'mobile', hasTouch: vp === 'mobile' });
   const page = await ctx.newPage();
-  for (const [name, path] of PAGES) {
+  for (const [name, path, opts] of PAGES) {
+    // Pages inside the account: sign in as the demo account first (see src/data/demoAccount.ts)
+    if (opts?.signedIn) await page.evaluate(() => localStorage.setItem('w2c-user', JSON.stringify({ name: 'Rohan Patil', phone: '9876543210', since: '2024-06-10T10:00:00.000Z' })));
     await page.goto(`${BASE}${path}${path.includes('?') ? '&' : '?'}lang=en`, { waitUntil: 'networkidle' });
-    // Scroll through once so every reveal-on-scroll has played, then back to the top.
+    await page.waitForTimeout(1200); // let the page's code finish loading and mounting
+    // Draw every section for the full-page capture (the homepage skips far-away sections for speed)
+    await page.addStyleTag({ content: '.cv-auto{content-visibility:visible!important}' });
+    // Scroll through once, at reading pace, so every reveal-on-scroll has played; then back to the top.
     await page.evaluate(async () => {
-      for (let y = 0; y < document.body.scrollHeight; y += 500) { window.scrollTo(0, y); await new Promise((r) => setTimeout(r, 60)); }
+      for (let y = 0; y < document.body.scrollHeight; y += 400) { window.scrollTo(0, y); await new Promise((r) => setTimeout(r, 120)); }
       window.scrollTo(0, 0);
     });
     await page.waitForTimeout(1600);

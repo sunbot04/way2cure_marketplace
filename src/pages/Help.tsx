@@ -12,7 +12,6 @@ import { useLang, useT, type Dict } from '../i18n/LangContext';
 
 const T: Dict = {
   en: {
-    eyebrow: 'Help centre',
     title: 'How can we *help?*',
     intro: "Answers to what families ask us most. Can't find yours? Call or WhatsApp us. A real person will help, day or night.",
     seoTitle: 'Help centre and questions',
@@ -25,7 +24,6 @@ const T: Dict = {
     callBack: 'Ask for a call back',
   },
   hi: {
-    eyebrow: 'मदद केंद्र',
     title: 'हम आपकी कैसे *मदद करें?*',
     intro: 'परिवार हमसे सबसे ज़्यादा जो पूछते हैं, उनके जवाब। आपका सवाल नहीं मिला? हमें कॉल या व्हाट्सऐप करें। दिन हो या रात, एक असली इंसान मदद करेगा।',
     seoTitle: 'मदद केंद्र और सवाल',
@@ -38,7 +36,6 @@ const T: Dict = {
     callBack: 'कॉल बैक माँगें',
   },
   mr: {
-    eyebrow: 'मदत केंद्र',
     title: 'आम्ही कशी *मदत करू?*',
     intro: 'कुटुंबे आम्हाला सर्वात जास्त जे विचारतात त्याची उत्तरे. तुमचा प्रश्न सापडला नाही? आम्हाला कॉल किंवा व्हॉट्सॲप करा. दिवस असो वा रात्र, खरी व्यक्ती मदत करेल.',
     seoTitle: 'मदत केंद्र आणि प्रश्न',
@@ -72,7 +69,7 @@ export default function Help() {
   return (
     <>
       <Seo title={tr('seoTitle')} description={tr('seoDesc')} />
-      <PageHeader tone="mist" eyebrow={tr('eyebrow')} title={tr('title')} lead={tr('intro')}>
+      <PageHeader tone="mist" title={tr('title')} lead={tr('intro')}>
         <div className="flex flex-col gap-3 sm:flex-row">
           <Button href={SITE.phoneHref} variant="urgent"><Icon name="phone" size={20} /> {t('callUs')} {SITE.phone}</Button>
           <Button href={SITE.whatsappHref} external variant="outline"><Icon name="whatsapp" size={20} /> {t('whatsapp')}</Button>

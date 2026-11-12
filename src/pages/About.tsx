@@ -1,6 +1,6 @@
 import Icon from '../components/Icon';
 import Button from '../components/ui/Button';
-import Accent, { Eyebrow } from '../components/ui/Accent';
+import Accent from '../components/ui/Accent';
 import PageHeader from '../components/layout/PageHeader';
 import Seo from '../components/layout/Seo';
 import CountUp from '../components/motion/CountUp';
@@ -14,15 +14,12 @@ const T: Dict = {
     eyebrow: 'About Way2Cure',
     title: 'We bring the heart of healthcare *home.*',
     intro: 'Way2Cure was founded to bridge the gap between hospitals and home care. Today we are growing into one place for care, medicines and everything seniors need.',
-    mission: 'Our mission',
     missionQuote: 'Your Health, Our Mission.',
     missionText: 'Professional nursing, elder care and doctor visits, delivered at home by trained, background-checked people.',
-    vision: 'Our vision',
     visionQuote: 'Your Comfort, Our Vision.',
     visionText: 'Care that respects the dignity and independence of seniors, with simple ordering for the families who look after them.',
     statText: 'patients cared for at home across Mumbai, Navi Mumbai and Thane.',
     statNote: 'Every one of them looked after by a real nurse, caretaker or doctor, not an app.',
-    diffEyebrow: 'What makes us different',
     diffTitle: 'Hospital-trained people, *at home.*',
     diffLead: 'Care at home works when the people are right. That is where we start.',
     f1Title: 'Experienced, certified professionals',
@@ -32,16 +29,13 @@ const T: Dict = {
     f3Title: 'Personalised care plans',
     f3Text: 'Every plan starts with what the patient and family need.',
     photoAlt: 'A Way2Cure nurse at work',
-    valuesEyebrow: 'How we work',
     valuesTitle: 'Four promises we *keep.*',
     v1Title: 'Caring', v1Text: 'Warm and human, never clinical or cold.',
     v2Title: 'Trustworthy', v2Text: 'Verified people, licensed pharmacies, honest prices.',
     v3Title: 'Simple', v3Text: 'One tap, one step, plain words. Or just call us.',
     v4Title: 'Dignified', v4Text: 'We respect the independence of every senior we care for.',
-    teamEyebrow: 'Our team',
     team: 'The people *behind* Way2Cure',
     teamLead: 'Doctors and care managers who run Way2Cure day to day.',
-    areasEyebrow: 'Where we work',
     areasTitle: 'Home care near *you.*',
     areasText: 'Our nursing and elder care teams work across these areas. Each has its own page on the Way2Cure home care site.',
     homeCareIn: 'Home care in {place}',
@@ -52,15 +46,12 @@ const T: Dict = {
     eyebrow: 'Way2Cure के बारे में',
     title: 'हम अच्छी देखभाल को *आपके घर* तक लाते हैं',
     intro: 'Way2Cure की शुरुआत अस्पताल और घर की देखभाल के बीच की दूरी कम करने के लिए हुई थी। आज हम देखभाल, दवाइयों और बुज़ुर्गों की हर ज़रूरत के लिए एक ही जगह बन रहे हैं।',
-    mission: 'हमारा मिशन',
     missionQuote: 'आपकी सेहत, हमारा मिशन।',
     missionText: 'प्रशिक्षित और जाँचे-परखे लोगों द्वारा घर पर प्रोफ़ेशनल नर्सिंग, बुज़ुर्गों की देखभाल और डॉक्टर विज़िट।',
-    vision: 'हमारा सपना',
     visionQuote: 'आपका आराम, हमारा सपना।',
     visionText: 'ऐसी देखभाल जो बुज़ुर्गों के सम्मान और आत्मनिर्भरता का ख़याल रखे, और उनकी देखभाल करने वाले परिवारों के लिए ऑर्डर करना आसान बनाए।',
     statText: 'मरीज़ों की घर पर देखभाल, मुंबई, नवी मुंबई और ठाणे में।',
     statNote: 'हर एक की देखभाल किसी असली नर्स, केयरटेकर या डॉक्टर ने की, किसी ऐप ने नहीं।',
-    diffEyebrow: 'हम अलग क्यों हैं',
     diffTitle: 'अस्पताल में प्रशिक्षित लोग, *घर पर।*',
     diffLead: 'घर पर देखभाल तभी अच्छी होती है जब लोग सही हों। हम वहीं से शुरू करते हैं।',
     f1Title: 'अनुभवी, सर्टिफ़ाइड प्रोफ़ेशनल',
@@ -70,16 +61,13 @@ const T: Dict = {
     f3Title: 'आपके हिसाब से देखभाल प्लान',
     f3Text: 'हर प्लान मरीज़ और परिवार की ज़रूरत से शुरू होता है।',
     photoAlt: 'काम पर Way2Cure की एक नर्स',
-    valuesEyebrow: 'हम कैसे काम करते हैं',
     valuesTitle: 'चार वादे जो हम *निभाते हैं।*',
     v1Title: 'परवाह', v1Text: 'अपनापन और इंसानियत, कभी रूखापन नहीं।',
     v2Title: 'भरोसा', v2Text: 'जाँचे-परखे लोग, लाइसेंस वाली फ़ार्मेसी, साफ़ दाम।',
     v3Title: 'आसान', v3Text: 'एक टैप, एक कदम, सीधे शब्द। या बस हमें कॉल करें।',
     v4Title: 'सम्मान', v4Text: 'हम हर बुज़ुर्ग की आत्मनिर्भरता का सम्मान करते हैं।',
-    teamEyebrow: 'हमारी टीम',
     team: 'Way2Cure के *पीछे* के लोग',
     teamLead: 'डॉक्टर और केयर मैनेजर जो रोज़ Way2Cure चलाते हैं।',
-    areasEyebrow: 'हम कहाँ काम करते हैं',
     areasTitle: 'आपके पास *घर पर देखभाल।*',
     areasText: 'हमारी नर्सिंग और बुज़ुर्ग देखभाल टीमें इन इलाकों में काम करती हैं। हर इलाके का Way2Cure होम केयर साइट पर अपना पेज है।',
     homeCareIn: '{place} में घर पर देखभाल',
@@ -90,15 +78,12 @@ const T: Dict = {
     eyebrow: 'Way2Cure बद्दल',
     title: 'आम्ही चांगली काळजी *तुमच्या घरापर्यंत* आणतो',
     intro: 'हॉस्पिटल आणि घरची काळजी यांच्यातील अंतर कमी करण्यासाठी Way2Cure ची सुरुवात झाली. आज आम्ही काळजी, औषधे आणि ज्येष्ठांना लागणाऱ्या सर्व गोष्टींसाठी एकच ठिकाण बनत आहोत.',
-    mission: 'आमचे ध्येय',
     missionQuote: 'तुमचे आरोग्य, आमचे ध्येय.',
     missionText: 'प्रशिक्षित आणि पार्श्वभूमी तपासलेल्या लोकांकडून घरी प्रोफेशनल नर्सिंग, ज्येष्ठांची काळजी आणि डॉक्टर व्हिजिट.',
-    vision: 'आमचे स्वप्न',
     visionQuote: 'तुमचा आराम, आमचे स्वप्न.',
     visionText: 'ज्येष्ठांचा सन्मान आणि स्वावलंबन जपणारी काळजी, आणि त्यांची काळजी घेणाऱ्या कुटुंबांसाठी सोपी ऑर्डर.',
     statText: 'रुग्णांची घरी काळजी, मुंबई, नवी मुंबई आणि ठाणे येथे.',
     statNote: 'प्रत्येकाची काळजी खऱ्या नर्स, केअरटेकर किंवा डॉक्टरने घेतली, ॲपने नाही.',
-    diffEyebrow: 'आम्ही वेगळे का आहोत',
     diffTitle: 'हॉस्पिटलमध्ये प्रशिक्षित माणसे, *घरी.*',
     diffLead: 'माणसे योग्य असतील तरच घरची काळजी चांगली होते. आम्ही तिथूनच सुरुवात करतो.',
     f1Title: 'अनुभवी, प्रमाणित प्रोफेशनल',
@@ -108,16 +93,13 @@ const T: Dict = {
     f3Title: 'तुमच्या गरजेनुसार काळजी योजना',
     f3Text: 'प्रत्येक योजना रुग्ण आणि कुटुंबाच्या गरजेपासून सुरू होते.',
     photoAlt: 'कामावर असलेली Way2Cure ची नर्स',
-    valuesEyebrow: 'आम्ही कसे काम करतो',
     valuesTitle: 'चार वचने जी आम्ही *पाळतो.*',
     v1Title: 'आपुलकी', v1Text: 'माणुसकी आणि जिव्हाळा, कधीही कोरडेपणा नाही.',
     v2Title: 'विश्वास', v2Text: 'पडताळलेली माणसे, परवानाधारक फार्मसी, स्पष्ट किंमती.',
     v3Title: 'सोपे', v3Text: 'एक टॅप, एक पायरी, साधे शब्द. किंवा फक्त आम्हाला कॉल करा.',
     v4Title: 'सन्मान', v4Text: 'आम्ही प्रत्येक ज्येष्ठ व्यक्तीच्या स्वावलंबनाचा आदर करतो.',
-    teamEyebrow: 'आमची टीम',
     team: 'Way2Cure *मागची* माणसे',
     teamLead: 'Way2Cure रोज चालवणारे डॉक्टर आणि केअर मॅनेजर.',
-    areasEyebrow: 'आम्ही कुठे काम करतो',
     areasTitle: 'तुमच्या जवळ *घरी काळजी.*',
     areasText: 'आमच्या नर्सिंग आणि ज्येष्ठ काळजी टीम या भागांत काम करतात. प्रत्येक भागाचे Way2Cure होम केअर साइटवर स्वतंत्र पान आहे.',
     homeCareIn: '{place} मध्ये घरी काळजी',
@@ -131,10 +113,9 @@ const initials = (name: string) => name.replace('Dr. ', '').split(' ').map((w) =
 const DIFF = [['userCheck', 'f1'], ['support', 'f2'], ['stethoscope', 'f3']] as const;
 const VALUES = [['handHeart', 'v1'], ['verified', 'v2'], ['check', 'v3'], ['users', 'v4']] as const;
 
-function Heading({ eyebrow, title, lead, className = '' }: { eyebrow: string; title: string; lead?: string; className?: string }) {
+function Heading({ title, lead, className = '' }: { title: string; lead?: string; className?: string }) {
   return (
     <Reveal className={className}>
-      <Eyebrow>{eyebrow}</Eyebrow>
       <h2 className="mb-4 text-section"><Accent text={title} /></h2>
       {lead && <p className="m-0 text-lead text-ink/75">{lead}</p>}
     </Reveal>
@@ -148,7 +129,6 @@ export default function About() {
     <>
       <Seo title={tr('eyebrow')} description={tr('seoDesc')} />
       <PageHeader
-        eyebrow={tr('eyebrow')}
         image={{ src: '/images/team-group.webp', position: 'center 30%' }}
         title={tr('title')}
         lead={tr('intro')}
@@ -160,7 +140,6 @@ export default function About() {
           <Stagger className="grid gap-10">
             {(['mission', 'vision'] as const).map((k) => (
               <StaggerItem key={k}>
-                <Eyebrow>{tr(k)}</Eyebrow>
                 <p className="mb-3 font-head text-h2m font-bold leading-tight text-green md:text-h2">{tr(`${k}Quote`)}</p>
                 <p className="m-0 text-ink/80">{tr(`${k}Text`)}</p>
               </StaggerItem>
@@ -190,7 +169,7 @@ export default function About() {
             />
           </Reveal>
           <div>
-            <Heading eyebrow={tr('diffEyebrow')} title={tr('diffTitle')} lead={tr('diffLead')} className="mb-8" />
+            <Heading title={tr('diffTitle')} lead={tr('diffLead')} className="mb-8" />
             <Stagger as="ul" className="grid gap-5">
               {DIFF.map(([icon, k]) => (
                 <StaggerItem as="li" key={k} className="flex items-start gap-4">
@@ -209,7 +188,7 @@ export default function About() {
       {/* Values (brand personality, guidelines p.2) */}
       <section className="section bg-mist">
         <div className="container">
-          <Heading eyebrow={tr('valuesEyebrow')} title={tr('valuesTitle')} className="mb-12 max-w-2xl" />
+          <Heading title={tr('valuesTitle')} className="mb-12 max-w-2xl" />
           <Stagger as="ul" className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {VALUES.map(([icon, k]) => (
               <StaggerItem as="li" key={k} className="rounded-tile border border-mint bg-white p-6 transition-[transform,box-shadow] duration-micro ease-soft hover:-translate-y-1 hover:shadow-raised">
@@ -225,7 +204,7 @@ export default function About() {
       {/* Team: real headshots */}
       <section className="section bg-white">
         <div className="container">
-          <Heading eyebrow={tr('teamEyebrow')} title={tr('team')} lead={tr('teamLead')} className="mb-12 max-w-2xl" />
+          <Heading title={tr('team')} lead={tr('teamLead')} className="mb-12 max-w-2xl" />
           <Stagger as="ul" className="grid grid-cols-2 gap-4 lg:grid-cols-4 lg:gap-6">
             {team.map((member) => {
               const mem = loc(member);
@@ -254,7 +233,7 @@ export default function About() {
       <section className="section">
         <div className="container grid items-center gap-10 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
           <div>
-            <Heading eyebrow={tr('areasEyebrow')} title={tr('areasTitle')} lead={tr('areasText')} className="mb-8" />
+            <Heading title={tr('areasTitle')} lead={tr('areasText')} className="mb-8" />
             <Reveal><Button to="/contact">{tr('areaCta')} <Icon name="arrow" size={18} /></Button></Reveal>
           </div>
           <Stagger as="ul" className="grid gap-3">

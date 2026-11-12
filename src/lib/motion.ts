@@ -46,8 +46,12 @@ export const FLOAT_Y = 6;
 /** Hero entrance timeline (seconds after load) */
 export const HERO = { visual: 0.55, cards: 0.95, underline: 0.9 } as const;
 
-/** Scroll reveals: once, when 20% of the element is in view */
-export const VIEWPORT = { once: true, amount: 0.2 } as const;
+/**
+ * Scroll reveals: once, as soon as the element's top is 10% up from the bottom of the screen.
+ * Based on position, not on a share of the element, so tall blocks (a 28-product grid on a phone)
+ * reveal too. A share such as "20% in view" can never be reached by a block taller than five screens.
+ */
+export const VIEWPORT = { once: true, amount: 'some', margin: '0px 0px -10% 0px' } as const;
 
 export const tReveal: Transition = { duration: DURATION.reveal, ease: EASE };
 export const tMicro: Transition = { duration: DURATION.micro, ease: 'easeOut' };

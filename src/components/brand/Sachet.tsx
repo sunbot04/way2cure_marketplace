@@ -10,7 +10,7 @@ export const SLOTS: Slot[] = ['morning', 'afternoon', 'evening', 'night'];
 
 export const SLOT_STYLE: Record<Slot, { stripe: string; text: string; dot: string }> = {
   morning: { stripe: 'bg-dose-morning', text: 'text-green', dot: 'bg-dose-morning' },
-  afternoon: { stripe: 'bg-dose-afternoon', text: 'text-green', dot: 'bg-dose-afternoon' },
+  afternoon: { stripe: 'bg-dose-afternoon', text: 'text-ink', dot: 'bg-dose-afternoon' },
   evening: { stripe: 'bg-dose-evening', text: 'text-white', dot: 'bg-dose-evening' },
   night: { stripe: 'bg-dose-night', text: 'text-white', dot: 'bg-dose-night' },
 };
@@ -76,19 +76,19 @@ function QrBlock() {
     <svg viewBox="0 0 21 21" className="h-12 w-12 shrink-0" aria-hidden="true">
       {[[0, 0], [14, 0], [0, 14]].map(([x, y]) => (
         <g key={`${x}-${y}`}>
-          <rect x={x} y={y} width="7" height="7" fill="rgb(31 42 42)" />
+          <rect x={x} y={y} width="7" height="7" fill="rgb(27 36 48)" />
           <rect x={x + 1} y={y + 1} width="5" height="5" fill="#fbf8f1" />
-          <rect x={x + 2} y={y + 2} width="3" height="3" fill="rgb(31 42 42)" />
+          <rect x={x + 2} y={y + 2} width="3" height="3" fill="rgb(27 36 48)" />
         </g>
       ))}
       {Array.from(cells).map((c, i) => {
         if (c !== '1') return null;
         const x = 8 + (i % 6) * 2;
         const y = Math.floor(i / 6) * 2 + (i % 2);
-        return y < 21 ? <rect key={i} x={x % 21} y={y} width="1.6" height="1.6" fill="rgb(31 42 42)" /> : null;
+        return y < 21 ? <rect key={i} x={x % 21} y={y} width="1.6" height="1.6" fill="rgb(27 36 48)" /> : null;
       })}
       {Array.from(cells.slice(0, 24)).map((c, i) =>
-        c === '1' ? <rect key={`b${i}`} x={9 + (i % 6) * 2} y={9 + Math.floor(i / 6) * 3} width="1.6" height="1.6" fill="rgb(31 42 42)" /> : null,
+        c === '1' ? <rect key={`b${i}`} x={9 + (i % 6) * 2} y={9 + Math.floor(i / 6) * 3} width="1.6" height="1.6" fill="rgb(27 36 48)" /> : null,
       )}
     </svg>
   );
@@ -103,7 +103,7 @@ export default function Sachet({ slot = 'morning', name = 'Asha P.', className =
     <figure
       role="img"
       aria-label={tr('aria', { slot: tr(slot), name })}
-      className={`relative m-0 w-[19rem] select-none [filter:drop-shadow(0_28px_32px_rgb(17_77_74/0.22))_drop-shadow(0_3px_6px_rgb(17_77_74/0.12))] ${className}`}
+      className={`relative m-0 w-[19rem] select-none [filter:drop-shadow(0_28px_32px_rgb(38_52_69/0.22))_drop-shadow(0_3px_6px_rgb(38_52_69/0.12))] ${className}`}
       lang={lang}
     >
       <div className="paper relative overflow-hidden" style={{ clipPath: ZIGZAG }}>

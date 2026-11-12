@@ -25,16 +25,17 @@ import { faqs, getProduct, getService } from '../data';
 // Everything here is built from the brand tokens in tailwind.config.ts / styles/index.css.
 
 const COLOURS = [
-  { name: 'Deep Green', token: 'green', hex: '#114D4A', use: 'Headings, header, footer, primary buttons', note: 'White on it 9.6:1', cls: 'bg-green text-white' },
-  { name: 'Terracotta', token: 'terracotta', hex: '#E07B5F', use: 'Accent shapes, icons, highlights only', note: 'Never small text, never white text on it (2.9:1)', cls: 'bg-terracotta text-green' },
-  { name: 'Terracotta Deep', token: 'terracotta-deep', hex: '#B8472A', use: 'Text links, Rx tags, booking / urgent buttons', note: 'White on it 5.3:1', cls: 'bg-terracotta-deep text-white' },
-  { name: 'Sunrise Mustard', token: 'mustard', hex: '#EAB34B', use: 'Badges, offers, star ratings', note: 'Green text on it 5.1:1', cls: 'bg-mustard text-green' },
-  { name: 'Sage', token: 'sage', hex: '#70A9A1', use: 'Illustrations, dividers, success states', note: 'Green text on it', cls: 'bg-sage text-green' },
-  { name: 'Mint Mist', token: 'mint', hex: '#C8D8D5', use: 'Info bands, soft panels, borders', note: 'Green text on it', cls: 'bg-mint text-green' },
-  { name: 'Cream', token: 'cream', hex: '#F6F1E9', use: 'Page background', note: '', cls: 'bg-cream text-ink ring-1 ring-inset ring-mint' },
+  { name: 'Charcoal', token: 'green', hex: '#263445', use: 'Main colour: headings, header, footer, primary buttons, dark bands', note: 'White on it 12.7:1', cls: 'bg-green text-white' },
+  { name: 'Light crimson', token: 'terracotta', hex: '#FF5A6E', use: 'Decoration only: underlines, lines, small shapes', note: 'Never text; never white text on it (3.0:1)', cls: 'bg-terracotta text-green' },
+  { name: 'Crimson', token: 'terracotta-deep', hex: '#C8102E', use: 'Secondary colour: links, accent words, Rx tags, call / urgent buttons', note: 'White on it 5.9:1', cls: 'bg-terracotta-deep text-white' },
+  { name: 'Yellow', token: 'mustard', hex: '#FFC83D', use: 'Highlight: badges, offers, big numbers on charcoal', note: 'Charcoal text on it 8.2:1', cls: 'bg-mustard text-green' },
+  { name: 'Sky blue', token: 'sage', hex: '#3A8FD6', use: 'Soft colour: icons, success ticks, afternoon dose', note: 'Dark text on it 4.5:1; white icons 3.5:1', cls: 'bg-sage text-ink' },
+  { name: 'Soft blue-grey', token: 'mint', hex: '#D3DFEC', use: 'Soft panels, borders; light text on charcoal', note: 'Charcoal text on it 9.4:1', cls: 'bg-mint text-green' },
+  { name: 'Mist', token: 'mist', hex: '#F1F5F9', use: 'Section background', note: 'Charcoal text on it 11.6:1', cls: 'bg-mist text-ink ring-1 ring-inset ring-mint' },
+  { name: 'White', token: 'cream', hex: '#FFFFFF', use: 'Page background (token: cream)', note: '', cls: 'bg-cream text-ink ring-1 ring-inset ring-mint' },
   { name: 'White', token: 'white', hex: '#FFFFFF', use: 'Cards', note: '', cls: 'bg-white text-ink ring-1 ring-inset ring-mint' },
-  { name: 'Ink', token: 'ink', hex: '#1F2A2A', use: 'Body text', note: '', cls: 'bg-ink text-white' },
-  { name: 'Soft grey', token: 'grey', hex: '#5E6B6B', use: 'Secondary text', note: '5.6:1 on white', cls: 'bg-grey text-white' },
+  { name: 'Ink', token: 'ink', hex: '#1B2430', use: 'Body text', note: '15.7:1 on white', cls: 'bg-ink text-white' },
+  { name: 'Soft grey', token: 'grey', hex: '#556170', use: 'Secondary text', note: '6.3:1 on white', cls: 'bg-grey text-white' },
 ];
 
 function Block({ title, children, note }: { title: string; children: ReactNode; note?: string }) {
@@ -64,7 +65,7 @@ export default function Styleguide() {
 
       <StyleguideMotion />
 
-      <Block title="Colour" note="Usage mix: about 60% cream and white, 25% deep green, 10% mint, 5% accents.">
+      <Block title="Colour" note="Charcoal & Crimson. Usage mix: about 65% white and mist, 20% charcoal, 10% sky blue and soft panels, 5% crimson and yellow.">
         <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
           {COLOURS.map((c) => (
             <li key={c.token} className="overflow-hidden rounded-card bg-white shadow-card">
@@ -94,7 +95,7 @@ export default function Styleguide() {
           <p className="m-0">Body Nunito Sans 18px, line height 1.6, never under 16. Left-aligned, at most 70 characters per line, so a long paragraph stays easy to follow for older eyes.</p>
           <p className="m-0 text-lead text-grey">Lead 20px for the one line under a heading.</p>
           <p className="m-0 text-small text-grey">Small 14px: legal notes and captions only.</p>
-          <p className="m-0"><a href="#top">A text link in terracotta-deep</a></p>
+          <p className="m-0"><a href="#top">A text link in crimson</a></p>
         </div>
       </Block>
 
@@ -107,8 +108,8 @@ export default function Styleguide() {
           <Button compact>Compact (16px text)</Button>
         </div>
         <div className="mt-4 flex flex-wrap gap-3 rounded-card bg-green p-6">
-          <Button variant="light">On deep green</Button>
-          <Button variant="outline-light">Secondary on deep green</Button>
+          <Button variant="light">On charcoal</Button>
+          <Button variant="outline-light">Secondary on charcoal</Button>
         </div>
       </Block>
 
@@ -124,7 +125,7 @@ export default function Styleguide() {
         </div>
       </Block>
 
-      <Block title="Form fields" note="Label above, 2px green border, terracotta-deep message below on error.">
+      <Block title="Form fields" note="Label above, 2px charcoal border, crimson message below on error.">
         <div className="grid max-w-xl gap-5">
           <Field id="sg-name" label="Your name" hint="As it appears on the prescription.">
             <Input id="sg-name" aria-describedby={describedBy('sg-name', { hint: true })} defaultValue="Asha Patil" />
@@ -208,7 +209,7 @@ export default function Styleguide() {
         <div className="-mx-4 md:-mx-6"><TrustStrip /></div>
       </Block>
 
-      <Block title="Icons" note="lucide-react rounded line icons, 2px stroke, deep green or terracotta, used sparingly.">
+      <Block title="Icons" note="lucide-react rounded line icons, 2px stroke, charcoal, sky blue or crimson, used sparingly.">
         <div className="flex flex-wrap gap-4 text-green">
           {['pill', 'heartPulse', 'handHeart', 'mobility', 'stethoscope', 'rx', 'phone', 'whatsapp', 'cart', 'verified', 'truck', 'clock'].map((n) => (
             <span key={n} className="grid justify-items-center gap-1 text-small text-grey"><Icon name={n} size={28} className="text-green" />{n}</span>
