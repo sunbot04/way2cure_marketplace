@@ -76,7 +76,7 @@ export function buildNotes(orders: Order[], now: number): { due: Note[]; upcomin
     if (placed <= now) due.push({ id: `order-${o.id}`, kind: 'order', orderId: o.id, at: placed, status: o.status });
 
     for (const item of o.items) {
-      if (item.mode === 'rent' || !isSupply(item.id)) continue;
+      if (item.mode === 'rent' || !isSupply(item.id) || item.remind === false) continue;
 
       if (item.mode === 'subscribe') {
         // Monthly plan: remind before each delivery. Show the latest one that is due and the next one.

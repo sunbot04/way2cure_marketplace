@@ -42,11 +42,36 @@ function RequireLogin({ children }: { children: ReactNode }) {
   return user ? <>{children}</> : <Navigate to={`/login?next=${encodeURIComponent(pathname)}`} replace />;
 }
 
+// New page: start at the top. A link with a #section (e.g. /subscriptions#plan-refills) scrolls to
+// that section instead, even when you are already on the page, and gives it a short highlight.
+// Pages load lazily, so it waits (up to ~2 s) for the section to appear.
 function ScrollToTop() {
-  const { pathname } = useLocation();
+  const { pathname, hash, key } = useLocation();
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
+    if (!hash) {
+      window.scrollTo(0, 0);
+      return;
+    }
+    const id = decodeURIComponent(hash.slice(1));
+    let tries = 0;
+    let timer = 0;
+    let clear = 0;
+    const find = () => {
+      const el = document.getElementById(id);
+      if (el) {
+        const smooth = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        el.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'start' });
+        el.classList.remove('is-target');
+        void el.offsetWidth; // restart the highlight when the same link is used again
+        el.classList.add('is-target');
+        clear = window.setTimeout(() => el.classList.remove('is-target'), 2000);
+      } else if (tries++ < 40) {
+        timer = window.setTimeout(find, 50);
+      }
+    };
+    find();
+    return () => { window.clearTimeout(timer); window.clearTimeout(clear); };
+  }, [pathname, hash, key]);
   return null;
 }
 

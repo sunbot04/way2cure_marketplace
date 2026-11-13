@@ -7,8 +7,8 @@ import Button from '../components/ui/Button';
 import Tag from '../components/ui/Tag';
 import InfoBand from '../components/ui/InfoBand';
 import { Field, Input, Select, Textarea, describedBy } from '../components/ui/Field';
-import { HelpBox } from '../components/commerce/AppPanel';
 import useStoredList from '../hooks/useStoredList';
+import { useConfirm } from '../context/ConfirmContext';
 import { useT, type Dict } from '../i18n/LangContext';
 
 // Relations are saved as stable ids and shown in the reader's language.
@@ -27,6 +27,7 @@ const T: Dict = {
     phone: 'Phone {phone}',
     noDetails: 'No age or phone added',
     remove: 'Remove {name}',
+    confirmTitle: 'Remove {name}?', confirmText: 'Are you sure you want to remove {name} from your family profiles?', confirmYes: 'Yes, remove', confirmNo: 'Keep',
     emptyTitle: 'No family members added yet.',
     emptyText: 'Add a parent or relative to order for them with their own address and medicines.',
     add: 'Add a family member',
@@ -56,6 +57,7 @@ const T: Dict = {
     phone: 'फ़ोन {phone}',
     noDetails: 'उम्र या फ़ोन नहीं जोड़ा गया',
     remove: '{name} को हटाएँ',
+    confirmTitle: '{name} को हटाएँ?', confirmText: 'क्या आप सच में {name} को अपने परिवार की प्रोफ़ाइल से हटाना चाहते हैं?', confirmYes: 'हाँ, हटाएँ', confirmNo: 'रहने दें',
     emptyTitle: 'अभी तक परिवार का कोई सदस्य नहीं जोड़ा गया।',
     emptyText: 'माता-पिता या किसी रिश्तेदार को जोड़ें, ताकि उनके अपने पते और दवाइयों के साथ उनके लिए ऑर्डर कर सकें।',
     add: 'परिवार का सदस्य जोड़ें',
@@ -85,6 +87,7 @@ const T: Dict = {
     phone: 'फोन {phone}',
     noDetails: 'वय किंवा फोन जोडलेला नाही',
     remove: '{name} यांना काढा',
+    confirmTitle: '{name} यांना काढायचे?', confirmText: 'तुम्हाला खरंच {name} यांना तुमच्या कुटुंबाच्या प्रोफाइलमधून काढायचे आहे का?', confirmYes: 'हो, काढा', confirmNo: 'राहू द्या',
     emptyTitle: 'अजून कुटुंबातील कोणताही सदस्य जोडलेला नाही.',
     emptyText: 'आई-वडील किंवा नातेवाइकांना जोडा, म्हणजे त्यांच्या स्वतःच्या पत्त्यासह आणि औषधांसह त्यांच्यासाठी ऑर्डर करता येईल.',
     add: 'कुटुंबातील सदस्य जोडा',
@@ -111,6 +114,11 @@ export default function FamilyProfiles() {
   const tr = useT(T);
   // TODO: API: family members belong to the account (GET/POST/DELETE /family).
   const { list, add, remove } = useStoredList<Member>('w2c-family');
+  const confirm = useConfirm();
+  // "Are you sure?" before a family profile is removed
+  const askRemove = async (id: string, name: string) => {
+    if (await confirm({ title: tr('confirmTitle', { name }), message: tr('confirmText', { name }), confirmLabel: tr('confirmYes'), cancelLabel: tr('confirmNo') })) remove(id);
+  };
   const [f, setF] = useState<Member>(EMPTY);
   const [errors, setErrors] = useState<Errors>({});
   const [open, setOpen] = useState(false);
@@ -167,7 +175,7 @@ export default function FamilyProfiles() {
                     {[p.age && tr('years', { age: p.age }), p.phone && tr('phone', { phone: p.phone })].filter(Boolean).join(' · ') || tr('noDetails')}
                   </p>
                   {p.notes && <p className="mb-2 text-base">{p.notes}</p>}
-                  <button type="button" onClick={() => remove(p.id)}
+                  <button type="button" onClick={() => askRemove(p.id, p.name)}
                     className="inline-flex min-h-tap items-center gap-2 font-bold text-terracotta-deep underline-offset-2 hover:underline">
                     <Icon name="trash" size={18} /> {tr('remove', { name: p.name })}
                   </button>
@@ -233,7 +241,6 @@ export default function FamilyProfiles() {
           <Link to="/account/addresses" className="inline-flex min-h-tap items-center gap-2 font-bold">
             {tr('addAddress')} <Icon name="arrow" size={18} />
           </Link>
-          <HelpBox />
         </aside>
       </div>
     </>

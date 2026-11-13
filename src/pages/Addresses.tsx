@@ -6,8 +6,8 @@ import Button from '../components/ui/Button';
 import Tag from '../components/ui/Tag';
 import InfoBand from '../components/ui/InfoBand';
 import { Field, Input, Select, describedBy } from '../components/ui/Field';
-import { HelpBox } from '../components/commerce/AppPanel';
 import useStoredList from '../hooks/useStoredList';
+import { useConfirm } from '../context/ConfirmContext';
 import { isServiceablePincode, SITE } from '../config/site';
 import { useLoc, useT, type Dict } from '../i18n/LangContext';
 
@@ -41,6 +41,7 @@ const T: Dict = {
     savedNote: 'Address saved.',
     forWhom: 'For {name}',
     remove: 'Remove this address',
+    confirmTitle: 'Remove this address?', confirmText: 'Are you sure you want to remove this address? You can add it again at any time.', confirmYes: 'Yes, remove', confirmNo: 'Keep it',
     emptyTitle: 'No saved addresses yet.',
     emptyText: 'Add one now, or we will save it the first time you check out.',
     add: 'Add an address',
@@ -69,6 +70,7 @@ const T: Dict = {
     savedNote: 'पता सेव हो गया।',
     forWhom: '{name} के लिए',
     remove: 'यह पता हटाएँ',
+    confirmTitle: 'यह पता हटाएँ?', confirmText: 'क्या आप सच में यह पता हटाना चाहते हैं? आप इसे कभी भी फिर से जोड़ सकते हैं।', confirmYes: 'हाँ, हटाएँ', confirmNo: 'रहने दें',
     emptyTitle: 'अभी तक कोई पता सेव नहीं है।',
     emptyText: 'अभी जोड़ें, या पहली बार चेकआउट करने पर हम इसे सेव कर लेंगे।',
     add: 'पता जोड़ें',
@@ -97,6 +99,7 @@ const T: Dict = {
     savedNote: 'पत्ता सेव्ह झाला.',
     forWhom: '{name} यांच्यासाठी',
     remove: 'हा पत्ता काढा',
+    confirmTitle: 'हा पत्ता काढायचा?', confirmText: 'तुम्हाला खरंच हा पत्ता काढायचा आहे का? तुम्ही तो कधीही पुन्हा जोडू शकता.', confirmYes: 'हो, काढा', confirmNo: 'राहू द्या',
     emptyTitle: 'अजून कोणताही पत्ता सेव्ह केलेला नाही.',
     emptyText: 'आत्ता जोडा, किंवा पहिल्यांदा चेकआउट करताना आम्ही तो सेव्ह करू.',
     add: 'पत्ता जोडा',
@@ -124,6 +127,11 @@ export default function Addresses() {
   const loc = useLoc();
   // TODO: API: saved addresses belong to the account (GET/POST/DELETE /addresses).
   const { list, add, remove } = useStoredList<Address>('w2c-addresses');
+  const confirm = useConfirm();
+  // "Are you sure?" before an address is removed
+  const askRemove = async (id: string) => {
+    if (await confirm({ title: tr('confirmTitle'), message: tr('confirmText'), confirmLabel: tr('confirmYes'), cancelLabel: tr('confirmNo') })) remove(id);
+  };
   const [f, setF] = useState<Address>(EMPTY);
   const [errors, setErrors] = useState<Errors>({});
   const [open, setOpen] = useState(false);
@@ -176,7 +184,7 @@ export default function Addresses() {
                     {a.forWhom && <Tag kind="rent">{tr('forWhom', { name: a.forWhom })}</Tag>}
                   </div>
                   <p className="mb-2 text-base">{a.house}, {a.area}, {a.pincode}</p>
-                  <button type="button" onClick={() => remove(a.id)}
+                  <button type="button" onClick={() => askRemove(a.id)}
                     className="inline-flex min-h-tap items-center gap-2 font-bold text-terracotta-deep underline-offset-2 hover:underline">
                     <Icon name="trash" size={18} /> {tr('remove')}
                   </button>
@@ -252,7 +260,6 @@ export default function Addresses() {
           <InfoBand icon="lock">
             <strong>{tr('safeTitle')}</strong> {tr('safeText')}
           </InfoBand>
-          <HelpBox />
         </aside>
       </div>
     </>

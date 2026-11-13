@@ -8,7 +8,6 @@ import Button from '../components/ui/Button';
 import { type Step } from '../components/ui/StepList';
 import { Field, Input, Select, Textarea, describedBy } from '../components/ui/Field';
 import { Reveal } from '../components/motion/Reveal';
-import { HelpBox } from '../components/commerce/AppPanel';
 import PageHeader from '../components/layout/PageHeader';
 import Seo from '../components/layout/Seo';
 import { getService, services } from '../data';
@@ -500,7 +499,6 @@ export default function CareBooking() {
                 <span className="pt-1"><strong className="text-green">{tr('doctorLed')}</strong> {tr('suitability')}</span>
               </Reveal>
             )}
-            <Reveal><HelpBox /></Reveal>
           </aside>
         </div>
       </section>

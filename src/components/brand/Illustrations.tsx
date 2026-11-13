@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react';
+
 // Flat product illustrations (from the client's designs shop-by-need-v4.html and products.html,
 // recoloured to the site palette: charcoal, crimson, sky blue, white). Used by the "Shop by need"
 // cards, the homepage care cards, product cards, the product page and the cart until real pack shots
@@ -235,185 +237,556 @@ export function UnderpadsArt({ className }: ArtProps) {
 }
 
 /* ---------- Care at home (homepage care cards) ---------- */
+// Each care drawing now has a person in it (nurse, doctor, caretaker or patient), drawn in the same
+// flat, faceless-but-friendly style as the objects: rounded shapes, the site palette, soft gradients.
 
-/** Nurse at home (large, for the dark card): IV stand with a drip, a nurse's kit bag, a syringe and a vial. */
+const SKIN = '#C68660';
+const HAIR = '#2B211C';
+const GREY_HAIR = '#E4E8ED';
+const SCRUBS = '#5BA3E0';
+
+type PersonProps = {
+  x: number; y: number; s?: number;
+  /** Shirt / scrubs colour */
+  top: string;
+  pants?: string;
+  hair?: string;
+  /** Hair tied in a bun (and a little longer at the sides) */
+  bun?: boolean;
+  /** Nurse's cap with a red cross */
+  cap?: boolean;
+  /** Doctor's white coat over the shirt, with a stethoscope */
+  coat?: boolean;
+  glasses?: boolean;
+  /** Sitting, seen from the front: a lap, then the shins */
+  seated?: boolean;
+  /** Something held in the right hand, drawn in the figure's own coordinates */
+  holding?: ReactNode;
+  /** Something on the left wrist (e.g. the Safe-zone band) */
+  wrist?: ReactNode;
+};
+
+/** A flat, standing (or sitting) person. Feet at (x, y); about 168 units tall before scaling. */
+function Person({ x, y, s = 1, top, pants = MAIN, hair = HAIR, bun, cap, coat, glasses, seated, holding, wrist }: PersonProps) {
+  const body = coat ? '#FFFFFF' : top;
+  return (
+    <g transform={`translate(${x} ${y}) scale(${s})`}>
+      {/* Legs and shoes */}
+      {seated ? (
+        <>
+          <rect x="-15" y="-50" width="13" height="48" rx="6" fill={pants} />
+          <rect x="2" y="-50" width="13" height="48" rx="6" fill={pants} />
+          <rect x="-28" y="-66" width="56" height="20" rx="10" fill={pants} />
+        </>
+      ) : (
+        <>
+          <rect x="-15" y="-66" width="13" height="64" rx="6" fill={pants} />
+          <rect x="2" y="-66" width="13" height="64" rx="6" fill={pants} />
+        </>
+      )}
+      <rect x="-19" y="-7" width="17" height="8" rx="4" fill="#121A24" />
+      <rect x="2" y="-7" width="17" height="8" rx="4" fill="#121A24" />
+
+      {/* Arms (behind the body), hands */}
+      <rect x="-34" y="-118" width="13" height={seated ? 48 : 56} rx="6.5" fill={body} />
+      <rect x="21" y="-118" width="13" height={seated ? 48 : 56} rx="6.5" fill={body} />
+      <circle cx="-27.5" cy={seated ? -68 : -60} r="6.5" fill={SKIN} />
+      <circle cx="27.5" cy={seated ? -68 : -60} r="6.5" fill={SKIN} />
+
+      {/* Neck and body */}
+      <rect x="-5.5" y="-134" width="11" height="14" rx="3" fill={SKIN} />
+      <path d={`M-27 ${seated ? -62 : -58} V-104 a20 20 0 0 1 20 -20 h14 a20 20 0 0 1 20 20 V${seated ? -62 : -58} a6 6 0 0 1 -6 6 h-42 a6 6 0 0 1 -6 -6z`} fill={body} />
+      {coat ? (
+        <>
+          <path d="M-9 -124 L0 -104 L9 -124z" fill={top} />
+          <path d="M0 -104 V-56" stroke={PALE} strokeWidth="2" />
+          <rect x="-20" y="-80" width="12" height="9" rx="2" fill="none" stroke={PALE} strokeWidth="2" />
+          <path d="M-12 -122 C -15 -98, -5 -88, 0 -88 C 5 -88, 15 -98, 12 -122" stroke={SLATE} strokeWidth="3" fill="none" strokeLinecap="round" />
+          <circle cx="0" cy="-86" r="5" fill={G} /><circle cx="0" cy="-86" r="2" fill={R} />
+        </>
+      ) : (
+        <path d="M-8 -124 L0 -113 L8 -124z" fill={SKIN} />
+      )}
+      {cap && <rect x="10" y="-112" width="11" height="7" rx="2" fill={R} />}
+      {wrist}
+
+      {/* Head, hair and a calm face */}
+      <circle cx="0" cy="-146" r="17" fill={SKIN} />
+      {bun && <circle cx="0" cy="-165" r="8" fill={hair} />}
+      <path d="M-17.5 -143 A17.5 17.5 0 0 1 17.5 -143 C 12 -153, -4 -156, -17.5 -143z" fill={hair} />
+      {bun && <path d="M-17.5 -143 q-2 10 2 16 l3 -2 q-3 -7 -1 -14z M17.5 -143 q2 10 -2 16 l-3 -2 q3 -7 1 -14z" fill={hair} />}
+      {cap && (
+        <g>
+          <path d="M-13 -158 h26 l-3 -11 h-20z" fill="#FFFFFF" />
+          <rect x="-1.5" y="-167" width="3" height="7" rx="1" fill={R} />
+          <rect x="-3.5" y="-165" width="7" height="3" rx="1" fill={R} />
+        </g>
+      )}
+      <circle cx="-6" cy="-145" r="1.8" fill={HAIR} />
+      <circle cx="6" cy="-145" r="1.8" fill={HAIR} />
+      <path d="M-4.5 -138 q4.5 3.5 9 0" stroke={HAIR} strokeWidth="1.6" fill="none" strokeLinecap="round" />
+      {glasses && (
+        <g stroke={SLATE} strokeWidth="1.6" fill="none">
+          <circle cx="-6" cy="-145" r="5" /><circle cx="6" cy="-145" r="5" /><path d="M-1 -145h2" />
+        </g>
+      )}
+      {holding}
+    </g>
+  );
+}
+
+/** Nurse at home (large, for the dark card): a nurse beside an IV stand, with her kit bag and a syringe. */
 export function NurseArt({ className }: ArtProps) {
   return (
     <svg className={className} viewBox="0 0 380 340" {...svgProps}>
       <ellipse cx="200" cy="328" rx="170" ry="12" fill="#111821" opacity=".5" />
-      <path d="M110 44v262" stroke={PALE} strokeWidth="8" strokeLinecap="round" />
-      <path d="M80 48h60" stroke={PALE} strokeWidth="7" strokeLinecap="round" />
-      <path d="M110 306l-38 16M110 306l38 16" stroke={PALE} strokeWidth="7" strokeLinecap="round" />
-      <path d="M136 48v12" stroke={PALE} strokeWidth="4" strokeLinecap="round" />
-      <path d="M136 172 C 136 224, 186 206, 190 236" stroke={SKY} strokeWidth="3" fill="none" strokeLinecap="round" />
-      <rect x="104" y="58" width="64" height="102" rx="18" fill={W} />
-      <rect x="113" y="98" width="46" height="52" rx="10" fill={TINT} />
-      <rect x="120" y="72" width="32" height="16" rx="4" fill={R} />
-      <rect x="130" y="158" width="12" height="16" rx="3" fill={PALE} />
+      {/* IV stand and drip */}
+      <path d="M70 44v262" stroke={PALE} strokeWidth="8" strokeLinecap="round" />
+      <path d="M40 48h60" stroke={PALE} strokeWidth="7" strokeLinecap="round" />
+      <path d="M70 306l-34 16M70 306l34 16" stroke={PALE} strokeWidth="7" strokeLinecap="round" />
+      <path d="M96 48v12" stroke={PALE} strokeWidth="4" strokeLinecap="round" />
+      <path d="M96 172 C 96 214, 130 200, 150 214" stroke={SKY} strokeWidth="3" fill="none" strokeLinecap="round" />
+      <rect x="64" y="58" width="64" height="102" rx="18" fill={W} />
+      <rect x="73" y="98" width="46" height="52" rx="10" fill={TINT} />
+      <rect x="80" y="72" width="32" height="16" rx="4" fill={R} />
+      <rect x="90" y="158" width="12" height="16" rx="3" fill={PALE} />
+
+      {/* The nurse, holding a clipboard */}
+      <Person
+        x={200} y={322} s={1.62} top={SCRUBS} pants="#3F7FBF" bun cap
+        holding={
+          <g>
+            <rect x="20" y="-92" width="30" height="40" rx="5" fill={G} />
+            <rect x="24" y="-86" width="22" height="30" rx="3" fill={W} />
+            <rect x="29" y="-96" width="12" height="7" rx="2" fill={R} />
+            <rect x="28" y="-79" width="14" height="3" rx="1.5" fill={PALE} />
+            <rect x="28" y="-72" width="10" height="3" rx="1.5" fill={PALE} />
+            <circle cx="27.5" cy="-62" r="6.5" fill={SKIN} />
+          </g>
+        }
+      />
+
+      {/* Kit bag */}
       <g>
-        <path d="M222 166v-20a16 16 0 0 1 16-16h44a16 16 0 0 1 16 16v20" stroke={PALE} strokeWidth="10" fill="none" strokeLinecap="round" />
-        <rect x="180" y="164" width="160" height="158" rx="26" fill={W} />
-        <rect x="180" y="164" width="22" height="158" rx="11" fill="#000" opacity=".04" />
-        <rect x="180" y="200" width="160" height="10" fill={PALE} />
-        <circle cx="260" cy="262" r="34" fill={R} />
-        <path d="M260 244v36M242 262h36" stroke="#fff" strokeWidth="9" strokeLinecap="round" />
-        <rect x="314" y="220" width="10" height="90" rx="5" fill="#fff" opacity=".7" />
+        <path d="M296 252v-12a12 12 0 0 1 12-12h24a12 12 0 0 1 12 12v12" stroke={PALE} strokeWidth="8" fill="none" strokeLinecap="round" />
+        <rect x="270" y="250" width="100" height="72" rx="18" fill={W} />
+        <rect x="270" y="268" width="100" height="7" fill={PALE} />
+        <circle cx="320" cy="298" r="16" fill={R} />
+        <path d="M320 289v18M311 298h18" stroke="#fff" strokeWidth="5" strokeLinecap="round" />
       </g>
-      <g transform="rotate(-22 112 300)">
-        <rect x="44" y="296" width="12" height="10" fill={PALE} />
-        <rect x="36" y="288" width="8" height="26" rx="3" fill={PALE} />
-        <rect x="56" y="290" width="92" height="22" rx="6" fill={W} />
-        <rect x="92" y="294" width="52" height="14" rx="3" fill={SKY} />
-        <path d="M100 290v6M112 290v6M124 290v6M136 290v6" stroke={PALE} strokeWidth="2" />
-        <rect x="148" y="296" width="10" height="10" rx="2" fill={PALE} />
-        <path d="M158 301h28" stroke={PALE} strokeWidth="2.5" strokeLinecap="round" />
+      {/* Syringe */}
+      <g transform="rotate(-18 60 312)">
+        <rect x="14" y="304" width="8" height="18" rx="3" fill={PALE} />
+        <rect x="22" y="306" width="64" height="14" rx="4" fill={W} />
+        <rect x="48" y="309" width="34" height="8" rx="2" fill={SKY} />
+        <path d="M86 313h22" stroke={PALE} strokeWidth="2.5" strokeLinecap="round" />
       </g>
-      <rect x="346" y="282" width="24" height="40" rx="6" fill={W} />
-      <rect x="344" y="272" width="28" height="12" rx="4" fill={R} />
-      <rect x="346" y="298" width="24" height="12" fill={SKY} />
     </svg>
   );
 }
 
-/** Doctor at home (wide card): a clipboard with a check-up list and a stethoscope. */
+/** Doctor at home (wide card): a doctor in a white coat with a stethoscope, beside a check-up clipboard. */
 export function DoctorArt({ className }: ArtProps) {
   return (
     <svg className={className} viewBox="0 0 260 200" {...svgProps}>
-      <ellipse cx="130" cy="190" rx="110" ry="8" fill={D} opacity=".12" />
-      <rect x="26" y="40" width="112" height="146" rx="14" fill={G} />
-      <rect x="37" y="58" width="90" height="118" rx="8" fill={W} />
-      <rect x="61" y="30" width="42" height="20" rx="6" fill={R} />
-      <rect x="51" y="76" width="62" height="7" rx="3.5" fill={PALE} />
-      <rect x="51" y="92" width="44" height="7" rx="3.5" fill={PALE} />
-      <circle cx="56" cy="122" r="6" fill={SKY} /><rect x="68" y="119" width="44" height="6" rx="3" fill={PALE} />
-      <circle cx="56" cy="144" r="6" fill={SKY} /><rect x="68" y="141" width="34" height="6" rx="3" fill={PALE} />
-      <path d="M53 122l2 2 4-4M53 144l2 2 4-4" stroke="#fff" strokeWidth="1.8" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M170 38v42a34 34 0 0 0 68 0v-42" stroke={SLATE} strokeWidth="7" fill="none" strokeLinecap="round" />
-      <circle cx="170" cy="34" r="7" fill={D} /><circle cx="238" cy="34" r="7" fill={D} />
-      <path d="M204 114 C 204 150, 176 146, 178 166" stroke={SLATE} strokeWidth="7" fill="none" strokeLinecap="round" />
-      <circle cx="178" cy="172" r="20" fill={G} />
-      <circle cx="178" cy="172" r="12" fill={W} />
-      <circle cx="178" cy="172" r="5" fill={R} />
-      <path d="M214 136a26 26 0 0 1 0 30M222 128a38 38 0 0 1 0 46" stroke={R} strokeWidth="2.5" fill="none" strokeLinecap="round" opacity=".55" />
+      <ellipse cx="130" cy="192" rx="110" ry="8" fill={D} opacity=".12" />
+      <g transform="translate(8 34) scale(.86)">
+        <rect x="26" y="40" width="112" height="146" rx="14" fill={G} />
+        <rect x="37" y="58" width="90" height="118" rx="8" fill={W} />
+        <rect x="61" y="30" width="42" height="20" rx="6" fill={R} />
+        <rect x="51" y="76" width="62" height="7" rx="3.5" fill={PALE} />
+        <rect x="51" y="92" width="44" height="7" rx="3.5" fill={PALE} />
+        <circle cx="56" cy="122" r="6" fill={SKY} /><rect x="68" y="119" width="44" height="6" rx="3" fill={PALE} />
+        <circle cx="56" cy="144" r="6" fill={SKY} /><rect x="68" y="141" width="34" height="6" rx="3" fill={PALE} />
+        <path d="M53 122l2 2 4-4M53 144l2 2 4-4" stroke="#fff" strokeWidth="1.8" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+      </g>
+      <Person x={180} y={190} s={1.04} top={SKY} coat glasses />
+      <path d="M222 70a20 20 0 0 1 0 26M230 62a32 32 0 0 1 0 42" stroke={R} strokeWidth="2.5" fill="none" strokeLinecap="round" opacity=".55" />
     </svg>
   );
 }
 
-/** Elder care: an armchair with a cushion, a walking stick and a heart. */
+/** Elder care: a grandmother resting in her armchair, with a caretaker at her side. */
 export function ElderArt({ className }: ArtProps) {
   return (
     <svg className={className} viewBox="0 0 220 160" {...svgProps}>
-      <ellipse cx="110" cy="152" rx="90" ry="7" fill={D} opacity=".12" />
-      <rect x="44" y="26" width="96" height="86" rx="24" fill={G} />
-      <rect x="62" y="44" width="60" height="38" rx="14" fill={W} />
-      <rect x="38" y="96" width="108" height="30" rx="12" fill={R} />
-      <rect x="24" y="68" width="26" height="64" rx="12" fill={D} />
-      <rect x="134" y="68" width="26" height="64" rx="12" fill={D} />
-      <rect x="40" y="130" width="9" height="20" rx="3" fill={SLATE} />
-      <rect x="135" y="130" width="9" height="20" rx="3" fill={SLATE} />
-      <path d="M182 60v88" stroke={SLATE} strokeWidth="6" strokeLinecap="round" />
-      <path d="M182 60a12 12 0 0 1 24 0v4" stroke={SLATE} strokeWidth="6" fill="none" strokeLinecap="round" />
-      <path d="M24 46s-13-7.5-13-16a6.5 6.5 0 0 1 13-2.5 6.5 6.5 0 0 1 13 2.5c0 8.5-13 16-13 16z" fill={R} />
+      <ellipse cx="110" cy="152" rx="96" ry="7" fill={D} opacity=".12" />
+      {/* Chair back and seat */}
+      <rect x="40" y="34" width="96" height="86" rx="24" fill={G} />
+      <rect x="34" y="102" width="108" height="26" rx="12" fill={R} />
+      <Person x={88} y={150} s={0.6} top={SKY} hair={GREY_HAIR} bun glasses seated pants={SLATE} />
+      {/* Chair arms and legs */}
+      <rect x="20" y="74" width="26" height="60" rx="12" fill={D} />
+      <rect x="130" y="74" width="26" height="60" rx="12" fill={D} />
+      <rect x="36" y="132" width="9" height="18" rx="3" fill={SLATE} />
+      <rect x="131" y="132" width="9" height="18" rx="3" fill={SLATE} />
+      {/* Caretaker, holding a cup of tea */}
+      <Person
+        x={186} y={152} s={0.84} top={R} pants={MAIN} bun
+        holding={<g><rect x="17" y="-72" width="18" height="16" rx="4" fill={W} /><path d="M35 -68a5 5 0 0 1 0 9" stroke={W} strokeWidth="3" fill="none" /><circle cx="22" cy="-62" r="6.5" fill={SKIN} /></g>}
+      />
+      <path d="M22 40s-12-7-12-15a6 6 0 0 1 12-2.3 6 6 0 0 1 12 2.3c0 8-12 15-12 15z" fill={R} />
     </svg>
   );
 }
 
-/** Dementia care: the Safe-zone band inside a dashed safe area, sending an alert to a family phone. */
+/** Dementia care: a grandfather walking safely inside his safe zone, wearing the band, which sends
+ *  his location to a family member's phone. */
 export function DementiaArt({ className }: ArtProps) {
   return (
     <svg className={className} viewBox="0 0 220 160" {...svgProps}>
-      <ellipse cx="110" cy="152" rx="90" ry="7" fill={D} opacity=".12" />
-      <circle cx="96" cy="84" r="64" fill="none" stroke={SKY} strokeWidth="2.5" strokeDasharray="6 7" opacity=".8" />
-      <rect x="72" y="16" width="48" height="136" rx="18" fill={G} />
-      <rect x="56" y="48" width="80" height="72" rx="22" fill={W} />
-      <rect x="66" y="58" width="60" height="52" rx="14" fill={D} />
-      <path d="M96 100s-13-13-13-22a13 13 0 0 1 26 0c0 9-13 22-13 22z" fill={R} />
-      <circle cx="96" cy="78" r="5" fill="#fff" />
-      <path d="M146 70a22 22 0 0 1 0 28M154 62a34 34 0 0 1 0 44" stroke={R} strokeWidth="3" fill="none" strokeLinecap="round" opacity=".6" />
-      <rect x="166" y="96" width="36" height="54" rx="8" fill={D} />
-      <rect x="170" y="103" width="28" height="38" rx="4" fill={W} />
-      <circle cx="184" cy="117" r="7" fill={R} />
-      <rect x="175" y="129" width="18" height="4" rx="2" fill={PALE} />
+      <ellipse cx="96" cy="152" rx="90" ry="7" fill={D} opacity=".12" />
+      <ellipse cx="80" cy="146" rx="66" ry="14" fill={SKY} opacity=".12" />
+      <circle cx="80" cy="84" r="66" fill="none" stroke={SKY} strokeWidth="2.5" strokeDasharray="6 7" opacity=".8" />
+      <Person
+        x={80} y={150} s={0.8} top={SLATE} pants={MAIN} hair={GREY_HAIR} glasses
+        wrist={<g><rect x="-35" y="-78" width="15" height="11" rx="3" fill={D} /><circle cx="-27.5" cy="-72.5" r="2.6" fill={R} /></g>}
+      />
+      {/* Location pin above, signal to the phone */}
+      <path d="M128 52s-11-11-11-19a11 11 0 0 1 22 0c0 8-11 19-11 19z" fill={R} />
+      <circle cx="128" cy="33" r="4" fill="#fff" />
+      <path d="M150 74a20 20 0 0 1 0 26M158 66a32 32 0 0 1 0 42" stroke={R} strokeWidth="3" fill="none" strokeLinecap="round" opacity=".6" />
+      <rect x="172" y="88" width="38" height="60" rx="8" fill={D} />
+      <rect x="176" y="95" width="30" height="44" rx="4" fill={W} />
+      <circle cx="191" cy="111" r="7" fill={R} />
+      <rect x="181" y="124" width="20" height="4" rx="2" fill={PALE} />
+      <rect x="184" y="131" width="14" height="4" rx="2" fill={PALE} />
     </svg>
   );
 }
 
-/** ICU at home: a patient monitor with a heart trace, and an oxygen cylinder. */
+/** A home bed with a patient resting under a blanket. Pillow end on the left unless `flip`. */
+function BedPatient({ flip = false, mask = false }: { flip?: boolean; mask?: boolean }) {
+  return (
+    <g transform={flip ? 'translate(220 0) scale(-1 1)' : undefined}>
+      <rect x="14" y="74" width="12" height="76" rx="5" fill={D} />
+      <rect x="22" y="112" width="128" height="16" rx="6" fill={G} />
+      <rect x="140" y="104" width="10" height="46" rx="4" fill={D} />
+      <rect x="28" y="128" width="7" height="20" rx="3" fill={SLATE} />
+      <rect x="22" y="100" width="124" height="14" rx="7" fill={W} />
+      <ellipse cx="44" cy="96" rx="20" ry="10" fill={W} stroke={PALE} strokeWidth="2" />
+      <circle cx="48" cy="86" r="11" fill={SKIN} />
+      <path d="M37 85a11 11 0 0 1 14 -10c-6 2-10 6-14 10z" fill={GREY_HAIR} />
+      <path d="M44 87q2 2 4 0" stroke={HAIR} strokeWidth="1.4" fill="none" strokeLinecap="round" />
+      {mask && <ellipse cx="57" cy="88" rx="6" ry="7.5" fill={TINT} stroke={SKY} strokeWidth="2" />}
+      <path d="M58 92h82a8 8 0 0 1 8 8v4H58z" fill={SKY} />
+      <path d="M58 92h20v12H58z" fill="#fff" opacity=".55" />
+      <path d="M96 96q12 4 24 0" stroke="#fff" strokeWidth="2" fill="none" opacity=".5" />
+    </g>
+  );
+}
+
+/** ICU at home: a patient resting in bed, watched by a heart monitor, with an oxygen cylinder. */
 export function IcuArt({ className }: ArtProps) {
   return (
     <svg className={className} viewBox="0 0 220 160" {...svgProps}>
-      <ellipse cx="110" cy="152" rx="90" ry="7" fill={D} opacity=".12" />
-      <rect x="88" y="108" width="14" height="28" fill={SLATE} />
-      <rect x="60" y="134" width="70" height="12" rx="6" fill={D} />
-      <rect x="26" y="18" width="138" height="94" rx="14" fill={G} />
-      <rect x="36" y="28" width="118" height="68" rx="8" fill={D} />
-      <path d="M44 66h20l6-14 8 28 6-18 4 4h18l6-12 7 22 5-10h22" stroke={R} strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-      <text x="148" y="44" textAnchor="end" fontFamily={font} fontWeight="800" fontSize="12" fill={PALE}>98%</text>
-      <circle cx="48" cy="104" r="3.5" fill={SKY} /><circle cx="60" cy="104" r="3.5" fill={R} />
-      <rect x="170" y="56" width="34" height="94" rx="16" fill={W} />
-      <rect x="170" y="84" width="34" height="12" fill={SKY} />
-      <rect x="180" y="40" width="14" height="18" rx="3" fill={D} />
-      <rect x="176" y="33" width="22" height="9" rx="4.5" fill={R} />
-      <rect x="176" y="66" width="6" height="74" rx="3" fill="#fff" opacity=".7" />
+      <ellipse cx="110" cy="152" rx="96" ry="7" fill={D} opacity=".12" />
+      {/* Monitor on a stand */}
+      <path d="M176 64v80" stroke={SLATE} strokeWidth="5" strokeLinecap="round" />
+      <path d="M162 148h28" stroke={SLATE} strokeWidth="5" strokeLinecap="round" />
+      <rect x="126" y="10" width="88" height="58" rx="10" fill={G} />
+      <rect x="132" y="16" width="76" height="42" rx="6" fill={D} />
+      <path d="M137 40h12l4-9 5 18 4-12 3 3h11l4-8 4 14 3-6h13" stroke={R} strokeWidth="2.2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+      <text x="204" y="27" textAnchor="end" fontFamily={font} fontWeight="800" fontSize="8" fill={PALE}>98%</text>
+      <BedPatient />
+      {/* Oxygen line from the cylinder */}
+      <path d="M60 90 C 90 70, 170 70, 196 96" stroke={SKY} strokeWidth="2" fill="none" strokeDasharray="3 4" strokeLinecap="round" opacity=".8" />
+      <rect x="190" y="96" width="22" height="54" rx="10" fill={W} />
+      <rect x="190" y="112" width="22" height="8" fill={SKY} />
+      <rect x="195" y="86" width="12" height="11" rx="3" fill={R} />
     </svg>
   );
 }
 
-/** Ventilator care: a ventilator on a trolley, its hose and a mask. */
+/** Ventilator care: a patient resting with a mask, connected to a BiPAP machine on a trolley. */
 export function VentilatorArt({ className }: ArtProps) {
   return (
     <svg className={className} viewBox="0 0 220 160" {...svgProps}>
-      <ellipse cx="110" cy="152" rx="90" ry="7" fill={D} opacity=".12" />
-      <path d="M144 92 C 178 92, 166 44, 186 50" stroke={SLATE} strokeWidth="9" fill="none" strokeLinecap="round" />
-      <path d="M144 92 C 178 92, 166 44, 186 50" stroke={PALE} strokeWidth="3" fill="none" strokeDasharray="2 5" strokeLinecap="round" />
-      <ellipse cx="196" cy="52" rx="16" ry="19" fill={R} />
-      <ellipse cx="196" cy="52" rx="8" ry="10" fill={BLUSH} />
-      <path d="M48 134v8M120 134v8" stroke={SLATE} strokeWidth="5" strokeLinecap="round" />
-      <rect x="36" y="124" width="96" height="10" rx="5" fill={SLATE} />
-      <circle cx="48" cy="146" r="7" fill={D} /><circle cx="120" cy="146" r="7" fill={D} />
-      <rect x="24" y="36" width="122" height="90" rx="16" fill={W} />
-      <rect x="36" y="48" width="68" height="48" rx="8" fill={D} />
-      <path d="M43 78q8-22 16 0t16 0t16 0" stroke={SKY} strokeWidth="2.5" fill="none" strokeLinecap="round" />
-      <text x="98" y="62" textAnchor="end" fontFamily={font} fontWeight="800" fontSize="9" fill={PALE}>BiPAP</text>
-      <circle cx="125" cy="66" r="13" fill={G} /><circle cx="125" cy="66" r="4.5" fill="#fff" />
-      <rect x="36" y="106" width="20" height="8" rx="4" fill={R} />
-      <rect x="62" y="106" width="20" height="8" rx="4" fill={PALE} />
-      <rect x="88" y="106" width="20" height="8" rx="4" fill={PALE} />
+      <ellipse cx="110" cy="152" rx="96" ry="7" fill={D} opacity=".12" />
+      <BedPatient flip mask />
+      {/* Hose from the machine to the mask */}
+      <path d="M74 52 C 120 46, 150 60, 163 86" stroke={SLATE} strokeWidth="7" fill="none" strokeLinecap="round" />
+      <path d="M74 52 C 120 46, 150 60, 163 86" stroke={PALE} strokeWidth="2.5" fill="none" strokeDasharray="2 5" strokeLinecap="round" />
+      {/* Ventilator on a trolley */}
+      <g transform="translate(0 6) scale(.62)">
+        <path d="M48 134v8M120 134v8" stroke={SLATE} strokeWidth="5" strokeLinecap="round" />
+        <path d="M84 126v104" stroke={SLATE} strokeWidth="7" strokeLinecap="round" />
+        <rect x="40" y="226" width="88" height="10" rx="5" fill={SLATE} />
+        <circle cx="50" cy="240" r="7" fill={D} /><circle cx="118" cy="240" r="7" fill={D} />
+        <rect x="24" y="36" width="122" height="90" rx="16" fill={W} />
+        <rect x="36" y="48" width="68" height="48" rx="8" fill={D} />
+        <path d="M43 78q8-22 16 0t16 0t16 0" stroke={SKY} strokeWidth="2.5" fill="none" strokeLinecap="round" />
+        <text x="98" y="62" textAnchor="end" fontFamily={font} fontWeight="800" fontSize="9" fill={PALE}>BiPAP</text>
+        <circle cx="125" cy="66" r="13" fill={G} /><circle cx="125" cy="66" r="4.5" fill="#fff" />
+        <rect x="36" y="106" width="20" height="8" rx="4" fill={R} />
+        <rect x="62" y="106" width="20" height="8" rx="4" fill={PALE} />
+        <rect x="88" y="106" width="20" height="8" rx="4" fill={PALE} />
+      </g>
     </svg>
   );
 }
 
-/** Stroke care: a therapy ball, a dumbbell and a speech bubble (physiotherapy and speech therapy). */
+/** Stroke care: a physiotherapist helping a grandfather with light exercises, and a speech-therapy bubble. */
 export function StrokeArt({ className }: ArtProps) {
   return (
     <svg className={className} viewBox="0 0 220 160" {...svgProps}>
-      <ellipse cx="110" cy="152" rx="90" ry="7" fill={D} opacity=".12" />
-      <circle cx="78" cy="98" r="52" fill={R} />
-      <path d="M30 104q48 20 96 0" stroke="#8E0A20" strokeWidth="3" fill="none" opacity=".45" />
-      <path d="M42 82a42 42 0 0 1 30-32" stroke="#fff" strokeWidth="6" fill="none" strokeLinecap="round" opacity=".45" />
-      <path d="M146 16h42a12 12 0 0 1 12 12v22a12 12 0 0 1-12 12h-28l-14 12v-12a12 12 0 0 1-12-12v-22a12 12 0 0 1 12-12z" fill={W} />
-      <circle cx="153" cy="39" r="4.5" fill={SKY} /><circle cx="167" cy="39" r="4.5" fill={SKY} opacity=".7" /><circle cx="181" cy="39" r="4.5" fill={SKY} opacity=".4" />
-      <rect x="132" y="132" width="52" height="8" rx="4" fill={SLATE} />
-      <rect x="122" y="118" width="16" height="36" rx="5" fill={G} />
-      <rect x="178" y="118" width="16" height="36" rx="5" fill={G} />
+      <ellipse cx="110" cy="152" rx="96" ry="7" fill={D} opacity=".12" />
+      <circle cx="186" cy="128" r="22" fill={R} />
+      <path d="M166 132q20 10 40 0" stroke="#8E0A20" strokeWidth="2.5" fill="none" opacity=".45" />
+      <path d="M172 118a18 18 0 0 1 12-10" stroke="#fff" strokeWidth="4" fill="none" strokeLinecap="round" opacity=".45" />
+      {/* Grandfather, holding a small dumbbell */}
+      <Person
+        x={66} y={150} s={0.8} top={G} pants={SLATE} hair={GREY_HAIR} glasses
+        holding={<g><rect x="16" y="-64" width="24" height="5" rx="2.5" fill={SLATE} /><rect x="12" y="-70" width="8" height="17" rx="3" fill={G} /><rect x="36" y="-70" width="8" height="17" rx="3" fill={G} /><circle cx="27.5" cy="-61" r="6.5" fill={SKIN} /></g>}
+      />
+      {/* Physiotherapist */}
+      <Person x={128} y={150} s={0.84} top={SCRUBS} pants="#3F7FBF" />
+      <path d="M146 14h44a12 12 0 0 1 12 12v20a12 12 0 0 1-12 12h-28l-14 11v-11a12 12 0 0 1-12-12v-20a12 12 0 0 1 12-12z" fill={W} />
+      <circle cx="154" cy="36" r="4.5" fill={SKY} /><circle cx="168" cy="36" r="4.5" fill={SKY} opacity=".7" /><circle cx="182" cy="36" r="4.5" fill={SKY} opacity=".4" />
     </svg>
   );
 }
 
-/** Cancer care: an awareness ribbon, a heart-shaped cushion and a dropper bottle. */
+/** Cancer care: an oncology nurse with a heart, beside the awareness ribbon. */
 export function CancerArt({ className }: ArtProps) {
   return (
     <svg className={className} viewBox="0 0 220 160" {...svgProps}>
+      <ellipse cx="110" cy="152" rx="96" ry="7" fill={D} opacity=".12" />
+      <g transform="translate(-58 6) scale(.92)">
+        <path d="M84 140L118 82C134 56 128 24 110 24S86 56 102 82" stroke={R} strokeWidth="16" fill="none" strokeLinejoin="round" />
+        <path d="M102 82L136 140" stroke={R} strokeWidth="16" fill="none" />
+        <path d="M104 34c-6 6-6 20 2 34" stroke="#fff" strokeWidth="3" fill="none" strokeLinecap="round" opacity=".45" />
+      </g>
+      <Person
+        x={132} y={150} s={0.84} top={SCRUBS} pants="#3F7FBF" bun cap
+        holding={<g><path d="M30 -52s-16-9-16-20a8 8 0 0 1 16-3 8 8 0 0 1 16 3c0 11-16 20-16 20z" fill={W} /><path d="M30 -73v10M25 -68h10" stroke={SKY} strokeWidth="2.5" strokeLinecap="round" /></g>}
+      />
+      <rect x="178" y="92" width="14" height="22" rx="7" fill={G} />
+      <rect x="176" y="112" width="18" height="10" fill={PALE} />
+      <rect x="170" y="120" width="30" height="30" rx="9" fill={W} />
+      <rect x="170" y="130" width="30" height="10" fill={SKY} />
+    </svg>
+  );
+}
+
+/* ---------- Prescription rules ("Good to know" cards) ---------- */
+
+/** Valid prescription: an Rx sheet with a doctor's signature and a sky "approved" tick. */
+export function RxValidArt({ className }: ArtProps) {
+  return (
+    <svg className={className} viewBox="0 0 220 160" {...svgProps}>
       <ellipse cx="110" cy="152" rx="90" ry="7" fill={D} opacity=".12" />
-      <path d="M44 148s-28-16-28-34a14 14 0 0 1 28-6 14 14 0 0 1 28 6c0 18-28 34-28 34z" fill={W} />
-      <path d="M44 116v12M38 122h12" stroke={SKY} strokeWidth="3" strokeLinecap="round" />
-      <path d="M84 140L118 82C134 56 128 24 110 24S86 56 102 82" stroke={R} strokeWidth="16" fill="none" strokeLinejoin="round" />
-      <path d="M102 82L136 140" stroke={R} strokeWidth="16" fill="none" />
-      <path d="M104 34c-6 6-6 20 2 34" stroke="#fff" strokeWidth="3" fill="none" strokeLinecap="round" opacity=".45" />
-      <rect x="172" y="62" width="14" height="24" rx="7" fill={G} />
-      <rect x="170" y="84" width="18" height="14" fill={PALE} />
-      <rect x="162" y="96" width="34" height="52" rx="10" fill={W} />
-      <rect x="162" y="112" width="34" height="16" fill={SKY} />
+      <g transform="rotate(-6 100 84)">
+        <rect x="52" y="14" width="104" height="134" rx="12" fill={W} />
+        <rect x="52" y="14" width="104" height="26" rx="12" fill={G} />
+        <rect x="52" y="30" width="104" height="10" fill={G} />
+        <text x="66" y="68" fontFamily="Lora, Georgia, serif" fontWeight="700" fontSize="24" fill="#C8102E">Rx</text>
+        <rect x="100" y="54" width="42" height="6" rx="3" fill={PALE} />
+        <rect x="66" y="80" width="76" height="6" rx="3" fill={PALE} />
+        <rect x="66" y="94" width="58" height="6" rx="3" fill={PALE} />
+        <rect x="66" y="108" width="68" height="6" rx="3" fill={PALE} />
+        <path d="M70 132c8-10 14 4 20-4s10 6 18-2" stroke={SLATE} strokeWidth="2.5" fill="none" strokeLinecap="round" />
+      </g>
+      <circle cx="160" cy="112" r="26" fill={SKY} />
+      <circle cx="160" cy="112" r="26" fill="none" stroke="#fff" strokeWidth="4" opacity=".5" />
+      <path d="M148 112l8 8 16-16" stroke="#fff" strokeWidth="6" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+/** Schedule H and H1: a doctor's prescription pad with an "H1" tag and a stethoscope. */
+export function ScheduleHArt({ className }: ArtProps) {
+  return (
+    <svg className={className} viewBox="0 0 220 160" {...svgProps}>
+      <ellipse cx="110" cy="152" rx="90" ry="7" fill={D} opacity=".12" />
+      <rect x="40" y="26" width="96" height="124" rx="12" fill={G} />
+      <rect x="49" y="40" width="78" height="100" rx="7" fill={W} />
+      <rect x="68" y="18" width="40" height="18" rx="6" fill={SLATE} />
+      <rect x="60" y="54" width="40" height="6" rx="3" fill={PALE} />
+      <rect x="60" y="68" width="56" height="6" rx="3" fill={PALE} />
+      <rect x="60" y="82" width="48" height="6" rx="3" fill={PALE} />
+      <rect x="60" y="96" width="52" height="6" rx="3" fill={PALE} />
+      <g transform="rotate(10 118 118)">
+        <rect x="92" y="104" width="54" height="30" rx="9" fill={R} />
+        <text x="119" y="125" textAnchor="middle" fontFamily={font} fontWeight="800" fontSize="16" fill="#fff">H1</text>
+      </g>
+      <path d="M160 30v30a22 22 0 0 0 44 0V30" stroke={SLATE} strokeWidth="6" fill="none" strokeLinecap="round" />
+      <circle cx="160" cy="27" r="5" fill={D} /><circle cx="204" cy="27" r="5" fill={D} />
+      <path d="M182 82c0 26-20 22-20 40" stroke={SLATE} strokeWidth="6" fill="none" strokeLinecap="round" />
+      <circle cx="162" cy="128" r="15" fill={G} /><circle cx="162" cy="128" r="8" fill={W} /><circle cx="162" cy="128" r="3.5" fill={R} />
+    </svg>
+  );
+}
+
+/** No Schedule X: a medicine bottle marked X, behind a crimson "not allowed" sign. */
+export function NoScheduleXArt({ className }: ArtProps) {
+  return (
+    <svg className={className} viewBox="0 0 220 160" {...svgProps}>
+      <ellipse cx="110" cy="152" rx="90" ry="7" fill={D} opacity=".12" />
+      <rect x="82" y="22" width="56" height="20" rx="6" fill={G} />
+      <rect x="74" y="40" width="72" height="110" rx="18" fill={W} />
+      <rect x="74" y="70" width="72" height="50" fill={TINT} />
+      <text x="110" y="106" textAnchor="middle" fontFamily={font} fontWeight="800" fontSize="28" fill={SLATE}>X</text>
+      <rect x="132" y="50" width="7" height="90" rx="3.5" fill="#fff" opacity=".7" />
+      <circle cx="110" cy="88" r="58" fill="none" stroke={R} strokeWidth="11" />
+      <path d="M69 47l82 82" stroke={R} strokeWidth="11" strokeLinecap="round" />
+      <circle cx="40" cy="132" r="8" fill={BLUSH} /><circle cx="186" cy="38" r="6" fill={SKY} opacity=".6" />
+    </svg>
+  );
+}
+
+/** Privacy: a shield with a lock, guarding a prescription. */
+export function PrivacyArt({ className }: ArtProps) {
+  return (
+    <svg className={className} viewBox="0 0 220 160" {...svgProps}>
+      <ellipse cx="110" cy="152" rx="90" ry="7" fill={D} opacity=".12" />
+      <g transform="rotate(-10 70 90)">
+        <rect x="30" y="40" width="70" height="92" rx="10" fill={W} />
+        <text x="42" y="66" fontFamily="Lora, Georgia, serif" fontWeight="700" fontSize="16" fill="#C8102E">Rx</text>
+        <rect x="42" y="78" width="44" height="5" rx="2.5" fill={PALE} />
+        <rect x="42" y="90" width="34" height="5" rx="2.5" fill={PALE} />
+        <rect x="42" y="102" width="40" height="5" rx="2.5" fill={PALE} />
+      </g>
+      <path d="M140 14l52 18v40c0 36-24 58-52 72-28-14-52-36-52-72V32z" fill={G} />
+      <path d="M140 26l40 14v32c0 28-18 46-40 58z" fill="#fff" opacity=".08" />
+      <rect x="118" y="74" width="44" height="36" rx="8" fill={W} />
+      <path d="M126 74v-10a14 14 0 0 1 28 0v10" stroke={W} strokeWidth="7" fill="none" />
+      <circle cx="140" cy="88" r="5" fill={R} />
+      <rect x="138" y="90" width="4" height="10" rx="2" fill={R} />
+      <path d="M196 104l4 8 8 4-8 4-4 8-4-8-8-4 8-4z" fill={SKY} />
+    </svg>
+  );
+}
+
+/* ---------- Care page: the everyday services without a homepage drawing ---------- */
+
+/** Bedridden patient care: a patient resting in bed, with a caretaker bringing water. */
+export function BedriddenArt({ className }: ArtProps) {
+  return (
+    <svg className={className} viewBox="0 0 220 160" {...svgProps}>
+      <ellipse cx="110" cy="152" rx="96" ry="7" fill={D} opacity=".12" />
+      <BedPatient />
+      <Person
+        x={184} y={152} s={0.8} top={SCRUBS} pants="#3F7FBF" bun
+        holding={<g><rect x="18" y="-76" width="14" height="20" rx="3" fill={W} /><rect x="18" y="-68" width="14" height="10" rx="2" fill={SKY} opacity=".6" /><circle cx="22" cy="-62" r="6.5" fill={SKIN} /></g>}
+      />
+    </svg>
+  );
+}
+
+/** Post-operative care: a nurse checking a grandfather's bandaged arm. */
+export function PostOpArt({ className }: ArtProps) {
+  return (
+    <svg className={className} viewBox="0 0 220 160" {...svgProps}>
+      <ellipse cx="110" cy="152" rx="96" ry="7" fill={D} opacity=".12" />
+      {/* Chair */}
+      <rect x="36" y="58" width="72" height="66" rx="18" fill={G} />
+      <rect x="30" y="104" width="84" height="20" rx="9" fill={SLATE} />
+      <Person
+        x={72} y={150} s={0.6} top={TINT} pants={SLATE} hair={GREY_HAIR} glasses seated
+        wrist={<g><rect x="-36" y="-92" width="16" height="22" rx="4" fill="#fff" stroke={PALE} strokeWidth="2" /><path d="M-28 -86v10M-33 -81h10" stroke={R} strokeWidth="2.5" strokeLinecap="round" /></g>}
+      />
+      <rect x="40" y="132" width="7" height="18" rx="3" fill={SLATE} />
+      <rect x="97" y="132" width="7" height="18" rx="3" fill={SLATE} />
+      <Person
+        x={160} y={152} s={0.84} top={SCRUBS} pants="#3F7FBF" bun cap
+        holding={<g><rect x="16" y="-90" width="26" height="34" rx="4" fill={G} /><rect x="19" y="-85" width="20" height="25" rx="2" fill={W} /><path d="M23 -78h12M23 -71h8" stroke={PALE} strokeWidth="2.5" strokeLinecap="round" /><circle cx="27.5" cy="-60" r="6.5" fill={SKIN} /></g>}
+      />
+      <path d="M200 40s-9-5-9-11a4.5 4.5 0 0 1 9-1.8 4.5 4.5 0 0 1 9 1.8c0 6-9 11-9 11z" fill={R} />
+    </svg>
+  );
+}
+
+/** Baby care: a caretaker cradling a newborn, with a feeding bottle. */
+export function BabyArt({ className }: ArtProps) {
+  return (
+    <svg className={className} viewBox="0 0 220 160" {...svgProps}>
+      <ellipse cx="110" cy="152" rx="96" ry="7" fill={D} opacity=".12" />
+      <circle cx="104" cy="80" r="62" fill={TINT} opacity=".7" />
+      <Person
+        x={104} y={152} s={0.86} top={R} pants={MAIN} bun
+        holding={
+          <g>
+            <ellipse cx="4" cy="-82" rx="26" ry="15" fill={W} />
+            <path d="M-20 -86q24 -10 48 2" stroke={PALE} strokeWidth="2" fill="none" />
+            <circle cx="-14" cy="-88" r="10" fill="#E2A47E" />
+            <path d="M-23 -91a10 10 0 0 1 16 -5" stroke="#8A5A3C" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+            <path d="M-17 -86q3 2 5 0" stroke={HAIR} strokeWidth="1.3" fill="none" strokeLinecap="round" />
+            <circle cx="-26" cy="-76" r="6.5" fill={SKIN} />
+            <circle cx="30" cy="-76" r="6.5" fill={SKIN} />
+          </g>
+        }
+      />
+      {/* Feeding bottle */}
+      <g transform="rotate(12 182 118)">
+        <path d="M176 82h12l3 10h-18z" fill={BLUSH} />
+        <rect x="171" y="90" width="22" height="8" rx="3" fill={R} />
+        <rect x="170" y="97" width="24" height="50" rx="9" fill={W} />
+        <rect x="170" y="118" width="24" height="22" fill={SKY} opacity=".35" />
+        <path d="M176 106h8M176 112h5" stroke={PALE} strokeWidth="2" strokeLinecap="round" />
+      </g>
+      <path d="M36 44s-9-5-9-11a4.5 4.5 0 0 1 9-1.8 4.5 4.5 0 0 1 9 1.8c0 6-9 11-9 11z" fill={R} />
+      <circle cx="44" cy="120" r="5" fill={SKY} opacity=".6" />
+    </svg>
+  );
+}
+
+/* ---------- Subscriptions: plan cards ---------- */
+
+/** Health checks at home: a nurse taking a grandmother's blood pressure with a home monitor. */
+export function HealthCheckArt({ className }: ArtProps) {
+  return (
+    <svg className={className} viewBox="0 0 220 160" {...svgProps}>
+      <ellipse cx="110" cy="152" rx="96" ry="7" fill={D} opacity=".12" />
+      <rect x="22" y="62" width="70" height="62" rx="18" fill={G} />
+      <rect x="16" y="104" width="82" height="20" rx="9" fill={SLATE} />
+      <Person
+        x={56} y={150} s={0.58} top={R} pants={SLATE} hair={GREY_HAIR} bun glasses seated
+        holding={<g><rect x="16" y="-104" width="22" height="18" rx="5" fill={SKY} /><path d="M27 -104v-6" stroke={SKY} strokeWidth="3" /></g>}
+      />
+      <rect x="24" y="132" width="7" height="18" rx="3" fill={SLATE} />
+      <rect x="83" y="132" width="7" height="18" rx="3" fill={SLATE} />
+      {/* Monitor on a side table, its tube to the cuff */}
+      <path d="M78 92 C 96 84, 100 104, 112 100" stroke={SLATE} strokeWidth="3" fill="none" strokeLinecap="round" />
+      <rect x="100" y="112" width="40" height="6" rx="3" fill={SLATE} />
+      <path d="M120 118v32" stroke={SLATE} strokeWidth="4" strokeLinecap="round" />
+      <rect x="104" y="84" width="34" height="28" rx="6" fill={W} />
+      <rect x="108" y="88" width="26" height="13" rx="3" fill={D} />
+      <text x="121" y="98" textAnchor="middle" fontFamily={font} fontWeight="800" fontSize="8" fill={PALE}>120/80</text>
+      <circle cx="121" cy="106" r="2.5" fill={R} />
+      <Person x={172} y={152} s={0.84} top={SCRUBS} pants="#3F7FBF" bun cap
+        holding={<g><rect x="17" y="-88" width="24" height="30" rx="4" fill={G} /><rect x="20" y="-84" width="18" height="22" rx="2" fill={W} /><path d="M23 -77h12M23 -71h8" stroke={PALE} strokeWidth="2.5" strokeLinecap="round" /><circle cx="27.5" cy="-60" r="6.5" fill={SKIN} /></g>}
+      />
+      <path d="M208 40s-8-4.5-8-10a4 4 0 0 1 8-1.6 4 4 0 0 1 8 1.6c0 5.5-8 10-8 10z" fill={R} />
+    </svg>
+  );
+}
+
+/** Dose sachets: a strip of sealed sachets, one per time of day, with a tear line. */
+export function SachetStripArt({ className }: ArtProps) {
+  const doses = [
+    { label: 'AM', band: '#FFC83D', x: 22, r: -8 },
+    { label: 'NOON', band: SKY, x: 82, r: -2 },
+    { label: 'PM', band: '#C8102E', x: 142, r: 6 },
+  ];
+  return (
+    <svg className={className} viewBox="0 0 220 160" {...svgProps}>
+      <ellipse cx="110" cy="152" rx="96" ry="7" fill={D} opacity=".12" />
+      {doses.map((d) => (
+        <g key={d.label} transform={`rotate(${d.r} ${d.x + 28} 90)`}>
+          <rect x={d.x} y="34" width="56" height="104" rx="6" fill={W} />
+          <path d={`M${d.x} 40 h56 M${d.x} 132 h56`} stroke={PALE} strokeWidth="2" strokeDasharray="3 3" />
+          <rect x={d.x} y="46" width="12" height="80" fill={d.band} />
+          <text x={d.x + 8} y="86" textAnchor="middle" fontFamily={font} fontWeight="800" fontSize="7" fill={d.band === '#FFC83D' ? MAIN : '#fff'} transform={`rotate(-90 ${d.x + 8} 86)`}>{d.label}</text>
+          <rect x={d.x + 18} y="52" width="30" height="5" rx="2.5" fill={MAIN} opacity=".75" />
+          <rect x={d.x + 18} y="62" width="22" height="4" rx="2" fill={PALE} />
+          <ellipse cx={d.x + 26} cy="88" rx="6" ry="4.5" fill="#fff" stroke={PALE} strokeWidth="1.5" />
+          <rect x={d.x + 33} y="84" width="13" height="8" rx="4" fill={d.band} opacity=".85" />
+          <circle cx={d.x + 30} cy="104" r="4.5" fill={BLUSH} />
+          <rect x={d.x + 18} y="116" width="26" height="4" rx="2" fill={PALE} />
+        </g>
+      ))}
+      <path d="M200 26l3 6 6 3-6 3-3 6-3-6-6-3 6-3z" fill={SKY} />
     </svg>
   );
 }

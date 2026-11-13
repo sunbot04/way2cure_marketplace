@@ -86,6 +86,7 @@ export const productFaq = (p: Product, lang: Lang = 'en') => {
   ];
   if (item.rx) faq.unshift({ q: f.rxQ, a: f.rxA });
   if (item.rentPerMonth) faq.push({ q: f.rentQ, a: f.rentA });
-  if (item.subscribe) faq.push({ q: f.subQ, a: f.subA });
+  // Subscribe option switched off on product pages (refill reminders instead), so its question is too.
+  // if (item.subscribe) faq.push({ q: f.subQ, a: f.subA });
   return faq;
 };

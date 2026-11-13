@@ -33,7 +33,7 @@ export function Stagger({ as = 'div', delay = 0, className, children, id }: Base
   );
 }
 
-export function StaggerItem({ as = 'div', className, children }: Base) {
+export function StaggerItem({ as = 'div', className, children, id }: Base) {
   const C = tag(as);
-  return <C className={className} variants={fadeRise}>{children}</C>;
+  return <C id={id} className={className} variants={fadeRise}>{children}</C>;
 }

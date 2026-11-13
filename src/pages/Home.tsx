@@ -4,12 +4,12 @@ import Icon from '../components/Icon';
 import ShopByNeed from '../components/home/ShopByNeed';
 import Button from '../components/ui/Button';
 import Accent from '../components/ui/Accent';
-import FAQAccordion from '../components/ui/FAQAccordion';
+import HomeFaq from '../components/home/HomeFaq';
 import { Reveal, Stagger, StaggerItem } from '../components/motion/Reveal';
 import CountUp from '../components/motion/CountUp';
 import HeroVisual from '../components/home/HeroVisual';
 import ProblemCard, { type Art } from '../components/home/ProblemCard';
-import RxStory from '../components/home/RxStory';
+import RxStory, { RxBackdrop } from '../components/home/RxStory';
 import CareByNeed from '../components/home/CareByNeed';
 import SachetExplorer from '../components/brand/SachetExplorer';
 import AppBadges from '../components/commerce/AppBadges';
@@ -17,7 +17,7 @@ import Seo, { medicalBusinessLd } from '../components/layout/Seo';
 import { RX_STEPS } from '../data/rxSteps';
 import { useLang, useLoc, useT, type Dict } from '../i18n/LangContext';
 import { SITE } from '../config/site';
-import { faqs, subscriptionPlans, testimonials } from '../data';
+import { subscriptionPlans } from '../data';
 import { COPY } from '../components/copy';
 import { fadeRise, lineMask, stagger } from '../lib/motion';
 
@@ -32,7 +32,6 @@ const T: Dict = {
     seoDesc: 'Nurses, doctors and ICU care at home, plus medicines, medical devices and daily care delivered in Mumbai, Navi Mumbai and Thane. Pharmacist-verified orders. Call 7400400908, 24/7.',
     h1a: 'Care at home,', h1b: 'now with', h1c: '*everything seniors need.*',
     heroSub: 'Nurses, doctors and ICU care at home. Medicines, devices and daily care delivered to your door.',
-    rxLink: 'Have a prescription? Upload it in the Way2Cure app',
     trust1: 'Pharmacist verified', trust2: 'Verified nurses', trust3: '24/7 support {phone}',
     quickTitle: 'Everything for care at home, *in one place.*', quickLead: 'Delivered across Mumbai, Navi Mumbai and Thane.', allProducts: 'All products',
     probTitle: "Looking after a parent's medicines can feel like *a second job.*", howWeHelp: 'How Way2Cure helps',
@@ -45,21 +44,16 @@ const T: Dict = {
     careTitle: "Trained people, *at your parent's side.*", careLead: 'Nurses, doctors and caretakers, background-checked and sent to your home.',
     careNote: 'Suitability is assessed by the treating doctor before care begins.', allCare: 'See all care services',
     sachetTitle: 'Every dose, *in its own sachet.*',
-    sachetText: 'We sort your medicines by time of day and seal each dose in a sachet labelled with the name, the time and what is inside.',
-    tear: 'Tear one, take the dose.', sachetTabs: 'Choose a time of day', sachetCta: 'How dose sachets work',
+    sachetText: 'We sort your medicines by time of day and seal each dose in a sachet labelled with the name, the time and what is inside.', sachetTabs: 'Choose a time of day', sachetCta: 'How dose sachets work',
     subTitle: 'Subscribe once. We remember for you.', subLead: 'We schedule each delivery and remind you before it. Pause or change anytime, with no fee.', seePlans: 'See plans',
     trustBig: 'patients cared for across Mumbai, Navi Mumbai and Thane.',
-    trustText: 'Real nurses, licensed pharmacies and a real person on the phone, day or night.',
-    families: 'Families we care for', familyAlt: 'Three generations of a family together', storiesSoon: 'We will share real stories from families here, with their written permission.',
-    shareStory: 'Have a story to share? Tell us on WhatsApp', questions: 'Common questions', allQuestions: 'All questions',
-    ctaTitle: 'Talk to a real person. *Day or night.*', ctaText: 'Call or WhatsApp us. We can place the order or book the visit for you.', callNow: 'Call {phone}',
+    trustText: 'Real nurses, licensed pharmacies and a real person on the phone, day or night.', questions: 'Common questions', allQuestions: 'See all questions', faqLead: 'Quick answers about delivery, prescriptions and care at home.', helpTitle: 'Still have a question?', helpText: 'Our help centre covers orders, payments, care visits and more.',
   },
   hi: {
     seoTitle: 'Way2Cure | घर पर देखभाल और बुज़ुर्गों की हर ज़रूरत, मुंबई',
     seoDesc: 'घर पर नर्स, डॉक्टर और आईसीयू देखभाल, साथ ही मुंबई, नवी मुंबई और ठाणे में दवाइयाँ, मेडिकल उपकरण और रोज़ की देखभाल का सामान। फ़ार्मासिस्ट द्वारा जाँचे गए ऑर्डर। 24/7 कॉल करें 7400400908।',
     h1a: 'घर पर देखभाल, अब', h1b: '*बुज़ुर्गों की हर ज़रूरत*', h1c: 'के साथ।',
     heroSub: 'घर पर नर्स, डॉक्टर और आईसीयू देखभाल। दवाइयाँ, उपकरण और रोज़ की ज़रूरतें आपके दरवाज़े तक।',
-    rxLink: 'पर्चा है? उसे Way2Cure ऐप में अपलोड करें',
     trust1: 'फ़ार्मासिस्ट द्वारा जाँचा गया', trust2: 'जाँचे-परखे नर्स', trust3: '24/7 मदद {phone}',
     quickTitle: 'घर पर देखभाल की हर चीज़, *एक ही जगह।*', quickLead: 'मुंबई, नवी मुंबई और ठाणे में डिलिवरी।', allProducts: 'सभी प्रोडक्ट',
     probTitle: 'माता-पिता की दवाइयाँ सँभालना *एक दूसरी नौकरी* जैसा लगता है।', howWeHelp: 'Way2Cure कैसे मदद करता है',
@@ -72,21 +66,16 @@ const T: Dict = {
     careTitle: 'प्रशिक्षित लोग, *आपके अपनों के साथ।*', careLead: 'नर्स, डॉक्टर और केयरटेकर, जाँचे-परखे और आपके घर भेजे गए।',
     careNote: 'देखभाल शुरू होने से पहले, इलाज करने वाले डॉक्टर तय करते हैं कि यह मरीज़ के लिए सही है या नहीं।', allCare: 'सभी देखभाल सेवाएँ देखें',
     sachetTitle: 'हर डोज़, *उसके अपने सैशे में।*',
-    sachetText: 'हम आपकी दवाइयों को दिन के समय के अनुसार छाँटते हैं और हर डोज़ को एक सैशे में बंद करते हैं, जिस पर नाम, समय और अंदर की दवाएँ लिखी होती हैं।',
-    tear: 'एक फाड़ें, डोज़ लें।', sachetTabs: 'दिन का समय चुनें', sachetCta: 'डोज़ सैशे कैसे काम करते हैं',
+    sachetText: 'हम आपकी दवाइयों को दिन के समय के अनुसार छाँटते हैं और हर डोज़ को एक सैशे में बंद करते हैं, जिस पर नाम, समय और अंदर की दवाएँ लिखी होती हैं।', sachetTabs: 'दिन का समय चुनें', sachetCta: 'डोज़ सैशे कैसे काम करते हैं',
     subTitle: 'एक बार सब्सक्राइब करें। याद हम रखेंगे।', subLead: 'हम हर डिलिवरी तय करते हैं और उससे पहले याद दिलाते हैं। जब चाहें रोकें या बदलें, कोई शुल्क नहीं।', seePlans: 'प्लान देखें',
     trustBig: 'मरीज़ों की देखभाल, मुंबई, नवी मुंबई और ठाणे में।',
-    trustText: 'असली नर्स, लाइसेंस वाली फ़ार्मेसी और फ़ोन पर एक असली इंसान, दिन हो या रात।',
-    families: 'जिन परिवारों की हम देखभाल करते हैं', familyAlt: 'एक परिवार की तीन पीढ़ियाँ साथ में', storiesSoon: 'परिवारों की सच्ची कहानियाँ हम यहाँ उनकी लिखित अनुमति से साझा करेंगे।',
-    shareStory: 'आपके पास कोई कहानी है? हमें व्हाट्सऐप पर बताएँ', questions: 'आम सवाल', allQuestions: 'सभी सवाल',
-    ctaTitle: 'किसी असली इंसान से बात करें। *दिन हो या रात।*', ctaText: 'हमें कॉल या व्हाट्सऐप करें। हम आपके लिए ऑर्डर कर सकते हैं या विज़िट बुक कर सकते हैं।', callNow: 'कॉल करें {phone}',
+    trustText: 'असली नर्स, लाइसेंस वाली फ़ार्मेसी और फ़ोन पर एक असली इंसान, दिन हो या रात।', questions: 'आम सवाल', allQuestions: 'सभी सवाल देखें', faqLead: 'डिलिवरी, पर्चे और घर पर देखभाल के बारे में झटपट जवाब।', helpTitle: 'अब भी कोई सवाल है?', helpText: 'हमारे सहायता केंद्र में ऑर्डर, भुगतान, देखभाल विज़िट और बहुत कुछ है।',
   },
   mr: {
     seoTitle: 'Way2Cure | घरी काळजी आणि ज्येष्ठांना लागणारे सर्व काही, मुंबई',
     seoDesc: 'घरी नर्स, डॉक्टर आणि आयसीयू काळजी, तसेच मुंबई, नवी मुंबई आणि ठाणे येथे औषधे, वैद्यकीय उपकरणे आणि दैनंदिन काळजीच्या वस्तू. फार्मासिस्टने तपासलेल्या ऑर्डर. 24/7 कॉल करा 7400400908.',
     h1a: 'घरी काळजी, आता', h1b: '*ज्येष्ठांना लागणाऱ्या*', h1c: '*सर्व गोष्टींसह.*',
     heroSub: 'घरी नर्स, डॉक्टर आणि आयसीयू काळजी. औषधे, उपकरणे आणि रोजच्या गरजा तुमच्या दारात.',
-    rxLink: 'प्रिस्क्रिप्शन आहे? ते Way2Cure ॲपमध्ये अपलोड करा',
     trust1: 'फार्मासिस्टने तपासलेले', trust2: 'पडताळलेल्या नर्स', trust3: '24/7 मदत {phone}',
     quickTitle: 'घरच्या काळजीसाठी सर्व काही, *एकाच ठिकाणी.*', quickLead: 'मुंबई, नवी मुंबई आणि ठाणे येथे डिलिव्हरी.', allProducts: 'सर्व उत्पादने',
     probTitle: 'आई-वडिलांची औषधे सांभाळणे *दुसऱ्या नोकरीसारखे* वाटू शकते.', howWeHelp: 'Way2Cure कशी मदत करते',
@@ -99,14 +88,10 @@ const T: Dict = {
     careTitle: 'प्रशिक्षित माणसे, *तुमच्या प्रियजनांच्या सोबत.*', careLead: 'नर्स, डॉक्टर आणि केअरटेकर, पार्श्वभूमी तपासलेले आणि तुमच्या घरी पाठवलेले.',
     careNote: 'काळजी सुरू होण्यापूर्वी, उपचार करणारे डॉक्टर ती रुग्णासाठी योग्य आहे का ते ठरवतात.', allCare: 'सर्व काळजी सेवा पाहा',
     sachetTitle: 'प्रत्येक डोस, *त्याच्या स्वतःच्या सॅशेमध्ये.*',
-    sachetText: 'आम्ही तुमची औषधे दिवसाच्या वेळेनुसार लावतो आणि प्रत्येक डोस एका सॅशेमध्ये बंद करतो, ज्यावर नाव, वेळ आणि आतील औषधे लिहिलेली असतात.',
-    tear: 'एक फाडा, डोस घ्या.', sachetTabs: 'दिवसाची वेळ निवडा', sachetCta: 'डोस सॅशे कसे काम करतात',
+    sachetText: 'आम्ही तुमची औषधे दिवसाच्या वेळेनुसार लावतो आणि प्रत्येक डोस एका सॅशेमध्ये बंद करतो, ज्यावर नाव, वेळ आणि आतील औषधे लिहिलेली असतात.', sachetTabs: 'दिवसाची वेळ निवडा', sachetCta: 'डोस सॅशे कसे काम करतात',
     subTitle: 'एकदा सदस्यता घ्या. आठवण आम्ही ठेवू.', subLead: 'आम्ही प्रत्येक डिलिव्हरी ठरवतो आणि त्याआधी आठवण करून देतो. कधीही थांबवा किंवा बदला, कोणतेही शुल्क नाही.', seePlans: 'प्लॅन पाहा',
     trustBig: 'रुग्णांची काळजी, मुंबई, नवी मुंबई आणि ठाणे येथे.',
-    trustText: 'खऱ्या नर्स, परवानाधारक फार्मसी आणि फोनवर एक खरी व्यक्ती, दिवस असो वा रात्र.',
-    families: 'आम्ही काळजी घेत असलेली कुटुंबे', familyAlt: 'एका कुटुंबाच्या तीन पिढ्या एकत्र', storiesSoon: 'कुटुंबांच्या खऱ्या गोष्टी आम्ही त्यांच्या लेखी परवानगीने इथे सांगू.',
-    shareStory: 'तुमच्याकडे सांगण्यासारखी गोष्ट आहे? आम्हाला व्हॉट्सॲपवर सांगा', questions: 'नेहमीचे प्रश्न', allQuestions: 'सर्व प्रश्न',
-    ctaTitle: 'खऱ्या व्यक्तीशी बोला. *दिवस असो वा रात्र.*', ctaText: 'आम्हाला कॉल किंवा व्हॉट्सॲप करा. आम्ही तुमच्यासाठी ऑर्डर करू शकतो किंवा भेट बुक करू शकतो.', callNow: 'कॉल करा {phone}',
+    trustText: 'खऱ्या नर्स, परवानाधारक फार्मसी आणि फोनवर एक खरी व्यक्ती, दिवस असो वा रात्र.', questions: 'नेहमीचे प्रश्न', allQuestions: 'सर्व प्रश्न पाहा', faqLead: 'डिलिव्हरी, प्रिस्क्रिप्शन आणि घरच्या काळजीबद्दल झटपट उत्तरे.', helpTitle: 'अजून काही प्रश्न आहे?', helpText: 'आमच्या मदत केंद्रात ऑर्डर, पेमेंट, काळजी भेटी आणि बरेच काही आहे.',
   },
 };
 
@@ -160,12 +145,7 @@ export default function Home() {
               <Button to="/shop/medicines"><Icon name="pill" size={20} /> {t('orderMedicines')} <Icon name="arrow" size={18} /></Button>
               <Button to="/care/nurse" variant="outline"><Icon name="stethoscope" size={20} /> {t('bookNurse')}</Button>
             </m.div>
-            <m.p variants={fadeRise} className="mb-0 mt-4">
-              <Link to="/prescription" className="group inline-flex min-h-tap items-center gap-2 font-bold">
-                <Icon name="rx" size={18} /> {tr('rxLink')} <Icon name="arrow" size={16} />
-              </Link>
-            </m.p>
-            <m.ul variants={fadeRise} className="mt-6 flex flex-wrap gap-x-6 gap-y-2 border-t border-green/10 pt-6 text-base font-semibold text-ink">
+            <m.ul variants={fadeRise} className="mt-8 flex flex-wrap gap-x-6 gap-y-2 border-t border-green/10 pt-6 text-base font-semibold text-ink">
               {[tr('trust1'), tr('trust2'), tr('trust3', { phone: SITE.phone })].map((x) => (
                 <li key={x} className="flex items-center gap-2">
                   <span className="grid h-6 w-6 place-items-center rounded-full bg-sage-tint text-green"><Icon name="check" size={14} /></span> {x}
@@ -202,8 +182,9 @@ export default function Home() {
       </section>
 
       {/* 4 · How prescriptions work: pinned story on desktop, stepper on phones */}
-      <section className="cv-auto section bg-mist">
-        <div className="container">
+      <section className="cv-auto section relative overflow-clip bg-mist">
+        <RxBackdrop />
+        <div className="container relative">
           <RxStory
             steps={RX_STEPS.map(loc)}
             heading={<Heading title={tr('rxTitle')} lead={tr('rxLead')} />}
@@ -237,8 +218,7 @@ export default function Home() {
             <div>
               <Heading title={tr('sachetTitle')} lead={tr('sachetText')} />
               <Reveal>
-                <p className="mb-6 mt-6 font-head text-h2m font-bold text-terracotta-deep">{tr('tear')}</p>
-                <Link to="/subscriptions/dose-sachets" className="group inline-flex min-h-tap items-center gap-1.5 font-bold">{tr('sachetCta')} <Icon name="arrow" size={18} /></Link>
+                <Link to="/subscriptions/dose-sachets" className="group mt-6 inline-flex min-h-tap items-center gap-2 font-head text-h2m font-bold text-terracotta-deep">{tr('sachetCta')} <Icon name="arrow" size={24} /></Link>
               </Reveal>
             </div>
             <Reveal><SachetExplorer /></Reveal>
@@ -291,81 +271,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 8 · Stories & FAQ */}
-      <section className="cv-auto section bg-mist">
-        <div className="container grid gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
-          <Reveal>
-            <h2 className="mb-6 text-section">{tr('families')}</h2>
-            <img
-              src="/images/people/family-three-generations.webp"
-              srcSet="/images/people/family-three-generations-sm.webp 480w, /images/people/family-three-generations.webp 900w"
-              sizes="(min-width: 1024px) 34vw, 92vw"
-              alt={tr('familyAlt')}
-              width={900}
-              height={1350}
-              loading="lazy"
-              className="mb-6 aspect-[4/3] w-full rounded-panel object-cover object-[50%_32%] shadow-card"
-            />
-            {testimonials.length ? (
-              <ul className="grid gap-4">
-                {testimonials.map(loc).map((s) => (
-                  <li key={s.name}>
-                    <figure className="m-0 rounded-panel bg-white p-6 shadow-card">
-                      <blockquote className="m-0 font-head text-h3m text-green">“{s.quote}”</blockquote>
-                      <figcaption className="mt-3 text-base text-grey">{s.name}, {s.relation}, {s.city}</figcaption>
-                    </figure>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <div className="rounded-panel bg-white p-7 shadow-card">
-                {/* TODO: client: add real family stories (with written consent) to src/data/testimonials.json */}
-                <Icon name="users" size={28} className="mb-4 text-sage" />
-                <p>{tr('storiesSoon')}</p>
-                <a href={SITE.whatsappHref} target="_blank" rel="noreferrer" className="group inline-flex min-h-tap items-center gap-2 font-bold">
-                  <Icon name="whatsapp" size={20} /> {tr('shareStory')} <Icon name="arrow" size={16} />
-                </a>
-              </div>
-            )}
-          </Reveal>
-          <Reveal>
-            <h2 className="mb-6 text-section">{tr('questions')}</h2>
-            <FAQAccordion items={faqs.slice(0, 5)} />
-            <Link to="/help" className="group mt-5 inline-flex min-h-tap items-center gap-1.5 font-bold">{tr('allQuestions')} <Icon name="arrow" size={18} /></Link>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* Closing call to action: a real person, day or night */}
-      <section className="cv-auto section">
-        <div className="container">
-          <Reveal className="grid overflow-hidden rounded-panel bg-white shadow-card md:grid-cols-[0.8fr_1.2fr]">
-            {/* The photo fills the card's height instead of setting it (it is a tall portrait) */}
-            <div className="relative h-56 md:h-auto">
-              <img
-                src="/images/people/hands-elderly-couple.webp"
-                srcSet="/images/people/hands-elderly-couple-sm.webp 480w, /images/people/hands-elderly-couple.webp 900w"
-                sizes="(min-width: 768px) 36vw, 92vw"
-                alt=""
-                width={900}
-                height={1350}
-                loading="lazy"
-                className="absolute inset-0 h-full w-full object-cover object-[50%_58%]"
-              />
-            </div>
-            <div className="grid content-center gap-8 p-8 md:p-12">
-              <div>
-                <h2 className="mb-3 text-section"><Accent text={tr('ctaTitle')} /></h2>
-                <p className="m-0 text-lead text-ink/75">{tr('ctaText')}</p>
-              </div>
-              <div className="flex flex-col gap-3 sm:flex-row">
-              <Button href={SITE.phoneHref} variant="urgent"><Icon name="phone" size={20} /> {tr('callNow', { phone: SITE.phone })}</Button>
-              <Button href={SITE.whatsappHref} external variant="outline"><Icon name="whatsapp" size={20} /> {t('whatsapp')}</Button>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </section>
+      {/* 8 · Common questions */}
+      <HomeFaq title={tr('questions')} lead={tr('faqLead')} allLabel={tr('allQuestions')} helpTitle={tr('helpTitle')} helpText={tr('helpText')} />
     </>
   );
 }

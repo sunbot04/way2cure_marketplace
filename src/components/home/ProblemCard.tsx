@@ -2,7 +2,8 @@ import Icon from '../Icon';
 import { StaggerItem } from '../motion/Reveal';
 
 // "Sound familiar?" card (reference: DawaTime problem cards): tall 4:5 card, dark bottom overlay,
-// the family's problem in white, then how Way2Cure solves it underneath.
+// the family's problem in white. On a mouse hover the answer (how Way2Cure helps) rises onto the
+// card in place of the problem line; on touch screens it sits underneath.
 // No photo yet, so each card carries a simple line drawing in brand colours. To use a photo,
 // pass `image` (see public/IMAGE_LIST.md: problem-*.webp).
 
@@ -87,12 +88,26 @@ export default function ProblemCard({ art, line1, line2, sub, fix, fixLabel, ima
           </div>
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-ink/95 via-ink/45 via-40% to-transparent" aria-hidden="true" />
+        {/* Hover (mouse only): the card darkens a little more so the answer reads clearly */}
+        <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-ink/50 to-ink/10 opacity-0 transition-opacity duration-500 ease-soft hover-mouse:group-hover:opacity-100" aria-hidden="true" />
         <div className="absolute inset-x-0 bottom-0 p-6 text-white">
-          <h3 className="mb-2 text-h3m leading-tight text-white md:text-h3">{line1}<br />{line2}</h3>
-          <p className="m-0 text-base text-white/85">{sub}</p>
+          <h3 className="mb-2 text-h3m leading-tight text-white transition-transform duration-500 ease-soft md:text-h3">{line1}<br />{line2}</h3>
+          {/* The problem line folds away and the answer rises into its place */}
+          <div className="grid grid-rows-[1fr] transition-[grid-template-rows,opacity] duration-500 ease-soft hover-mouse:group-hover:grid-rows-[0fr] hover-mouse:group-hover:opacity-0">
+            <p className="m-0 min-h-0 overflow-hidden text-base text-white/85">{sub}</p>
+          </div>
+          <div className="hidden grid-rows-[0fr] transition-[grid-template-rows] duration-500 ease-soft hover-mouse:grid hover-mouse:group-hover:grid-rows-[1fr]">
+            <div className="min-h-0 overflow-hidden">
+              <p className="m-0 mt-3 flex translate-y-4 items-start gap-3 rounded-tile bg-white/95 p-4 text-base text-ink opacity-0 shadow-float backdrop-blur transition-[transform,opacity] duration-500 ease-soft group-hover:translate-y-0 group-hover:opacity-100 group-hover:delay-100">
+                <span className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-sage text-white"><Icon name="check" size={16} /></span>
+                <span><strong className="block text-small text-sage-deep">{fixLabel}</strong>{fix}</span>
+              </p>
+            </div>
+          </div>
         </div>
       </div>
-      <p className="m-0 flex items-start gap-3 text-base">
+      {/* Touch screens: the answer stays under the card */}
+      <p className="m-0 flex items-start gap-3 text-base hover-mouse:hidden">
         <span className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-sage text-white"><Icon name="check" size={16} /></span>
         <span><strong className="block text-small text-sage">{fixLabel}</strong>{fix}</span>
       </p>

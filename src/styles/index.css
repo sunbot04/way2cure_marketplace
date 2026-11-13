@@ -46,6 +46,12 @@
   :root { --header-space: 5rem; }
   @media (min-width: 1024px) { :root { --header-space: 5.75rem; } }
   @keyframes w2c-pulse { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
+  /* Slow drift for decorative icons (uses `translate`, so it adds to any rotate class) */
+  @keyframes w2c-drift { 0%, 100% { translate: 0 0; } 50% { translate: 0 -14px; } }
+  .rx-float { animation: w2c-drift 7s ease-in-out infinite; }
+  /* The section a #link points at glows briefly once it is scrolled into view (App.tsx) */
+  @keyframes w2c-target { 0%, 15% { box-shadow: 0 0 0 4px rgb(var(--c-terracotta-deep) / 0.55); } 100% { box-shadow: 0 0 0 4px rgb(var(--c-terracotta-deep) / 0); } }
+  li.is-target > a { animation: w2c-target 2s ease-out 0.35s both; }
   body {
     @apply bg-cream font-body text-body text-ink antialiased;
     overflow-x: clip;

@@ -279,7 +279,7 @@ export default function Login({ mode }: { mode: 'login' | 'signup' }) {
                       )}
                       <Field id="l-phone" label={tr('phone')} hint={tr('phoneHint')} error={err('phone')}>
                         <div className="flex items-stretch">
-                          <span className="grid min-h-tap place-items-center rounded-l-btn border-2 border-r-0 border-green bg-mist px-3 font-bold text-green" aria-hidden="true">+91</span>
+                          <span className="grid min-h-tap place-items-center rounded-l-xl border-2 border-r-0 border-mint bg-mist px-3.5 font-bold text-green" aria-hidden="true">+91</span>
                           <Input id="l-phone" type="tel" inputMode="numeric" maxLength={10} autoComplete="tel-national" value={phone}
                             invalid={!!errors.phone} className="rounded-l-none"
                             aria-describedby={describedBy('l-phone', { hint: true, error: errors.phone })}

@@ -12,16 +12,8 @@ export const SITE = {
   // TODO: client: confirm the WhatsApp business number. The current site lists none, so we use the main line.
   whatsappHref: 'https://wa.me/917400400908',
   email: 'support@way2cure.com',
-  // The existing Way2Cure home care website, linked from the header and footer so it stays one brand.
-  homeCareUrl: 'https://way2cure.com/',
-  homeCareLocations: [
-    { name: 'Vashi', href: 'https://way2cure.com/home-care-services-in-vashi/' },
-    { name: 'Thane', href: 'https://way2cure.com/home-care-services-in-thane/' },
-    { name: 'Airoli', href: 'https://way2cure.com/home-care-services-in-airoli/' },
-  ],
   cities: 'Mumbai, Navi Mumbai & Thane',
   // TODO: client: real app links once the Way2Cure app is live (prescription upload is app-only).
-  appUrl: 'https://way2cure.com/app',
   appStores: {
     android: 'https://play.google.com/store', // TODO: client: Play Store listing URL
     ios: 'https://apps.apple.com', // TODO: client: App Store listing URL
@@ -59,7 +51,9 @@ export const SITE = {
   delivery: { freeAbove: 499, fee: 40 },
 } as const;
 
-export const formatPrice = (n: number) => `Rs. ${Number(n).toLocaleString('en-IN')}`;
+/** Prices everywhere: rupee sign, Indian digit grouping, two decimals (e.g. ₹1,499.00). */
+export const formatPrice = (n: number) =>
+  `₹${Number(n).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
 // Mumbai, Navi Mumbai and Thane pincodes start with these prefixes.
 export const isServiceablePincode = (pin: string) => /^(400|401|410|421)\d{3}$/.test(pin.trim());

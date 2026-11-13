@@ -1,20 +1,29 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Icon from '../components/Icon';
-import Button from '../components/ui/Button';
+import Button, { buttonClass } from '../components/ui/Button';
 import Accent from '../components/ui/Accent';
 import { Reveal, Stagger, StaggerItem } from '../components/motion/Reveal';
 import PlanCard from '../components/plans/PlanCard';
 import SachetExplorer from '../components/brand/SachetExplorer';
-import { HelpBox } from '../components/commerce/AppPanel';
 import PageHeader from '../components/layout/PageHeader';
 import { useAuth } from '../context/AuthContext';
 import Seo from '../components/layout/Seo';
 import { subscriptionPlans } from '../data';
+import { DailyArt, HealthCheckArt, MedArt, SachetStripArt } from '../components/brand/Illustrations';
 import { formatDate, useLang, useLoc, useT, type Dict } from '../i18n/LangContext';
 
 // Subscriptions (guidelines p.8, p.10): what you get, how it runs, the dose sachets, and
 // manage / pause in plain view. Sections alternate white and mist.
+
+// Plan cards: a drawing and a soft colour stage for each plan.
+const PLAN_ART: Record<string, typeof MedArt> = { refills: MedArt, diapers: DailyArt, 'health-checks': HealthCheckArt, sachets: SachetStripArt };
+const PLAN_STAGE: Record<string, string> = {
+  refills: 'bg-[linear-gradient(160deg,#E7F0FA,#F7FAFD)]',
+  diapers: 'bg-[linear-gradient(160deg,#F1F5F9,#FBFCFD)]',
+  'health-checks': 'bg-[linear-gradient(160deg,#FDF0F2,#FFF8F9)]',
+  sachets: 'bg-[linear-gradient(160deg,#FFF6DC,#FFFCF2)]',
+};
 
 // Example plans so families can see how "manage / pause" works.
 // TODO: API: the signed-in family's plans from the account API.
@@ -124,7 +133,7 @@ export default function Subscriptions() {
       <Seo title={tr('seoTitle')} description={tr('seoDesc')} />
       <PageHeader
         tone="cream"
-        image={{ src: '/images/people/grandmother-errand.webp', position: '58% 30%' }}
+        image={{ src: '/images/people/senior-couple-garden.webp', srcSet: '/images/people/senior-couple-garden-sm.webp 720w, /images/people/senior-couple-garden.webp 1500w', position: '62% 35%' }}
         title={tr('title')}
         lead={tr('intro')}
         crumbs={[{ label: t('home'), to: '/' }, { label: tr('crumb') }]}
@@ -173,20 +182,32 @@ export default function Subscriptions() {
                   ? { to: '/care/nurse', label: tr('bookCheck'), variant: 'outline' as const }
                   : { to: p.id === 'diapers' ? '/product/adult-diapers-m' : '/shop/medicines', label: tr('startPlan'), variant: 'primary' as const };
               return (
-                <StaggerItem as="li" key={p.id}>
-                  <article className="group flex h-full flex-col rounded-tile border border-mint bg-white p-6 transition-[transform,box-shadow] duration-micro ease-soft hover:-translate-y-1 hover:shadow-raised">
-                    <span className="mb-5 grid h-12 w-12 place-items-center rounded-btn bg-mist text-green"><Icon name={p.icon} size={24} /></span>
-                    <h3 className="mb-1 text-h3m">{p.name}</h3>
-                    <p className="mb-4 text-base text-grey">{p.often}</p>
-                    <ul className="mb-6 grid flex-1 content-start gap-2">
-                      {p.points.map((pt) => (
-                        <li key={pt} className="flex items-start gap-2 text-base">
-                          <span className="mt-1 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-sage-tint text-green"><Icon name="check" size={12} /></span> {pt}
-                        </li>
-                      ))}
-                    </ul>
-                    <Button to={cta.to} variant={cta.variant} block>{cta.label} <Icon name="arrow" size={18} /></Button>
-                  </article>
+                <StaggerItem as="li" key={p.id} id={`plan-${p.id}`} className="flex scroll-mt-32">
+                  {/* The whole card is the link; the button at the bottom is its visible label */}
+                  <Link
+                    to={cta.to}
+                    className="group flex w-full flex-col rounded-[1.75rem] border border-line bg-white p-2.5 text-ink no-underline transition-[transform,box-shadow,border-color] duration-slow ease-soft hover:-translate-y-1 hover:border-transparent hover:shadow-[0_24px_44px_-24px_rgb(38_52_69/0.5)]"
+                  >
+                    {/* Drawing on a soft colour stage, with the suggested frequency */}
+                    <span className={`relative flex h-48 items-end justify-center overflow-hidden rounded-[1.375rem] ${PLAN_STAGE[p.id] ?? 'bg-mist'}`}>
+                      <span aria-hidden="true" className="absolute bottom-[-4.5rem] left-1/2 h-48 w-60 -translate-x-1/2 rounded-full bg-white/70 transition-transform duration-slow ease-soft group-hover:scale-105" />
+                      <span className="absolute left-3 right-3 top-3 z-10 mr-auto inline-flex w-fit max-w-[calc(100%-1.5rem)] items-start gap-1.5 rounded-2xl bg-white/90 px-3 py-1 text-small font-bold text-green shadow-card backdrop-blur">
+                        <Icon name="calendar" size={14} className="mt-[3px] shrink-0 text-terracotta-deep" /> <span>{p.often}</span>
+                      </span>
+                      {(() => { const Art = PLAN_ART[p.id]; return Art ? <Art className="relative mb-2 h-36 w-auto [&>ellipse:first-child]:opacity-[0.12] max-w-[88%] drop-shadow-[0_12px_14px_rgb(38_52_69/0.16)] transition-transform duration-slow ease-soft group-hover:-translate-y-1.5" /> : null; })()}
+                    </span>
+                    <span className="flex flex-1 flex-col px-3.5 pb-3.5 pt-5">
+                      <h3 className="mb-3 text-h3m">{p.name}</h3>
+                      <ul className="mb-6 grid flex-1 content-start gap-2.5">
+                        {p.points.map((pt) => (
+                          <li key={pt} className="flex items-start gap-2.5 text-base">
+                            <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-sage-tint text-sage-deep"><Icon name="check" size={13} /></span> {pt}
+                          </li>
+                        ))}
+                      </ul>
+                      <span className={buttonClass(cta.variant, { block: true })}>{cta.label} <Icon name="arrow" size={18} /></span>
+                    </span>
+                  </Link>
                 </StaggerItem>
               );
             })}
@@ -244,9 +265,6 @@ export default function Subscriptions() {
         </div>
       </section>
 
-      <section className="section pt-0">
-        <div className="container"><Reveal className="max-w-3xl"><HelpBox /></Reveal></div>
-      </section>
     </>
   );
 }

@@ -75,10 +75,6 @@ export default function Footer() {
           <ul className="mb-6">
             <li><Link to="/about" className={link}>{tr('aboutUs')}</Link></li>
             <li><Link to="/contact" className={link}>{tr('contactUs')}</Link></li>
-            <li><a href={SITE.homeCareUrl} className={link}>{tr('homeCare')}</a></li>
-            {SITE.homeCareLocations.map((l) => (
-              <li key={l.name}><a href={l.href} className={link}>{tr('homeCareIn', { place: l.name })}</a></li>
-            ))}
           </ul>
           <h2 className={heading}>{tr('visit')}</h2>
           <address className="mb-3 text-base not-italic">{SITE.offices[0].address}</address>

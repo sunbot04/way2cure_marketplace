@@ -1,4 +1,5 @@
 import type { Config } from 'tailwindcss';
+import plugin from 'tailwindcss/plugin';
 
 // Way2Cure design tokens (Brand & Website Guidelines v1.0, pp. 5-7; colours: the client's
 // "Charcoal & Crimson" palette). Colours come from CSS variables in src/styles/index.css so the whole
@@ -66,5 +67,9 @@ export default {
       borderWidth: { edge: '5px' },
     },
   },
-  plugins: [],
+  plugins: [
+    // hover-mouse: only on devices with a real hover (a mouse or trackpad), so touch screens never
+    // get stuck in a half-hovered state.
+    plugin(({ addVariant }) => addVariant('hover-mouse', '@media (hover: hover) and (pointer: fine)')),
+  ],
 } satisfies Config;

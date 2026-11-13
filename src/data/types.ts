@@ -26,6 +26,8 @@ export type Product = Localized<ProductText> & {
   price?: number;
   rentPerMonth?: number;
   rentOnly?: boolean;
+  /** Product photo (square WebP, with a -sm.webp twin at 400px). Without one, a drawing is shown. */
+  image?: string;
   /** Needs a valid prescription. Rx items never carry offer or discount badges (guidelines p.11). */
   rx: boolean;
   chronic?: boolean;

@@ -32,7 +32,7 @@ export default function FloatingHelp() {
       // Hidden: also out of the tab order and the accessibility tree (inert)
       {...(shown ? {} : { inert: '' })}
     >
-      {/* Moves up above the shop's cart bar while it shows (--fab-lift, set by CartBar) */}
+      {/* Moves up above the cart page's checkout bar on phones (--fab-lift, set by pages/Cart.tsx) */}
       <div className="grid gap-3 transition-transform duration-slow ease-soft" style={{ transform: 'translateY(calc(var(--fab-lift, 0px) * -1))' }}>
       <a href={SITE.whatsappHref} target="_blank" rel="noreferrer" aria-label={t('whatsapp')} className={`${btn} bg-whatsapp hover:bg-whatsapp-dark`}>
         <Icon name="whatsapp" size={30} />

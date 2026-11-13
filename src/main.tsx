@@ -7,6 +7,7 @@ import { CartProvider } from './context/CartContext';
 import { NotificationsProvider } from './context/NotificationsContext';
 import { SavedProvider } from './context/SavedContext';
 import { ToastProvider } from './context/ToastContext';
+import { ConfirmProvider } from './context/ConfirmContext';
 import { AuthProvider } from './context/AuthContext';
 import { LangProvider } from './i18n/LangContext';
 import './styles/fonts.css';
@@ -25,7 +26,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <SavedProvider>
           <NotificationsProvider>
             <ToastProvider>
-              <App />
+              <ConfirmProvider>
+                <App />
+              </ConfirmProvider>
             </ToastProvider>
           </NotificationsProvider>
         </SavedProvider>

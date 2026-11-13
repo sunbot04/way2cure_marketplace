@@ -7,14 +7,14 @@ import FAQAccordion from '../components/ui/FAQAccordion';
 import { Reveal } from '../components/motion/Reveal';
 import { ProductImage, SellerBadge, useCartToast } from '../components/commerce/ProductCard';
 import RxNotice from '../components/commerce/RxNotice';
-import AppPanel, { HelpBox } from '../components/commerce/AppPanel';
+import AppPanel from '../components/commerce/AppPanel';
 import Seo from '../components/layout/Seo';
 import { getProduct, categories, deliveryLabel, productFaq, type PurchaseMode } from '../data';
 import { formatPrice, isServiceablePincode } from '../config/site';
 import { useCart } from '../context/CartContext';
 import { useLang, useT, useLoc, type Dict } from '../i18n/LangContext';
 import { COPY } from '../components/copy';
-import { ChoiceList, QtyStepper, type Choice } from '../components/commerce/Choice';
+import { ChoiceList, YesNo, QtyStepper, type Choice } from '../components/commerce/Choice';
 import { Field, Input, Select } from '../components/ui/Field';
 import { DEFAULT_SUPPLY_DAYS, REMIND_DAYS_BEFORE, SUPPLY_OPTIONS, isSupply } from '../context/NotificationsContext';
 import NotFound from './NotFound';
@@ -28,6 +28,7 @@ const T: Dict = {
     rxNeeded: 'Rx needed', pharmVerified: 'Pharmacist verified', verifiedSeller: 'Verified seller', rent: 'Rent',
     buy: 'Buy', subscribeMonthly: 'Subscribe monthly', perMonth: '{price} / month', eachMonth: '{price} each month',
     howLike: 'How would you like it?',
+    remindQ: 'Remind me before it runs out?', yes: 'Yes', no: 'No', remindOff: 'No reminder for this order. You can always reorder from your account.',
     subNote: 'We remind you before each delivery. Pause or change anytime.',
     rentNote: 'We deliver, set it up and collect it when you are done. A refundable deposit may apply.',
     checkPin: 'Check delivery to your pincode', pinPlaceholder: 'e.g. 400703', check: 'Check',
@@ -50,6 +51,7 @@ const T: Dict = {
     rxNeeded: 'पर्चा ज़रूरी', pharmVerified: 'फ़ार्मासिस्ट द्वारा जाँचा गया', verifiedSeller: 'सत्यापित विक्रेता', rent: 'किराये पर',
     buy: 'ख़रीदें', subscribeMonthly: 'हर महीने के लिए सब्सक्राइब करें', perMonth: '{price} / प्रति माह', eachMonth: '{price} हर महीने',
     howLike: 'आप इसे कैसे लेना चाहेंगे?',
+    remindQ: 'ख़त्म होने से पहले याद दिलाएँ?', yes: 'हाँ', no: 'नहीं', remindOff: 'इस ऑर्डर के लिए कोई रिमाइंडर नहीं। आप अपने खाते से कभी भी दोबारा ऑर्डर कर सकते हैं।',
     subNote: 'हर डिलिवरी से पहले हम आपको याद दिलाते हैं। कभी भी रोकें या बदलें।',
     rentNote: 'हम पहुँचाते हैं, लगाकर देते हैं, और आपका काम पूरा होने पर वापस ले जाते हैं। वापस मिलने वाली डिपॉज़िट राशि लग सकती है।',
     checkPin: 'अपने पिनकोड पर डिलिवरी देखें', pinPlaceholder: 'जैसे 400703', check: 'देखें',
@@ -72,6 +74,7 @@ const T: Dict = {
     rxNeeded: 'प्रिस्क्रिप्शन आवश्यक', pharmVerified: 'फार्मासिस्टने तपासलेले', verifiedSeller: 'पडताळलेले विक्रेते', rent: 'भाड्याने',
     buy: 'विकत घ्या', subscribeMonthly: 'मासिक सदस्यता घ्या', perMonth: '{price} / दरमहा', eachMonth: '{price} दरमहा',
     howLike: 'तुम्हाला हे कसे हवे आहे?',
+    remindQ: 'संपण्यापूर्वी आठवण करून द्यायची?', yes: 'हो', no: 'नाही', remindOff: 'या ऑर्डरसाठी आठवण नाही. तुम्ही तुमच्या खात्यातून कधीही पुन्हा ऑर्डर करू शकता.',
     subNote: 'प्रत्येक डिलिव्हरीपूर्वी आम्ही तुम्हाला आठवण करून देतो. कधीही थांबवा किंवा बदला.',
     rentNote: 'आम्ही पोहोचवतो, बसवून देतो आणि तुमचे काम झाल्यावर परत घेऊन जातो. परत मिळणारी अनामत रक्कम लागू शकते.',
     checkPin: 'तुमच्या पिनकोडवर डिलिव्हरी तपासा', pinPlaceholder: 'उदा. 400703', check: 'तपासा',
@@ -104,6 +107,7 @@ export default function Product() {
   const [pin, setPin] = useState('');
   const [pinResult, setPinResult] = useState<PinResult>(null);
   const [supplyDays, setSupplyDays] = useState(DEFAULT_SUPPLY_DAYS);
+  const [remind, setRemind] = useState(true);
 
   if (!product) return <NotFound />;
   const p = loc(product);
@@ -113,7 +117,9 @@ export default function Product() {
   const options: (Choice & { id: PurchaseMode })[] = [];
   if (!product.rentOnly) options.push({ id: 'buy', label: tr('buy'), detail: formatPrice(product.price ?? 0) });
   if (product.rentPerMonth) options.push({ id: 'rent', label: tr('rent'), detail: tr('perMonth', { price: formatPrice(product.rentPerMonth) }) });
-  if (product.subscribe) options.push({ id: 'subscribe', label: tr('subscribeMonthly'), detail: tr('eachMonth', { price: formatPrice(product.price ?? 0) }) });
+  // Subscribe option switched off: it confused families next to Buy. Regular items offer a refill
+  // reminder (Yes / No) instead, below.
+  // if (product.subscribe) options.push({ id: 'subscribe', label: tr('subscribeMonthly'), detail: tr('eachMonth', { price: formatPrice(product.price ?? 0) }) });
 
   // TODO: API: serviceability check by pincode.
   const checkPin = (e: FormEvent) => {
@@ -123,7 +129,8 @@ export default function Product() {
 
   // Adds to the cart and confirms with a toast (with a "View cart" link); the cart badge pulses.
   const addToCart = () => {
-    add(product.id, mode, qty, mode === 'buy' && isSupply(product.id) ? supplyDays : undefined);
+    const supply = mode === 'buy' && isSupply(product.id);
+    add(product.id, mode, qty, supply && remind ? supplyDays : undefined, supply ? remind : undefined);
     showToast();
   };
 
@@ -211,12 +218,20 @@ export default function Product() {
                 )}
                 {mode === 'subscribe' && <p className="m-0 flex items-start gap-2 text-base text-grey"><Icon name="refresh" size={18} className="mt-1 shrink-0 text-sage" /> {tr('subNote')}</p>}
                 {mode === 'rent' && <p className="m-0 flex items-start gap-2 text-base text-grey"><Icon name="info" size={18} className="mt-1 shrink-0 text-sage" /> {tr('rentNote')}</p>}
+                {/* Regular items: would you like a reminder before it runs out? */}
                 {mode === 'buy' && isSupply(product.id) && (
-                  <Field id="supply" label={tr('lastFor')} hint={tr('remindNote', { n: REMIND_DAYS_BEFORE })}>
-                    <Select id="supply" value={supplyDays} onChange={(e) => setSupplyDays(Number(e.target.value))} aria-describedby="supply-hint" className="max-w-[14rem]">
-                      {SUPPLY_OPTIONS.map((d) => <option key={d} value={d}>{tr('days', { n: d })}</option>)}
-                    </Select>
-                  </Field>
+                  <div className="grid gap-4 rounded-tile border border-line p-4">
+                    <YesNo name="remind" legend={<span className="flex items-center gap-2"><Icon name="bell" size={18} className="text-sage" /> {tr('remindQ')}</span>} value={remind} onChange={setRemind} yes={tr('yes')} no={tr('no')} />
+                    {remind ? (
+                      <Field id="supply" label={tr('lastFor')} hint={tr('remindNote', { n: REMIND_DAYS_BEFORE })}>
+                        <Select id="supply" value={supplyDays} onChange={(e) => setSupplyDays(Number(e.target.value))} aria-describedby="supply-hint" className="max-w-[14rem]">
+                          {SUPPLY_OPTIONS.map((d) => <option key={d} value={d}>{tr('days', { n: d })}</option>)}
+                        </Select>
+                      </Field>
+                    ) : (
+                      <p className="m-0 text-base text-grey">{tr('remindOff')}</p>
+                    )}
+                  </div>
                 )}
 
                 <form onSubmit={checkPin} noValidate className="rounded-tile bg-mist p-4">
@@ -277,15 +292,16 @@ export default function Product() {
       </section>
 
       <section className="section bg-white">
-        <div className="container grid gap-10 lg:grid-cols-[1.3fr_1fr] lg:gap-16">
-          <Reveal as="section">
+        <div className={`container grid gap-10 ${product.rx ? 'lg:grid-cols-[1.3fr_1fr] lg:gap-16' : ''}`}>
+          <Reveal as="section" className={product.rx ? '' : 'max-w-3xl'}>
             <h2 id="pq" className="mb-6 text-section">{tr('questions')}</h2>
             <FAQAccordion items={productFaq(product, lang)} />
           </Reveal>
-          <Reveal delay={0.07} className="grid content-start gap-4">
-            {product.rx && <AppPanel title={tr('uploadYourRx')} />}
-            <HelpBox />
-          </Reveal>
+          {product.rx && (
+            <Reveal delay={0.07} className="grid content-start gap-4">
+              <AppPanel title={tr('uploadYourRx')} />
+            </Reveal>
+          )}
         </div>
       </section>
     </>

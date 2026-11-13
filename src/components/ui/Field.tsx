@@ -1,12 +1,16 @@
-import { forwardRef, type InputHTMLAttributes, type ReactNode, type SelectHTMLAttributes, type TextareaHTMLAttributes } from 'react';
+import { forwardRef, type InputHTMLAttributes, type ReactNode, type TextareaHTMLAttributes } from 'react';
 import Icon from '../Icon';
 
 // Form fields (guidelines p.7): label always above the field, 2px green border,
 // crimson message below on error, in plain words.
+// Text fields share the dropdown's look (ui/Select): soft border, darker on hover, charcoal with a
+// light sky ring while typing.
 const control = (error?: boolean) =>
   [
-    'block w-full min-h-tap rounded-btn border-2 bg-white px-3 py-2 text-body text-ink placeholder:text-grey/80',
-    error ? 'border-terracotta-deep' : 'border-green',
+    'block w-full min-h-tap rounded-xl border-2 bg-white px-4 py-2 text-body text-ink placeholder:text-grey/80',
+    'shadow-[0_1px_2px_rgb(38_52_69/0.05)] transition-[border-color,box-shadow] duration-micro',
+    'focus:border-green focus:shadow-[0_0_0_4px_rgb(var(--c-sage)/0.15)]',
+    error ? 'border-terracotta-deep' : 'border-mint hover:border-sage',
   ].join(' ');
 
 interface FieldProps {
@@ -47,13 +51,8 @@ export const Input = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputE
 );
 Input.displayName = 'Input';
 
-export function Select({ invalid, className = '', children, ...rest }: SelectHTMLAttributes<HTMLSelectElement> & WithError) {
-  return (
-    <select aria-invalid={invalid || undefined} className={`${control(invalid)} pr-8 ${className}`} {...rest}>
-      {children}
-    </select>
-  );
-}
+/** The site dropdown (see ui/Select). */
+export { default as Select } from './Select';
 
 export function Textarea({ invalid, className = '', ...rest }: TextareaHTMLAttributes<HTMLTextAreaElement> & WithError) {
   return <textarea aria-invalid={invalid || undefined} className={`${control(invalid)} ${className}`} {...rest} />;

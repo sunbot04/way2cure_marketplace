@@ -1,7 +1,6 @@
 import { QRCodeSVG } from 'qrcode.react';
 import Icon from '../Icon';
 import AppBadges from './AppBadges';
-import { buttonClass } from '../ui/Button';
 import { useT } from '../../i18n/LangContext';
 import { SITE } from '../../config/site';
 import { COPY } from '../copy';
@@ -15,8 +14,8 @@ export default function AppPanel({ title, text, className = '', headingLevel = 3
     <div className={`grid items-center gap-7 rounded-panel bg-white p-6 shadow-card md:p-8 lg:grid-cols-[auto_1fr] ${className}`}>
       <div className="hidden justify-self-start rounded-tile bg-mist p-4 lg:block">
         <div className="rounded-btn bg-white p-3 shadow-card">
-          {/* TODO: client: point SITE.appUrl at the real app link so this code opens the app */}
-          <QRCodeSVG value={SITE.appUrl} size={140} fgColor="rgb(38 52 69)" bgColor="rgb(255 255 255)" level="M" title={tr('qrTitle')} />
+          {/* TODO: client: point SITE.appStores at the real app listing so this code opens the app */}
+          <QRCodeSVG value={SITE.appStores.android} size={140} fgColor="rgb(38 52 69)" bgColor="rgb(255 255 255)" level="M" title={tr('qrTitle')} />
         </div>
       </div>
       <div>
@@ -29,22 +28,5 @@ export default function AppPanel({ title, text, className = '', headingLevel = 3
         </p>
       </div>
     </div>
-  );
-}
-
-export function HelpBox({ className = '' }: { className?: string }) {
-  const tr = useT(COPY);
-  return (
-    <aside className={`rounded-panel bg-white p-6 shadow-card ${className}`}>
-      <div className="mb-3 flex items-center gap-3">
-        <span className="grid h-11 w-11 shrink-0 place-items-center rounded-btn bg-mist text-green"><Icon name="support" size={22} /></span>
-        <h3 className="m-0">{tr('needHelp')}</h3>
-      </div>
-      <p className="text-ink/80">{tr('helpText')}</p>
-      <div className="flex flex-wrap gap-3">
-        <a className={buttonClass('urgent', { compact: true })} href={SITE.phoneHref}><Icon name="phone" size={20} /> {tr('call', { phone: SITE.phone })}</a>
-        <a className={buttonClass('outline', { compact: true })} href={SITE.whatsappHref} target="_blank" rel="noreferrer"><Icon name="whatsapp" size={20} /> {tr('whatsapp')}</a>
-      </div>
-    </aside>
   );
 }

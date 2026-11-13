@@ -37,8 +37,7 @@ const T: Dict = {
     team: 'The people *behind* Way2Cure',
     teamLead: 'Doctors and care managers who run Way2Cure day to day.',
     areasTitle: 'Home care near *you.*',
-    areasText: 'Our nursing and elder care teams work across these areas. Each has its own page on the Way2Cure home care site.',
-    homeCareIn: 'Home care in {place}',
+    areasText: 'Our nursing and elder care teams visit homes across Mumbai, Navi Mumbai and Thane, including Vashi and Airoli.',
     areaCta: 'Talk to our care team',
     seoDesc: 'Way2Cure brings nursing, elder care, doctor visits and medicines home across Mumbai, Navi Mumbai and Thane. Meet the team.',
   },
@@ -69,8 +68,7 @@ const T: Dict = {
     team: 'Way2Cure के *पीछे* के लोग',
     teamLead: 'डॉक्टर और केयर मैनेजर जो रोज़ Way2Cure चलाते हैं।',
     areasTitle: 'आपके पास *घर पर देखभाल।*',
-    areasText: 'हमारी नर्सिंग और बुज़ुर्ग देखभाल टीमें इन इलाकों में काम करती हैं। हर इलाके का Way2Cure होम केयर साइट पर अपना पेज है।',
-    homeCareIn: '{place} में घर पर देखभाल',
+    areasText: 'हमारी नर्सिंग और बुज़ुर्ग देखभाल टीमें पूरे मुंबई, नवी मुंबई और ठाणे में घरों पर आती हैं, वाशी और ऐरोली सहित।',
     areaCta: 'हमारी केयर टीम से बात करें',
     seoDesc: 'Way2Cure मुंबई, नवी मुंबई और ठाणे में नर्सिंग, बुज़ुर्गों की देखभाल, डॉक्टर विज़िट और दवाइयाँ घर तक लाता है। हमारी टीम से मिलें।',
   },
@@ -101,8 +99,7 @@ const T: Dict = {
     team: 'Way2Cure *मागची* माणसे',
     teamLead: 'Way2Cure रोज चालवणारे डॉक्टर आणि केअर मॅनेजर.',
     areasTitle: 'तुमच्या जवळ *घरी काळजी.*',
-    areasText: 'आमच्या नर्सिंग आणि ज्येष्ठ काळजी टीम या भागांत काम करतात. प्रत्येक भागाचे Way2Cure होम केअर साइटवर स्वतंत्र पान आहे.',
-    homeCareIn: '{place} मध्ये घरी काळजी',
+    areasText: 'आमच्या नर्सिंग आणि ज्येष्ठ काळजी टीम संपूर्ण मुंबई, नवी मुंबई आणि ठाणे येथे घरी येतात, वाशी आणि ऐरोलीसह.',
     areaCta: 'आमच्या केअर टीमशी बोला',
     seoDesc: 'Way2Cure मुंबई, नवी मुंबई आणि ठाण्यात नर्सिंग, ज्येष्ठांची काळजी, डॉक्टर व्हिजिट आणि औषधे घरपोच देते. आमच्या टीमला भेटा.',
   },
@@ -112,6 +109,13 @@ const initials = (name: string) => name.replace('Dr. ', '').split(' ').map((w) =
 
 const DIFF = [['userCheck', 'f1'], ['support', 'f2'], ['stethoscope', 'f3']] as const;
 const VALUES = [['handHeart', 'v1'], ['verified', 'v2'], ['check', 'v3'], ['users', 'v4']] as const;
+// A colour for each promise card: crimson, sky, yellow, charcoal (the site palette)
+const TONES = [
+  { stage: 'bg-[linear-gradient(160deg,#FDF0F2,#FFF8F9)]', ring: 'border-terracotta-deep/15', icon: 'text-terracotta-deep', dot: 'bg-terracotta/60' },
+  { stage: 'bg-[linear-gradient(160deg,#E7F0FA,#F5F9FD)]', ring: 'border-sage/20', icon: 'text-sage-deep', dot: 'bg-sage/60' },
+  { stage: 'bg-[linear-gradient(160deg,#FFF6DC,#FFFCF2)]', ring: 'border-mustard/40', icon: 'text-green', dot: 'bg-mustard' },
+  { stage: 'bg-[linear-gradient(160deg,#E9EDF2,#F6F8FA)]', ring: 'border-green/15', icon: 'text-green', dot: 'bg-green/40' },
+];
 
 function Heading({ title, lead, className = '' }: { title: string; lead?: string; className?: string }) {
   return (
@@ -189,14 +193,27 @@ export default function About() {
       <section className="section bg-mist">
         <div className="container">
           <Heading title={tr('valuesTitle')} className="mb-8 md:mb-12 max-w-2xl" />
-          <Stagger as="ul" className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {VALUES.map(([icon, k]) => (
-              <StaggerItem as="li" key={k} className="rounded-tile border border-mint bg-white p-6 transition-[transform,box-shadow] duration-micro ease-soft hover:-translate-y-1 hover:shadow-raised">
-                <span className="mb-5 grid h-12 w-12 place-items-center rounded-btn bg-mist text-green"><Icon name={icon} size={24} /></span>
-                <h3 className="mb-2 text-h3m">{tr(`${k}Title`)}</h3>
-                <p className="m-0 text-base text-grey">{tr(`${k}Text`)}</p>
-              </StaggerItem>
-            ))}
+          {/* Each promise: its icon on a soft colour stage with rings, then the words. Not links, so no hover motion. */}
+          <Stagger as="ul" className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {VALUES.map(([icon, k], i) => {
+              const tone = TONES[i % TONES.length];
+              return (
+                <StaggerItem as="li" key={k} className="flex flex-col rounded-[1.75rem] border border-line bg-white p-2.5 shadow-card">
+                  <span aria-hidden="true" className={`relative grid h-40 place-items-center overflow-hidden rounded-[1.375rem] ${tone.stage}`}>
+                    <span className={`absolute h-56 w-56 rounded-full border ${tone.ring}`} />
+                    <span className={`absolute h-40 w-40 rounded-full border border-dashed ${tone.ring}`} />
+                    <span className="absolute h-28 w-28 rounded-full bg-white/70" />
+                    <span className={`relative grid h-16 w-16 place-items-center rounded-2xl bg-white shadow-raised ${tone.icon}`}><Icon name={icon} size={30} /></span>
+                    <span className={`absolute right-6 top-6 h-2.5 w-2.5 rounded-full ${tone.dot}`} />
+                    <span className={`absolute bottom-7 left-7 h-1.5 w-1.5 rounded-full ${tone.dot}`} />
+                  </span>
+                  <span className="px-3.5 pb-4 pt-5">
+                    <h3 className="mb-1.5 text-h3m md:text-h3">{tr(`${k}Title`)}</h3>
+                    <p className="m-0 text-base text-grey">{tr(`${k}Text`)}</p>
+                  </span>
+                </StaggerItem>
+              );
+            })}
           </Stagger>
         </div>
       </section>
@@ -205,23 +222,27 @@ export default function About() {
       <section className="section bg-white">
         <div className="container">
           <Heading title={tr('team')} lead={tr('teamLead')} className="mb-8 md:mb-12 max-w-2xl" />
-          <Stagger as="ul" className="grid grid-cols-2 gap-4 lg:grid-cols-4 lg:gap-6">
+          {/* Headshots are cropped to matching squares (same head size and eye line); their white
+              backgrounds blend into one soft backdrop. Not links, so no hover motion. */}
+          <Stagger as="ul" className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 lg:gap-5">
             {team.map((member) => {
               const mem = loc(member);
               return (
-                <StaggerItem as="li" key={member.name} className="group">
-                  <div className="mb-4 overflow-hidden rounded-panel bg-cream shadow-card transition-[transform,box-shadow] duration-micro ease-soft group-hover:-translate-y-1 group-hover:shadow-raised">
+                <StaggerItem as="li" key={member.name} className="flex flex-col rounded-[1.75rem] border border-line bg-white p-2 shadow-card sm:p-2.5">
+                  <div className="relative aspect-square overflow-hidden rounded-[1.375rem] bg-[linear-gradient(170deg,#E7F0FA_0%,#F1F5F9_60%,#FDF0F2_100%)]">
                     {member.photo ? (
-                      <img src={member.photo} alt="" loading="lazy" width={240} height={300}
-                        className="aspect-[4/5] w-full object-cover transition-transform duration-slow ease-soft group-hover:scale-[1.03]" />
+                      <img src={member.photo} alt="" loading="lazy" width={640} height={640}
+                        className="h-full w-full object-cover mix-blend-multiply" />
                     ) : (
-                      <span aria-hidden="true" className="grid aspect-[4/5] w-full place-items-center bg-mint font-head text-h2 font-bold text-green">
+                      <span aria-hidden="true" className="grid h-full w-full place-items-center font-head text-h2 font-bold text-green">
                         {initials(member.name)}
                       </span>
                     )}
                   </div>
-                  <h3 className="mb-1 text-h3m">{member.name}</h3>
-                  <p className="m-0 text-base text-grey">{mem.role}</p>
+                  <div className="px-2 pb-2 pt-4 sm:px-3">
+                    <h3 className="mb-1 text-body font-bold leading-snug md:text-h3m">{member.name}</h3>
+                    <p className="m-0 text-small text-grey md:text-base">{mem.role}</p>
+                  </div>
                 </StaggerItem>
               );
             })}
@@ -229,24 +250,17 @@ export default function About() {
         </div>
       </section>
 
-      {/* Home care areas: links to the existing location pages */}
+      {/* Home care areas: one band, heading and text on the left, the button on the right */}
       <section className="section">
-        <div className="container grid items-center gap-10 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
-          <div>
-            <Heading title={tr('areasTitle')} lead={tr('areasText')} className="mb-8" />
-            <Reveal><Button to="/contact">{tr('areaCta')} <Icon name="arrow" size={18} /></Button></Reveal>
-          </div>
-          <Stagger as="ul" className="grid gap-3">
-            {SITE.homeCareLocations.map((l) => (
-              <StaggerItem as="li" key={l.name}>
-                <a href={l.href} className="group flex min-h-[4.5rem] items-center gap-4 rounded-tile border border-line bg-white px-5 py-4 text-ink no-underline transition-[transform,box-shadow] duration-micro ease-soft hover:-translate-y-0.5 hover:shadow-raised">
-                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-btn bg-mist text-green"><Icon name="pin" size={22} /></span>
-                  <strong className="flex-1 text-body text-green">{tr('homeCareIn', { place: l.name })}</strong>
-                  <Icon name="external" size={18} className="text-terracotta-deep" />
-                </a>
-              </StaggerItem>
-            ))}
-          </Stagger>
+        <div className="container">
+          <Reveal className="relative flex flex-col gap-6 overflow-hidden rounded-[1.75rem] border border-line bg-[linear-gradient(120deg,#FFFFFF_0%,#F1F5F9_55%,#E7F0FA_100%)] p-6 shadow-card md:flex-row md:items-center md:justify-between md:gap-10 md:p-10">
+            <span aria-hidden="true" className="pointer-events-none absolute -right-10 -top-10 text-sage/10"><Icon name="pin" size={220} /></span>
+            <div className="relative max-w-2xl">
+              <h2 className="mb-3 text-section"><Accent text={tr('areasTitle')} /></h2>
+              <p className="m-0 text-lead text-ink/75">{tr('areasText')}</p>
+            </div>
+            <Button to="/contact" className="relative shrink-0 self-start md:self-auto">{tr('areaCta')} <Icon name="arrow" size={18} /></Button>
+          </Reveal>
         </div>
       </section>
     </>

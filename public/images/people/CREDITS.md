@@ -13,3 +13,4 @@ real Way2Cure patients and staff, with written consent, read as more trustworthy
 | grandmother-errand.webp | Home, "Sound familiar?" card 3 | https://www.pexels.com/photo/portrait-of-elderly-indian-woman-18786324/ |
 | family-three-generations.webp | Home, "Families we care for" | https://www.pexels.com/photo/happy-family-portrait-with-grandparents-and-grandchildren-38492008/ (Krishna Kids Photography) |
 | hands-elderly-couple.webp | Home, closing call to action | https://www.pexels.com/photo/hands-of-elderly-and-young-woman-19810785/ (Ekam Juneja) |
+| senior-couple-garden.webp | Subscriptions, page header | https://www.pexels.com/photo/33827133/ (Pexels licence) |

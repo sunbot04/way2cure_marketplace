@@ -8,7 +8,7 @@ import { useCart } from '../../context/CartContext';
 import { useSaved } from '../../context/SavedContext';
 import { useToast } from '../../context/ToastContext';
 import { COPY } from '../copy';
-import ProductArt from './ProductArt';
+import ProductArt, { ProductPhoto } from './ProductArt';
 
 // Toast copy for "added to cart" on the product page: kept short on purpose (the header cart badge
 // pulses when the count changes). Product cards use the shop's cart bar instead.
@@ -38,14 +38,18 @@ export function ProductImage({ product, large = false, small = false }: { produc
   const loc = useLoc();
   return (
     <div
-      role="img"
-      aria-label={tr('photoSoon', { name: loc(product).name })}
+      role={product.image ? undefined : 'img'}
+      aria-label={product.image ? undefined : tr('photoSoon', { name: loc(product).name })}
       className={`grid aspect-square place-items-center overflow-hidden ${LIGHT_SKY} ${small ? 'rounded-btn' : 'rounded-tile'}`}
     >
-      <ProductArt
-        product={product}
-        className={`h-auto drop-shadow-[0_12px_14px_rgb(38_52_69/0.16)] transition-transform duration-slow ease-soft group-hover:scale-[1.03] ${small ? 'w-[82%]' : large ? 'w-[70%]' : 'w-[74%]'}`}
-      />
+      {product.image ? (
+        <ProductPhoto product={{ ...product, image: product.image }} alt={loc(product).name} sizes={small ? '96px' : large ? '(min-width: 1024px) 40vw, 92vw' : '240px'} eager={large} />
+      ) : (
+        <ProductArt
+          product={product}
+          className={`h-auto drop-shadow-[0_12px_14px_rgb(38_52_69/0.16)] transition-transform duration-slow ease-soft group-hover:scale-[1.03] ${small ? 'w-[82%]' : large ? 'w-[70%]' : 'w-[74%]'}`}
+        />
+      )}
     </div>
   );
 }
@@ -73,7 +77,9 @@ export default function ProductCard({ product, alt = false }: { product: Product
   const tr = useT(COPY);
   const loc = useLoc();
   const { lines, add, setQty } = useCart();
-  const { has, toggle } = useSaved();
+  // Same confirmation as the product page: the small "Added to cart · View cart" pill
+  const showToast = useCartToast();
+  const { enabled: canSave, has, toggle } = useSaved();
   const p = loc(product);
   const catRaw = categories.find((c) => c.slug === product.cat);
   const cat = catRaw ? loc(catRaw) : undefined;
@@ -96,9 +102,10 @@ export default function ProductCard({ product, alt = false }: { product: Product
     ? { text: tr('rxNeeded'), cls: 'bg-terracotta-deep text-white' }
     : product.rentPerMonth
       ? { text: product.rentOnly ? tr('rent') : tr('rentOrBuy'), cls: 'bg-terracotta-deep text-white' }
-      : product.subscribe
-        ? { text: tr('subscribe'), cls: 'bg-green text-white' }
-        : product.launch
+      // Subscribe tag switched off: buying regular items now offers a refill reminder instead.
+      // : product.subscribe
+      //   ? { text: tr('subscribe'), cls: 'bg-green text-white' }
+      : product.launch
           ? { text: tr('launch'), cls: 'bg-mustard text-ink' }
           : null;
 
@@ -106,9 +113,10 @@ export default function ProductCard({ product, alt = false }: { product: Product
     ? { text: tr('rxShort'), cls: 'text-terracotta-deep' }
     : product.rentPerMonth && !product.rentOnly
       ? { text: tr('orRent', { price: formatPrice(product.rentPerMonth) }), cls: 'text-terracotta-deep' }
-      : product.subscribe
-        ? { text: tr('monthly'), cls: 'text-sage-deep' }
-        : null;
+      // "Monthly delivery available" switched off with the subscribe option (see above).
+      // : product.subscribe
+      //   ? { text: tr('monthly'), cls: 'text-sage-deep' }
+      : null;
 
   const price: ReactNode = product.rentOnly ? (
     <>{formatPrice(product.rentPerMonth ?? 0)}<span className="ml-1 text-[0.75rem] font-bold text-grey">{tr('perMonth')}</span></>
@@ -141,7 +149,7 @@ export default function ProductCard({ product, alt = false }: { product: Product
           ref={plusRef}
           type="button"
           aria-label={tr('more', { name: p.name })}
-          onClick={() => add(product.id, 'buy', 1)}
+          onClick={() => { add(product.id, 'buy', 1); showToast(); }}
           className="grid h-10 w-8 place-items-center text-green transition-colors duration-micro hover:bg-mint"
         >
           <Icon name="plus" size={16} />
@@ -154,7 +162,7 @@ export default function ProductCard({ product, alt = false }: { product: Product
         ref={addRef}
         type="button"
         aria-label={tr('addItem', { name: p.name })}
-        onClick={() => { focusNext.current = 'plus'; add(product.id, 'buy', 1); }}
+        onClick={() => { focusNext.current = 'plus'; add(product.id, 'buy', 1); showToast(); }}
         className={`${btn} w-10 bg-green text-white hover:bg-green-dark md:w-auto md:px-3.5`}
       >
         <Icon name="plus" size={18} />
@@ -171,25 +179,32 @@ export default function ProductCard({ product, alt = false }: { product: Product
         aria-hidden="true"
         className={`flex h-[8.75rem] items-center justify-center overflow-hidden rounded-[0.875rem] md:h-[12.5rem] md:rounded-tile ${alt ? LIGHT_MIST : LIGHT_SKY}`}
       >
-        <ProductArt
-          product={product}
-          className="h-[6.5rem] w-auto max-w-[88%] drop-shadow-[0_12px_14px_rgb(38_52_69/0.16)] transition-transform duration-slow ease-soft group-hover:-translate-y-1 group-hover:scale-105 md:h-[9.375rem]"
-        />
+        {product.image ? (
+          <ProductPhoto product={{ ...product, image: product.image }} sizes="(min-width: 1024px) 15rem, (min-width: 640px) 30vw, 45vw" />
+        ) : (
+          <ProductArt
+            product={product}
+            className="h-[6.5rem] w-auto max-w-[88%] drop-shadow-[0_12px_14px_rgb(38_52_69/0.16)] transition-transform duration-slow ease-soft group-hover:-translate-y-1 group-hover:scale-105 md:h-[9.375rem]"
+          />
+        )}
       </Link>
       {badge && (
         <span className={`absolute left-3.5 top-3.5 rounded-[0.4375rem] px-[0.4375rem] py-1 text-[0.625rem] font-extrabold uppercase leading-none tracking-[0.04em] md:left-5 md:top-5 md:rounded-lg md:px-2 md:py-[0.3125rem] md:text-[0.6875rem] ${badge.cls}`}>
           {badge.text}
         </span>
       )}
-      <button
-        type="button"
-        aria-pressed={saved}
-        aria-label={tr('save', { name: p.name })}
-        onClick={() => toggle(product.id)}
-        className={`absolute right-2.5 top-2.5 grid h-9 w-9 place-items-center rounded-full bg-white shadow-[0_4px_10px_-4px_rgb(38_52_69/0.3)] transition-transform duration-micro ease-soft hover:scale-110 md:right-3.5 md:top-3.5 ${saved ? 'text-terracotta-deep' : 'text-green'}`}
-      >
-        <Icon name="heart" size={17} filled={saved} />
-      </button>
+      {/* Save (heart): signed-in accounts only */}
+      {canSave && (
+        <button
+          type="button"
+          aria-pressed={saved}
+          aria-label={tr('save', { name: p.name })}
+          onClick={() => toggle(product.id)}
+          className={`absolute right-2.5 top-2.5 grid h-9 w-9 place-items-center rounded-full bg-white shadow-[0_4px_10px_-4px_rgb(38_52_69/0.3)] transition-transform duration-micro ease-soft hover:scale-110 md:right-3.5 md:top-3.5 ${saved ? 'text-terracotta-deep' : 'text-green'}`}
+        >
+          <Icon name="heart" size={17} filled={saved} />
+        </button>
+      )}
 
       <div className="flex flex-1 flex-col px-1 pb-0.5 pt-2.5 md:px-1.5 md:pb-1 md:pt-3">
         {cat && <p className="m-0 mb-[3px] text-[0.6875rem] font-extrabold uppercase leading-snug tracking-[0.06em] text-sage-deep md:mb-1 md:text-[0.71875rem]">{cat.name}</p>}

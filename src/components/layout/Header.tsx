@@ -110,6 +110,15 @@ const panelAll = 'group/all mx-2 mt-2 flex min-h-[2.75rem] items-center gap-1.5 
 const iconBtn = 'relative grid h-11 w-11 place-items-center rounded-full text-green no-underline transition-colors duration-micro hover:bg-mist';
 const badge = 'absolute -right-0.5 -top-0.5 grid h-5 min-w-[1.25rem] place-items-center rounded-full border-2 border-white bg-terracotta-deep px-1 text-[0.7rem] font-bold leading-none text-white';
 
+// Subscriptions menu: each plan opens the same place as the button on its plan card
+// (pages/Subscriptions.tsx), so the menu and the cards always agree.
+const PLAN_LINKS: Record<string, string> = {
+  refills: '/shop/medicines',
+  diapers: '/product/adult-diapers-m',
+  'health-checks': '/care/nurse',
+  sachets: '/subscriptions/dose-sachets',
+};
+
 export default function Header() {
   const { count } = useCart();
   const { user } = useAuth();
@@ -207,7 +216,7 @@ export default function Header() {
                   <ul className="grid gap-0.5">
                     {subscriptionPlans.map(loc).map((p) => (
                       <li key={p.id}>
-                        <Link to={p.id === 'sachets' ? '/subscriptions/dose-sachets' : '/subscriptions'} className={panelLink}>
+                        <Link to={PLAN_LINKS[p.id] ?? '/subscriptions'} className={panelLink}>
                           <Icon name={p.icon} size={16} className="shrink-0 text-sage" /> {p.name}
                         </Link>
                       </li>

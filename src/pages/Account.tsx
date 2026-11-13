@@ -5,7 +5,6 @@ import PageHeader from '../components/layout/PageHeader';
 import Seo from '../components/layout/Seo';
 import Button from '../components/ui/Button';
 import Tag from '../components/ui/Tag';
-import { HelpBox } from '../components/commerce/AppPanel';
 import { Reveal, Stagger, StaggerItem } from '../components/motion/Reveal';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
@@ -291,7 +290,6 @@ export default function Account() {
                 ))}
               </ul>
             </Reveal>
-            <Reveal><HelpBox /></Reveal>
           </aside>
         </div>
       </section>

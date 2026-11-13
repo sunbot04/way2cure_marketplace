@@ -18,7 +18,7 @@ interface Props {
   crumbs?: Crumb[];
   children?: ReactNode;
   tone?: 'cream' | 'white' | 'green' | 'mist';
-  image?: { src: string; alt?: string; position?: string };
+  image?: { src: string; srcSet?: string; alt?: string; position?: string };
 }
 
 const tones = {
@@ -62,6 +62,8 @@ export default function PageHeader({ title, lead, crumbs, children, tone = 'crea
       <section className={`relative overflow-hidden ${tones[tone]}`}>
         <img
           src={image.src}
+          srcSet={image.srcSet}
+          sizes={image.srcSet ? '(min-width: 1024px) 56vw, 100vw' : undefined}
           alt={image.alt ?? ''}
           width={1200}
           height={800}

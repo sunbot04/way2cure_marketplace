@@ -6,7 +6,7 @@ import InfoBand from '../components/ui/InfoBand';
 import { useLang, useT } from '../i18n/LangContext';
 import { LEGAL } from './copy/legal';
 
-// Shared shell for /privacy and /terms: one readable column, draft notice, and
+// Shared shell for /privacy and /terms: one readable column and
 // the "English applies" note when the page is shown in Hindi or Marathi.
 interface Props {
   title: string;
@@ -24,10 +24,7 @@ export default function LegalPage({ title, lead, seo, other, children }: Props) 
       <Seo title={title} description={seo} />
       <PageHeader title={title} lead={lead} tone="white" />
       <div className="container grid max-w-[calc(70ch+3rem)] gap-6 py-8 md:py-12">
-        <div className="grid gap-3">
-          <InfoBand icon="warning">{tr('draft')}</InfoBand>
-          {lang !== 'en' && <InfoBand>{tr('englishPrevails')}</InfoBand>}
-        </div>
+        {lang !== 'en' && <InfoBand>{tr('englishPrevails')}</InfoBand>}
         <div className="[&_h2]:mb-3 [&_h2]:mt-6 [&_p]:mb-0">{children}</div>
         <p className="m-0 border-t border-mint pt-6">
           <Link to={other.to} className="font-bold">{other.label}</Link>

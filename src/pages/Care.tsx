@@ -28,10 +28,9 @@ const T: Dict = {
     h3t: 'We call to plan', h3d: 'Our care team agrees the nurse or doctor, the timing and the price with you.',
     h4t: 'Care begins', h4d: 'A trained, background-checked person arrives at your home.',
     specialTitle: 'Serious illness, *cared for at home.*',
+    planBadge: 'Doctor-led', planTitle: 'One care plan, *reviewed as needs change.*', planCta: 'Plan care with us',
     plan: 'One doctor-led care plan for every patient, reviewed as needs change.',
     suitability: 'Suitability is assessed by the treating doctor before care begins.',
-    ctaTitle: 'Not sure which care you need? *Talk to us.*', ctaText: 'Tell us about your parent. Our care team will suggest the right help and plan it with you.',
-    callNow: 'Call {phone}',
   },
   hi: {
     seoTitle: 'घर पर नर्स, डॉक्टर और ICU देखभाल',
@@ -46,10 +45,9 @@ const T: Dict = {
     h3t: 'हम कॉल करके योजना बनाते हैं', h3d: 'हमारी केयर टीम आपके साथ नर्स या डॉक्टर, समय और कीमत तय करती है।',
     h4t: 'देखभाल शुरू', h4d: 'एक प्रशिक्षित, जाँचा-परखा व्यक्ति आपके घर आता है।',
     specialTitle: 'गंभीर बीमारी, *घर पर देखभाल।*',
+    planBadge: 'डॉक्टर की देखरेख में', planTitle: 'एक केयर प्लान, *ज़रूरत बदलने पर दोबारा देखा जाता है।*', planCta: 'हमारे साथ देखभाल तय करें',
     plan: 'हर मरीज़ के लिए डॉक्टर की बनाई एक केयर योजना, ज़रूरत बदलने पर दोबारा देखी जाती है।',
     suitability: 'देखभाल शुरू होने से पहले, इलाज करने वाले डॉक्टर तय करते हैं कि यह मरीज़ के लिए सही है या नहीं।',
-    ctaTitle: 'पक्का नहीं कि कौन-सी देखभाल चाहिए? *हमसे बात करें।*', ctaText: 'अपने माता-पिता के बारे में बताएँ। हमारी केयर टीम सही मदद सुझाएगी और आपके साथ योजना बनाएगी।',
-    callNow: 'कॉल करें {phone}',
   },
   mr: {
     seoTitle: 'घरी नर्स, डॉक्टर आणि ICU काळजी',
@@ -64,10 +62,9 @@ const T: Dict = {
     h3t: 'आम्ही कॉल करून नियोजन करतो', h3d: 'आमची केअर टीम तुमच्यासोबत नर्स किंवा डॉक्टर, वेळ आणि किंमत ठरवते.',
     h4t: 'काळजी सुरू', h4d: 'प्रशिक्षित, पार्श्वभूमी तपासलेली व्यक्ती तुमच्या घरी येते.',
     specialTitle: 'गंभीर आजार, *घरीच काळजी.*',
+    planBadge: 'डॉक्टरांच्या देखरेखीखाली', planTitle: 'एक काळजी योजना, *गरज बदलल्यास पुन्हा तपासली जाते.*', planCta: 'आमच्यासोबत काळजी ठरवा',
     plan: 'प्रत्येक रुग्णासाठी डॉक्टरांनी आखलेली एक काळजी योजना, गरज बदलल्यास पुन्हा तपासली जाते.',
     suitability: 'काळजी सुरू होण्यापूर्वी, उपचार करणारे डॉक्टर ती रुग्णासाठी योग्य आहे का ते ठरवतात.',
-    ctaTitle: 'कोणती काळजी हवी याची खात्री नाही? *आमच्याशी बोला.*', ctaText: 'तुमच्या आई-वडिलांबद्दल सांगा. आमची केअर टीम योग्य मदत सुचवेल आणि तुमच्यासोबत नियोजन करेल.',
-    callNow: 'कॉल करा {phone}',
   },
 };
 
@@ -101,8 +98,8 @@ export default function Care() {
             <h2 className="mb-4 text-section"><Accent text={tr('everydayTitle')} /></h2>
             <p className="m-0 text-lead text-ink/75">{tr('everydayLead')}</p>
           </Reveal>
-          <Stagger as="ul" className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {everyday.map((s) => <StaggerItem as="li" key={s.id}><CareCard service={s} /></StaggerItem>)}
+          <Stagger as="ul" className="sbn-grid sbn-grid--page">
+            {everyday.map((s, i) => <StaggerItem as="li" key={s.id}><CareCard service={s} alt={i % 2 === 1} /></StaggerItem>)}
           </Stagger>
         </div>
       </section>
@@ -132,43 +129,32 @@ export default function Care() {
 
       {/* Specialised care: heading stays in view while the cards scroll on desktop */}
       <section id="specialised" className="section scroll-mt-28 bg-mist">
-        <div className="container grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
-          <Reveal className="lg:sticky lg:top-36 lg:self-start">
+        <div className="container">
+          <Reveal className="mb-8 max-w-2xl md:mb-12">
             <h2 className="mb-4 text-section"><Accent text={tr('specialTitle')} /></h2>
-            <p className="text-lead text-ink/75">{tr('plan')}</p>
-            <p className="mt-6 flex items-start gap-3 rounded-tile bg-white p-5 text-base shadow-card">
-              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-btn bg-mist text-green"><Icon name="stethoscope" size={20} /></span>
-              <span className="pt-1.5">{tr('suitability')}</span>
-            </p>
+            <p className="m-0 text-lead text-ink/75">{tr('plan')}</p>
           </Reveal>
-          <Stagger as="ul" className="grid gap-5 sm:grid-cols-2">
-            {specialised.map((s) => <StaggerItem as="li" key={s.id}><CareCard service={s} /></StaggerItem>)}
+          <Stagger as="ul" className="sbn-grid sbn-grid--page">
+            {specialised.map((s, i) => <StaggerItem as="li" key={s.id}><CareCard service={s} alt={i % 2 === 0} /></StaggerItem>)}
+            {/* Doctor-led care plan: completes the grid */}
+            <StaggerItem as="li">
+              <div className="relative isolate flex w-full flex-col overflow-hidden rounded-[1.75rem] bg-green p-6 text-white">
+                <span aria-hidden="true" className="absolute -right-16 -top-16 -z-10 h-56 w-56 rounded-full bg-[radial-gradient(circle,rgb(var(--c-sage)/0.45),transparent_70%)]" />
+                <span aria-hidden="true" className="absolute -bottom-10 -right-6 -z-10 text-white/[0.06]"><Icon name="stethoscope" size={200} /></span>
+                <span className="mb-5 inline-flex self-start rounded-full bg-white/10 px-3 py-1 text-small font-bold uppercase tracking-wide text-mint">{tr('planBadge')}</span>
+                <p className="mb-3 font-head text-h3m font-bold leading-snug text-white md:text-[1.6rem]"><Accent text={tr('planTitle')} /></p>
+                <p className="mb-6 flex items-start gap-3 text-base text-mint">
+                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-white/10 text-mustard"><Icon name="stethoscope" size={18} /></span>
+                  <span className="pt-1">{tr('suitability')}</span>
+                </p>
+                <Button to="/contact" variant="urgent" compact className="mt-auto self-start">{tr('planCta')} <Icon name="arrow" size={18} /></Button>
+              </div>
+            </StaggerItem>
           </Stagger>
         </div>
       </section>
 
       <TrustStrip />
-
-      {/* Closing: talk to a real person */}
-      <section className="section">
-        <div className="container">
-          <Reveal className="grid overflow-hidden rounded-panel bg-white shadow-card md:grid-cols-[0.8fr_1.2fr]">
-            <div className="relative h-56 md:h-auto">
-              <img src="/images/nurse-portrait.webp" alt="" width={900} height={600} loading="lazy" className="absolute inset-0 h-full w-full object-cover object-[60%_center]" />
-            </div>
-            <div className="grid content-center gap-8 p-8 md:p-12">
-              <div>
-                <h2 className="mb-3 text-section"><Accent text={tr('ctaTitle')} /></h2>
-                <p className="m-0 text-lead text-ink/75">{tr('ctaText')}</p>
-              </div>
-              <div className="flex flex-col gap-3 sm:flex-row">
-                <Button href={SITE.phoneHref} variant="urgent"><Icon name="phone" size={20} /> {tr('callNow', { phone: SITE.phone })}</Button>
-                <Button href={SITE.whatsappHref} external variant="outline"><Icon name="whatsapp" size={20} /> {t('whatsapp')}</Button>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </section>
     </>
   );
 }

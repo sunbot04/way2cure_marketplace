@@ -4,7 +4,6 @@ import Button from '../components/ui/Button';
 import PageHeader from '../components/layout/PageHeader';
 import Seo from '../components/layout/Seo';
 import FAQAccordion from '../components/ui/FAQAccordion';
-import { HelpBox } from '../components/commerce/AppPanel';
 import { Reveal, Stagger, StaggerItem } from '../components/motion/Reveal';
 import { faqs } from '../data';
 import { SITE } from '../config/site';
@@ -115,7 +114,6 @@ export default function Help() {
                 ))}
               </Stagger>
             </Reveal>
-            <Reveal><HelpBox /></Reveal>
             <Reveal className="rounded-panel bg-green p-6 text-white">
               <h2 className="mb-2 font-body text-h3m text-white md:text-h3">{tr('stillTitle')}</h2>
               <p className="text-mint">{tr('stillText')}</p>

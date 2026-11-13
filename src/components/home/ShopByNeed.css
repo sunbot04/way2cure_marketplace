@@ -4,7 +4,9 @@
   Desktop: a bento grid (Medicines tall, Medical devices wide). Up to 1080px: two columns.
   Up to 640px: one column of compact rows.
 */
-.sbn-grid {
+/* Card colours: on the grid, and on a card used on its own */
+.sbn-grid,
+.sbn-card {
   --sbn-main: rgb(var(--c-green));
   --sbn-main-2: #34475d;
   --sbn-soft: rgb(var(--c-sage));
@@ -17,6 +19,8 @@
   --sbn-muted: rgb(var(--c-grey));
   --sbn-body: 'Nunito Sans', 'Noto Sans Devanagari', Arial, sans-serif;
   --sbn-head: Lora, 'Noto Sans Devanagari', Georgia, serif;
+}
+.sbn-grid {
   display: grid;
   gap: 0.875rem;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -437,3 +441,54 @@
 /* Hindi / Marathi: room for vowel signs above and below the letters in the big card titles */
 :lang(hi) .sbn-med__title,
 :lang(mr) .sbn-med__title { line-height: 1.25; }
+
+/* ---------- Prescription page: "Good to know" cards (same card design, no link) ---------- */
+.sbn-grid.sbn-grid--know { grid-template-areas: none; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.sbn-grid--know .sbn-card { cursor: default; min-height: 21rem; }
+/* These cards are information, not links: no lift, shadow or moving drawing on hover */
+.sbn-grid--know .sbn-card:hover { transform: none; box-shadow: none; }
+.sbn-grid--know .sbn-card:hover .sbn-art > svg { transform: none; }
+.sbn-grid--know .sbn-card:hover .sbn-art::before { transform: translateX(-50%); }
+.sbn-grid--know .sbn-cat__title,
+.sbn-grid--know .sbn-cat:not(.sbn-dev) .sbn-cat__title { min-height: 0; padding-right: 0; margin-bottom: 0.375rem; }
+.sbn-grid--know .sbn-icon {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin-bottom: 0.875rem;
+  border-radius: 0.875rem;
+  background: #fff;
+  color: var(--sbn-accent);
+  box-shadow: 0 6px 14px -6px rgb(38 52 69 / 0.25);
+}
+@media (max-width: 1080px) {
+  .sbn-grid.sbn-grid--know { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 640px) {
+  .sbn-grid.sbn-grid--know { grid-template-columns: minmax(0, 1fr); }
+  .sbn-grid--know .sbn-card { min-height: 0; }
+  .sbn-grid--know .sbn-icon { display: none; }
+  .sbn-grid--know .sbn-card:hover .sbn-art::before { transform: translate(-50%, -50%); }
+}
+
+/* ---------- Care page: service cards (components/care/CareCard) ---------- */
+.sbn-grid.sbn-grid--page { grid-template-areas: none; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+.sbn-grid.sbn-grid--page > li { display: flex; min-width: 0; }
+.sbn-care { min-height: 21.5rem; }
+.sbn-care .sbn-cat__sub { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+/* The nurse drawing is made for the dark card: lighten its floor shadow on the light cards */
+.sbn-care .sbn-art > svg > ellipse:first-child { opacity: 0.12; }
+.sbn-icon-art { position: relative; z-index: 2; display: grid; place-items: center; height: 10rem; margin-top: auto; color: var(--sbn-main); }
+/* A card's ribbon sits top-left of the drawing, clear of the text */
+.sbn-care .sbn-ribbon { top: auto; bottom: 1.125rem; }
+@media (max-width: 1080px) {
+  .sbn-grid.sbn-grid--page { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 640px) {
+  .sbn-grid.sbn-grid--page { grid-template-columns: minmax(0, 1fr); gap: 0.625rem; }
+  .sbn-care { min-height: 0; }
+  .sbn-care .sbn-cat__sub { display: block; -webkit-line-clamp: unset; overflow: visible; }
+}

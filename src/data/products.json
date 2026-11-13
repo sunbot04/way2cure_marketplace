@@ -22,7 +22,8 @@
       "name": "Metformin 500 mg गोळ्या",
       "pack": "15 गोळ्यांची स्ट्रिप",
       "desc": "सहसा टाइप 2 मधुमेहासाठी दिली जाते. फक्त वैध प्रिस्क्रिप्शनवरच मिळते, जे नोंदणीकृत फार्मासिस्ट तपासतात."
-    }
+    },
+    "image": "/images/products/metformin-500.webp"
   },
   {
     "id": "amlodipine-5",
@@ -47,7 +48,8 @@
       "name": "Amlodipine 5 mg गोळ्या",
       "pack": "15 गोळ्यांची स्ट्रिप",
       "desc": "सहसा रक्तदाबासाठी (बीपी) दिली जाते. फक्त वैध प्रिस्क्रिप्शनवरच मिळते, जे नोंदणीकृत फार्मासिस्ट तपासतात."
-    }
+    },
+    "image": "/images/products/amlodipine-5.webp"
   },
   {
     "id": "telmisartan-40",
@@ -72,32 +74,8 @@
       "name": "Telmisartan 40 mg गोळ्या",
       "pack": "15 गोळ्यांची स्ट्रिप",
       "desc": "सहसा रक्तदाबासाठी (बीपी) दिली जाते. फक्त वैध प्रिस्क्रिप्शनवरच मिळते, जे नोंदणीकृत फार्मासिस्ट तपासतात."
-    }
-  },
-  {
-    "id": "atorvastatin-10",
-    "name": "Atorvastatin 10 mg tablets",
-    "cat": "medicines",
-    "brand": "Generic",
-    "pack": "Strip of 15 tablets",
-    "price": 72,
-    "rx": true,
-    "chronic": true,
-    "subscribe": true,
-    "seller": "Way2Cure",
-    "deliveryHours": 6,
-    "popular": 86,
-    "desc": "Commonly prescribed for cholesterol. Sold only against a valid prescription, checked by a registered pharmacist.",
-    "hi": {
-      "name": "Atorvastatin 10 mg गोलियाँ",
-      "pack": "15 गोलियों की स्ट्रिप",
-      "desc": "आमतौर पर कोलेस्ट्रॉल के लिए दी जाती है। सिर्फ़ वैध पर्चे पर मिलती है, जिसे रजिस्टर्ड फ़ार्मासिस्ट जाँचते हैं।"
     },
-    "mr": {
-      "name": "Atorvastatin 10 mg गोळ्या",
-      "pack": "15 गोळ्यांची स्ट्रिप",
-      "desc": "सहसा कोलेस्टेरॉलसाठी दिली जाते. फक्त वैध प्रिस्क्रिप्शनवरच मिळते, जे नोंदणीकृत फार्मासिस्ट तपासतात."
-    }
+    "image": "/images/products/telmisartan-40.webp"
   },
   {
     "id": "paracetamol-650",
@@ -120,30 +98,8 @@
       "name": "Paracetamol 650 mg गोळ्या",
       "pack": "15 गोळ्यांची स्ट्रिप",
       "desc": "ताप आणि हलक्या दुखण्यासाठी. लेबल वाचा आणि डॉक्टर किंवा फार्मासिस्ट सांगतील तेवढाच डोस घ्या."
-    }
-  },
-  {
-    "id": "ors-sachet",
-    "name": "ORS powder sachets",
-    "cat": "medicines",
-    "brand": "Generic",
-    "pack": "Box of 10 sachets",
-    "price": 210,
-    "rx": false,
-    "seller": "Way2Cure",
-    "deliveryHours": 6,
-    "popular": 70,
-    "desc": "Oral rehydration salts. Mix one sachet in clean drinking water as shown on the pack.",
-    "hi": {
-      "name": "ORS पाउडर सैशे",
-      "pack": "10 सैशे का डिब्बा",
-      "desc": "शरीर में पानी की कमी के लिए घोल। पैक पर बताए तरीके से एक सैशे साफ़ पीने के पानी में घोलें।"
     },
-    "mr": {
-      "name": "ORS पावडर सॅशे",
-      "pack": "10 सॅशेचा बॉक्स",
-      "desc": "शरीरातील पाण्याची कमतरता भरून काढण्यासाठी. पाकिटावर दाखवल्याप्रमाणे एक सॅशे स्वच्छ पिण्याच्या पाण्यात मिसळा."
-    }
+    "image": "/images/products/paracetamol-650.webp"
   },
   {
     "id": "bp-monitor",
@@ -167,7 +123,8 @@
       "name": "डिजिटल बीपी मॉनिटर",
       "pack": "दंडावर बांधायचा कफ, 1 नग",
       "desc": "मोठी, स्पष्ट स्क्रीन आणि एका बटणाने सुरू. आधीची रीडिंग जतन राहतात, त्यामुळे तुमचे कुटुंब आणि डॉक्टर बदल पाहू शकतात."
-    }
+    },
+    "image": "/images/products/bp-monitor.webp"
   },
   {
     "id": "glucometer-kit",
@@ -192,7 +149,8 @@
       "name": "ग्लुकोमीटर किट, 25 स्ट्रिपसह",
       "pack": "1 मीटर, 25 स्ट्रिप, लॅन्सेट",
       "desc": "घरीच सहज शुगर तपासा. रिफिल स्ट्रिप मासिक प्लॅनमध्ये जोडता येतात."
-    }
+    },
+    "image": "/images/products/glucometer-kit.webp"
   },
   {
     "id": "pulse-oximeter",
@@ -215,7 +173,8 @@
       "name": "फिंगरटिप पल्स ऑक्सिमीटर",
       "pack": "1 नग",
       "desc": "काही सेकंदांत ऑक्सिजन लेव्हल आणि पल्स दाखवतो, मोठ्या आणि उजळ स्क्रीनवर."
-    }
+    },
+    "image": "/images/products/pulse-oximeter.webp"
   },
   {
     "id": "thermometer",
@@ -238,55 +197,8 @@
       "name": "डिजिटल थर्मामीटर",
       "pack": "1 नग",
       "desc": "रीडिंग तयार झाल्यावर बीप करतो. आकडे वाचायला सोपे."
-    }
-  },
-  {
-    "id": "nebuliser",
-    "name": "Compressor nebuliser",
-    "cat": "devices",
-    "brand": "BreatheEasy",
-    "pack": "1 unit with masks",
-    "price": 1899,
-    "rx": false,
-    "seller": "MediHome Supplies",
-    "sellerVerified": true,
-    "deliveryHours": 48,
-    "popular": 72,
-    "desc": "For inhaled medicines prescribed by your doctor. Comes with adult and child masks.",
-    "hi": {
-      "name": "कंप्रेसर नेबुलाइज़र",
-      "pack": "मास्क के साथ 1 यूनिट",
-      "desc": "डॉक्टर की लिखी, साँस से लेने वाली दवाइयों के लिए। बड़ों और बच्चों, दोनों के मास्क साथ आते हैं।"
     },
-    "mr": {
-      "name": "कॉम्प्रेसर नेब्युलायझर",
-      "pack": "मास्कसह 1 नग",
-      "desc": "डॉक्टरांनी लिहून दिलेल्या, श्वासावाटे घ्यायच्या औषधांसाठी. मोठ्यांचे आणि लहान मुलांचे मास्क सोबत मिळतात."
-    }
-  },
-  {
-    "id": "weighing-scale",
-    "name": "Digital weighing scale",
-    "cat": "devices",
-    "brand": "FitHome",
-    "pack": "1 unit",
-    "price": 999,
-    "rx": false,
-    "seller": "MediHome Supplies",
-    "sellerVerified": true,
-    "deliveryHours": 48,
-    "popular": 60,
-    "desc": "Wide, anti-slip platform with large digits.",
-    "hi": {
-      "name": "डिजिटल वज़न मशीन",
-      "pack": "1 यूनिट",
-      "desc": "चौड़ा, न फिसलने वाला प्लेटफ़ॉर्म और बड़े अंक।"
-    },
-    "mr": {
-      "name": "डिजिटल वजनकाटा",
-      "pack": "1 नग",
-      "desc": "रुंद, न घसरणारा प्लॅटफॉर्म आणि मोठे आकडे."
-    }
+    "image": "/images/products/thermometer.webp"
   },
   {
     "id": "adult-diapers-m",
@@ -311,7 +223,8 @@
       "name": "प्रौढांसाठी डायपर, मीडियम",
       "pack": "10 चा पॅक",
       "desc": "दिवस आणि रात्रीसाठी मऊ, जास्त शोषून घेणारे डायपर. मासिक प्लॅनमध्ये जोडा, म्हणजे कधीच कमी पडणार नाहीत."
-    }
+    },
+    "image": "/images/products/adult-diapers-m.webp"
   },
   {
     "id": "underpads",
@@ -335,7 +248,8 @@
       "name": "डिस्पोजेबल अंडरपॅड",
       "pack": "10 चा पॅक",
       "desc": "बेड आणि खुर्ची ओली होण्यापासून वाचवतात. अंथरुणावर असलेल्या रुग्णांसाठी आणि सर्जरीनंतर उपयोगी."
-    }
+    },
+    "image": "/images/products/underpads.webp"
   },
   {
     "id": "wound-dressing-kit",
@@ -358,7 +272,8 @@
       "name": "जखमेची ड्रेसिंग किट",
       "pack": "1 किट",
       "desc": "निर्जंतुक गॉज, टेप, हातमोजे आणि सलाईन. तुमच्या नर्स किंवा डॉक्टरांनी दाखवल्याप्रमाणे वापरा."
-    }
+    },
+    "image": "/images/products/wound-dressing-kit.webp"
   },
   {
     "id": "hand-sanitiser",
@@ -381,7 +296,8 @@
       "name": "हँड सॅनिटायझर, 500 ml",
       "pack": "500 ml पंप बाटली",
       "desc": "रुग्णाला हात लावण्यापूर्वी, काळजी घेणाऱ्यांसाठी आणि भेटायला येणाऱ्यांसाठी."
-    }
+    },
+    "image": "/images/products/hand-sanitiser.webp"
   },
   {
     "id": "walker",
@@ -405,7 +321,8 @@
       "name": "घडी करता येणारा वॉकर",
       "pack": "1 नग, उंची कमी-जास्त करता येते",
       "desc": "हलकी ॲल्युमिनियम फ्रेम, रबरी पाय. विकत घ्या, किंवा बरे होईपर्यंत भाड्याने घ्या."
-    }
+    },
+    "image": "/images/products/walker.webp"
   },
   {
     "id": "wheelchair",
@@ -429,7 +346,8 @@
       "name": "घडी करता येणारी व्हीलचेअर",
       "pack": "1 नग",
       "desc": "घडी करून गाडीच्या डिकीत मावते. विकत घ्या, किंवा दरमहा भाड्याने घ्या."
-    }
+    },
+    "image": "/images/products/wheelchair.webp"
   },
   {
     "id": "walking-stick",
@@ -453,7 +371,8 @@
       "name": "चार पायांची काठी",
       "pack": "1 नग",
       "desc": "आपोआप उभी राहते, त्यामुळे हात सोडला तरी पडत नाही."
-    }
+    },
+    "image": "/images/products/walking-stick.webp"
   },
   {
     "id": "hospital-bed",
@@ -477,31 +396,8 @@
       "name": "हॉस्पिटल बेड, 2 फंक्शन",
       "pack": "गादीसह बेड",
       "desc": "हँडल फिरवून पाठीचा आणि पायांचा भाग वर करा. घरी डिलिव्हरी आणि सेटअप समाविष्ट आहे."
-    }
-  },
-  {
-    "id": "commode-chair",
-    "name": "Commode & shower chair",
-    "cat": "mobility",
-    "brand": "SafeBath",
-    "pack": "1 unit",
-    "price": 2199,
-    "rx": false,
-    "seller": "MediHome Supplies",
-    "sellerVerified": true,
-    "deliveryHours": 48,
-    "popular": 68,
-    "desc": "Rust-proof frame with armrests for safe bathing.",
-    "hi": {
-      "name": "कमोड और शावर चेयर",
-      "pack": "1 यूनिट",
-      "desc": "जंग न लगने वाला फ़्रेम और हाथ टिकाने की जगह, ताकि नहाना सुरक्षित रहे।"
     },
-    "mr": {
-      "name": "कमोड आणि शॉवर खुर्ची",
-      "pack": "1 नग",
-      "desc": "गंज न लागणारी फ्रेम आणि हात ठेवायला आधार, सुरक्षित अंघोळीसाठी."
-    }
+    "image": "/images/products/hospital-bed.webp"
   },
   {
     "id": "protein-drink",
@@ -525,7 +421,8 @@
       "name": "मधुमेहींसाठी योग्य प्रोटीन ड्रिंक",
       "pack": "400 g डबा, व्हॅनिला",
       "desc": "वेगळी साखर न घातलेले पोषण ड्रिंक. किडनीचा काही त्रास असल्यास तुमच्या डॉक्टरांशी बोला."
-    }
+    },
+    "image": "/images/products/protein-drink.webp"
   },
   {
     "id": "multivitamin",
@@ -549,7 +446,8 @@
       "name": "50+ वयाच्या व्यक्तींसाठी मल्टिव्हिटॅमिन",
       "pack": "60 गोळ्या",
       "desc": "रोज घ्यायचे सप्लिमेंट. हे संतुलित आहाराची जागा घेत नाही."
-    }
+    },
+    "image": "/images/products/multivitamin.webp"
   },
   {
     "id": "diabetic-atta",
@@ -574,7 +472,8 @@
       "name": "हाय-फायबर पीठ",
       "pack": "1 kg",
       "desc": "रोजच्या पोळ्यांसाठी, जास्त फायबर असलेले मल्टिग्रेन पीठ."
-    }
+    },
+    "image": "/images/products/diabetic-atta.webp"
   },
   {
     "id": "pill-box",
@@ -597,7 +496,8 @@
       "name": "आठवड्याचा पिल बॉक्स, दिवसातून 4 वेळा",
       "pack": "1 नग",
       "desc": "आठवड्याच्या प्रत्येक दिवसासाठी मोठी झाकणे, त्यावर सकाळ, दुपार, संध्याकाळ आणि रात्र लिहिलेले."
-    }
+    },
+    "image": "/images/products/pill-box.webp"
   },
   {
     "id": "fall-watch",
@@ -621,7 +521,8 @@
       "name": "पडल्याचे ओळखणारे घड्याळ",
       "pack": "1 घड्याळ",
       "desc": "पडल्याचे लक्षात आल्यावर किंवा बटण दाबल्यावर, कुटुंबाच्या सेव्ह केलेल्या नंबरांवर कॉल करते."
-    }
+    },
+    "image": "/images/products/fall-watch.webp"
   },
   {
     "id": "alert-pendant",
@@ -645,7 +546,8 @@
       "name": "इमर्जन्सी अलर्ट पेंडंट",
       "pack": "1 पेंडंट",
       "desc": "एकदा दाबताच कुटुंबाच्या फोनवर अलर्ट जातो."
-    }
+    },
+    "image": "/images/products/alert-pendant.webp"
   },
   {
     "id": "oxygen-concentrator",
@@ -669,6 +571,7 @@
       "name": "ऑक्सिजन कॉन्सन्ट्रेटर, 5 लिटर",
       "pack": "ट्यूबसह 1 नग",
       "desc": "फक्त भाड्याने. ऑक्सिजन फ्लो लिहिलेले डॉक्टरांचे प्रिस्क्रिप्शन आवश्यक. आमची टीम घरी बसवून देते."
-    }
+    },
+    "image": "/images/products/oxygen-concentrator.webp"
   }
 ]

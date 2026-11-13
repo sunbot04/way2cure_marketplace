@@ -7,7 +7,6 @@ import { Field, Select } from '../components/ui/Field';
 import { ProductCardSkeleton } from '../components/ui/Skeleton';
 import { Reveal, Stagger, StaggerItem } from '../components/motion/Reveal';
 import ProductCard from '../components/commerce/ProductCard';
-import CartBar from '../components/commerce/CartBar';
 import { COPY } from '../components/copy';
 import { useSaved } from '../context/SavedContext';
 import RxNotice from '../components/commerce/RxNotice';
@@ -27,7 +26,7 @@ const T: Dict = {
     browse: 'Browse by need',
     filters: 'Filters', filter: 'Filter', showFilters: 'Show filters', hideFilters: 'Hide filters', active: '{n} on',
     brand: 'Brand', allBrands: 'All brands',
-    price: 'Price', anyPrice: 'Any price', under500: 'Under Rs. 500', mid: 'Rs. 500 to 2,000', over2000: 'Over Rs. 2,000',
+    price: 'Price', anyPrice: 'Any price', under500: 'Under ₹500.00', mid: '₹500.00 to ₹2,000.00', over2000: 'Over ₹2,000.00',
     buyOrRent: 'Buy or rent', buy: 'Buy', rent: 'Rent',
     prescription: 'Prescription', rxAll: 'Rx and no Rx', rxNeeded: 'Rx needed', rxNo: 'No Rx needed',
     clear: 'Clear filters',
@@ -39,7 +38,7 @@ const T: Dict = {
     errorTitle: 'We could not load products.',
     errorText: 'Your cart is safe. Please try again. If it keeps happening, call us and we will place the order for you.',
     retry: 'Try again',
-    findTitle: 'Cannot find what you need?', findText: 'Tell us on WhatsApp or call. We will find it and deliver it.',
+
   },
   hi: {
     shop: 'खरीदारी',
@@ -49,7 +48,7 @@ const T: Dict = {
     browse: 'ज़रूरत के हिसाब से देखें',
     filters: 'फ़िल्टर', filter: 'फ़िल्टर', showFilters: 'फ़िल्टर दिखाएँ', hideFilters: 'फ़िल्टर छिपाएँ', active: '{n} चालू',
     brand: 'ब्रांड', allBrands: 'सभी ब्रांड',
-    price: 'कीमत', anyPrice: 'कोई भी कीमत', under500: 'Rs. 500 से कम', mid: 'Rs. 500 से 2,000', over2000: 'Rs. 2,000 से ज़्यादा',
+    price: 'कीमत', anyPrice: 'कोई भी कीमत', under500: '₹500.00 से कम', mid: '₹500.00 से ₹2,000.00', over2000: '₹2,000.00 से ज़्यादा',
     buyOrRent: 'ख़रीदें या किराये पर', buy: 'ख़रीदें', rent: 'किराये पर',
     prescription: 'पर्चा', rxAll: 'सभी सामान', rxNeeded: 'पर्चा ज़रूरी', rxNo: 'पर्चा ज़रूरी नहीं',
     clear: 'फ़िल्टर हटाएँ',
@@ -61,7 +60,7 @@ const T: Dict = {
     errorTitle: 'हम प्रोडक्ट लोड नहीं कर पाए।',
     errorText: 'आपका कार्ट सुरक्षित है। कृपया फिर से कोशिश करें। अगर ऐसा बार-बार हो, तो हमें कॉल करें, हम आपके लिए ऑर्डर कर देंगे।',
     retry: 'फिर से कोशिश करें',
-    findTitle: 'जो चाहिए वह नहीं मिल रहा?', findText: 'हमें व्हाट्सऐप पर बताएँ या कॉल करें। हम ढूँढकर पहुँचा देंगे।',
+
   },
   mr: {
     shop: 'खरेदी',
@@ -71,7 +70,7 @@ const T: Dict = {
     browse: 'गरजेनुसार पाहा',
     filters: 'फिल्टर', filter: 'फिल्टर', showFilters: 'फिल्टर दाखवा', hideFilters: 'फिल्टर लपवा', active: '{n} चालू',
     brand: 'ब्रँड', allBrands: 'सर्व ब्रँड',
-    price: 'किंमत', anyPrice: 'कोणतीही किंमत', under500: 'Rs. 500 पेक्षा कमी', mid: 'Rs. 500 ते 2,000', over2000: 'Rs. 2,000 पेक्षा जास्त',
+    price: 'किंमत', anyPrice: 'कोणतीही किंमत', under500: '₹500.00 पेक्षा कमी', mid: '₹500.00 ते ₹2,000.00', over2000: '₹2,000.00 पेक्षा जास्त',
     buyOrRent: 'विकत की भाड्याने', buy: 'विकत घ्या', rent: 'भाड्याने',
     prescription: 'प्रिस्क्रिप्शन', rxAll: 'सर्व वस्तू', rxNeeded: 'प्रिस्क्रिप्शन लागते', rxNo: 'प्रिस्क्रिप्शन नको',
     clear: 'फिल्टर काढा',
@@ -83,7 +82,7 @@ const T: Dict = {
     errorTitle: 'आम्ही उत्पादने लोड करू शकलो नाही.',
     errorText: 'तुमचे कार्ट सुरक्षित आहे. कृपया पुन्हा प्रयत्न करा. असे वारंवार होत असल्यास, आम्हाला कॉल करा, आम्ही तुमच्यासाठी ऑर्डर करू.',
     retry: 'पुन्हा प्रयत्न करा',
-    findTitle: 'हवे ते सापडत नाही?', findText: 'आम्हाला व्हॉट्सॲपवर सांगा किंवा कॉल करा. आम्ही शोधून पोहोचवू.',
+
   },
 };
 
@@ -125,8 +124,9 @@ export default function Shop() {
   // Demo only: /shop?fail=1 shows the error state.
   const fail = params.get('fail') === '1';
   // ?saved=1: only the products saved with the heart
-  const savedOnly = params.get('saved') === '1';
-  const { ids: savedIds } = useSaved();
+  const { enabled: canSave, ids: savedIds } = useSaved();
+  // ?saved=1 works only when signed in (the saved list belongs to an account)
+  const savedOnly = canSave && params.get('saved') === '1';
   const tc = useT(COPY);
 
   const [brand, setBrand] = useState('all');
@@ -203,7 +203,10 @@ export default function Shop() {
         title={title}
         lead={lead}
         crumbs={[{ label: t('home'), to: '/' }, ...(category || q ? [{ label: tr('shop'), to: '/shop' }, { label: plainTitle }] : [{ label: tr('shop') }])]}
-      />
+      >
+        {/* Prescription rule, as a quiet note under the heading */}
+        {(category === 'medicines' || base.some((p) => p.rx)) && <RxNotice inline />}
+      </PageHeader>
 
       {!category && !q && (
         <section aria-labelledby="browse" className="pb-8 md:pb-10">
@@ -223,8 +226,6 @@ export default function Shop() {
 
       <section aria-label={tr('shop')} className="bg-mist py-8 md:py-12">
         <div className="container">
-          {(category === 'medicines' || base.some((p) => p.rx)) && <RxNotice light className="mb-8" />}
-
           <div className="grid gap-8 lg:grid-cols-[17rem_1fr]">
             <aside aria-labelledby="filter-heading" className="self-start rounded-panel bg-white p-5 shadow-card lg:sticky lg:top-28 lg:p-6">
               <div className="flex items-center justify-between gap-3">
@@ -283,7 +284,7 @@ export default function Shop() {
                   <p className="m-0 text-body" aria-live="polite">
                     {loading ? <span className="text-grey">{tr('loading')}…</span> : !fail && <><strong className="text-green">{shown.length}</strong> {shown.length === 1 ? tr('item') : tr('items')}</>}
                   </p>
-                  {(savedIds.length > 0 || savedOnly) && (
+                  {canSave && (savedIds.length > 0 || savedOnly) && (
                     <button
                       type="button"
                       aria-pressed={savedOnly}
@@ -341,21 +342,10 @@ export default function Shop() {
                 </Reveal>
               )}
 
-              <Reveal className="mt-12 flex flex-wrap items-center justify-between gap-5 rounded-panel border border-line bg-white p-6 md:p-8">
-                <div>
-                  <h2 className="mb-1 font-body text-h3m">{tr('findTitle')}</h2>
-                  <p className="m-0 text-base text-grey">{tr('findText')}</p>
-                </div>
-                <div className="flex flex-wrap gap-3">
-                  <Button href={SITE.whatsappHref} external variant="outline" compact><Icon name="whatsapp" size={18} /> {t('whatsapp')}</Button>
-                  <Button href={SITE.phoneHref} variant="urgent" compact><Icon name="phone" size={18} /> {tr('call', { phone: SITE.phone })}</Button>
-                </div>
-              </Reveal>
             </div>
           </div>
         </div>
       </section>
-      <CartBar />
     </>
   );
 }

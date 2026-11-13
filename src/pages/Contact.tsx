@@ -22,8 +22,9 @@ const T: Dict = {
     reach: "Talk to us",
     offices: "Our offices",
     areas: "Home care near you",
-    areasText: "Nursing and elder care pages for each area we serve.",
-    homeCareIn: "Home care in {place}",
+    areasText: "Our nurses and caretakers visit homes across Mumbai, Navi Mumbai and Thane, including Vashi and Airoli.",
+    callLabel: 'Call us', callSub: 'Talk to a care advisor now', chip247: 'Open 24/7', chipEmail: 'Reply in 1 working day',
+    callCta: 'Call now', waCta: 'Open WhatsApp', mailCta: 'Write to us',
     eyebrow: 'Contact',
     title: "We're family, *not just care.*",
     open247: 'Phone and WhatsApp are answered 24/7, every day of the year.',
@@ -72,8 +73,9 @@ const T: Dict = {
     reach: "हमसे बात करें",
     offices: "हमारे ऑफ़िस",
     areas: "आपके पास घर पर देखभाल",
-    areasText: "हर इलाके के लिए नर्सिंग और बुज़ुर्गों की देखभाल के पेज।",
-    homeCareIn: "{place} में घर पर देखभाल",
+    areasText: "हमारी नर्स और केयरटेकर पूरे मुंबई, नवी मुंबई और ठाणे में घरों पर आते हैं, वाशी और ऐरोली सहित।",
+    callLabel: 'कॉल करें', callSub: 'अभी केयर सलाहकार से बात करें', chip247: '24/7 खुला', chipEmail: '1 कामकाजी दिन में जवाब',
+    callCta: 'अभी कॉल करें', waCta: 'व्हाट्सऐप खोलें', mailCta: 'हमें लिखें',
     eyebrow: 'संपर्क',
     title: 'हम सिर्फ़ देखभाल नहीं, *परिवार हैं।*',
     open247: 'फ़ोन और व्हाट्सऐप पर 24/7, साल के हर दिन जवाब मिलता है।',
@@ -122,8 +124,9 @@ const T: Dict = {
     reach: "आमच्याशी बोला",
     offices: "आमची ऑफिस",
     areas: "तुमच्या जवळ घरी काळजी",
-    areasText: "आम्ही सेवा देत असलेल्या प्रत्येक भागासाठी नर्सिंग आणि ज्येष्ठांच्या काळजीची पाने.",
-    homeCareIn: "{place} मध्ये घरी काळजी",
+    areasText: "आमच्या नर्स आणि केअरटेकर संपूर्ण मुंबई, नवी मुंबई आणि ठाणे येथे घरी येतात, वाशी आणि ऐरोलीसह.",
+    callLabel: 'कॉल करा', callSub: 'आत्ताच केअर सल्लागाराशी बोला', chip247: '24/7 सुरू', chipEmail: '1 कामकाजाच्या दिवसात उत्तर',
+    callCta: 'आत्ता कॉल करा', waCta: 'व्हॉट्सॲप उघडा', mailCta: 'आम्हाला लिहा',
     eyebrow: 'संपर्क',
     title: 'आम्ही फक्त काळजी नाही, *कुटुंब आहोत.*',
     open247: 'फोन आणि व्हॉट्सॲपवर 24/7, वर्षाच्या प्रत्येक दिवशी उत्तर मिळते.',
@@ -172,7 +175,17 @@ const T: Dict = {
 type Errors = Partial<Record<'name' | 'phone', string>>;
 
 const channel =
-  'group flex h-full flex-col gap-4 rounded-panel border border-line bg-white p-6 text-ink no-underline transition-[transform,box-shadow] duration-micro ease-soft hover:-translate-y-1 hover:shadow-raised';
+  'group flex w-full flex-col rounded-[1.75rem] border border-line bg-white p-2.5 text-ink no-underline shadow-card transition-[transform,box-shadow,border-color] duration-slow ease-soft hover:-translate-y-1 hover:border-transparent hover:shadow-[0_24px_44px_-24px_rgb(38_52_69/0.5)]';
+
+// The three ways to reach us. Phone and WhatsApp are answered 24/7 (see open247).
+const CHANNELS = [
+  { id: 'call', href: SITE.phoneHref, external: false, icon: 'phone', value: SITE.phoneDisplay, label: 'callLabel', sub: 'callSub', chip: 'chip247', cta: 'callCta',
+    stage: 'bg-[linear-gradient(160deg,#FDF0F2,#FFF8F9)]', ring: 'border-terracotta-deep/15', tile: 'bg-terracotta-deep', dot: 'bg-terracotta-deep' },
+  { id: 'whatsapp', href: SITE.whatsappHref, external: true, icon: 'whatsapp', value: SITE.phoneDisplay, label: 'whatsapp', sub: 'whatsappText', chip: 'chip247', cta: 'waCta',
+    stage: 'bg-[linear-gradient(160deg,#E6F6EC,#F5FBF7)]', ring: 'border-whatsapp/20', tile: 'bg-whatsapp', dot: 'bg-whatsapp' },
+  { id: 'email', href: `mailto:${SITE.email}`, external: false, icon: 'mail', value: SITE.email, label: 'email', sub: 'emailText', chip: 'chipEmail', cta: 'mailCta',
+    stage: 'bg-[linear-gradient(160deg,#E7F0FA,#F5F9FD)]', ring: 'border-sage/20', tile: 'bg-sage', dot: 'bg-sage' },
+] as const;
 
 const mapsUrl = (address: string) => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
 
@@ -212,37 +225,32 @@ export default function Contact() {
         <div className="container">
           <h2 className="sr-only">{tr('reach')}</h2>
           <Stagger as="ul" className="grid gap-4 md:grid-cols-3 md:gap-5">
-            <StaggerItem as="li">
-              <a href={SITE.phoneHref} className={channel}>
-                <span className="grid h-12 w-12 place-items-center rounded-btn bg-terracotta-deep text-white"><Icon name="phone" size={24} /></span>
-                <span className="grid gap-1">
-                  <strong className="text-green">{tr('callUs')}</strong>
-                  <span className="font-head text-h2m font-bold text-ink">{SITE.phoneDisplay}</span>
-                </span>
-                <CardArrow className="mt-auto self-end" />
-              </a>
-            </StaggerItem>
-            <StaggerItem as="li">
-              <a href={SITE.whatsappHref} target="_blank" rel="noreferrer" className={channel}>
-                <span className="grid h-12 w-12 place-items-center rounded-btn bg-whatsapp text-white"><Icon name="whatsapp" size={26} /></span>
-                <span className="grid gap-1">
-                  <strong className="text-green">{tr('whatsapp')}</strong>
-                  <span className="text-ink/80">{tr('whatsappText')}</span>
-                </span>
-                <CardArrow className="mt-auto self-end" />
-              </a>
-            </StaggerItem>
-            <StaggerItem as="li">
-              <a href={`mailto:${SITE.email}`} className={channel}>
-                <span className="grid h-12 w-12 place-items-center rounded-btn bg-mist text-green"><Icon name="mail" size={24} /></span>
-                <span className="grid gap-1">
-                  <strong className="text-green">{tr('email')}</strong>
-                  <span className="break-all text-ink">{SITE.email}</span>
-                  <span className="text-base text-grey">{tr('emailText')}</span>
-                </span>
-                <CardArrow className="mt-auto self-end" />
-              </a>
-            </StaggerItem>
+            {CHANNELS.map((c) => (
+              <StaggerItem as="li" key={c.id} className="flex">
+                <a href={c.href} {...(c.external ? { target: '_blank', rel: 'noreferrer' } : {})} className={channel}>
+                  {/* Colour stage: the channel's icon on a white tile, with rings and its availability */}
+                  <span aria-hidden="true" className={`relative grid h-40 place-items-center overflow-hidden rounded-[1.375rem] ${c.stage}`}>
+                    <span className={`absolute h-56 w-56 rounded-full border ${c.ring}`} />
+                    <span className={`absolute h-40 w-40 rounded-full border border-dashed ${c.ring}`} />
+                    <span className={`relative -mt-7 grid h-16 w-16 place-items-center rounded-2xl text-white shadow-raised transition-transform duration-slow ease-soft group-hover:scale-105 ${c.tile}`}>
+                      <Icon name={c.icon} size={30} />
+                    </span>
+                    <span className="absolute bottom-3 left-1/2 inline-flex -translate-x-1/2 items-center gap-1.5 whitespace-nowrap rounded-full bg-white/90 px-3 py-1 text-small font-bold text-green shadow-card">
+                      <span className={`h-2 w-2 rounded-full ${c.dot}`} /> {tr(c.chip)}
+                    </span>
+                  </span>
+                  <span className="flex flex-1 flex-col px-3 pb-3 pt-5">
+                    <strong className="mb-1 text-base text-grey">{tr(c.label)}</strong>
+                    <span className={c.id === 'email' ? 'break-all font-head text-h3m font-bold text-ink md:text-[1.35rem]' : 'font-head text-h2m font-bold text-ink'}>{c.value}</span>
+                    <span className="mt-1 text-base text-grey">{tr(c.sub)}</span>
+                    <span className="mt-5 flex items-center justify-between gap-3 border-t border-line pt-4">
+                      <span className="font-bold text-green">{tr(c.cta)}</span>
+                      <CardArrow size="sm" />
+                    </span>
+                  </span>
+                </a>
+              </StaggerItem>
+            ))}
           </Stagger>
         </div>
       </section>
@@ -273,24 +281,12 @@ export default function Contact() {
               </Stagger>
             </div>
 
-            {/* Home care areas */}
-            <div>
-              <Reveal>
-                <h2 className="mb-3 text-section">{tr('areas')}</h2>
-                <p className="mb-6 text-ink/80">{tr('areasText')}</p>
-              </Reveal>
-              <Stagger as="ul" className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
-                {SITE.homeCareLocations.map((l) => (
-                  <StaggerItem as="li" key={l.name}>
-                    <a href={l.href} className="group flex min-h-tap items-center gap-2 rounded-tile border border-line bg-white px-4 py-3 font-bold text-green no-underline transition-[transform,box-shadow] duration-micro ease-soft hover:-translate-y-0.5 hover:shadow-raised">
-                      <Icon name="pin" size={18} className="shrink-0 text-sage" />
-                      <span className="flex-1">{tr('homeCareIn', { place: l.name })}</span>
-                      <Icon name="external" size={15} className="text-terracotta-deep" />
-                    </a>
-                  </StaggerItem>
-                ))}
-              </Stagger>
-            </div>
+            {/* Home care areas: the areas named in one line (no buttons: they all led to the same page) */}
+            <Reveal className="relative overflow-hidden rounded-[1.75rem] border border-line bg-[linear-gradient(120deg,#FFFFFF_0%,#F1F5F9_55%,#E7F0FA_100%)] p-6 shadow-card md:p-8">
+              <span aria-hidden="true" className="pointer-events-none absolute -bottom-12 -right-8 text-sage/10"><Icon name="pin" size={180} /></span>
+              <h2 className="relative mb-3 text-h2m md:text-h2">{tr('areas')}</h2>
+              <p className="relative m-0 text-lead text-ink/75">{tr('areasText')}</p>
+            </Reveal>
           </div>
 
           {/* Call-back form */}
@@ -326,7 +322,7 @@ export default function Contact() {
                   </Field>
                   <Field id="c-phone" label={tr('phone')} error={err('phone')}>
                     <div className="flex items-stretch">
-                      <span aria-hidden="true" className="grid min-h-tap place-items-center rounded-l-btn border-2 border-r-0 border-green bg-mist px-3 font-bold text-green">+91</span>
+                      <span aria-hidden="true" className="grid min-h-tap place-items-center rounded-l-xl border-2 border-r-0 border-mint bg-mist px-3.5 font-bold text-green">+91</span>
                       <Input id="c-phone" type="tel" inputMode="numeric" maxLength={10} autoComplete="tel-national" value={f.phone} invalid={!!errors.phone}
                         className="rounded-l-none"
                         aria-describedby={describedBy('c-phone', { error: errors.phone })}

@@ -11,7 +11,7 @@ import { Field, Input, Select, describedBy } from '../components/ui/Field';
 import ProductCard from '../components/commerce/ProductCard';
 import RxNotice from '../components/commerce/RxNotice';
 import { ChoiceList, QtyStepper } from '../components/commerce/Choice';
-import AppPanel, { HelpBox } from '../components/commerce/AppPanel';
+import AppPanel from '../components/commerce/AppPanel';
 import ServiceCard from '../components/care/ServiceCard';
 import PlanCard from '../components/plans/PlanCard';
 import DoseDay from '../components/plans/DoseDay';
@@ -144,7 +144,7 @@ export default function Styleguide() {
       <Block title="Choices & quantity" note="Large radio rows: the chosen one gets a green border and a tick, not colour alone. Stepper buttons are 48px.">
         <div className="grid max-w-xl gap-6">
           <ChoiceList name="sg-mode" legend="How would you like it?" value={mode} onChange={setMode}
-            choices={[{ id: 'buy', label: 'Buy', detail: 'Rs. 1,499' }, { id: 'rent', label: 'Rent', detail: 'Rs. 349 a month' }]} />
+            choices={[{ id: 'buy', label: 'Buy', detail: '₹1,499.00' }, { id: 'rent', label: 'Rent', detail: '₹349.00 a month' }]} />
           <QtyStepper value={qty} label="Quantity" lessLabel="One less" moreLabel="One more"
             onLess={() => setQty((q) => Math.max(1, q - 1))} onMore={() => setQty((q) => q + 1)} />
         </div>
@@ -162,7 +162,7 @@ export default function Styleguide() {
         <div className="grid gap-4">
           <InfoBand>A registered pharmacist verifies every prescription order.</InfoBand>
           <RxNotice />
-          <div className="grid gap-4 lg:grid-cols-2"><HelpBox /><AppPanel /></div>
+          <div className="grid gap-4 lg:grid-cols-2"><AppPanel /></div>
         </div>
       </Block>
 
@@ -180,7 +180,7 @@ export default function Styleguide() {
 
       <Block title="Product cards" note="Over-the-counter, Rx (no offer badge, valid-prescription line), and buy-or-rent.">
         <div className="grid grid-cols-2 gap-2.5 md:grid-cols-4 md:gap-4">
-          {['bp-monitor', 'metformin-500', 'wheelchair', 'nebuliser'].map((id, i) => <ProductCard key={id} product={getProduct(id)!} alt={i % 2 === 1} />)}
+          {['bp-monitor', 'metformin-500', 'wheelchair', 'pulse-oximeter'].map((id, i) => <ProductCard key={id} product={getProduct(id)!} alt={i % 2 === 1} />)}
         </div>
       </Block>
 

@@ -51,6 +51,43 @@ export function ChoiceList({ name, legend, choices, value, onChange, legendClass
 }
 
 /** − qty + stepper with 48px buttons and a press state. */
+/**
+ * A two-option Yes / No question as a pair of large toggle buttons (real radios underneath, so
+ * arrow keys and screen readers work). The chosen one is filled charcoal with a tick.
+ */
+export function YesNo({ name, legend, value, onChange, yes, no }: {
+  name: string;
+  legend: ReactNode;
+  value: boolean;
+  onChange: (v: boolean) => void;
+  yes: ReactNode;
+  no: ReactNode;
+}) {
+  const opts: [boolean, ReactNode][] = [[true, yes], [false, no]];
+  return (
+    <fieldset className="m-0 border-0 p-0">
+      <legend className="mb-3 font-bold text-green">{legend}</legend>
+      <div className="grid grid-cols-2 gap-2 rounded-tile bg-mist p-1.5">
+        {opts.map(([v, label]) => {
+          const on = value === v;
+          return (
+            <label
+              key={String(v)}
+              className={`relative flex min-h-tap cursor-pointer items-center justify-center gap-2 rounded-btn px-4 py-2 font-bold transition-[background-color,color,box-shadow] duration-micro has-[:focus-visible]:outline has-[:focus-visible]:outline-[3px] has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-terracotta-deep ${
+                on ? 'bg-green text-white shadow-raised' : 'text-green hover:bg-white'
+              }`}
+            >
+              <input type="radio" name={name} checked={on} onChange={() => onChange(v)} className="sr-only" />
+              {on && <Icon name="check" size={16} />}
+              {label}
+            </label>
+          );
+        })}
+      </div>
+    </fieldset>
+  );
+}
+
 export function QtyStepper({ value, label, lessLabel, moreLabel, onLess, onMore }: {
   value: number;
   label: string;

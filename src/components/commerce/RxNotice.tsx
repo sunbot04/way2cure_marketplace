@@ -3,8 +3,22 @@ import { useT } from '../../i18n/LangContext';
 import { COPY } from '../copy';
 
 /** Shown near every Rx item (guidelines p.11): "sold only with a valid prescription". */
-export default function RxNotice({ className = '', light = false }: { className?: string; /** white panel, for use on a mist background */ light?: boolean }) {
+export default function RxNotice({ className = '', light = false, inline = false }: {
+  className?: string;
+  /** white panel, for use on a mist background */
+  light?: boolean;
+  /** a soft one-line note, for under a page heading */
+  inline?: boolean;
+}) {
   const tr = useT(COPY);
+  if (inline) {
+    return (
+      <p className={`m-0 inline-flex max-w-full items-start gap-2.5 rounded-2xl bg-[#FDF0F2] px-4 py-2.5 text-base font-semibold text-terracotta-deep ${className}`}>
+        <Icon name="rx" size={18} className="mt-0.5 shrink-0" />
+        <span>{tr('rxNotice')}</span>
+      </p>
+    );
+  }
   return (
     <div className={`flex items-start gap-4 rounded-tile border border-mint px-5 py-4 ${light ? 'bg-white' : 'bg-mist'} ${className}`}>
       <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-white text-terracotta-deep shadow-card">

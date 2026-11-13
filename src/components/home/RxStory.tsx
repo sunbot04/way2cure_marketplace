@@ -80,6 +80,125 @@ function Visual({ step }: { step: number }) {
   );
 }
 
+/** Background for the prescription section: a sky-to-blush colour wash, two soft white waves, a
+ *  dot grid, a large "Rx" watermark and colourful pills, capsules and prescriptions drifting slowly
+ *  in the margins and the gutter between the columns. Decorative only. */
+type Shape = 'capsule' | 'capsuleSky' | 'tablet' | 'blister' | 'rx' | 'plus' | 'drop';
+
+function Deco({ shape }: { shape: Shape }) {
+  const crimson = 'rgb(var(--c-terracotta-deep))';
+  const sky = 'rgb(var(--c-sage))';
+  const pale = 'rgb(var(--c-mint))';
+  switch (shape) {
+    case 'capsule':
+    case 'capsuleSky':
+      return (
+        <svg viewBox="0 0 80 32" className="h-full w-full">
+          <rect x="1" y="1" width="78" height="30" rx="15" fill="#fff" stroke={pale} strokeWidth="2" />
+          <path d="M16 1h24v30H16A15 15 0 0 1 16 1z" fill={shape === 'capsule' ? crimson : sky} />
+          <rect x="8" y="7" width="20" height="5" rx="2.5" fill="#fff" opacity=".45" />
+        </svg>
+      );
+    case 'tablet':
+      return (
+        <svg viewBox="0 0 48 48" className="h-full w-full">
+          <circle cx="24" cy="24" r="22" fill="#fff" stroke={pale} strokeWidth="2" />
+          <path d="M10 24h28" stroke={pale} strokeWidth="3" strokeLinecap="round" />
+        </svg>
+      );
+    case 'blister':
+      return (
+        <svg viewBox="0 0 96 64" className="h-full w-full">
+          <rect x="1" y="1" width="94" height="62" rx="12" fill="rgb(var(--c-sage-tint))" stroke={pale} strokeWidth="2" />
+          {[0, 1, 2].map((c) => [0, 1].map((r) => (
+            <g key={`${c}${r}`}>
+              <rect x={12 + c * 26} y={10 + r * 24} width="20" height="18" rx="9" fill="#fff" stroke={pale} strokeWidth="1.5" />
+              {!(c === 2 && r === 1) && <rect x={15 + c * 26} y={13 + r * 24} width="14" height="12" rx="6" fill={c === 1 ? sky : crimson} opacity=".85" />}
+            </g>
+          )))}
+        </svg>
+      );
+    case 'rx':
+      return (
+        <svg viewBox="0 0 64 80" className="h-full w-full">
+          <rect x="1" y="1" width="62" height="78" rx="8" fill="#fff" stroke={pale} strokeWidth="2" />
+          <text x="10" y="28" fontFamily="Lora, Georgia, serif" fontWeight="700" fontSize="20" fill={crimson}>Rx</text>
+          <rect x="10" y="38" width="44" height="4" rx="2" fill={pale} />
+          <rect x="10" y="48" width="34" height="4" rx="2" fill={pale} />
+          <rect x="10" y="58" width="40" height="4" rx="2" fill={pale} />
+        </svg>
+      );
+    case 'drop':
+      return (
+        <svg viewBox="0 0 40 52" className="h-full w-full">
+          <path d="M20 2C20 2 2 24 2 34a18 18 0 0 0 36 0C38 24 20 2 20 2z" fill={sky} opacity=".8" />
+          <path d="M11 34a9 9 0 0 0 6 8" stroke="#fff" strokeWidth="3" fill="none" strokeLinecap="round" opacity=".6" />
+        </svg>
+      );
+    default:
+      return (
+        <svg viewBox="0 0 32 32" className="h-full w-full">
+          <path d="M16 4v24M4 16h24" stroke={sky} strokeWidth="6" strokeLinecap="round" />
+        </svg>
+      );
+  }
+}
+
+const DECOS: { shape: Shape; cls: string; delay: string }[] = [
+  // Left and right margins
+  { shape: 'capsule', cls: '-left-[1%] top-[22%] h-7 w-16 -rotate-[28deg]', delay: '0s' },
+  { shape: 'rx', cls: 'right-[3%] top-[6%] h-20 w-16 rotate-12', delay: '-3s' },
+  { shape: 'tablet', cls: 'right-[9%] top-[19%] h-10 w-10', delay: '-1.5s' },
+  { shape: 'plus', cls: 'left-[2%] top-[4%] h-6 w-6 rotate-12', delay: '-4s' },
+  { shape: 'blister', cls: '-left-[2.5%] top-[56%] h-14 w-20 rotate-[14deg]', delay: '-2s' },
+  { shape: 'capsuleSky', cls: 'right-[2%] top-[40%] h-8 w-20 rotate-[32deg]', delay: '-5s' },
+  { shape: 'drop', cls: 'right-[7%] top-[58%] h-12 w-9 -rotate-12', delay: '-2.5s' },
+  { shape: 'tablet', cls: 'left-[4%] top-[68%] h-12 w-12', delay: '-3.5s' },
+  { shape: 'plus', cls: 'right-[4%] top-[76%] h-7 w-7', delay: '-1s' },
+  { shape: 'capsule', cls: 'left-[2%] bottom-[8%] h-8 w-20 rotate-[20deg]', delay: '-4.5s' },
+    // The gutter between the two columns
+  { shape: 'capsuleSky', cls: 'left-[46%] top-[34%] h-7 w-16 -rotate-45', delay: '-2s' },
+  { shape: 'plus', cls: 'left-[49%] top-[52%] h-5 w-5', delay: '-3s' },
+  { shape: 'tablet', cls: 'left-[45%] top-[72%] h-9 w-9', delay: '-5.5s' },
+  { shape: 'rx', cls: 'left-[30%] bottom-[5%] h-16 w-12 -rotate-12', delay: '-1.2s' },
+];
+
+export function RxBackdrop() {
+  return (
+    <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+      {/* Colour wash: light sky at the top left, through mist, to a blush at the bottom right */}
+      <div className="absolute inset-0 bg-[linear-gradient(160deg,rgb(var(--c-sage-tint))_0%,rgb(var(--c-mist))_45%,#FBEFF1_100%)]" />
+      {/* Colour pools */}
+      <span className="absolute -left-40 top-[10%] h-[36rem] w-[36rem] rounded-full bg-sage/25 blur-3xl" />
+      <span className="absolute -right-40 top-[42%] h-[32rem] w-[32rem] rounded-full bg-terracotta/15 blur-3xl" />
+      <span className="absolute bottom-[-10rem] left-[25%] h-[26rem] w-[26rem] rounded-full bg-mustard/20 blur-3xl" />
+      {/* Two soft white waves running across the section */}
+      <svg className="absolute inset-0 h-full w-full" viewBox="0 0 1000 1000" preserveAspectRatio="none">
+        <path d="M0 330 C 220 250, 420 420, 640 330 S 900 250, 1000 300 V 470 C 820 520, 640 400, 420 480 S 120 520, 0 450 Z" fill="#fff" opacity=".55" />
+        <path d="M0 760 C 200 700, 380 840, 620 760 S 880 690, 1000 740 V 860 C 800 900, 620 820, 400 880 S 140 900, 0 860 Z" fill="#fff" opacity=".45" />
+      </svg>
+      {/* Dot grid, strongest at the edges */}
+      <div className="absolute inset-0 [background-image:radial-gradient(rgb(var(--c-green)/0.16)_1.3px,transparent_1.3px)] [background-size:24px_24px] [mask-image:radial-gradient(ellipse_at_center,transparent_30%,black_80%)]" />
+      {/* Large "Rx" watermark */}
+      <span className="absolute -bottom-16 -left-6 hidden select-none font-head text-[24rem] font-bold italic leading-none text-green/[0.04] lg:block">Rx</span>
+      {/* A dashed route winding down the section: prescription to doorstep */}
+      <svg className="absolute inset-0 hidden h-full w-full lg:block" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <path
+          d="M2 24 C 20 30, 4 36, 22 44 S 50 58, 30 72 S 60 96, 92 94"
+          fill="none" stroke="rgb(var(--c-terracotta-deep))" strokeOpacity="0.3" strokeWidth="2.5" strokeDasharray="1 10" strokeLinecap="round"
+          vectorEffect="non-scaling-stroke"
+        />
+      </svg>
+      {/* Pills, capsules and prescriptions */}
+      {DECOS.map((d, i) => (
+        <span key={i} className={`rx-float absolute hidden drop-shadow-[0_8px_12px_rgb(38_52_69/0.12)] md:block ${d.cls}`} style={{ animationDelay: d.delay }}>
+          <Deco shape={d.shape} />
+        </span>
+      ))}
+    </div>
+  );
+}
+
 export default function RxStory({ steps, heading, footer }: { steps: StoryStep[]; heading: ReactNode; footer?: ReactNode }) {
   const listRef = useRef<HTMLOListElement>(null);
   // Steps advance as the list passes the upper third of the screen, by which time the illustration
@@ -99,7 +218,16 @@ export default function RxStory({ steps, heading, footer }: { steps: StoryStep[]
             the steps scroll by. Only the illustration is pinned, so it always fits on screen (pinning
             the heading with it made the column taller than shorter screens and cut it off). */}
         <div className="hidden lg:block">
-          <div className="lg:sticky lg:top-28"><Visual step={active} /></div>
+          <div className="relative lg:sticky lg:top-28">
+            {/* Glowing rings that travel with the pinned panel, then layered cards behind it */}
+            <span aria-hidden="true" className="absolute left-1/2 top-1/2 h-[34rem] w-[34rem] -translate-x-1/2 -translate-y-1/2 rounded-full border border-sage/20" />
+            <span aria-hidden="true" className="absolute left-1/2 top-1/2 h-[27rem] w-[27rem] -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-dashed border-sage/25" />
+            <span aria-hidden="true" className="absolute left-1/2 top-1/2 h-[24rem] w-[24rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgb(var(--c-sage)/0.22),transparent_70%)]" />
+            <span aria-hidden="true" className="absolute -left-6 top-8 h-[21rem] w-full max-w-md -rotate-6 rounded-panel bg-sage-tint" />
+            <span aria-hidden="true" className="absolute -left-3 top-4 h-[21rem] w-full max-w-md -rotate-3 rounded-panel border-2 border-dashed border-sage/40" />
+            <span aria-hidden="true" className="absolute -right-2 -top-6 h-20 w-20 rounded-full bg-[radial-gradient(rgb(var(--c-terracotta-deep)/0.35)_1.5px,transparent_1.5px)] [background-size:10px_10px]" />
+            <div className="relative"><Visual step={active} /></div>
+          </div>
         </div>
         <div>
         <ol ref={listRef} className="relative m-0 list-none p-0">
