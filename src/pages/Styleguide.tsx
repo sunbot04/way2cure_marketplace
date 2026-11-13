@@ -179,8 +179,8 @@ export default function Styleguide() {
       </Block>
 
       <Block title="Product cards" note="Over-the-counter, Rx (no offer badge, valid-prescription line), and buy-or-rent.">
-        <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-          {['bp-monitor', 'metformin-500', 'wheelchair', 'nebuliser'].map((id) => <ProductCard key={id} product={getProduct(id)!} />)}
+        <div className="grid grid-cols-2 gap-2.5 md:grid-cols-4 md:gap-4">
+          {['bp-monitor', 'metformin-500', 'wheelchair', 'nebuliser'].map((id, i) => <ProductCard key={id} product={getProduct(id)!} alt={i % 2 === 1} />)}
         </div>
       </Block>
 

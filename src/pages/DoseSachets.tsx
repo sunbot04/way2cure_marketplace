@@ -149,7 +149,7 @@ export default function DoseSachets() {
             </ul>
             <p className="mb-0 mt-8 font-head text-h2m font-bold text-terracotta-deep">{tr('tear')}</p>
           </Reveal>
-          <Reveal><SachetExplorer label={tr('sachetTabs')} /></Reveal>
+          <Reveal><SachetExplorer /></Reveal>
         </div>
       </section>
 
@@ -167,7 +167,7 @@ export default function DoseSachets() {
       {/* Why sachets */}
       <section className="section bg-mist">
         <div className="container">
-          <Reveal className="mb-12 max-w-2xl">
+          <Reveal className="mb-8 md:mb-12 max-w-2xl">
             <h2 className="m-0 text-section"><Accent text={tr('whyTitle')} /></h2>
           </Reveal>
           <Stagger as="ul" className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">

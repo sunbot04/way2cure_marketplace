@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { AnimatePresence, m } from 'motion/react';
 import Icon from '../components/Icon';
+import CardArrow from '../components/ui/CardArrow';
 import PageHeader from '../components/layout/PageHeader';
 import Seo, { medicalBusinessLd } from '../components/layout/Seo';
 import Button from '../components/ui/Button';
@@ -207,7 +208,7 @@ export default function Contact() {
       </PageHeader>
 
       {/* Three ways to reach us */}
-      <section className="bg-white py-12 lg:py-16">
+      <section className="bg-white py-8 lg:py-12">
         <div className="container">
           <h2 className="sr-only">{tr('reach')}</h2>
           <Stagger as="ul" className="grid gap-4 md:grid-cols-3 md:gap-5">
@@ -218,17 +219,17 @@ export default function Contact() {
                   <strong className="text-green">{tr('callUs')}</strong>
                   <span className="font-head text-h2m font-bold text-ink">{SITE.phoneDisplay}</span>
                 </span>
-                <Icon name="arrow" size={18} className="mt-auto text-terracotta-deep" />
+                <CardArrow className="mt-auto self-end" />
               </a>
             </StaggerItem>
             <StaggerItem as="li">
               <a href={SITE.whatsappHref} target="_blank" rel="noreferrer" className={channel}>
-                <span className="grid h-12 w-12 place-items-center rounded-btn bg-green text-white"><Icon name="whatsapp" size={24} /></span>
+                <span className="grid h-12 w-12 place-items-center rounded-btn bg-whatsapp text-white"><Icon name="whatsapp" size={26} /></span>
                 <span className="grid gap-1">
                   <strong className="text-green">{tr('whatsapp')}</strong>
                   <span className="text-ink/80">{tr('whatsappText')}</span>
                 </span>
-                <Icon name="arrow" size={18} className="mt-auto text-terracotta-deep" />
+                <CardArrow className="mt-auto self-end" />
               </a>
             </StaggerItem>
             <StaggerItem as="li">
@@ -239,14 +240,14 @@ export default function Contact() {
                   <span className="break-all text-ink">{SITE.email}</span>
                   <span className="text-base text-grey">{tr('emailText')}</span>
                 </span>
-                <Icon name="arrow" size={18} className="mt-auto text-terracotta-deep" />
+                <CardArrow className="mt-auto self-end" />
               </a>
             </StaggerItem>
           </Stagger>
         </div>
       </section>
 
-      <section className="section pt-14 lg:pt-20">
+      <section className="section pt-0">
         <div className="container grid items-start gap-12 lg:grid-cols-[1fr_1.05fr] lg:gap-16">
           <div className="grid gap-14">
             {/* Offices */}

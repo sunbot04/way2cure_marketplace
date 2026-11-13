@@ -69,7 +69,7 @@ export default function PageHeader({ title, lead, crumbs, children, tone = 'crea
           className="fade-b h-60 w-full object-cover sm:h-80 lg:fade-l lg:absolute lg:inset-y-0 lg:right-0 lg:h-full lg:w-[56%]"
           style={image.position ? { objectPosition: image.position } : undefined}
         />
-        <div className="container relative -mt-14 flex items-center pb-12 lg:mt-0 lg:min-h-[30rem] lg:py-16">
+        <div className="container relative -mt-14 flex items-center pb-8 lg:mt-0 lg:min-h-[28rem] lg:py-14">
           <div className="max-w-[36rem]">{text}</div>
         </div>
       </section>
@@ -77,7 +77,7 @@ export default function PageHeader({ title, lead, crumbs, children, tone = 'crea
   }
 
   return (
-    <section className={`${tones[tone]} pb-12 pt-8 md:pb-16 md:pt-12`}>
+    <section className={`${tones[tone]} pb-8 pt-6 md:pb-10 md:pt-10`}>
       <div className="container">{text}</div>
     </section>
   );

@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { AnimatePresence, m } from 'motion/react';
 import Icon from '../components/Icon';
+import CardArrow from '../components/ui/CardArrow';
 import Button from '../components/ui/Button';
 import Tag from '../components/ui/Tag';
 import { Reveal, Stagger, StaggerItem } from '../components/motion/Reveal';
@@ -143,7 +144,7 @@ export default function Cart() {
       <>
         {seo}
         <PageHeader title={tr('yourCart')} crumbs={crumbs} />
-        <section className="pb-20">
+        <section className="pb-12 md:pb-16">
           <div className="container">
             <Reveal className="grid gap-8 rounded-panel bg-white p-8 shadow-card md:p-12 lg:grid-cols-[1.1fr_1fr] lg:items-center">
               <div>
@@ -166,7 +167,7 @@ export default function Cart() {
                       >
                         <span className="grid h-11 w-11 shrink-0 place-items-center rounded-btn bg-mist text-green"><Icon name={c.icon} size={22} /></span>
                         <span className="grid flex-1"><strong className="text-green">{c.name}</strong><span className="text-small text-grey">{c.blurb}</span></span>
-                        <Icon name="arrow" size={18} className="text-terracotta-deep" />
+                        <CardArrow size="sm" />
                       </Link>
                     </StaggerItem>
                   ))}
@@ -183,7 +184,7 @@ export default function Cart() {
     <>
       {seo}
       <PageHeader title={tr('cartTitle')} lead={tr('lead', { amount: formatPrice(SITE.delivery.freeAbove) })} crumbs={crumbs} />
-      <section className="pb-20">
+      <section className="pb-12 md:pb-16">
         <div className="container grid gap-8 lg:grid-cols-[1fr_24rem] lg:gap-10">
           <div className="grid content-start gap-5">
             {hasRx && <RxNotice />}

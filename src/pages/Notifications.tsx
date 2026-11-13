@@ -196,7 +196,7 @@ export default function Notifications() {
       <Seo title={tr('title')} description={tr('seoDesc')} noindex />
       <PageHeader title={tr('title')} lead={tr('lead')} crumbs={[{ label: tr('home'), to: '/' }, { label: t('account'), to: '/account' }, { label: tr('title') }]} />
 
-      <div className="container grid gap-10 pb-16 lg:grid-cols-[1.6fr_1fr] lg:gap-14">
+      <div className="container grid gap-10 pb-12 lg:grid-cols-[1.6fr_1fr] lg:gap-14 lg:pb-16">
         <section aria-labelledby="feed">
           <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
             <h2 id="feed" className="m-0 text-h2m">{tr('feed')}</h2>

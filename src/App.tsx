@@ -3,6 +3,7 @@ import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import FloatingHelp from './components/layout/FloatingHelp';
+import { ArtDefs } from './components/brand/Illustrations';
 import { m } from 'motion/react';
 import { pageFade } from './lib/motion';
 import { LAYOUT } from './components/layout/copy';
@@ -97,6 +98,8 @@ export default function App() {
       </main>
       <Footer />
       <FloatingHelp />
+      {/* Gradients shared by every product illustration (components/brand/Illustrations) */}
+      <ArtDefs />
     </>
   );
 }

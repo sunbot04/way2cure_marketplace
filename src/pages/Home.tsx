@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { m } from 'motion/react';
 import Icon from '../components/Icon';
+import ShopByNeed from '../components/home/ShopByNeed';
 import Button from '../components/ui/Button';
 import Accent from '../components/ui/Accent';
 import FAQAccordion from '../components/ui/FAQAccordion';
@@ -9,14 +10,14 @@ import CountUp from '../components/motion/CountUp';
 import HeroVisual from '../components/home/HeroVisual';
 import ProblemCard, { type Art } from '../components/home/ProblemCard';
 import RxStory from '../components/home/RxStory';
-import CareCard from '../components/care/CareCard';
+import CareByNeed from '../components/home/CareByNeed';
 import SachetExplorer from '../components/brand/SachetExplorer';
 import AppBadges from '../components/commerce/AppBadges';
 import Seo, { medicalBusinessLd } from '../components/layout/Seo';
 import { RX_STEPS } from '../data/rxSteps';
 import { useLang, useLoc, useT, type Dict } from '../i18n/LangContext';
 import { SITE } from '../config/site';
-import { categories, faqs, services, subscriptionPlans, testimonials } from '../data';
+import { faqs, subscriptionPlans, testimonials } from '../data';
 import { COPY } from '../components/copy';
 import { fadeRise, lineMask, stagger } from '../lib/motion';
 
@@ -115,8 +116,6 @@ const PROBLEMS: { art: Art; k: string; image: string; position: string }[] = [
   { art: 'dose', k: 'p2', image: '/images/people/grandfather-turban.webp', position: 'center 30%' },
   { art: 'runs', k: 'p3', image: '/images/people/grandmother-errand.webp', position: '58% center' },
 ];
-const CARE_IDS = ['nurse', 'doctor', 'elder', 'dementia', 'icu', 'ventilator', 'stroke', 'cancer'];
-
 /** Section heading block: H2 with one accent, optional lead. */
 function Heading({ title, lead, light = false, className = '' }: { title: string; lead?: string; light?: boolean; className?: string }) {
   return (
@@ -132,7 +131,6 @@ export default function Home() {
   const tr = useT(T);
   const tc = useT(COPY);
   const loc = useLoc();
-  const careCards = CARE_IDS.map((id) => services.find((s) => s.id === id)).filter((s): s is NonNullable<typeof s> => !!s);
   const trustItems = [
     { icon: 'userCheck', title: tc('nurses'), text: tc('nursesText') },
     { icon: 'verified', title: tc('pharmacies'), text: tc('pharmaciesText') },
@@ -147,11 +145,12 @@ export default function Home() {
 
       {/* 1-2 · Hero. Runs up under the transparent floating header. */}
       <section className="relative overflow-hidden pt-[var(--header-space)]">
-        <div className="container grid items-center gap-10 pb-16 pt-6 lg:grid-cols-[1.02fr_0.98fr] lg:gap-8 lg:pb-24 lg:pt-10">
+        <div className="container grid items-center gap-10 pb-10 pt-6 lg:grid-cols-[1.02fr_0.98fr] lg:gap-8 lg:pb-16 lg:pt-10">
           <m.div initial="hidden" animate="show" variants={stagger(0.05)}>
             <m.h1 variants={stagger()} className="mb-6 text-display">
+              {/* Each line slides up inside a mask; the mask has room above for Hindi/Marathi vowel signs (matras) */}
               {(['h1a', 'h1b', 'h1c'] as const).map((k) => (
-                <span key={k} className="block overflow-hidden pb-[0.1em]">
+                <span key={k} className="-mt-[0.25em] block overflow-hidden pb-[0.1em] pt-[0.25em]">
                   <m.span variants={lineMask} className="block"><Accent text={tr(k)} /></m.span>
                 </span>
               ))}
@@ -178,37 +177,21 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 3 · Quick paths */}
+      {/* 3 · Shop by need: the client's card design (components/home/ShopByNeed) */}
       <section className="cv-auto section bg-white">
         <div className="container">
-          <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
+          <div className="mb-8 md:mb-12 flex flex-wrap items-end justify-between gap-6">
             <Heading title={tr('quickTitle')} lead={tr('quickLead')} className="max-w-2xl" />
             <Reveal><Link to="/shop" className="group inline-flex min-h-tap items-center gap-1.5 font-bold">{tr('allProducts')} <Icon name="arrow" size={18} /></Link></Reveal>
           </div>
-          <Stagger as="ul" className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5 xl:grid-cols-6">
-            {categories.map(loc).map((c) => (
-              <StaggerItem as="li" key={c.slug}>
-                <Link
-                  to={`/shop/${c.slug}`}
-                  className="group flex h-full flex-col gap-4 rounded-tile border border-line bg-cream/50 p-5 text-ink no-underline transition-[transform,box-shadow,background-color] duration-micro ease-soft hover:-translate-y-1 hover:bg-white hover:shadow-raised"
-                >
-                  <span className="grid h-12 w-12 place-items-center rounded-btn bg-mist text-green"><Icon name={c.icon} size={24} /></span>
-                  <span className="grid gap-1">
-                    <strong className="text-body leading-snug text-green">{c.name}</strong>
-                    <span className="hidden text-base text-grey md:block">{c.blurb}</span>
-                  </span>
-                  <Icon name="arrow" size={18} className="mt-auto text-terracotta-deep" />
-                </Link>
-              </StaggerItem>
-            ))}
-          </Stagger>
+          <ShopByNeed />
         </div>
       </section>
 
       {/* "Sound familiar?": the family's problems, then how we solve each */}
       <section className="cv-auto section">
         <div className="container">
-          <Heading title={tr('probTitle')} className="mb-12 max-w-3xl" />
+          <Heading title={tr('probTitle')} className="mb-8 md:mb-12 max-w-3xl" />
           {/* Phones: swipe sideways through the cards; tablet and up: a grid */}
           <Stagger as="ul" className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-4 [scrollbar-width:thin] md:mx-0 md:grid md:grid-cols-3 md:gap-6 md:overflow-visible md:px-0 md:pb-0">
             {PROBLEMS.map(({ art, k, image, position }) => (
@@ -235,22 +218,20 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 5 · Care at home */}
+      {/* 5 · Care at home: same card design as Shop by need (components/home/CareByNeed) */}
       <section className="cv-auto section bg-white">
         <div className="container">
-          <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
+          <div className="mb-8 md:mb-12 flex flex-wrap items-end justify-between gap-6">
             <Heading title={tr('careTitle')} lead={tr('careLead')} className="max-w-2xl" />
             <Reveal><Link to="/care" className="group inline-flex min-h-tap items-center gap-1.5 font-bold">{tr('allCare')} <Icon name="arrow" size={18} /></Link></Reveal>
           </div>
-          <Stagger as="ul" className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-4 [scrollbar-width:thin] sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-5 sm:overflow-visible sm:px-0 sm:pb-0 xl:grid-cols-4">
-            {careCards.map((s) => <StaggerItem as="li" key={s.id} className="w-[78%] shrink-0 snap-start sm:w-auto"><CareCard service={s} /></StaggerItem>)}
-          </Stagger>
+          <CareByNeed />
           <p className="mt-8 flex items-center gap-2 text-base text-grey"><Icon name="stethoscope" size={18} className="text-sage" /> {tr('careNote')}</p>
         </div>
       </section>
 
       {/* 6 · Dose sachets + subscribe & save */}
-      <section className="cv-auto section">
+      <section className="cv-auto section bg-mist">
         <div className="container">
           <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
             <div>
@@ -260,7 +241,7 @@ export default function Home() {
                 <Link to="/subscriptions/dose-sachets" className="group inline-flex min-h-tap items-center gap-1.5 font-bold">{tr('sachetCta')} <Icon name="arrow" size={18} /></Link>
               </Reveal>
             </div>
-            <Reveal><SachetExplorer label={tr('sachetTabs')} /></Reveal>
+            <Reveal><SachetExplorer /></Reveal>
           </div>
 
           <div className="mt-20 grid gap-10 rounded-panel bg-white p-6 shadow-card md:p-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">

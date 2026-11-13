@@ -17,13 +17,14 @@ export default {
       green: { DEFAULT: v('green'), dark: v('green-dark') }, // main colour, charcoal: headings, header, footer, primary buttons
       terracotta: { DEFAULT: v('terracotta'), deep: v('terracotta-deep'), darker: v('terracotta-darker') }, // secondary, crimson: decoration / links, Rx, urgent
       mustard: v('mustard'), // highlight, yellow: badges, offers, ratings (dark text on it)
-      sage: { DEFAULT: v('sage'), tint: v('sage-tint') }, // soft colour, sky blue: icons, success (dark text on it)
+      sage: { DEFAULT: v('sage'), tint: v('sage-tint'), deep: v('sage-deep') }, // soft colour, sky blue: icons, success (dark text on it)
       mint: v('mint'), // soft panels, borders, light text on charcoal
       cream: v('cream'), // page background (white)
       mist: v('mist'), // #F1F5F9 light grey-blue section background
       ink: v('ink'), // body text
       grey: v('grey'), // secondary text
       line: v('line'), // hairline borders on white
+      whatsapp: { DEFAULT: v('whatsapp'), dark: v('whatsapp-dark') }, // WhatsApp buttons only (white logo on it)
       // Time-of-day dose colours (guidelines p.13). Always paired with a word label.
       dose: { morning: v('mustard'), afternoon: v('sage'), evening: v('terracotta-deep'), night: v('green') },
     },

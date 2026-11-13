@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { Facebook, Instagram, Linkedin, Youtube } from 'lucide-react';
 import Icon from '../Icon';
 import AppBadges from '../commerce/AppBadges';
-import { languages, useLang, useLoc, useT, type Dict } from '../../i18n/LangContext';
+import { useLang, useLoc, useT, type Dict } from '../../i18n/LangContext';
 import { categories } from '../../data';
 import { SITE } from '../../config/site';
 import { LAYOUT } from './copy';
@@ -18,7 +18,7 @@ const heading = 'mb-4 font-body text-small font-bold text-mustard';
 const link = 'inline-flex min-h-[2.5rem] items-center text-base text-white/90 no-underline transition-colors duration-micro hover:text-white hover:underline';
 
 export default function Footer() {
-  const { t, lang, setLang } = useLang();
+  const { t } = useLang();
   const tr = useT(LAYOUT);
   const tx = useT(EXTRA);
   const loc = useLoc();
@@ -30,7 +30,7 @@ export default function Footer() {
   ];
   return (
     <footer className="bg-green text-mint">
-      <div className="container grid gap-12 pb-12 pt-16 lg:grid-cols-[1.5fr_1fr_1fr_1.2fr] lg:gap-10 lg:pt-20">
+      <div className="container grid gap-12 pb-12 pt-12 lg:grid-cols-[1.5fr_1fr_1fr_1.2fr] lg:gap-10 lg:pt-16">
         <div>
           {/* White logo on charcoal (p.4). TODO: client: swap in the official reversed logo file. */}
           <img src="/logo.png" alt="Way2Cure" width={150} height={50} className="mb-6 h-11 w-auto [filter:brightness(0)_invert(1)]" />
@@ -88,7 +88,7 @@ export default function Footer() {
       </div>
 
       <div className="border-t border-white/15">
-        <div className="container grid gap-4 pb-28 pt-6 text-small lg:grid-cols-[1fr_auto] lg:items-start lg:gap-10 lg:pb-8 lg:pr-28">
+        <div className="container pb-24 pt-6 text-small lg:pb-8 lg:pr-28">
           <div>
             <p className="mb-2 max-w-none">
               <strong className="text-white">{tr('pharmacy')}</strong> {tr('pharmacyText')} {tr('licence')}
@@ -100,21 +100,6 @@ export default function Footer() {
               <Link to="/privacy" className="text-white">{tr('privacy')}</Link>
               <Link to="/terms" className="text-white">{tr('terms')}</Link>
             </p>
-          </div>
-          <div role="group" aria-label={t('language')} className="flex items-center gap-1 justify-self-start rounded-full border border-white/20 p-1">
-            <Icon name="globe" size={16} className="mx-2 text-mint" />
-            {languages.map((l) => (
-              <button
-                key={l.code}
-                type="button"
-                lang={l.code}
-                aria-pressed={lang === l.code}
-                onClick={() => setLang(l.code)}
-                className={`min-h-[2.5rem] rounded-full px-3 text-base transition-colors duration-micro ${lang === l.code ? 'bg-white font-bold text-green' : 'text-white hover:bg-white/10'}`}
-              >
-                {l.label}
-              </button>
-            ))}
           </div>
         </div>
       </div>

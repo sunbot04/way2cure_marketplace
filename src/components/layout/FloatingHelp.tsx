@@ -3,7 +3,8 @@ import Icon from '../Icon';
 import { useLang } from '../../i18n/LangContext';
 import { SITE } from '../../config/site';
 
-// Call and WhatsApp on every page (guidelines p.12): two round buttons stacked at the bottom right,
+// Call and WhatsApp on every page (guidelines p.12): two round buttons stacked at the bottom right
+// (WhatsApp in its own green with its logo, Call in crimson),
 // with their label sliding out on hover/focus (desktop). Respects the phone's safe-area insets.
 // This replaces the old mobile bottom tab bar.
 const btn =
@@ -25,20 +26,23 @@ export default function FloatingHelp() {
   }, []);
   return (
     <div
-      className={`fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-[max(1rem,env(safe-area-inset-right))] z-30 grid gap-3 transition-[opacity,transform] duration-slow ease-soft ${
+      className={`fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-[max(1rem,env(safe-area-inset-right))] z-30 transition-[opacity,transform] duration-slow ease-soft ${
         shown ? 'opacity-100' : 'pointer-events-none translate-y-4 opacity-0'
       }`}
       // Hidden: also out of the tab order and the accessibility tree (inert)
       {...(shown ? {} : { inert: '' })}
     >
-      <a href={SITE.whatsappHref} target="_blank" rel="noreferrer" aria-label={t('whatsapp')} className={`${btn} bg-green`}>
-        <Icon name="whatsapp" size={24} />
+      {/* Moves up above the shop's cart bar while it shows (--fab-lift, set by CartBar) */}
+      <div className="grid gap-3 transition-transform duration-slow ease-soft" style={{ transform: 'translateY(calc(var(--fab-lift, 0px) * -1))' }}>
+      <a href={SITE.whatsappHref} target="_blank" rel="noreferrer" aria-label={t('whatsapp')} className={`${btn} bg-whatsapp hover:bg-whatsapp-dark`}>
+        <Icon name="whatsapp" size={30} />
         <span className={label}>{t('whatsapp')}</span>
       </a>
-      <a href={SITE.phoneHref} aria-label={`${t('callUs')} ${SITE.phone}`} className={`${btn} bg-terracotta-deep`}>
+      <a href={SITE.phoneHref} aria-label={`${t('callUs')} ${SITE.phone}`} className={`${btn} bg-terracotta-deep hover:bg-terracotta-darker`}>
         <Icon name="phone" size={24} />
         <span className={label}>{t('callUs')} {SITE.phone}</span>
       </a>
+      </div>
     </div>
   );
 }

@@ -74,6 +74,7 @@ These fixes were made during the audit. The starting point was Home 80 and inner
   - The homepage hero no longer uses a negative margin.
 - **Bundle size:** the homepage code is now its own chunk, so inner pages don't download it. The main bundle went from 143 KB to 119 KB gzipped.
 - **Fonts:** self-hosted, with Latin, Latin Extended and Devanagari only, and the two main ones preloaded. There is no connection to Google Fonts any more.
+- **Hindi and Marathi spacing:** big headings get looser line spacing in Devanagari, the homepage headline's slide-up mask leaves room above the letters, and text trimmed to two lines gets a little room on top, so no vowel signs (matras) are cut off. Every page was scanned in both languages, on desktop and phone, for clipped text, "…" truncation and dropdown labels too long for their box. Two labels were shortened so they fit: the Shop prescription filter and "bedridden care".
 - **Images:**
   - The hero photo is cropped to the arch and preloaded on `/` only.
   - Every homepage photo has a phone-sized variant (`srcSet`).
@@ -129,8 +130,8 @@ The site is drawn entirely in the browser. Nothing paints until about 119 KB of 
   - **Hero visual:** it arrives after the copy, with the floating cards last. The sachet then floats gently.
   - **Drawn underlines:** they draw on via `pathLength`.
   - **Scroll reveals:** play once, as soon as a block scrolls into view (its top 10% up from the bottom of the screen). This works for blocks of any height; the earlier "20% in view" rule left the 28-product shop grid invisible on phones and zoomed screens. Shop cards reveal one by one.
-  - **Prescription steps:** a pinned scroll story on desktop, and a stepper on phones.
-  - **Sachet tabs:** crossfade between Morning, Afternoon, Evening and Night.
+  - **Prescription steps:** a scroll story on desktop, and a stepper on phones. The heading sits above it; only the illustration is pinned (just below the header) while the steps scroll by, so it always fits on screen (checked at 1280×620 up to 1920×1080).
+  - **Sample sachet:** the morning sachet is shown on its own (the Morning / Afternoon / Evening / Night buttons were removed at the client's request).
   - **The 15,000+ figure:** counts up (real number only).
   - **Cards:** lift 4 px, the shadow deepens and the image zooms to 1.03. Arrows nudge 3 px.
   - **Buttons:** scale to 0.98 on press.
@@ -148,8 +149,10 @@ The site is drawn entirely in the browser. Nothing paints until about 119 KB of 
   - the mobile bottom tab bar (client request);
   - the floating Call and WhatsApp buttons on the hero itself.
 - **Added:**
-  - floating Call and WhatsApp buttons on every page. On phones they appear after the first screen and respect safe-area insets.
+  - floating Call and WhatsApp buttons on every page. On phones they appear after the first screen and respect safe-area insets. WhatsApp shows its own logo in WhatsApp green, wherever WhatsApp is offered.
+  - a round arrow button at the end of cards that are one big link (categories, contact options, cart shortcuts). It fills crimson when the card is hovered or focused.
 - **Header:**
+  - No strip above the bar (the helpline and the language buttons were removed at the client's request). Languages are a dropdown (globe and the language name) just left of search; it closes on choosing, Escape or a click outside. The helpline is the floating Call button, the Contact page and the footer.
   - A floating rounded bar, inset from the edges. It is transparent at the top and turns white with a shadow on scroll, when it also gets slightly shorter.
   - The right side has only search, cart and account. Calling is the floating button, "Upload a prescription" is the first, highlighted option in the Shop menu, and notifications sit inside the signed-in account (`/notifications` asks you to log in first).
   - The dropdowns are compact and open from the left edge of their item.
@@ -164,9 +167,14 @@ The site is drawn entirely in the browser. Nothing paints until about 119 KB of 
     - the trust section;
     - stories and FAQ;
     - a "Talk to a real person" card with a photo.
+- **Shop by need (homepage):** the client's card design (`shop-by-need-v4.html`) built in the site palette: a bento grid with Medicines as the tall dark card (prescription upload, two floating notes, a drawing that drifts with the mouse), Medical devices wide with chips, four category cards with their own drawings and "Rent or buy" / "Oxygen on rent" ribbons, and a "Not sure what to buy?" card with WhatsApp and Call. Two columns on tablets; compact rows on phones. Hover: the card lifts, the drawing rises and the corner button grows into a "Shop" pill. In English, Hindi and Marathi. Code: `src/components/home/ShopByNeed*`.
+- **Care at home (homepage):** the same card design for the eight care services: Nurse at home as the tall dark card ("Book a nurse", call link, two floating notes), Doctor at home wide with chips, then Elder care, Dementia care (yellow "New" tag), ICU, Ventilator, Stroke and Cancer care, each with its own drawing. Every card opens its care plan. Two columns on tablets; compact rows with "View care plan" on phones. Code: `src/components/home/CareByNeed.tsx` (styles shared with Shop by need).
+- **Category cards (shop page):** compact cards with real photos (Pexels stock until the product shoot, see `public/images/categories/CREDITS.md`); on phones a row you swipe, so products stay near the top.
+- **Spacing:** sections are 40px (phones) and 64px (desktop) top and bottom, page headers and one-off paddings were tightened to match, and sections alternate white and mist. Every page was measured on desktop and phone: no empty band is taller than 150px (desktop) or 110px (phones), apart from the space above the footer.
+- **Product cards:** the client's design (`products.html`) in the site palette: a drawing of the product on a soft light, one badge (Rx needed / Rent or buy / Subscribe / Launch), a heart to save it, then category, name (two lines at most), pack, one note line, the price and "+ Add", which becomes a − 1 + counter. Prescription and rent-only items show "View" instead. Two across on phones, three on tablets, four on desktop. Partner sellers are named on the card. Saved items: a "Saved (n)" filter on the shop page, kept per account like orders. A cart bar slides up from the bottom with the total and "View cart"; the floating Call and WhatsApp buttons move up above it. The product page and the cart use the same drawings.
 - **All other pages:** rebuilt with the same system: one accent per heading, section rhythm and alternating backgrounds, and empty, loading and error states in the brand voice.
 - **New pages:** Login and Signup, using phone and OTP, no passwords, with `?next=` redirect (demo: any 6 digits). The Account page shows a signed-in or signed-out state.
-- **Footer:** charcoal, with 4 columns, the logo in white, app-store badges, social icons, the licence line and a language switch.
+- **Footer:** charcoal, with 4 columns, the logo in white, app-store badges, social icons and the licence line (no language switch: it is in the header dropdown).
 - **Removed from layout:** the 90% desktop scale from the previous round. Body text is back to the 18 px minimum, as the client approved.
 
 ## 6. Where it could still look generic
@@ -188,9 +196,11 @@ The site is drawn entirely in the browser. Nothing paints until about 119 KB of 
 | Soft single-colour radial shape behind the hero; dark-to-transparent overlay on photo cards; masked photo edges on page headers | Used only for depth and blending, never as multi-colour decoration. |
 | 16–20 px radii on cards and panels (PDF: 12 px) | The brief's polish spec: soft 16–20 px radii. Buttons keep 8 px. |
 | Floating Call and WhatsApp buttons instead of a sticky bottom bar on mobile | Client request: no app-style bottom navigation on the website. |
+| Section spacing 40px phones / 64px desktop (the brief's polish spec: 72 / 120px) | Client request: the larger gaps read as empty white space, especially between two white sections. |
+| WhatsApp buttons in WhatsApp green (`#1DA851`) with the WhatsApp logo, outside the site palette | Client request: people recognise WhatsApp by its logo and colour. A touch deeper than WhatsApp's `#25D366` so the white logo on it passes 3:1. |
 | Mobile bottom tab bar (Home, Shop, Rx, Care, Account) removed | Same client request. These links are in the header menu. |
 | "Upload a prescription" is the first, highlighted option in the Shop menu and a link in the hero, not a header button (PDF p.8: always-visible button) | Client request: fewer calls to action in the header, and a main bar of plain, consistent items. It sits with the medicines, is in the mobile menu, and Shop stays underlined on the prescription page. |
-| No phone number in the header bar; no notification bell | Client request. Calling is the floating button on every page (and the helpline in the top strip); notifications belong to the signed-in account. |
+| No phone number in the header bar; no notification bell | Client request. Calling is the floating button on every page (and the number in the footer and on the Contact page); notifications belong to the signed-in account. |
 | Stat wording "15,000+ patients cared for" (brief: "families") | The PDF only confirms "15K+ happy patients". There are no unconfirmed numbers. |
 | Hindi and Marathi translations kept | Client request. They are flagged for native review. |
 | Dose colours: morning yellow, afternoon sky blue, evening crimson, night charcoal | The PDF's four time-of-day colours (p.13) moved to the new palette. Always paired with the word; dark text on yellow and sky blue, white text on crimson and charcoal. |

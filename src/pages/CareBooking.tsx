@@ -359,7 +359,7 @@ export default function CareBooking() {
         lead={service.short}
         crumbs={[{ label: t('home'), to: '/' }, { label: t('care'), to: '/care' }, { label: tr('eyebrow') }]}
       />
-      <section className="pb-20 pt-10 md:pb-28">
+      <section className="pb-12 pt-8 md:pb-16">
         <div className="container grid items-start gap-8 lg:grid-cols-[1.55fr_1fr] lg:gap-12">
           <Reveal className="rounded-panel bg-white p-6 shadow-card md:p-9">
             {/* Step indicator: four labelled steps and a line that fills as you go */}

@@ -85,7 +85,7 @@ export default function StyleguideMotion() {
             </div>
             <div>
               <h3>Sachet explorer (arrow keys move between tabs)</h3>
-              <SachetExplorer label="Choose a time of day" />
+              <SachetExplorer />
             </div>
           </div>
 

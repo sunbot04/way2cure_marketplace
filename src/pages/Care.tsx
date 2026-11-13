@@ -97,7 +97,7 @@ export default function Care() {
       {/* Everyday care */}
       <section className="section">
         <div className="container">
-          <Reveal className="mb-12 max-w-2xl">
+          <Reveal className="mb-8 md:mb-12 max-w-2xl">
             <h2 className="mb-4 text-section"><Accent text={tr('everydayTitle')} /></h2>
             <p className="m-0 text-lead text-ink/75">{tr('everydayLead')}</p>
           </Reveal>
@@ -110,7 +110,7 @@ export default function Care() {
       {/* How booking works */}
       <section className="section bg-white">
         <div className="container">
-          <Reveal className="mb-12 max-w-2xl">
+          <Reveal className="mb-8 md:mb-12 max-w-2xl">
             <h2 className="m-0 text-section"><Accent text={tr('howTitle')} /></h2>
           </Reveal>
           <Stagger as="ol" className="relative grid gap-8 md:grid-cols-4 md:gap-6">

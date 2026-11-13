@@ -37,7 +37,11 @@ The ventilator service has no photo of its own yet and reuses `care-icu.webp`.
 | `care-post-operative.jpg` | 1200×800 | Post-operative care page | Nurse changing a wound dressing on a patient seated at home after surgery. |
 
 ## Product photos
-Product cards and product pages show a neutral placeholder tile until real pack shots arrive.
+Category cards on the shop page use Pexels stock photos until Way2Cure's own: see
+`images/categories/CREDITS.md`. Same file names, 4:3, 640×480 plus a 320×240 `-sm` copy.
+
+Product cards, product pages and the cart show a drawing of the product (or of its category) until real
+pack shots arrive (`src/components/brand/Illustrations.tsx`, chosen in `src/components/commerce/ProductArt.tsx`).
 Needed: one photo per product on a plain white background, square, 1200×1200 px, named
 `products/<product-id>.jpg` (ids are in `src/data/products.json`).
 

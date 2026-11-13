@@ -7,53 +7,73 @@ import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
 import { languages, useLang, useLoc, useT } from '../../i18n/LangContext';
 import { categories, services, shopViews, subscriptionPlans } from '../../data';
-import { SITE } from '../../config/site';
 import { crossfade, pulse } from '../../lib/motion';
 import { LAYOUT } from './copy';
 
 // Header (guidelines p.8, references: DawaTime floating header).
-// A slim utility strip (helpline, WhatsApp, home care site, language), then a floating rounded
-// bar inset from the screen edges. Transparent over the page at the top; white with a soft shadow
-// once you scroll, when the strip slides away and the bar gets a little shorter.
-// The bar's right side keeps only search, cart and account. Calling is the floating button on every
+// A floating rounded bar inset from the screen edges (no strip above it). Transparent over the page
+// at the top; white with a soft shadow once you scroll, when the bar gets a little shorter.
+// The bar's right side keeps only the language dropdown, search, cart and account. The helpline is
+// on the floating Call button, the Contact page and the footer. Calling is the floating button on every
 // page; "Upload a prescription" is the first option in the Shop menu (and a row in the mobile menu);
 // notifications live inside the signed-in account.
 // Height is fixed and matched by --header-space in index.css.
 
-function Utility() {
+/** Language dropdown, just left of search. Globe (and the language name from 640px); the list opens
+ *  below. Closes on choosing, Escape, a click outside or tabbing away. */
+function LangMenu() {
   const { lang, setLang, t } = useLang();
-  const tr = useT(LAYOUT);
-  const link = 'inline-flex min-h-[2.75rem] items-center gap-1.5 font-semibold text-green no-underline hover:underline';
+  const [open, setOpen] = useState(false);
+  const wrap = useRef<HTMLDivElement>(null);
+  const btn = useRef<HTMLButtonElement>(null);
+  const current = languages.find((l) => l.code === lang) ?? languages[0];
+
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e: PointerEvent) => { if (!wrap.current?.contains(e.target as Node)) setOpen(false); };
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') { setOpen(false); btn.current?.focus(); } };
+    document.addEventListener('pointerdown', onDown);
+    document.addEventListener('keydown', onKey);
+    return () => { document.removeEventListener('pointerdown', onDown); document.removeEventListener('keydown', onKey); };
+  }, [open]);
+
   return (
-    <div className="container flex h-11 items-center justify-between gap-4 text-small">
-      <div className="flex items-center gap-5">
-        <a href={SITE.phoneHref} className={link}>
-          <Icon name="phone" size={15} /> <span className="hidden sm:inline">{tr('helpline')}</span> <strong>{SITE.phone}</strong>
-        </a>
-        <a href={SITE.whatsappHref} target="_blank" rel="noreferrer" className={`${link} hidden sm:inline-flex`}>
-          <Icon name="whatsapp" size={15} /> {t('whatsapp')}
-        </a>
-      </div>
-      <div className="flex items-center gap-5">
-        <a href={SITE.homeCareUrl} className={`${link} hidden md:inline-flex`}>{t('homeCareSite')} <Icon name="external" size={13} /></a>
-        {/* Language switch stays visible in the header, never hidden in a menu (p.12) */}
-        <div role="group" aria-label={t('language')} className="flex items-center">
-          {languages.map((l, i) => (
-            <button
-              key={l.code}
-              type="button"
-              lang={l.code}
-              aria-pressed={lang === l.code}
-              onClick={() => setLang(l.code)}
-              className={`min-h-[2.75rem] px-2 ${i > 0 ? 'border-l border-green/20' : ''} ${
-                lang === l.code ? 'font-bold text-green underline decoration-terracotta decoration-2 underline-offset-4' : 'text-grey hover:text-green'
-              }`}
-            >
-              {l.label}
-            </button>
-          ))}
-        </div>
-      </div>
+    <div ref={wrap} className="relative" onBlur={(e) => { if (!wrap.current?.contains(e.relatedTarget as Node)) setOpen(false); }}>
+      <button
+        ref={btn}
+        type="button"
+        aria-expanded={open}
+        aria-controls="lang-menu"
+        aria-label={`${t('language')}: ${current.label}`}
+        onClick={() => setOpen((o) => !o)}
+        className="flex h-11 items-center gap-1.5 rounded-full px-2.5 text-base font-semibold text-green transition-colors duration-micro hover:bg-mist"
+      >
+        <Icon name="globe" size={20} />
+        <span lang={current.code} className="hidden sm:inline">{current.label}</span>
+        <Icon name="chevronDown" size={15} className={`text-grey transition-transform duration-micro ${open ? 'rotate-180' : ''}`} />
+      </button>
+      <AnimatePresence>
+        {open && (
+          <m.ul id="lang-menu" {...crossfade} className="absolute right-0 top-full z-50 mt-2 grid w-44 gap-0.5 rounded-tile border border-line bg-white p-1.5 shadow-float">
+            {languages.map((l) => (
+              <li key={l.code}>
+                <button
+                  type="button"
+                  lang={l.code}
+                  aria-pressed={lang === l.code}
+                  onClick={() => { setLang(l.code); setOpen(false); btn.current?.focus(); }}
+                  className={`flex min-h-[2.75rem] w-full items-center justify-between gap-3 rounded-btn px-3 text-left text-base transition-colors duration-micro hover:bg-mist ${
+                    lang === l.code ? 'bg-mist font-bold text-green' : 'font-semibold text-ink'
+                  }`}
+                >
+                  {l.label}
+                  {lang === l.code && <Icon name="check" size={16} className="text-terracotta-deep" />}
+                </button>
+              </li>
+            ))}
+          </m.ul>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
@@ -124,8 +144,7 @@ export default function Header() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-40">
-      <div className={`transition-transform duration-slow ease-soft ${scrolled ? '-translate-y-11' : ''}`}>
-        <Utility />
+      <div>
         <div className="px-2 pt-2 lg:px-3 lg:pt-3">
           <div
             className={`mx-auto max-w-[86rem] rounded-tile transition-[background-color,box-shadow] duration-slow ease-soft ${
@@ -201,6 +220,7 @@ export default function Header() {
               </nav>
 
               <div className="ml-auto flex items-center gap-1">
+                <LangMenu />
                 <button type="button" aria-expanded={searchOpen} aria-controls="site-search-panel" onClick={() => setSearchOpen((s) => !s)} className={iconBtn} aria-label={t('search')}>
                   <Icon name={searchOpen ? 'close' : 'search'} size={21} />
                 </button>

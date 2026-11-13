@@ -76,7 +76,7 @@ export default function Help() {
         </div>
       </PageHeader>
 
-      <section className="section pt-12 lg:pt-16">
+      <section className="section pt-8 lg:pt-10">
         <div className="container grid items-start gap-12 lg:grid-cols-[1fr_22rem] lg:gap-16">
           <div className="grid gap-14">
             <Reveal>

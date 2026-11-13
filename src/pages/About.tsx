@@ -188,7 +188,7 @@ export default function About() {
       {/* Values (brand personality, guidelines p.2) */}
       <section className="section bg-mist">
         <div className="container">
-          <Heading title={tr('valuesTitle')} className="mb-12 max-w-2xl" />
+          <Heading title={tr('valuesTitle')} className="mb-8 md:mb-12 max-w-2xl" />
           <Stagger as="ul" className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {VALUES.map(([icon, k]) => (
               <StaggerItem as="li" key={k} className="rounded-tile border border-mint bg-white p-6 transition-[transform,box-shadow] duration-micro ease-soft hover:-translate-y-1 hover:shadow-raised">
@@ -204,7 +204,7 @@ export default function About() {
       {/* Team: real headshots */}
       <section className="section bg-white">
         <div className="container">
-          <Heading title={tr('team')} lead={tr('teamLead')} className="mb-12 max-w-2xl" />
+          <Heading title={tr('team')} lead={tr('teamLead')} className="mb-8 md:mb-12 max-w-2xl" />
           <Stagger as="ul" className="grid grid-cols-2 gap-4 lg:grid-cols-4 lg:gap-6">
             {team.map((member) => {
               const mem = loc(member);

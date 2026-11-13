@@ -138,7 +138,7 @@ export default function Subscriptions() {
       {/* How it works */}
       <section className="section bg-white">
         <div className="container">
-          <Reveal className="mb-12 max-w-2xl">
+          <Reveal className="mb-8 md:mb-12 max-w-2xl">
             <h2 className="m-0 text-section"><Accent text={tr('flowTitle')} /></h2>
           </Reveal>
           <Stagger as="ol" className="relative grid gap-8 md:grid-cols-4 md:gap-6">
@@ -161,7 +161,7 @@ export default function Subscriptions() {
       {/* Plans */}
       <section id="plans" className="section scroll-mt-28">
         <div className="container">
-          <Reveal className="mb-12 max-w-2xl">
+          <Reveal className="mb-8 md:mb-12 max-w-2xl">
             <h2 className="m-0 text-section"><Accent text={tr('plansTitle')} /></h2>
           </Reveal>
           <Stagger as="ul" className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
@@ -204,14 +204,14 @@ export default function Subscriptions() {
             <p className="mb-6 mt-6 font-head text-h2m font-bold text-terracotta-deep">{tr('tear')}</p>
             <Link to="/subscriptions/dose-sachets" className="group inline-flex min-h-tap items-center gap-1.5 font-bold">{tr('howSachets')} <Icon name="arrow" size={18} /></Link>
           </Reveal>
-          <Reveal><SachetExplorer label={tr('sachetTabs')} /></Reveal>
+          <Reveal><SachetExplorer /></Reveal>
         </div>
       </section>
 
       {/* Manage / pause */}
       <section className="section scroll-mt-28 bg-white" id="manage">
         <div className="container">
-          <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
+          <div className="mb-8 md:mb-12 flex flex-wrap items-end justify-between gap-6">
             <Reveal className="max-w-2xl">
               <h2 className="mb-4 text-section">{tr('manageTitle')}</h2>
               <p className="m-0 text-lead text-ink/75">{tr('manageLead')}</p>
@@ -244,7 +244,7 @@ export default function Subscriptions() {
         </div>
       </section>
 
-      <section className="section">
+      <section className="section pt-0">
         <div className="container"><Reveal className="max-w-3xl"><HelpBox /></Reveal></div>
       </section>
     </>

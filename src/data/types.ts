@@ -11,6 +11,8 @@ export interface CategoryText { name: string; blurb: string }
 export type Category = Localized<CategoryText> & {
   slug: string;
   icon: string;
+  /** Card photo (4:3, 640x480; a 320x240 copy sits beside it as <name>-sm.webp). Stock until the product shoot. */
+  image?: string;
   edge: Edge;
   launch?: boolean;
 };

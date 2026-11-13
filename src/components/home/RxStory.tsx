@@ -82,26 +82,33 @@ function Visual({ step }: { step: number }) {
 
 export default function RxStory({ steps, heading, footer }: { steps: StoryStep[]; heading: ReactNode; footer?: ReactNode }) {
   const listRef = useRef<HTMLOListElement>(null);
-  const { scrollYProgress } = useScroll({ target: listRef, offset: ['start 70%', 'end 60%'] });
+  // Steps advance as the list passes the upper third of the screen, by which time the illustration
+  // beside it is pinned and fully in view.
+  const { scrollYProgress } = useScroll({ target: listRef, offset: ['start 35%', 'end 55%'] });
   const [active, setActive] = useState(0);
   useMotionValueEvent(scrollYProgress, 'change', (v) => {
     setActive(Math.min(steps.length - 1, Math.max(0, Math.floor(v * steps.length))));
   });
 
   return (
-    <div className="grid gap-12 lg:grid-cols-2 lg:gap-20">
-      <div className="lg:sticky lg:top-36 lg:self-start">
-        {heading}
-        <div className="mt-10 hidden lg:block"><Visual step={active} /></div>
-      </div>
-      <div>
+    <div>
+      {/* Heading above the story, like the other sections */}
+      <div className="mb-8 max-w-2xl md:mb-12">{heading}</div>
+      <div className="grid gap-12 lg:grid-cols-2 lg:gap-20">
+        {/* Desktop: the illustration starts beside step 1 and stays pinned just below the header while
+            the steps scroll by. Only the illustration is pinned, so it always fits on screen (pinning
+            the heading with it made the column taller than shorter screens and cut it off). */}
+        <div className="hidden lg:block">
+          <div className="lg:sticky lg:top-28"><Visual step={active} /></div>
+        </div>
+        <div>
         <ol ref={listRef} className="relative m-0 list-none p-0">
           <span aria-hidden="true" className="absolute bottom-10 left-[1.45rem] top-4 w-0.5 rounded-full bg-mint" />
           <m.span aria-hidden="true" style={{ scaleY: scrollYProgress }} className="absolute bottom-10 left-[1.45rem] top-4 w-0.5 origin-top rounded-full bg-terracotta-deep" />
           {steps.map((s, i) => {
             const on = i <= active;
             return (
-              <Reveal as="li" key={i} className="relative flex gap-6 pb-12 lg:min-h-[19rem] lg:pb-0">
+              <Reveal as="li" key={i} className="relative flex gap-6 pb-12 last:pb-0 lg:min-h-[15rem] lg:pb-0 lg:last:min-h-0">
                 <span
                   className={`relative z-10 grid h-12 w-12 shrink-0 place-items-center rounded-full border-2 font-head text-h3 font-bold transition-colors duration-slow ${
                     on ? 'border-green bg-green text-white' : 'border-mint bg-white text-grey'
@@ -118,6 +125,7 @@ export default function RxStory({ steps, heading, footer }: { steps: StoryStep[]
           })}
         </ol>
         {footer}
+        </div>
       </div>
     </div>
   );

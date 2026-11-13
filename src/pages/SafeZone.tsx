@@ -102,7 +102,7 @@ export default function SafeZone() {
       {/* How it works: diagram + steps */}
       <section className="section bg-white">
         <div className="container">
-          <Reveal className="mb-12 max-w-2xl">
+          <Reveal className="mb-8 md:mb-12 max-w-2xl">
             <h2 className="m-0 text-section"><Accent text={tr('howTitle')} /></h2>
           </Reveal>
           <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">

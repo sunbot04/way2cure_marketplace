@@ -21,6 +21,7 @@
     --c-mustard: 255 200 61;      /* #FFC83D yellow: badges, offers, big numbers on charcoal (dark text on it) */
     --c-sage: 58 143 214;         /* #3A8FD6 sky blue: icons, success ticks, afternoon dose (dark text on it) */
     --c-sage-tint: 231 240 250;   /* #E7F0FA light sky panel behind small charcoal text */
+    --c-sage-deep: 44 111 176;    /* #2C6FB0 deep sky blue for small text (5.2:1 on white) */
     --c-mint: 211 223 236;        /* #D3DFEC soft panels and borders; light text on charcoal bands */
     --c-cream: 255 255 255;       /* #FFFFFF page */
     --c-mist: 241 245 249;        /* #F1F5F9 light grey-blue section background */
@@ -28,6 +29,8 @@
     --c-ink: 27 36 48;            /* #1B2430 text */
     --c-grey: 85 97 112;          /* #556170 secondary text */
     --c-line: 226 232 239;        /* #E2E8EF hairlines on white */
+    --c-whatsapp: 29 168 81;      /* #1DA851 WhatsApp buttons: a touch deeper than #25D366 so the white logo passes 3:1 */
+    --c-whatsapp-dark: 23 143 69; /* #178F45 hover on WhatsApp buttons */
 
     /* Colour references used by data files (category edges, step colours) */
     --green: rgb(var(--c-green));
@@ -38,10 +41,10 @@
     --mint: rgb(var(--c-mint));
   }
 
-  html { -webkit-text-size-adjust: 100%; overflow-x: clip; scroll-padding-top: 6.5rem; }
-  /* Height of the fixed floating header (utility strip + gap + bar), see Header.tsx */
-  :root { --header-space: 7.75rem; }
-  @media (min-width: 1024px) { :root { --header-space: 8.5rem; } }
+  html { -webkit-text-size-adjust: 100%; overflow-x: clip; scroll-padding-top: 5.5rem; }
+  /* Height of the fixed floating header (gap + bar), see Header.tsx */
+  :root { --header-space: 5rem; }
+  @media (min-width: 1024px) { :root { --header-space: 5.75rem; } }
   @keyframes w2c-pulse { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
   body {
     @apply bg-cream font-body text-body text-ink antialiased;
@@ -54,6 +57,11 @@
   h2 { @apply mb-4 font-head text-h2m font-bold text-green md:text-h2; }
   h3 { @apply mb-2 font-body text-h3m font-bold text-green md:text-h3; }
   :lang(hi) :is(h1, h2), :lang(mr) :is(h1, h2) { font-family: 'Noto Sans Devanagari', Lora, Georgia, serif; }
+  /* Devanagari needs more room than Latin: vowel signs (matras) sit above the headline bar and
+     below the letters. Big headings get looser line spacing, and text trimmed to a few lines
+     (line-clamp, which hides overflow) gets a little room above its first line. */
+  :lang(hi) :is(.text-display, .text-section), :lang(mr) :is(.text-display, .text-section) { line-height: 1.3; }
+  :lang(hi) :is(.line-clamp-1, .line-clamp-2, .line-clamp-3), :lang(mr) :is(.line-clamp-1, .line-clamp-2, .line-clamp-3) { padding-top: 0.12em; }
   p { @apply mb-4; max-width: 70ch; }
   a { @apply text-terracotta-deep underline underline-offset-[3px]; }
   img { @apply h-auto max-w-full; }
@@ -81,7 +89,8 @@
 @layer components {
   .container { @apply mx-auto w-full max-w-page px-4 md:px-8; }
   /* Vertical rhythm: 72px mobile / 120px desktop between sections */
-  .section { @apply py-[4.5rem] lg:py-[7.5rem]; }
+  /* Section padding: 40px phones, 64px desktop (tightened at the client's request: no big empty gaps) */
+  .section { @apply py-10 lg:py-16; }
   /* Long pages: let the browser skip style/layout/paint for sections far below the screen until
      they come near (big win on low-end phones). The browser remembers each section's real height. */
   .cv-auto { content-visibility: auto; contain-intrinsic-size: auto 56rem; }

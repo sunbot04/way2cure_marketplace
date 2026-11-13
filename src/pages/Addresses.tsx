@@ -156,7 +156,7 @@ export default function Addresses() {
       <Seo title={tr('title')} description={tr('intro')} noindex />
       <PageHeader title={tr('title')} lead={tr('intro')} crumbs={[{ label: tr('eyebrow'), to: '/account' }, { label: tr('title') }]} />
 
-      <div className="container grid items-start gap-12 py-10 md:py-14 lg:grid-cols-[1.5fr_1fr]">
+      <div className="container grid items-start gap-12 py-8 md:py-10 lg:grid-cols-[1.5fr_1fr]">
         <section className="grid gap-5" aria-labelledby="saved-h">
           <h2 id="saved-h" className="mb-0">{tr('savedTitle')}</h2>
           <div aria-live="polite">

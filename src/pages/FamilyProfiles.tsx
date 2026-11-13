@@ -145,7 +145,7 @@ export default function FamilyProfiles() {
       <Seo title={tr('title')} description={tr('intro')} noindex />
       <PageHeader title={tr('title')} lead={tr('intro')} crumbs={[{ label: tr('eyebrow'), to: '/account' }, { label: tr('title') }]} />
 
-      <div className="container grid items-start gap-10 py-10 md:py-14 lg:grid-cols-[1.5fr_1fr]">
+      <div className="container grid items-start gap-10 py-8 md:py-10 lg:grid-cols-[1.5fr_1fr]">
         <div className="grid gap-5">
           <div aria-live="polite">
             {saved && (

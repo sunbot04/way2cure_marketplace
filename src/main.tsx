@@ -5,6 +5,7 @@ import { LazyMotion, MotionConfig, domAnimation } from 'motion/react';
 import App from './App';
 import { CartProvider } from './context/CartContext';
 import { NotificationsProvider } from './context/NotificationsContext';
+import { SavedProvider } from './context/SavedContext';
 import { ToastProvider } from './context/ToastContext';
 import { AuthProvider } from './context/AuthContext';
 import { LangProvider } from './i18n/LangContext';
@@ -21,11 +22,13 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <LangProvider>
         <AuthProvider>
         <CartProvider>
+        <SavedProvider>
           <NotificationsProvider>
             <ToastProvider>
               <App />
             </ToastProvider>
           </NotificationsProvider>
+        </SavedProvider>
         </CartProvider>
         </AuthProvider>
       </LangProvider>

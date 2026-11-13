@@ -163,7 +163,7 @@ export default function Account() {
         lead={tr('intro')}
       />
 
-      <section className="section pt-12 lg:pt-16">
+      <section className="section pt-8 lg:pt-10">
         <div className="container grid items-start gap-10 lg:grid-cols-[1.55fr_1fr] lg:gap-12">
           <div className="grid gap-8">
             {/* Who is signed in, or a friendly prompt to log in */}

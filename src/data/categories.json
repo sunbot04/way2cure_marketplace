@@ -4,6 +4,7 @@
     "name": "Medicines",
     "blurb": "Prescription, over-the-counter and regular refills",
     "icon": "pill",
+    "image": "/images/categories/medicines.webp",
     "edge": "var(--terracotta)",
     "launch": true,
     "hi": {
@@ -20,6 +21,7 @@
     "name": "Medical devices",
     "blurb": "BP monitors, glucometers, oximeters",
     "icon": "heartPulse",
+    "image": "/images/categories/devices.webp",
     "edge": "var(--green)",
     "launch": true,
     "hi": {
@@ -36,6 +38,7 @@
     "name": "Daily care",
     "blurb": "Adult diapers, underpads, wound care",
     "icon": "handHeart",
+    "image": "/images/categories/daily-care.webp",
     "edge": "var(--sage)",
     "launch": true,
     "hi": {
@@ -52,6 +55,7 @@
     "name": "Mobility & recovery",
     "blurb": "Walkers, wheelchairs, hospital beds",
     "icon": "mobility",
+    "image": "/images/categories/mobility.webp",
     "edge": "var(--mustard)",
     "hi": {
       "name": "चलना-फिरना और रिकवरी",
@@ -67,6 +71,7 @@
     "name": "Nutrition & wellness",
     "blurb": "Protein drinks, diabetic-friendly foods, vitamins",
     "icon": "apple",
+    "image": "/images/categories/nutrition.webp",
     "edge": "var(--terracotta)",
     "hi": {
       "name": "पोषण और सेहत",
@@ -82,6 +87,7 @@
     "name": "Safety & smart tech",
     "blurb": "Pill boxes, fall alerts, oxygen on rent",
     "icon": "shield",
+    "image": "/images/categories/safety.webp",
     "edge": "var(--green)",
     "hi": {
       "name": "सुरक्षा और स्मार्ट उपकरण",

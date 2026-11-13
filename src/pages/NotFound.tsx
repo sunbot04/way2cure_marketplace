@@ -28,7 +28,7 @@ export default function NotFound() {
   const { t } = useLang();
   const tr = useT(T);
   return (
-    <div className="container py-14 md:py-20">
+    <div className="container py-10 md:py-14">
       <Seo title={tr('title')} description={tr('text')} noindex />
       <div className="max-w-2xl rounded-card bg-white p-8 shadow-card">
         <h1>{tr('title')}</h1>

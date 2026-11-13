@@ -173,7 +173,7 @@ export default function Checkout() {
   if (order) {
     const slot = slotLabel((order.slotId as string) || form.slot, lang);
     return (
-      <div className="container py-12 md:py-20">
+      <div className="container py-10 md:py-14">
         {seo}
         <m.div initial="hidden" animate="show" variants={fadeRise} className="max-w-3xl rounded-panel bg-white p-8 shadow-card md:p-12">
           <span className="mb-6 grid h-16 w-16 place-items-center rounded-full bg-sage text-white">
@@ -197,7 +197,7 @@ export default function Checkout() {
 
   if (!count) {
     return (
-      <div className="container py-12 md:py-20">
+      <div className="container py-10 md:py-14">
         {seo}
         <div className="max-w-2xl rounded-panel bg-white p-8 shadow-card md:p-12">
           <span className="mb-6 grid h-16 w-16 place-items-center rounded-full bg-mist text-green"><Icon name="cart" size={30} /></span>
@@ -252,7 +252,7 @@ export default function Checkout() {
     <>
       {seo}
       <PageHeader title={tr('title')} lead={tr('intro')} crumbs={[{ label: tr('cart'), to: '/cart' }, { label: tr('title') }]} />
-      <div className="container pb-20">
+      <div className="container pb-12 md:pb-16">
         <div className="mb-10 rounded-panel bg-white p-5 shadow-card md:p-7">
           <StepList steps={STEPS} current={step} />
         </div>

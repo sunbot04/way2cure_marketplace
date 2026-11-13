@@ -188,7 +188,7 @@ export default function Prescription() {
       </PageHeader>
 
       {/* App-only upload */}
-      <section id="get-app" className="bg-white py-14 lg:py-20">
+      <section id="get-app" className="bg-white py-8 lg:py-12">
         <div className="container grid items-start gap-6 lg:grid-cols-[1.35fr_1fr] lg:gap-8">
           <Reveal><AppPanel title={tr('appTitle')} headingLevel={2} /></Reveal>
           <div className="grid gap-6">
@@ -220,7 +220,7 @@ export default function Prescription() {
       {/* Inside the app: the editable AI-read list and the order tracker */}
       <section className="section">
         <div className="container">
-          <Reveal className="mb-12 max-w-2xl">
+          <Reveal className="mb-8 md:mb-12 max-w-2xl">
             <h2 className="m-0 text-section"><Accent text={tr('tryTitle')} /></h2>
           </Reveal>
           <div className="grid items-start gap-8 lg:grid-cols-2">

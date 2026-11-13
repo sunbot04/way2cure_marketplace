@@ -1,11 +1,15 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Link, useParams, useSearchParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import Icon from '../components/Icon';
+import CategoryCard from '../components/commerce/CategoryCard';
 import Button from '../components/ui/Button';
 import { Field, Select } from '../components/ui/Field';
 import { ProductCardSkeleton } from '../components/ui/Skeleton';
 import { Reveal, Stagger, StaggerItem } from '../components/motion/Reveal';
 import ProductCard from '../components/commerce/ProductCard';
+import CartBar from '../components/commerce/CartBar';
+import { COPY } from '../components/copy';
+import { useSaved } from '../context/SavedContext';
 import RxNotice from '../components/commerce/RxNotice';
 import PageHeader from '../components/layout/PageHeader';
 import Seo from '../components/layout/Seo';
@@ -47,7 +51,7 @@ const T: Dict = {
     brand: 'ब्रांड', allBrands: 'सभी ब्रांड',
     price: 'कीमत', anyPrice: 'कोई भी कीमत', under500: 'Rs. 500 से कम', mid: 'Rs. 500 से 2,000', over2000: 'Rs. 2,000 से ज़्यादा',
     buyOrRent: 'ख़रीदें या किराये पर', buy: 'ख़रीदें', rent: 'किराये पर',
-    prescription: 'पर्चा', rxAll: 'पर्चे वाली और बिना पर्चे वाली', rxNeeded: 'पर्चा ज़रूरी', rxNo: 'पर्चा ज़रूरी नहीं',
+    prescription: 'पर्चा', rxAll: 'सभी सामान', rxNeeded: 'पर्चा ज़रूरी', rxNo: 'पर्चा ज़रूरी नहीं',
     clear: 'फ़िल्टर हटाएँ',
     item: 'सामान', items: 'सामान', loading: 'प्रोडक्ट लोड हो रहे हैं',
     sortBy: 'क्रम', popular: 'सबसे लोकप्रिय', priceLow: 'कीमत: कम से ज़्यादा', priceHigh: 'कीमत: ज़्यादा से कम', fastest: 'सबसे जल्दी डिलिवरी',
@@ -69,7 +73,7 @@ const T: Dict = {
     brand: 'ब्रँड', allBrands: 'सर्व ब्रँड',
     price: 'किंमत', anyPrice: 'कोणतीही किंमत', under500: 'Rs. 500 पेक्षा कमी', mid: 'Rs. 500 ते 2,000', over2000: 'Rs. 2,000 पेक्षा जास्त',
     buyOrRent: 'विकत की भाड्याने', buy: 'विकत घ्या', rent: 'भाड्याने',
-    prescription: 'प्रिस्क्रिप्शन', rxAll: 'प्रिस्क्रिप्शनची आणि विना-प्रिस्क्रिप्शन', rxNeeded: 'प्रिस्क्रिप्शन आवश्यक', rxNo: 'प्रिस्क्रिप्शन आवश्यक नाही',
+    prescription: 'प्रिस्क्रिप्शन', rxAll: 'सर्व वस्तू', rxNeeded: 'प्रिस्क्रिप्शन लागते', rxNo: 'प्रिस्क्रिप्शन नको',
     clear: 'फिल्टर काढा',
     item: 'वस्तू', items: 'वस्तू', loading: 'उत्पादने लोड होत आहेत',
     sortBy: 'क्रम', popular: 'सर्वात लोकप्रिय', priceLow: 'किंमत: कमी ते जास्त', priceHigh: 'किंमत: जास्त ते कमी', fastest: 'सर्वात लवकर डिलिव्हरी',
@@ -107,7 +111,8 @@ const searchText = (p: Product) =>
 // TODO: API: replace with the real catalogue request; keep the skeleton while it is in flight.
 const LOAD_MS = 500;
 
-const grid = 'grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5 xl:grid-cols-4';
+// Product cards (client design products.html): 2 across on phones, 3 from 768px, 4 from 1280px.
+const grid = 'grid grid-cols-2 gap-2.5 md:grid-cols-3 md:gap-4 xl:grid-cols-4';
 
 export default function Shop() {
   const { t } = useLang();
@@ -119,6 +124,10 @@ export default function Shop() {
   const q = rawQ.toLowerCase();
   // Demo only: /shop?fail=1 shows the error state.
   const fail = params.get('fail') === '1';
+  // ?saved=1: only the products saved with the heart
+  const savedOnly = params.get('saved') === '1';
+  const { ids: savedIds } = useSaved();
+  const tc = useT(COPY);
 
   const [brand, setBrand] = useState('all');
   const [price, setPrice] = useState('all');
@@ -138,8 +147,9 @@ export default function Shop() {
     else if (category === 'sellers') list = list.filter((p) => p.seller !== 'Way2Cure');
     else if (category) list = list.filter((p) => p.cat === category);
     if (q) list = list.filter((p) => searchText(p).toLowerCase().includes(q));
+    if (savedOnly) list = list.filter((p) => savedIds.includes(p.id));
     return list;
-  }, [category, q]);
+  }, [category, q, savedOnly, savedIds]);
 
   const brands = [...new Set(base.map((p) => p.brand))].sort();
 
@@ -161,7 +171,7 @@ export default function Shop() {
     setLoading(true);
     const timer = window.setTimeout(() => setLoading(false), LOAD_MS);
     return () => window.clearTimeout(timer);
-  }, [category, q, brand, price, buyRent, rx, fail, attempt]);
+  }, [category, q, brand, price, buyRent, rx, fail, attempt, savedOnly]);
 
   if (category && !view) return <NotFound />;
 
@@ -178,7 +188,12 @@ export default function Shop() {
       setParams(next, { replace: true });
     } else setAttempt((n) => n + 1);
   };
-  const gridKey = [category, q, brand, price, buyRent, rx, sort, attempt].join('|');
+  const gridKey = [category, q, brand, price, buyRent, rx, sort, attempt, savedOnly].join('|');
+  const toggleSaved = () => {
+    const next = new URLSearchParams(params);
+    if (savedOnly) next.delete('saved'); else next.set('saved', '1');
+    setParams(next, { replace: true });
+  };
   const skeletons = Math.min(8, Math.max(4, shown.length));
 
   return (
@@ -191,23 +206,14 @@ export default function Shop() {
       />
 
       {!category && !q && (
-        <section aria-labelledby="browse" className="pb-12 md:pb-16">
+        <section aria-labelledby="browse" className="pb-8 md:pb-10">
           <div className="container">
             <h2 id="browse" className="sr-only">{tr('browse')}</h2>
-            <Stagger as="ul" className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-5">
+            {/* Phones: a row you swipe (keeps the products near the top); 2 across from 640px, 4 from 1024px */}
+            <Stagger as="ul" className="-mx-4 flex snap-x snap-mandatory scroll-px-4 gap-3 overflow-x-auto px-4 pb-2 sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-4 lg:gap-4">
               {[...categories, ...shopViews].map(loc).map((c) => (
-                <StaggerItem as="li" key={c.slug}>
-                  <Link
-                    to={`/shop/${c.slug}`}
-                    className="group flex h-full flex-col gap-4 rounded-tile border border-line bg-white p-5 text-ink no-underline transition-[transform,box-shadow] duration-micro ease-soft hover:-translate-y-1 hover:shadow-raised"
-                  >
-                    <span className="grid h-12 w-12 place-items-center rounded-btn bg-mist text-green"><Icon name={c.icon} size={24} /></span>
-                    <span className="grid gap-1">
-                      <strong className="text-body leading-snug text-green">{c.name}</strong>
-                      <span className="hidden text-base text-grey md:block">{c.blurb}</span>
-                    </span>
-                    <Icon name="arrow" size={18} className="mt-auto text-terracotta-deep" />
-                  </Link>
+                <StaggerItem as="li" key={c.slug} className="w-[8.5rem] shrink-0 snap-start sm:w-auto">
+                  <CategoryCard c={c} />
                 </StaggerItem>
               ))}
             </Stagger>
@@ -215,7 +221,7 @@ export default function Shop() {
         </section>
       )}
 
-      <section aria-label={tr('shop')} className="bg-mist py-12 md:py-16">
+      <section aria-label={tr('shop')} className="bg-mist py-8 md:py-12">
         <div className="container">
           {(category === 'medicines' || base.some((p) => p.rx)) && <RxNotice light className="mb-8" />}
 
@@ -273,9 +279,23 @@ export default function Shop() {
 
             <div className="min-w-0">
               <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
-                <p className="m-0 text-body" aria-live="polite">
-                  {loading ? <span className="text-grey">{tr('loading')}…</span> : !fail && <><strong className="text-green">{shown.length}</strong> {shown.length === 1 ? tr('item') : tr('items')}</>}
-                </p>
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+                  <p className="m-0 text-body" aria-live="polite">
+                    {loading ? <span className="text-grey">{tr('loading')}…</span> : !fail && <><strong className="text-green">{shown.length}</strong> {shown.length === 1 ? tr('item') : tr('items')}</>}
+                  </p>
+                  {(savedIds.length > 0 || savedOnly) && (
+                    <button
+                      type="button"
+                      aria-pressed={savedOnly}
+                      onClick={toggleSaved}
+                      className={`inline-flex min-h-[2.75rem] items-center gap-2 rounded-full border-2 px-4 text-base font-bold transition-colors duration-micro ${
+                        savedOnly ? 'border-green bg-green text-white' : 'border-line bg-white text-green hover:border-green'
+                      }`}
+                    >
+                      <Icon name="heart" size={16} filled className={savedOnly ? 'text-white' : 'text-terracotta-deep'} /> {tc('savedN', { n: savedIds.length })}
+                    </button>
+                  )}
+                </div>
                 <Field id="f-sort" label={tr('sortBy')} className="w-full sm:w-64">
                   <Select id="f-sort" value={sort} onChange={(e) => setSort(e.target.value as SortKey)}>
                     <option value="popular">{tr('popular')}</option>
@@ -305,7 +325,7 @@ export default function Shop() {
               ) : shown.length ? (
                 <ul key={gridKey} className={grid}>
                   {/* Each card fades in as it scrolls into view; cards in a row follow each other closely */}
-                  {shown.map((p, i) => <Reveal as="li" key={p.id} delay={(i % 4) * 0.05} className="grid"><ProductCard product={p} /></Reveal>)}
+                  {shown.map((p, i) => <Reveal as="li" key={p.id} delay={(i % 4) * 0.05} className="grid"><ProductCard product={p} alt={i % 2 === 1} /></Reveal>)}
                 </ul>
               ) : (
                 <Reveal>
@@ -335,6 +355,7 @@ export default function Shop() {
           </div>
         </div>
       </section>
+      <CartBar />
     </>
   );
 }

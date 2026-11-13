@@ -4,6 +4,7 @@
     "name": "Rent equipment",
     "blurb": "Beds, wheelchairs and oxygen by the month",
     "icon": "refresh",
+    "image": "/images/categories/rent.webp",
     "edge": "var(--sage)",
     "hi": {
       "name": "किराये पर उपकरण",
@@ -19,6 +20,7 @@
     "name": "Marketplace sellers",
     "blurb": "Products from verified partner sellers",
     "icon": "store",
+    "image": "/images/categories/sellers.webp",
     "edge": "var(--mustard)",
     "hi": {
       "name": "मार्केटप्लेस विक्रेता",

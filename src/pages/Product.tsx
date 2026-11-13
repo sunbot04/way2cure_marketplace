@@ -133,7 +133,7 @@ export default function Product() {
   return (
     <>
       <Seo title={p.name} description={`${p.desc} ${product.rx ? tr('rxNeeded') + '.' : ''}`.trim()} />
-      <section className="pb-14 pt-4 md:pb-20 md:pt-6">
+      <section className="pb-12 pt-4 md:pb-16 md:pt-6">
         <div className="container">
           <nav aria-label={tr('breadcrumb')} className="mb-4">
             <ol className="flex flex-wrap items-center gap-1 text-small">

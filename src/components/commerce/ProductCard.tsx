@@ -1,17 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import Icon from '../Icon';
-import Tag from '../ui/Tag';
-import { buttonClass } from '../ui/Button';
 import { useLoc, useT, type Dict } from '../../i18n/LangContext';
 import { categories, type Product } from '../../data';
 import { formatPrice } from '../../config/site';
 import { useCart } from '../../context/CartContext';
+import { useSaved } from '../../context/SavedContext';
 import { useToast } from '../../context/ToastContext';
 import { COPY } from '../copy';
+import ProductArt from './ProductArt';
 
-// Toast copy for "added to cart": kept short on purpose (the button itself already says "Added",
-// and the header cart badge pulses when the count changes).
+// Toast copy for "added to cart" on the product page: kept short on purpose (the header cart badge
+// pulses when the count changes). Product cards use the shop's cart bar instead.
 export const CART_TOAST: Dict = {
   en: { added: 'Added to cart', view: 'View cart' },
   hi: { added: 'कार्ट में डाला', view: 'कार्ट देखें' },
@@ -25,25 +25,27 @@ export function useCartToast() {
   return () => toast({ message: tt('added'), action: { label: tt('view'), to: '/cart' } });
 }
 
+// Soft round light behind the product drawings (two tones that alternate in the grid)
+const LIGHT_SKY = 'bg-[radial-gradient(circle_at_50%_45%,#fff_0%,rgb(var(--c-sage-tint))_75%)]';
+const LIGHT_MIST = 'bg-[radial-gradient(circle_at_50%_45%,#fff_0%,rgb(var(--c-mist))_75%)]';
+
 /**
- * Square product image tile until real pack shots arrive (see public/IMAGE_LIST.md): a soft mist
- * panel with the category icon. Flat, no gradient. Inside a `.group` card it zooms to 1.03 on hover.
+ * Square product tile (product page, cart) until real pack shots arrive (see public/IMAGE_LIST.md):
+ * the product's drawing on a soft round light. Inside a `.group` it zooms to 1.03 on hover.
  */
 export function ProductImage({ product, large = false, small = false }: { product: Product; large?: boolean; small?: boolean }) {
   const tr = useT(COPY);
   const loc = useLoc();
-  const cat = categories.find((c) => c.slug === product.cat);
   return (
     <div
       role="img"
       aria-label={tr('photoSoon', { name: loc(product).name })}
-      className={`grid aspect-square place-items-center overflow-hidden bg-mist text-green ${small ? 'rounded-btn' : 'rounded-tile'}`}
+      className={`grid aspect-square place-items-center overflow-hidden ${LIGHT_SKY} ${small ? 'rounded-btn' : 'rounded-tile'}`}
     >
-      <span className="grid place-items-center transition-transform duration-slow ease-soft group-hover:scale-[1.03]">
-        <span className={`grid place-items-center rounded-full bg-white shadow-card ${small ? 'p-3' : large ? 'p-10' : 'p-6'}`}>
-          <Icon name={cat?.icon ?? 'package'} size={small ? 26 : large ? 88 : 44} />
-        </span>
-      </span>
+      <ProductArt
+        product={product}
+        className={`h-auto drop-shadow-[0_12px_14px_rgb(38_52_69/0.16)] transition-transform duration-slow ease-soft group-hover:scale-[1.03] ${small ? 'w-[82%]' : large ? 'w-[70%]' : 'w-[74%]'}`}
+      />
     </div>
   );
 }
@@ -58,77 +60,149 @@ export function SellerBadge({ product }: { product: Product }) {
   );
 }
 
-// Product card (guidelines p.7): square image, category, name, pack, price, seller, one action.
-// Rx items: "Rx needed" tag + the valid-prescription line, and never an offer or launch badge (p.11).
-// Hover: lifts 4px, shadow deepens, image zooms 1.03 inside its frame (transform only).
-export default function ProductCard({ product }: { product: Product }) {
+// Product card (client design products.html, in the site palette). Two across on phones, three on
+// tablets, four on desktop.
+//  · Drawing panel with one badge (Rx needed / Rent or buy / Subscribe / Launch) and a heart to save.
+//  · Category, name (two lines at most), pack, one note line, then the price and one action:
+//    "+ Add", which becomes a − 1 + counter once the item is in the cart (the shop's cart bar shows
+//    the total), or "View" for prescription and rent-only items, which are ordered from their page.
+//  · Rx items: "Rx needed" and the valid-prescription line, never an offer or launch badge (p.11).
+//    Partner sellers are named; Way2Cure's own items are not.
+//  · Hover: the card lifts 3px and the drawing rises a little (transform only).
+export default function ProductCard({ product, alt = false }: { product: Product; alt?: boolean }) {
   const tr = useT(COPY);
   const loc = useLoc();
-  const { add } = useCart();
-  const showToast = useCartToast();
-  const [added, setAdded] = useState(false);
+  const { lines, add, setQty } = useCart();
+  const { has, toggle } = useSaved();
   const p = loc(product);
   const catRaw = categories.find((c) => c.slug === product.cat);
   const cat = catRaw ? loc(catRaw) : undefined;
   const href = `/product/${product.id}`;
   const needsDetails = product.rx || product.rentOnly;
+  const qty = lines.find((l) => l.id === product.id && l.mode === 'buy')?.qty ?? 0;
+  const saved = has(product.id);
 
-  // The button says "Added" for a moment, then is ready for another tap.
+  // Keyboard focus moves to the control that replaces the one just pressed (Add <-> counter).
+  const addRef = useRef<HTMLButtonElement>(null);
+  const plusRef = useRef<HTMLButtonElement>(null);
+  const focusNext = useRef<'add' | 'plus' | null>(null);
   useEffect(() => {
-    if (!added) return;
-    const t = window.setTimeout(() => setAdded(false), 2500);
-    return () => window.clearTimeout(t);
-  }, [added]);
+    if (focusNext.current === 'plus') plusRef.current?.focus();
+    if (focusNext.current === 'add') addRef.current?.focus();
+    focusNext.current = null;
+  }, [qty]);
 
-  const onAdd = () => {
-    add(product.id);
-    setAdded(true);
-    showToast();
-  };
+  const badge = product.rx
+    ? { text: tr('rxNeeded'), cls: 'bg-terracotta-deep text-white' }
+    : product.rentPerMonth
+      ? { text: product.rentOnly ? tr('rent') : tr('rentOrBuy'), cls: 'bg-terracotta-deep text-white' }
+      : product.subscribe
+        ? { text: tr('subscribe'), cls: 'bg-green text-white' }
+        : product.launch
+          ? { text: tr('launch'), cls: 'bg-mustard text-ink' }
+          : null;
+
+  const note = product.rx
+    ? { text: tr('rxShort'), cls: 'text-terracotta-deep' }
+    : product.rentPerMonth && !product.rentOnly
+      ? { text: tr('orRent', { price: formatPrice(product.rentPerMonth) }), cls: 'text-terracotta-deep' }
+      : product.subscribe
+        ? { text: tr('monthly'), cls: 'text-sage-deep' }
+        : null;
+
+  const price: ReactNode = product.rentOnly ? (
+    <>{formatPrice(product.rentPerMonth ?? 0)}<span className="ml-1 text-[0.75rem] font-bold text-grey">{tr('perMonth')}</span></>
+  ) : (
+    formatPrice(product.price ?? 0)
+  );
+
+  const btn = 'inline-flex h-10 shrink-0 items-center justify-center gap-1.5 rounded-xl text-[0.875rem] font-extrabold transition-[background-color,transform] duration-micro ease-soft active:scale-95';
+  let action: ReactNode;
+  if (needsDetails) {
+    action = (
+      <Link to={href} aria-label={tr('viewItem', { name: p.name })} className={`${btn} w-10 border-2 border-green text-green no-underline hover:bg-mist md:w-auto md:px-3`}>
+        <span className="hidden md:inline">{tr('view')}</span>
+        <Icon name="arrow" size={18} />
+      </Link>
+    );
+  } else if (qty > 0) {
+    action = (
+      <div role="group" aria-label={`${p.name}: ${tr('inCart', { n: qty })}`} className="inline-flex h-10 shrink-0 items-center overflow-hidden rounded-xl bg-sage-tint">
+        <button
+          type="button"
+          aria-label={tr('less', { name: p.name })}
+          onClick={() => { if (qty === 1) focusNext.current = 'add'; setQty(product.id, 'buy', qty - 1); }}
+          className="grid h-10 w-8 place-items-center text-green transition-colors duration-micro hover:bg-mint"
+        >
+          <Icon name="minus" size={16} />
+        </button>
+        <span aria-hidden="true" className="min-w-[1.375rem] text-center text-[0.9375rem] font-extrabold text-green">{qty}</span>
+        <button
+          ref={plusRef}
+          type="button"
+          aria-label={tr('more', { name: p.name })}
+          onClick={() => add(product.id, 'buy', 1)}
+          className="grid h-10 w-8 place-items-center text-green transition-colors duration-micro hover:bg-mint"
+        >
+          <Icon name="plus" size={16} />
+        </button>
+      </div>
+    );
+  } else {
+    action = (
+      <button
+        ref={addRef}
+        type="button"
+        aria-label={tr('addItem', { name: p.name })}
+        onClick={() => { focusNext.current = 'plus'; add(product.id, 'buy', 1); }}
+        className={`${btn} w-10 bg-green text-white hover:bg-green-dark md:w-auto md:px-3.5`}
+      >
+        <Icon name="plus" size={18} />
+        <span className="hidden md:inline">{tr('add')}</span>
+      </button>
+    );
+  }
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-tile border border-line bg-white shadow-card transition-[transform,box-shadow] duration-micro ease-soft hover:-translate-y-1 hover:shadow-raised">
-      <Link to={href} tabIndex={-1} aria-hidden="true" className="relative block p-2.5 pb-0">
-        {product.launch && !product.rx && (
-          <span className="absolute left-5 top-5 z-10 rounded-full bg-mustard px-2.5 py-0.5 text-small font-bold text-green">{tr('launch')}</span>
-        )}
-        <ProductImage product={product} />
+    <article className="group relative flex h-full flex-col rounded-[1.125rem] border border-line bg-white p-1.5 transition-[transform,box-shadow,border-color] duration-slow ease-soft hover:-translate-y-[3px] hover:border-transparent hover:shadow-[0_20px_40px_-22px_rgb(38_52_69/0.45)] md:rounded-[1.375rem] md:p-2.5">
+      <Link
+        to={href}
+        tabIndex={-1}
+        aria-hidden="true"
+        className={`flex h-[8.75rem] items-center justify-center overflow-hidden rounded-[0.875rem] md:h-[12.5rem] md:rounded-tile ${alt ? LIGHT_MIST : LIGHT_SKY}`}
+      >
+        <ProductArt
+          product={product}
+          className="h-[6.5rem] w-auto max-w-[88%] drop-shadow-[0_12px_14px_rgb(38_52_69/0.16)] transition-transform duration-slow ease-soft group-hover:-translate-y-1 group-hover:scale-105 md:h-[9.375rem]"
+        />
       </Link>
-      <div className="flex flex-1 flex-col gap-1.5 p-4">
-        {cat && (
-          <p className="m-0 flex items-center gap-1.5 text-small font-semibold text-grey">
-            <span aria-hidden="true" className="h-2 w-2 shrink-0 rounded-full" style={{ background: cat.edge }} />
-            {cat.name}
-          </p>
-        )}
-        <h3 className="m-0 text-body leading-snug">
-          <Link to={href} className="text-green no-underline hover:underline">{p.name}</Link>
+      {badge && (
+        <span className={`absolute left-3.5 top-3.5 rounded-[0.4375rem] px-[0.4375rem] py-1 text-[0.625rem] font-extrabold uppercase leading-none tracking-[0.04em] md:left-5 md:top-5 md:rounded-lg md:px-2 md:py-[0.3125rem] md:text-[0.6875rem] ${badge.cls}`}>
+          {badge.text}
+        </span>
+      )}
+      <button
+        type="button"
+        aria-pressed={saved}
+        aria-label={tr('save', { name: p.name })}
+        onClick={() => toggle(product.id)}
+        className={`absolute right-2.5 top-2.5 grid h-9 w-9 place-items-center rounded-full bg-white shadow-[0_4px_10px_-4px_rgb(38_52_69/0.3)] transition-transform duration-micro ease-soft hover:scale-110 md:right-3.5 md:top-3.5 ${saved ? 'text-terracotta-deep' : 'text-green'}`}
+      >
+        <Icon name="heart" size={17} filled={saved} />
+      </button>
+
+      <div className="flex flex-1 flex-col px-1 pb-0.5 pt-2.5 md:px-1.5 md:pb-1 md:pt-3">
+        {cat && <p className="m-0 mb-[3px] text-[0.6875rem] font-extrabold uppercase leading-snug tracking-[0.06em] text-sage-deep md:mb-1 md:text-[0.71875rem]">{cat.name}</p>}
+        <h3 className="m-0 mb-0.5 font-body text-[0.9375rem] font-extrabold leading-[1.3] md:text-[0.96875rem]">
+          <Link to={href} className="line-clamp-2 text-green no-underline hover:underline">{p.name}</Link>
         </h3>
-        <p className="m-0 text-base text-grey">{p.pack}</p>
-        {(product.rx || product.rentPerMonth || (product.subscribe && !product.rx)) && (
-          <div className="flex flex-wrap gap-1.5 pt-0.5">
-            {product.rx && <Tag kind="rx">{tr('rxNeeded')}</Tag>}
-            {product.rentPerMonth && <Tag kind="rent">{tr('rent')}</Tag>}
-            {product.subscribe && !product.rx && <Tag kind="subscribe">{tr('subscribe')}</Tag>}
-          </div>
-        )}
-        <p className="m-0 mt-1 font-head text-h3m font-bold text-green">
-          {product.rentOnly ? `${formatPrice(product.rentPerMonth ?? 0)} ${tr('perMonth')}` : formatPrice(product.price ?? 0)}
-          {product.rentPerMonth && !product.rentOnly && (
-            <span className="block font-body text-base font-semibold text-grey">{tr('orRent', { price: formatPrice(product.rentPerMonth) })}</span>
-          )}
-        </p>
-        {product.rx && <p className="m-0 text-small font-bold text-terracotta-deep">{tr('rxShort')}</p>}
-        <div className="mb-3 flex-1"><SellerBadge product={product} /></div>
-        {needsDetails ? (
-          <Link to={href} className={buttonClass('outline', { block: true, compact: true })}>
-            {tr('viewDetails')} <Icon name="arrow" size={16} />
-          </Link>
-        ) : (
-          <button type="button" className={buttonClass('primary', { block: true, compact: true })} onClick={onAdd}>
-            {added ? <><Icon name="check" size={18} /> {tr('added')}</> : <><Icon name="cart" size={18} /> {tr('addToCart')}</>}
-          </button>
-        )}
+        <p className="m-0 text-[0.8125rem] font-semibold text-grey">{p.pack}</p>
+        {note && <p className={`m-0 mt-1 text-[0.75rem] font-bold leading-[1.35] md:mt-1.5 md:text-[0.78125rem] ${note.cls}`}>{note.text}</p>}
+        {product.seller !== 'Way2Cure' && <p className="m-0 mt-1 text-[0.75rem] leading-[1.35] text-grey">{tr('seller', { seller: product.seller })}</p>}
+        <div className="mt-auto flex flex-wrap items-center justify-between gap-2 pt-2.5 md:flex-nowrap md:pt-3">
+          <p className="m-0 text-[1.0625rem] font-extrabold leading-[1.1] text-ink md:text-[1.1875rem]">{price}</p>
+          {action}
+        </div>
       </div>
     </article>
   );

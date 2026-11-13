@@ -1,0 +1,439 @@
+/*
+  "Shop by need" cards (homepage): the client's design shop-by-need-v4.html in the site palette.
+  Charcoal main colour, crimson accent, sky-blue soft colour; cards in light mist and light sky.
+  Desktop: a bento grid (Medicines tall, Medical devices wide). Up to 1080px: two columns.
+  Up to 640px: one column of compact rows.
+*/
+.sbn-grid {
+  --sbn-main: rgb(var(--c-green));
+  --sbn-main-2: #34475d;
+  --sbn-soft: rgb(var(--c-sage));
+  --sbn-pale: rgb(var(--c-mint));
+  --sbn-tint: rgb(var(--c-sage-tint));
+  --sbn-card: rgb(var(--c-mist));
+  --sbn-accent: rgb(var(--c-terracotta-deep));
+  --sbn-accent-tint: #fdf0f2;
+  --sbn-ink: rgb(var(--c-ink));
+  --sbn-muted: rgb(var(--c-grey));
+  --sbn-body: 'Nunito Sans', 'Noto Sans Devanagari', Arial, sans-serif;
+  --sbn-head: Lora, 'Noto Sans Devanagari', Georgia, serif;
+  display: grid;
+  gap: 0.875rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-areas:
+    'med med dev dev'
+    'med med day mob'
+    'nut saf help help';
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.sbn-cell { display: flex; min-width: 0; }
+.sbn-cell--med { grid-area: med; }
+.sbn-cell--dev { grid-area: dev; }
+.sbn-cell--day { grid-area: day; }
+.sbn-cell--mob { grid-area: mob; }
+.sbn-cell--nut { grid-area: nut; }
+.sbn-cell--saf { grid-area: saf; }
+.sbn-cell--help { grid-area: help; }
+
+/* ---------- Card ---------- */
+.sbn-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 15.625rem;
+  padding: 1.375rem 1.375rem 0;
+  border: 1px solid rgb(38 52 69 / 0.06);
+  border-radius: 1.75rem;
+  background: var(--sbn-card);
+  color: var(--sbn-ink);
+  text-decoration: none;
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s;
+}
+.sbn-card:hover,
+.sbn-card:focus-visible { transform: translateY(-4px); box-shadow: 0 24px 44px -24px rgb(38 52 69 / 0.5); }
+/* soft sheen at the top of the light cards */
+.sbn-card:not(.sbn-med)::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.55), rgb(255 255 255 / 0) 40%);
+}
+.sbn-card--alt { background: var(--sbn-tint); }
+
+.sbn-cat__title {
+  position: relative;
+  z-index: 2;
+  margin: 0 0 0.125rem;
+  padding-right: 3.5rem;
+  font-family: var(--sbn-body);
+  font-size: 1.3125rem;
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--sbn-main);
+}
+.sbn-cat__sub {
+  position: relative;
+  z-index: 2;
+  display: block;
+  margin: 0;
+  padding-right: 2.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--sbn-muted);
+}
+.sbn-more { display: none; }
+/* Category cards: the title keeps clear of the corner button even when it grows into the "Shop"
+   pill, and the description starts below the button */
+.sbn-cat:not(.sbn-dev) .sbn-cat__title { min-height: 2.5rem; padding-right: 5.25rem; }
+.sbn-cat:not(.sbn-dev) .sbn-cat__sub { padding-right: 0; }
+
+/* Round button in the corner that grows into a "Shop" pill */
+.sbn-go {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.5rem;
+  min-width: 2.5rem;
+  padding: 0 0.6875rem;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--sbn-main);
+  transition: background-color 0.3s, color 0.3s;
+}
+.sbn-go__label {
+  max-width: 0;
+  overflow: hidden;
+  font-size: 0.8125rem;
+  font-weight: 800;
+  white-space: nowrap;
+  transition: max-width 0.35s, margin 0.35s;
+}
+.sbn-go svg { transition: transform 0.3s; }
+.sbn-card:hover .sbn-go,
+.sbn-card:focus-visible .sbn-go { background: var(--sbn-accent); color: #fff; }
+.sbn-card:hover .sbn-go__label,
+.sbn-card:focus-visible .sbn-go__label { max-width: 5rem; margin-right: 0.375rem; }
+.sbn-card:hover .sbn-go svg { transform: translateX(2px); }
+
+/* Drawing on a soft round "stage" */
+.sbn-art {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  height: 10.9375rem;
+  margin-top: auto;
+}
+.sbn-art::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  bottom: -4.375rem;
+  left: 50%;
+  width: 15.625rem;
+  height: 11.875rem;
+  border-radius: 50%;
+  transform: translateX(-50%);
+  background: radial-gradient(circle at 50% 40%, #fff 0%, var(--sbn-tint) 70%);
+  transition: transform 0.45s;
+}
+.sbn-card--alt .sbn-art::before { background: radial-gradient(circle at 50% 40%, #fff 0%, #f3f7fc 70%); }
+.sbn-art > svg {
+  width: auto;
+  max-width: 100%;
+  height: 10.3125rem;
+  filter: drop-shadow(0 14px 16px rgb(38 52 69 / 0.16));
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.sbn-card:hover .sbn-art > svg { transform: translateY(-6px) scale(1.04); }
+.sbn-card:hover .sbn-art::before { transform: translateX(-50%) scale(1.06); }
+
+.sbn-ribbon {
+  position: absolute;
+  z-index: 2;
+  bottom: 1.125rem;
+  left: 1.25rem;
+  padding: 0.3125rem 0.625rem;
+  border-radius: 0.5rem;
+  background: var(--sbn-accent);
+  color: #fff;
+  font-size: 0.71875rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* ---------- Medical devices (wide) ---------- */
+.sbn-dev { flex-direction: row; padding: 1.5rem; }
+.sbn-dev__copy { position: relative; z-index: 2; flex: 1; display: flex; flex-direction: column; }
+.sbn-dev .sbn-cat__sub { padding-right: 0; }
+.sbn-dev .sbn-art { flex: 1; height: auto; margin: 0; align-items: center; }
+.sbn-dev .sbn-art::before {
+  top: 50%;
+  bottom: auto;
+  width: 14.375rem;
+  height: 14.375rem;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle at 50% 45%, #fff 0%, #f3f7fc 70%);
+}
+.sbn-dev:hover .sbn-art::before { transform: translate(-50%, -50%) scale(1.06); }
+.sbn-dev .sbn-art > svg { height: 12.5rem; }
+.sbn-chips { display: flex; flex-wrap: wrap; gap: 0.375rem; margin: auto 0 0; padding: 0; list-style: none; }
+.sbn-chips li {
+  padding: 0.375rem 0.6875rem;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--sbn-main);
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+
+/* ---------- Medicines (tall, dark) ---------- */
+.sbn-med { min-height: 33.125rem; padding: 2.125rem; background: var(--sbn-main); color: #fff; }
+.sbn-med::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: radial-gradient(rgb(255 255 255 / 0.07) 1.2px, transparent 1.2px);
+  background-size: 22px 22px;
+  -webkit-mask-image: linear-gradient(160deg, #000 0%, transparent 60%);
+  mask-image: linear-gradient(160deg, #000 0%, transparent 60%);
+}
+.sbn-med::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  right: -7.5rem;
+  bottom: -8.75rem;
+  width: 30rem;
+  height: 30rem;
+  border-radius: 50%;
+  background: var(--sbn-main-2);
+}
+.sbn-badge {
+  position: relative;
+  z-index: 2;
+  align-self: flex-start;
+  margin-bottom: 1.375rem;
+  padding: 0.4375rem 0.75rem;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.1);
+  color: var(--sbn-pale);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.sbn-med__title {
+  position: relative;
+  z-index: 2;
+  margin: 0 0 0.875rem;
+  font-family: var(--sbn-head);
+  font-size: 2.625rem;
+  font-weight: 700;
+  line-height: 1.04;
+  letter-spacing: -0.01em;
+  color: #fff;
+  white-space: pre-line;
+}
+/* accent words in yellow on charcoal (crimson would be too dark there) */
+.sbn-med .accent { color: rgb(var(--c-mustard)); }
+.sbn-med__lead {
+  position: relative;
+  z-index: 2;
+  max-width: 32ch;
+  margin: 0;
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  color: rgb(255 255 255 / 0.8);
+}
+.sbn-glow { position: absolute; z-index: 0; right: 2.5rem; bottom: 7.5rem; width: 21.25rem; height: 21.25rem; pointer-events: none; }
+.sbn-med__art {
+  position: absolute;
+  z-index: 0;
+  right: 0.625rem;
+  bottom: 0;
+  width: 58%;
+  max-width: 23.75rem;
+  height: auto;
+  filter: drop-shadow(0 24px 30px rgb(0 0 0 / 0.35));
+  translate: calc(var(--mx, 0) * 14px) calc(var(--my, 0) * 10px);
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), translate 0.2s ease-out;
+}
+.sbn-med:hover .sbn-med__art { transform: translateY(-6px); }
+.sbn-toast {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.625rem 0.875rem 0.625rem 0.625rem;
+  border-radius: 0.875rem;
+  background: #fff;
+  color: var(--sbn-ink);
+  box-shadow: 0 16px 30px -14px rgb(0 0 0 / 0.55);
+  animation: sbn-float 5s ease-in-out infinite;
+  transition: translate 0.2s ease-out;
+}
+.sbn-toast b { display: block; font-size: 0.8125rem; font-weight: 800; }
+.sbn-toast small { display: block; font-size: 0.75rem; font-weight: 600; color: var(--sbn-muted); }
+.sbn-toast__icon { display: grid; flex: none; place-items: center; width: 1.875rem; height: 1.875rem; border-radius: 0.5625rem; }
+.sbn-toast__icon--ok { background: var(--sbn-tint); color: var(--sbn-main); }
+.sbn-toast__icon--refill { background: var(--sbn-accent-tint); color: var(--sbn-accent); }
+.sbn-toast--1 { top: 2.125rem; right: 1.75rem; translate: calc(var(--mx, 0) * 22px) calc(var(--my, 0) * 14px); }
+.sbn-toast--2 { right: 1.5rem; bottom: 3.5rem; animation-delay: -2.5s; translate: calc(var(--mx, 0) * -18px) calc(var(--my, 0) * -12px); }
+@keyframes sbn-float { 50% { transform: translateY(-6px); } }
+.sbn-med__cta { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: flex-start; gap: 0.625rem; margin-top: auto; }
+
+/* ---------- Buttons ---------- */
+.sbn-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 3rem;
+  padding: 0.9375rem 1.375rem;
+  border-radius: 0.875rem;
+  font-size: 0.9375rem;
+  font-weight: 800;
+  text-decoration: none;
+  transition: transform 0.2s, filter 0.2s, background-color 0.2s, border-color 0.2s;
+}
+.sbn-btn--crimson { background: var(--sbn-accent); color: #fff; box-shadow: 0 10px 24px -10px rgb(200 16 46 / 0.9); }
+.sbn-btn--crimson:hover { transform: translateY(-2px); filter: brightness(1.07); }
+.sbn-btn--link { min-height: 2.75rem; padding: 0.5rem 0.125rem; border-radius: 0; border-bottom: 1.5px solid rgb(255 255 255 / 0.35); color: #fff; }
+.sbn-btn--link:hover { border-color: #fff; }
+.sbn-btn--dark { background: var(--sbn-main); color: #fff; }
+.sbn-btn--dark:hover { background: rgb(var(--c-green-dark)); }
+.sbn-wa { color: #25d366; } /* WhatsApp's own green: 6.7:1 on charcoal */
+.sbn-btn--outline { border: 1.5px solid var(--sbn-main); color: var(--sbn-main); }
+.sbn-btn--outline:hover { background: #fff; }
+
+/* ---------- Not sure what to buy? ---------- */
+.sbn-help { flex-direction: row; align-items: center; gap: 1.25rem; min-height: 0; padding: 1.5rem; background: var(--sbn-accent-tint); }
+.sbn-help .sbn-cat__title { padding-right: 0; }
+.sbn-help__copy { position: relative; z-index: 2; flex: 1; }
+.sbn-help__copy p { max-width: 40ch; margin: 0.375rem 0 1.125rem; font-size: 0.9375rem; line-height: 1.5; color: var(--sbn-muted); }
+.sbn-help__actions { display: flex; flex-wrap: wrap; gap: 0.625rem; }
+.sbn-help .sbn-art { flex: none; height: auto; margin: 0; }
+.sbn-help .sbn-art::before { display: none; }
+.sbn-help .sbn-art > svg { height: 10.625rem; }
+
+/* ---------- Two columns (tablets, small laptops) ---------- */
+@media (max-width: 1080px) {
+  .sbn-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas: 'med med' 'dev dev' 'day mob' 'nut saf' 'help help';
+  }
+}
+
+/* ---------- Phones: compact rows ---------- */
+@media (max-width: 640px) {
+  .sbn-grid { grid-template-columns: minmax(0, 1fr); grid-template-areas: none; gap: 0.625rem; }
+  .sbn-grid > .sbn-cell { grid-area: auto; }
+  .sbn-go { display: none; }
+
+  /* Category rows: text on the left, drawing on the right */
+  .sbn-cat {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 7rem;
+    grid-template-rows: auto auto 1fr;
+    column-gap: 0.5rem;
+    align-items: start;
+    min-height: 0;
+    padding: 0.875rem 0.5rem 0.875rem 1rem;
+    border-radius: 1.25rem;
+  }
+  .sbn-cat .sbn-cat__title,
+  .sbn-cat:not(.sbn-dev) .sbn-cat__title { grid-column: 1; grid-row: 1; min-height: 0; margin-bottom: 0.25rem; padding-right: 0; font-size: 1.0625rem; }
+  .sbn-cat .sbn-cat__sub { grid-column: 1; grid-row: 2; padding-right: 0; font-size: 0.875rem; line-height: 1.45; }
+  .sbn-more { display: block; margin-top: 0.375rem; font-size: 0.875rem; font-weight: 800; color: var(--sbn-accent); }
+  .sbn-cat .sbn-ribbon {
+    position: static;
+    grid-column: 1;
+    grid-row: 3;
+    justify-self: start;
+    align-self: end;
+    margin-top: 0.375rem;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.6875rem;
+  }
+  .sbn-cat .sbn-art { grid-column: 2; grid-row: 1 / 4; align-self: center; justify-content: center; height: 5.5rem; margin: 0; }
+  .sbn-cat .sbn-art > svg { height: 5rem; filter: drop-shadow(0 8px 10px rgb(38 52 69 / 0.15)); }
+  .sbn-cat .sbn-art::before { top: 50%; bottom: auto; width: 5.25rem; height: 5.25rem; transform: translate(-50%, -50%); }
+  .sbn-cat:hover .sbn-art::before { transform: translate(-50%, -50%) scale(1.06); }
+
+  /* Medical devices row */
+  .sbn-dev .sbn-dev__copy { grid-column: 1; grid-row: 1 / 4; }
+  .sbn-chips { display: none; }
+
+  /* Medicines */
+  .sbn-med { min-height: 0; padding: 1.25rem 1.125rem 0; border-radius: 1.375rem; }
+  .sbn-med::after { right: -4.375rem; bottom: -5.625rem; width: 15rem; height: 15rem; }
+  .sbn-badge { margin-bottom: 0.625rem; font-size: 0.6875rem; }
+  .sbn-med__title { margin-bottom: 0.5rem; font-size: 1.6875rem; }
+  .sbn-med__lead { font-size: 0.90625rem; line-height: 1.5; }
+  .sbn-glow,
+  .sbn-toast { display: none; }
+  .sbn-med__cta { order: 1; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 0.25rem 1rem; margin-top: 0.875rem; }
+  .sbn-med__cta .sbn-btn--crimson { padding: 0.8125rem 1.125rem; font-size: 0.875rem; }
+  .sbn-med__cta .sbn-btn--link { padding: 0.375rem 0; font-size: 0.875rem; }
+  .sbn-med__art { order: 2; position: relative; right: auto; bottom: auto; display: block; width: 60%; max-width: 13.75rem; margin: -0.25rem 0 0 auto; translate: none; }
+
+  /* Not sure what to buy? */
+  .sbn-help { flex-direction: column; align-items: stretch; padding: 1rem; border-radius: 1.25rem; }
+  .sbn-help .sbn-art { display: none; }
+  .sbn-help .sbn-cat__title { font-size: 1.0625rem; }
+  .sbn-help__copy p { margin: 0.125rem 0 0.75rem; font-size: 0.875rem; }
+  .sbn-help__actions { display: grid; grid-template-columns: 1.4fr 1fr; width: 100%; }
+  .sbn-help .sbn-btn { justify-content: center; padding: 0.75rem 0.875rem; font-size: 0.875rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sbn-grid *,
+  .sbn-grid *::before,
+  .sbn-grid *::after { animation: none !important; transition: none !important; }
+}
+
+/* ---------- Care at home (homepage, CareByNeed.tsx): same cards, its own grid ---------- */
+.sbn-grid.sbn-grid--care {
+  grid-template-areas:
+    'med med dev dev'
+    'med med elder dementia'
+    'icu ventilator stroke cancer';
+}
+.sbn-cell--elder { grid-area: elder; }
+.sbn-cell--dementia { grid-area: dementia; }
+.sbn-cell--icu { grid-area: icu; }
+.sbn-cell--ventilator { grid-area: ventilator; }
+.sbn-cell--stroke { grid-area: stroke; }
+.sbn-cell--cancer { grid-area: cancer; }
+/* "New" tag in yellow with dark text, as elsewhere on the site */
+.sbn-ribbon--new { background: rgb(var(--c-mustard)); color: var(--sbn-ink); }
+@media (max-width: 1080px) {
+  .sbn-grid.sbn-grid--care {
+    grid-template-areas: 'med med' 'dev dev' 'elder dementia' 'icu ventilator' 'stroke cancer';
+  }
+}
+@media (max-width: 640px) {
+  .sbn-grid.sbn-grid--care { grid-template-areas: none; }
+}
+
+/* Hindi / Marathi: room for vowel signs above and below the letters in the big card titles */
+:lang(hi) .sbn-med__title,
+:lang(mr) .sbn-med__title { line-height: 1.25; }
