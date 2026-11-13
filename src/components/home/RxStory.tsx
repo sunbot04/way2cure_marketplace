@@ -146,18 +146,12 @@ function Deco({ shape }: { shape: Shape }) {
 
 const DECOS: { shape: Shape; cls: string; delay: string }[] = [
   // Left and right margins
-  { shape: 'capsule', cls: '-left-[1%] top-[22%] h-7 w-16 -rotate-[28deg]', delay: '0s' },
   { shape: 'rx', cls: 'right-[3%] top-[6%] h-20 w-16 rotate-12', delay: '-3s' },
   { shape: 'tablet', cls: 'right-[9%] top-[19%] h-10 w-10', delay: '-1.5s' },
   { shape: 'plus', cls: 'left-[2%] top-[4%] h-6 w-6 rotate-12', delay: '-4s' },
-  { shape: 'blister', cls: '-left-[2.5%] top-[56%] h-14 w-20 rotate-[14deg]', delay: '-2s' },
-  { shape: 'capsuleSky', cls: 'right-[2%] top-[40%] h-8 w-20 rotate-[32deg]', delay: '-5s' },
-  { shape: 'drop', cls: 'right-[7%] top-[58%] h-12 w-9 -rotate-12', delay: '-2.5s' },
   { shape: 'tablet', cls: 'left-[4%] top-[68%] h-12 w-12', delay: '-3.5s' },
   { shape: 'plus', cls: 'right-[4%] top-[76%] h-7 w-7', delay: '-1s' },
-  { shape: 'capsule', cls: 'left-[2%] bottom-[8%] h-8 w-20 rotate-[20deg]', delay: '-4.5s' },
     // The gutter between the two columns
-  { shape: 'capsuleSky', cls: 'left-[46%] top-[34%] h-7 w-16 -rotate-45', delay: '-2s' },
   { shape: 'plus', cls: 'left-[49%] top-[52%] h-5 w-5', delay: '-3s' },
   { shape: 'tablet', cls: 'left-[45%] top-[72%] h-9 w-9', delay: '-5.5s' },
   { shape: 'rx', cls: 'left-[30%] bottom-[5%] h-16 w-12 -rotate-12', delay: '-1.2s' },

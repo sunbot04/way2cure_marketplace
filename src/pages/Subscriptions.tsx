@@ -5,7 +5,7 @@ import Button, { buttonClass } from '../components/ui/Button';
 import Accent from '../components/ui/Accent';
 import { Reveal, Stagger, StaggerItem } from '../components/motion/Reveal';
 import PlanCard from '../components/plans/PlanCard';
-import SachetExplorer from '../components/brand/SachetExplorer';
+import AppBanner from '../components/commerce/AppBanner';
 import PageHeader from '../components/layout/PageHeader';
 import { useAuth } from '../context/AuthContext';
 import Seo from '../components/layout/Seo';
@@ -60,9 +60,8 @@ const T: Dict = {
     plansTitle: 'Pick what your family *needs regularly.*',
     howSachets: 'How sachets work', bookCheck: 'Book a home check', startPlan: 'Start a plan',
     freqNote: 'Frequencies are suggestions. You confirm the price before the first order.',
-    sachetTitle: 'Every dose, *in its own sachet.*',
-    sachetText: 'Medicines sorted by time of day and sealed one dose to a sachet, labelled with the name, the time and what is inside.',
-    tear: 'Tear one, take the dose.', sachetTabs: 'Choose a time of day',
+
+
     manageTitle: 'Manage or pause a plan',
     manageLead: 'Example shown until you log in. Pausing takes effect straight away.',
     paused: 'Paused', active: 'Active',
@@ -84,9 +83,8 @@ const T: Dict = {
     plansTitle: 'जो आपके परिवार को *नियमित रूप से चाहिए।*',
     howSachets: 'सैशे कैसे काम करते हैं', bookCheck: 'घर पर जाँच बुक करें', startPlan: 'प्लान शुरू करें',
     freqNote: 'कितनी बार, यह सिर्फ़ सुझाव है। पहले ऑर्डर से पहले आप कीमत पक्की करते हैं।',
-    sachetTitle: 'हर डोज़, *उसके अपने सैशे में।*',
-    sachetText: 'दवाइयाँ दिन के समय के अनुसार छाँटी जाती हैं और हर डोज़ एक सैशे में बंद होती है, जिस पर नाम, समय और अंदर की दवाएँ लिखी होती हैं।',
-    tear: 'एक फाड़ें, डोज़ लें।', sachetTabs: 'दिन का समय चुनें',
+
+
     manageTitle: 'प्लान बदलें या रोकें',
     manageLead: 'लॉग इन करने तक उदाहरण दिखाया गया है। रोकना तुरंत लागू होता है।',
     paused: 'रुका हुआ', active: 'चालू',
@@ -108,9 +106,8 @@ const T: Dict = {
     plansTitle: 'तुमच्या कुटुंबाला *नियमित लागणारे.*',
     howSachets: 'सॅशे कसे काम करतात', bookCheck: 'घरी तपासणी बुक करा', startPlan: 'प्लॅन सुरू करा',
     freqNote: 'किती वेळा, हे फक्त सुचवलेले आहे. पहिल्या ऑर्डरआधी तुम्ही किंमत निश्चित करता.',
-    sachetTitle: 'प्रत्येक डोस, *त्याच्या स्वतःच्या सॅशेमध्ये.*',
-    sachetText: 'औषधे दिवसाच्या वेळेनुसार लावली जातात आणि प्रत्येक डोस एका सॅशेमध्ये बंद होतो, ज्यावर नाव, वेळ आणि आतील औषधे लिहिलेली असतात.',
-    tear: 'एक फाडा, डोस घ्या.', sachetTabs: 'दिवसाची वेळ निवडा',
+
+
     manageTitle: 'प्लॅन बदला किंवा थांबवा',
     manageLead: 'लॉग इन करेपर्यंत उदाहरण दाखवले आहे. थांबवणे लगेच लागू होते.',
     paused: 'थांबवलेला', active: 'सुरू',
@@ -216,17 +213,9 @@ export default function Subscriptions() {
         </div>
       </section>
 
-      {/* Dose sachets */}
+      {/* The Way2Cure app: where plans, reminders and tracking live */}
       <section className="section bg-mist">
-        <div className="container grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
-          <Reveal>
-            <h2 className="mb-4 text-section"><Accent text={tr('sachetTitle')} /></h2>
-            <p className="text-lead text-ink/75">{tr('sachetText')}</p>
-            <p className="mb-6 mt-6 font-head text-h2m font-bold text-terracotta-deep">{tr('tear')}</p>
-            <Link to="/subscriptions/dose-sachets" className="group inline-flex min-h-tap items-center gap-1.5 font-bold">{tr('howSachets')} <Icon name="arrow" size={18} /></Link>
-          </Reveal>
-          <Reveal><SachetExplorer /></Reveal>
-        </div>
+        <div className="container"><AppBanner /></div>
       </section>
 
       {/* Manage / pause */}

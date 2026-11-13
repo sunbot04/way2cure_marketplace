@@ -527,9 +527,10 @@ export default function Cart() {
                   <span className="text-body font-bold text-green">{tr('total')}</span>
                   <span className="font-head text-[1.75rem] font-bold leading-none text-green tabular-nums">{formatPrice(total)}</span>
                 </div>
-                <p className="mb-5 mt-2 flex items-center justify-end gap-1.5 text-small text-grey"><Icon name="lock" size={13} className="text-sage" /> {tr('noHidden')}</p>
+                {/* Desktop only: on phones the summary stays short */}
+                <p className="mb-5 mt-2 hidden items-center justify-end gap-1.5 text-small text-grey lg:flex"><Icon name="lock" size={13} className="text-sage" /> {tr('noHidden')}</p>
 
-                <Button to="/checkout" variant="urgent" block>{tr('proceed')} <Icon name="arrow" size={18} /></Button>
+                <Button to="/checkout" variant="urgent" block className="mt-5 lg:mt-0">{tr('proceed')} <Icon name="arrow" size={18} /></Button>
 
                 <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
                   <span className="text-small text-grey">{tr('payWith')}</span>
