@@ -42,15 +42,15 @@ function Visual({ step }: { step: number }) {
             </div>
           )}
           {step === 1 && (
-            <div className="grid gap-3">
+            <div className="grid h-full content-center gap-2.5">
               <p className="m-0 font-bold text-green">{tr('found')}</p>
               {meds.map(([n, d]) => (
-                <div key={n} className="flex items-center justify-between rounded-btn bg-mist px-4 py-3">
+                <div key={n} className="flex items-center justify-between rounded-btn bg-mist px-4 py-2.5">
                   <span className="grid leading-tight"><strong className="text-base text-ink">{n}</strong><span className="text-small text-grey">{d}</span></span>
                   <span className="flex items-center gap-1 text-small font-bold text-terracotta-deep"><Icon name="edit" size={14} /> {tr('edit')}</span>
                 </div>
               ))}
-              <p className="m-0 flex items-center gap-2 text-small font-semibold text-grey"><Icon name="sparkles" size={16} className="text-mustard" /> {tr('aiNote')}</p>
+              <p className="m-0 mt-1 flex items-center gap-2 text-small font-semibold text-grey"><Icon name="sparkles" size={16} className="text-mustard" /> {tr('aiNote')}</p>
             </div>
           )}
           {step === 2 && (
