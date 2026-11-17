@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { m } from 'motion/react';
 import Icon from '../components/Icon';
 import ShopByNeed from '../components/home/ShopByNeed';
 import Button from '../components/ui/Button';
@@ -7,7 +6,7 @@ import Accent from '../components/ui/Accent';
 import HomeFaq from '../components/home/HomeFaq';
 import { Reveal, Stagger, StaggerItem } from '../components/motion/Reveal';
 import CountUp from '../components/motion/CountUp';
-import HeroVisual from '../components/home/HeroVisual';
+import Hero from '../components/home/Hero';
 import ProblemCard, { type Art } from '../components/home/ProblemCard';
 import RxStory, { RxBackdrop } from '../components/home/RxStory';
 import CareByNeed from '../components/home/CareByNeed';
@@ -15,11 +14,10 @@ import SachetExplorer from '../components/brand/SachetExplorer';
 import AppBadges from '../components/commerce/AppBadges';
 import Seo, { medicalBusinessLd } from '../components/layout/Seo';
 import { RX_STEPS } from '../data/rxSteps';
-import { useLang, useLoc, useT, type Dict } from '../i18n/LangContext';
+import { useLoc, useT, type Dict } from '../i18n/LangContext';
 import { SITE } from '../config/site';
 import { subscriptionPlans } from '../data';
 import { COPY } from '../components/copy';
-import { fadeRise, lineMask, stagger } from '../lib/motion';
 
 // Landing page (references: REO360 layout and device mockup, DawaTime sachet and problem cards,
 // ProCare stat card and care cards), following the 9-part homepage blueprint on guidelines p.9.
@@ -30,9 +28,6 @@ const T: Dict = {
   en: {
     seoTitle: 'Way2Cure | Care at home and everything seniors need, Mumbai',
     seoDesc: 'Nurses, doctors and ICU care at home, plus medicines, medical devices and daily care delivered in Mumbai, Navi Mumbai and Thane. Pharmacist-verified orders. Call 7400400908, 24/7.',
-    h1a: 'Care at home,', h1b: 'now with', h1c: '*everything seniors need.*',
-    heroSub: 'Nurses, doctors and ICU care at home. Medicines, devices and daily care delivered to your door.',
-    trust1: 'Pharmacist verified', trust2: 'Verified nurses', trust3: '24/7 support {phone}',
     quickTitle: 'Everything for care at home, *in one place.*', quickLead: 'Delivered across Mumbai, Navi Mumbai and Thane.', allProducts: 'All products',
     probTitle: "Looking after a parent's medicines can feel like *a second job.*", howWeHelp: 'How Way2Cure helps',
     p1a: 'Ten strips. Three doctors.', p1b: 'One confused morning.', p1s: 'Every doctor adds a strip, and nobody writes one simple schedule.', p1f: 'One pharmacist-checked schedule, sorted by time of day.',
@@ -52,9 +47,6 @@ const T: Dict = {
   hi: {
     seoTitle: 'Way2Cure | घर पर देखभाल और बुज़ुर्गों की हर ज़रूरत, मुंबई',
     seoDesc: 'घर पर नर्स, डॉक्टर और आईसीयू देखभाल, साथ ही मुंबई, नवी मुंबई और ठाणे में दवाइयाँ, मेडिकल उपकरण और रोज़ की देखभाल का सामान। फ़ार्मासिस्ट द्वारा जाँचे गए ऑर्डर। 24/7 कॉल करें 7400400908।',
-    h1a: 'घर पर देखभाल, अब', h1b: '*बुज़ुर्गों की हर ज़रूरत*', h1c: 'के साथ।',
-    heroSub: 'घर पर नर्स, डॉक्टर और आईसीयू देखभाल। दवाइयाँ, उपकरण और रोज़ की ज़रूरतें आपके दरवाज़े तक।',
-    trust1: 'फ़ार्मासिस्ट द्वारा जाँचा गया', trust2: 'जाँचे-परखे नर्स', trust3: '24/7 मदद {phone}',
     quickTitle: 'घर पर देखभाल की हर चीज़, *एक ही जगह।*', quickLead: 'मुंबई, नवी मुंबई और ठाणे में डिलिवरी।', allProducts: 'सभी प्रोडक्ट',
     probTitle: 'माता-पिता की दवाइयाँ सँभालना *एक दूसरी नौकरी* जैसा लगता है।', howWeHelp: 'Way2Cure कैसे मदद करता है',
     p1a: 'दस पत्ते। तीन डॉक्टर।', p1b: 'एक उलझी हुई सुबह।', p1s: 'हर डॉक्टर एक नया पत्ता जोड़ देता है, पर कोई एक आसान समय-सारणी नहीं लिखता।', p1f: 'फ़ार्मासिस्ट द्वारा जाँची गई एक समय-सारणी, दिन के समय के अनुसार।',
@@ -74,9 +66,6 @@ const T: Dict = {
   mr: {
     seoTitle: 'Way2Cure | घरी काळजी आणि ज्येष्ठांना लागणारे सर्व काही, मुंबई',
     seoDesc: 'घरी नर्स, डॉक्टर आणि आयसीयू काळजी, तसेच मुंबई, नवी मुंबई आणि ठाणे येथे औषधे, वैद्यकीय उपकरणे आणि दैनंदिन काळजीच्या वस्तू. फार्मासिस्टने तपासलेल्या ऑर्डर. 24/7 कॉल करा 7400400908.',
-    h1a: 'घरी काळजी, आता', h1b: '*ज्येष्ठांना लागणाऱ्या*', h1c: '*सर्व गोष्टींसह.*',
-    heroSub: 'घरी नर्स, डॉक्टर आणि आयसीयू काळजी. औषधे, उपकरणे आणि रोजच्या गरजा तुमच्या दारात.',
-    trust1: 'फार्मासिस्टने तपासलेले', trust2: 'पडताळलेल्या नर्स', trust3: '24/7 मदत {phone}',
     quickTitle: 'घरच्या काळजीसाठी सर्व काही, *एकाच ठिकाणी.*', quickLead: 'मुंबई, नवी मुंबई आणि ठाणे येथे डिलिव्हरी.', allProducts: 'सर्व उत्पादने',
     probTitle: 'आई-वडिलांची औषधे सांभाळणे *दुसऱ्या नोकरीसारखे* वाटू शकते.', howWeHelp: 'Way2Cure कशी मदत करते',
     p1a: 'दहा पट्ट्या. तीन डॉक्टर.', p1b: 'एक गोंधळलेली सकाळ.', p1s: 'प्रत्येक डॉक्टर एक नवी पट्टी जोडतात, पण कोणीही एक सोपे वेळापत्रक लिहीत नाही.', p1f: 'फार्मासिस्टने तपासलेले एकच वेळापत्रक, दिवसाच्या वेळेनुसार.',
@@ -112,7 +101,6 @@ function Heading({ title, lead, light = false, className = '' }: { title: string
 }
 
 export default function Home() {
-  const { t } = useLang();
   const tr = useT(T);
   const tc = useT(COPY);
   const loc = useLoc();
@@ -128,34 +116,8 @@ export default function Home() {
     <>
       <Seo title={tr('seoTitle')} description={tr('seoDesc')} jsonLd={medicalBusinessLd} />
 
-      {/* 1-2 · Hero. Runs up under the transparent floating header. */}
-      <section className="relative overflow-hidden pt-[var(--header-space)]">
-        <div className="container grid items-center gap-10 pb-10 pt-6 lg:grid-cols-[1.02fr_0.98fr] lg:gap-8 lg:pb-16 lg:pt-10">
-          <m.div initial="hidden" animate="show" variants={stagger(0.05)}>
-            <m.h1 variants={stagger()} className="mb-6 text-display">
-              {/* Each line slides up inside a mask; the mask has room above for Hindi/Marathi vowel signs (matras) */}
-              {(['h1a', 'h1b', 'h1c'] as const).map((k) => (
-                <span key={k} className="-mt-[0.25em] block overflow-hidden pb-[0.1em] pt-[0.25em]">
-                  <m.span variants={lineMask} className="block"><Accent text={tr(k)} /></m.span>
-                </span>
-              ))}
-            </m.h1>
-            <m.p variants={fadeRise} className="mb-8 max-w-[34rem] text-lead text-ink/80">{tr('heroSub')}</m.p>
-            <m.div variants={fadeRise} className="flex flex-col gap-3 sm:flex-row">
-              <Button to="/shop/medicines"><Icon name="pill" size={20} /> {t('orderMedicines')} <Icon name="arrow" size={18} /></Button>
-              <Button to="/care/nurse" variant="outline"><Icon name="stethoscope" size={20} /> {t('bookNurse')}</Button>
-            </m.div>
-            <m.ul variants={fadeRise} className="mt-8 flex flex-wrap gap-x-6 gap-y-2 border-t border-green/10 pt-6 text-base font-semibold text-ink">
-              {[tr('trust1'), tr('trust2'), tr('trust3', { phone: SITE.phone })].map((x) => (
-                <li key={x} className="flex items-center gap-2">
-                  <span className="grid h-6 w-6 place-items-center rounded-full bg-sage-tint text-green"><Icon name="check" size={14} /></span> {x}
-                </li>
-              ))}
-            </m.ul>
-          </m.div>
-          <HeroVisual />
-        </div>
-      </section>
+      {/* 1-2 · Hero: search, service banners, quick actions (components/home/Hero) */}
+      <Hero />
 
       {/* 3 · Shop by need: the client's card design (components/home/ShopByNeed) */}
       <section className="cv-auto section bg-white">
