@@ -9,11 +9,12 @@ import AppPanel from '../components/commerce/AppPanel';
 import PageHeader from '../components/layout/PageHeader';
 import Seo from '../components/layout/Seo';
 import { useCart, type Order } from '../context/CartContext';
-import { useLang, useT, type Dict, type Lang } from '../i18n/LangContext';
+import { useLang, useT, type Dict } from '../i18n/LangContext';
 import { crossfade, fadeRise } from '../lib/motion';
 import { isServiceablePincode, formatPrice, SITE } from '../config/site';
 import { OrderSummary } from './Cart';
 import { ChoiceList } from '../components/commerce/Choice';
+import { PAY, SLOTS, slotLabel } from '../data/checkout';
 
 const STEPS: Step[] = [
   { title: 'Phone', text: 'Verify with OTP', colour: 'green',
@@ -26,22 +27,6 @@ const STEPS: Step[] = [
     hi: { title: 'भुगतान करें', text: 'UPI, कार्ड या नेट बैंकिंग' }, mr: { title: 'पैसे भरा', text: 'UPI, कार्ड किंवा नेट बँकिंग' } },
 ];
 
-// The chosen slot is saved by its stable id (form state, sessionStorage, order record);
-// only the label shown on screen changes with the language.
-const SLOTS: ({ id: string } & Record<Lang, string>)[] = [
-  { id: 'today-6pm', en: 'Today, by 6 pm', hi: 'आज, शाम 6 बजे तक', mr: 'आज, संध्याकाळी 6 पर्यंत' },
-  { id: 'today-6-9pm', en: 'Today, 6 pm to 9 pm', hi: 'आज, शाम 6 से रात 9 बजे', mr: 'आज, संध्याकाळी 6 ते रात्री 9' },
-  { id: 'tomorrow-9am-1pm', en: 'Tomorrow, 9 am to 1 pm', hi: 'कल, सुबह 9 से दोपहर 1 बजे', mr: 'उद्या, सकाळी 9 ते दुपारी 1' },
-  { id: 'tomorrow-2-6pm', en: 'Tomorrow, 2 pm to 6 pm', hi: 'कल, दोपहर 2 से शाम 6 बजे', mr: 'उद्या, दुपारी 2 ते संध्याकाळी 6' },
-];
-const slotById = (id: string) => SLOTS.find((s) => s.id === id) || SLOTS[0];
-const slotLabel = (id: string, lang: Lang) => slotById(id)[lang] || slotById(id).en;
-
-const PAY: ({ id: string } & Record<Lang, [string, string]>)[] = [
-  { id: 'upi', en: ['UPI', 'GPay, PhonePe, Paytm or any UPI app'], hi: ['UPI', 'GPay, PhonePe, Paytm या कोई भी UPI ऐप'], mr: ['UPI', 'GPay, PhonePe, Paytm किंवा कोणतेही UPI ॲप'] },
-  { id: 'card', en: ['Debit or credit card', 'Visa, Mastercard, RuPay'], hi: ['डेबिट या क्रेडिट कार्ड', 'Visa, Mastercard, RuPay'], mr: ['डेबिट किंवा क्रेडिट कार्ड', 'Visa, Mastercard, RuPay'] },
-  { id: 'netbanking', en: ['Net banking', 'All major Indian banks'], hi: ['नेट बैंकिंग', 'सभी बड़े भारतीय बैंक'], mr: ['नेट बँकिंग', 'सर्व प्रमुख भारतीय बँका'] },
-];
 
 const T: Dict = {
   en: {

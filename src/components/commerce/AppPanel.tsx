@@ -15,7 +15,7 @@ export default function AppPanel({ title, text, className = '', headingLevel = 3
       <div className="hidden justify-self-start rounded-tile bg-mist p-4 lg:block">
         <div className="rounded-btn bg-white p-3 shadow-card">
           {/* TODO: client: point SITE.appStores at the real app listing so this code opens the app */}
-          <QRCodeSVG value={SITE.appStores.android} size={140} fgColor="rgb(38 52 69)" bgColor="rgb(255 255 255)" level="M" title={tr('qrTitle')} />
+          <QRCodeSVG value={SITE.appStores.android} size={140} fgColor="rgb(30 91 71)" bgColor="rgb(255 255 255)" level="M" title={tr('qrTitle')} />
         </div>
       </div>
       <div>

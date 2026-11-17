@@ -11,6 +11,8 @@ export const SITE = {
   phoneHref: 'tel:+917400400908',
   // TODO: client: confirm the WhatsApp business number. The current site lists none, so we use the main line.
   whatsappHref: 'https://wa.me/917400400908',
+  // TODO: client: the emergency line the app's SOS button dials. Placeholder until the number is provided.
+  sosPhone: '+910000000000',
   email: 'support@way2cure.com',
   cities: 'Mumbai, Navi Mumbai & Thane',
   // TODO: client: real app links once the Way2Cure app is live (prescription upload is app-only).

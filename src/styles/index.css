@@ -3,18 +3,19 @@
 @tailwind utilities;
 
 /*
-  Way2Cure colour tokens: the "Charcoal & Crimson" palette (chosen by the client; it replaces the
-  deep green / terracotta / cream of Brand & Website Guidelines v1.0, p.5).
+  Way2Cure colour tokens: "Forest Green & Crimson", the same colours as the Android app
+  (mobile/src/theme.ts). The client chose forest green in place of the earlier charcoal.
   Token NAMES are roles kept from the first palette, so every component keeps working:
-    green = main colour (now charcoal), terracotta-deep = secondary colour (now crimson),
+    green = main colour (forest green), terracotta-deep = secondary colour (crimson),
     mustard = highlight (yellow), sage = soft colour (sky blue), cream = page (white).
   Space-separated RGB so Tailwind can apply opacity. A white-label partner overrides these only.
   Every text pairing passes WCAG AA (4.5:1); see /styleguide for the ratios.
 */
 @layer base {
   :root {
-    --c-green: 38 52 69;          /* #263445 charcoal: headings, primary buttons, footer, dark bands */
-    --c-green-dark: 25 35 47;     /* #19232F hover on charcoal */
+    --c-green: 30 91 71;          /* #1E5B47 forest green: headings, primary buttons, footer, dark bands */
+    --c-green-dark: 20 63 49;     /* #143F31 hover on forest green */
+    --c-dose-night: 38 52 69;     /* #263445 charcoal: night dose only (the sachet colour, not the brand green) */
     --c-terracotta: 255 90 110;   /* #FF5A6E light crimson: decoration only (underlines, lines), never text */
     --c-terracotta-deep: 200 16 46; /* #C8102E crimson: links, accent words, Rx tags, call / urgent buttons */
     --c-terracotta-darker: 160 12 36; /* #A00C24 hover on crimson buttons */
@@ -22,7 +23,7 @@
     --c-sage: 58 143 214;         /* #3A8FD6 sky blue: icons, success ticks, afternoon dose (dark text on it) */
     --c-sage-tint: 231 240 250;   /* #E7F0FA light sky panel behind small charcoal text */
     --c-sage-deep: 44 111 176;    /* #2C6FB0 deep sky blue for small text (5.2:1 on white) */
-    --c-mint: 211 223 236;        /* #D3DFEC soft panels and borders; light text on charcoal bands */
+    --c-mint: 203 227 216;        /* #CBE3D8 soft panels and borders; light text on green bands */
     --c-cream: 255 255 255;       /* #FFFFFF page */
     --c-mist: 241 245 249;        /* #F1F5F9 light grey-blue section background */
     --c-white: 255 255 255;       /* #FFFFFF cards */

@@ -8,7 +8,9 @@ import { DEMO_CODE, DEMO_USER, isDemoPhone } from '../data/demoAccount';
 //  · the one-time code is always 123456 (DEMO_CODE);
 //  · the signed-in family member is kept in this browser only.
 
-export interface User { name: string; phone: string; since: string }
+import type { User } from '../data/types';
+
+export type { User };
 
 interface AuthValue {
   user: User | null;

@@ -68,7 +68,7 @@ export default function AppBanner() {
             <div className="hidden items-center gap-3 lg:flex">
               <span className="rounded-xl bg-white p-1.5">
                 {/* TODO: client: point SITE.appStores at the real app listing so this code opens the app */}
-                <QRCodeSVG value={SITE.appStores.android} size={64} fgColor="rgb(38 52 69)" bgColor="rgb(255 255 255)" level="M" title={tr('qrTitle')} />
+                <QRCodeSVG value={SITE.appStores.android} size={64} fgColor="rgb(30 91 71)" bgColor="rgb(255 255 255)" level="M" title={tr('qrTitle')} />
               </span>
               <span className="max-w-[7rem] text-small font-semibold text-mint">{tr('qr')}</span>
             </div>

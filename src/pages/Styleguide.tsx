@@ -25,12 +25,12 @@ import { faqs, getProduct, getService } from '../data';
 // Everything here is built from the brand tokens in tailwind.config.ts / styles/index.css.
 
 const COLOURS = [
-  { name: 'Charcoal', token: 'green', hex: '#263445', use: 'Main colour: headings, header, footer, primary buttons, dark bands', note: 'White on it 12.7:1', cls: 'bg-green text-white' },
+  { name: 'Forest green', token: 'green', hex: '#1E5B47', use: 'Main colour: headings, header, footer, primary buttons, dark bands', note: 'White on it 7.7:1', cls: 'bg-green text-white' },
   { name: 'Light crimson', token: 'terracotta', hex: '#FF5A6E', use: 'Decoration only: underlines, lines, small shapes', note: 'Never text; never white text on it (3.0:1)', cls: 'bg-terracotta text-green' },
   { name: 'Crimson', token: 'terracotta-deep', hex: '#C8102E', use: 'Secondary colour: links, accent words, Rx tags, call / urgent buttons', note: 'White on it 5.9:1', cls: 'bg-terracotta-deep text-white' },
   { name: 'Yellow', token: 'mustard', hex: '#FFC83D', use: 'Highlight: badges, offers, big numbers on charcoal', note: 'Charcoal text on it 8.2:1', cls: 'bg-mustard text-green' },
   { name: 'Sky blue', token: 'sage', hex: '#3A8FD6', use: 'Soft colour: icons, success ticks, afternoon dose', note: 'Dark text on it 4.5:1; white icons 3.5:1', cls: 'bg-sage text-ink' },
-  { name: 'Soft blue-grey', token: 'mint', hex: '#D3DFEC', use: 'Soft panels, borders; light text on charcoal', note: 'Charcoal text on it 9.4:1', cls: 'bg-mint text-green' },
+  { name: 'Soft green', token: 'mint', hex: '#CBE3D8', use: 'Soft panels, borders; light text on green', note: 'Green text on it 5.8:1', cls: 'bg-mint text-green' },
   { name: 'Mist', token: 'mist', hex: '#F1F5F9', use: 'Section background', note: 'Charcoal text on it 11.6:1', cls: 'bg-mist text-ink ring-1 ring-inset ring-mint' },
   { name: 'White', token: 'cream', hex: '#FFFFFF', use: 'Page background (token: cream)', note: '', cls: 'bg-cream text-ink ring-1 ring-inset ring-mint' },
   { name: 'White', token: 'white', hex: '#FFFFFF', use: 'Cards', note: '', cls: 'bg-white text-ink ring-1 ring-inset ring-mint' },

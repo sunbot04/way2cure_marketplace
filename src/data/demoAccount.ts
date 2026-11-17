@@ -1,7 +1,5 @@
-import type { User } from '../context/AuthContext';
-import type { CartItem, Order, OrderStatus } from '../context/CartContext';
-import { getProduct, unitPrice } from '.';
-import { SITE } from '../config/site';
+import type { User } from './types';
+import { DEMO_HOME, DEMO_PARENTS, DEMO_PHONE, demoOrders } from './demoSeed';
 
 // Demo account, so the signed-in pages can be shown before the backend exists.
 //
@@ -16,60 +14,12 @@ import { SITE } from '../config/site';
 // TODO: API: remove once real accounts exist.
 
 export const DEMO_ENABLED = import.meta.env.VITE_DEMO_ACCOUNT !== 'off';
-export const DEMO_PHONE = '9876543210';
-/** Until SMS codes are switched on, this is the one-time code for every account. */
-export const DEMO_CODE = '123456';
+// The phone, code, sample orders and addresses live in demoSeed.ts (no React), shared with the app in mobile/.
+export { DEMO_CODE, DEMO_PHONE, demoOrders, formatPhone } from './demoSeed';
 export const DEMO_USER: User = { name: 'Rohan Patil', phone: DEMO_PHONE, since: '2024-06-10T10:00:00.000Z' };
 
 export const isDemoPhone = (phone?: string | null) => DEMO_ENABLED && phone === DEMO_PHONE;
-/** 9876543210 -> 98765 43210 */
-export const formatPhone = (phone: string) => `${phone.slice(0, 5)} ${phone.slice(5)}`;
-
 const DAY = 24 * 60 * 60 * 1000;
-const PARENTS = { house: 'B-4, Shanti Niwas, Ram Maruti Road', area: 'Naupada, Thane West', pincode: '400602' };
-const HOME = { house: 'Flat 1203, Sai Krupa Towers, Sector 17', area: 'Vashi, Navi Mumbai', pincode: '400703' };
-const where = (a: typeof PARENTS) => `${a.house}, ${a.area}, ${a.pincode}`;
-
-function order(id: string, daysAgo: number, items: CartItem[], status: OrderStatus, address = PARENTS): Order {
-  const subtotal = items.reduce((s, i) => {
-    const p = getProduct(i.id);
-    return s + (p ? unitPrice(p, i.mode) * i.qty : 0);
-  }, 0);
-  const fee = subtotal >= SITE.delivery.freeAbove ? 0 : SITE.delivery.fee;
-  return {
-    id,
-    date: new Date(Date.now() - daysAgo * DAY).toISOString(),
-    items,
-    total: subtotal + fee,
-    status,
-    slotId: 'today-6pm',
-    slot: 'Today, by 6 pm',
-    phone: DEMO_PHONE,
-    address: where(address),
-  };
-}
-
-/** Newest first, like the order list. */
-export const demoOrders = (): Order[] => [
-  // Just placed, prescription medicine: waiting for the pharmacist
-  order('W2C731842', 0.125, [{ id: 'telmisartan-40', mode: 'buy', qty: 2, supplyDays: 30 }], 'awaiting-pharmacist'),
-  order('W2C729305', 1, [{ id: 'glucometer-kit', mode: 'buy', qty: 1, supplyDays: 30 }], 'packed'),
-  order('W2C724118', 9, [
-    { id: 'metformin-500', mode: 'buy', qty: 4, supplyDays: 30 },
-    { id: 'amlodipine-5', mode: 'buy', qty: 2, supplyDays: 30 },
-  ], 'delivered'),
-  // Monthly plan: the next delivery reminder comes up on its own
-  order('W2C719560', 20, [{ id: 'multivitamin', mode: 'subscribe', qty: 1 }], 'delivered'),
-  // A 30-day supply bought 28 days ago: the refill reminder is due now
-  order('W2C716204', 28, [
-    { id: 'adult-diapers-m', mode: 'buy', qty: 3, supplyDays: 30 },
-    { id: 'underpads', mode: 'buy', qty: 2, supplyDays: 30 },
-  ], 'delivered'),
-  order('W2C702957', 52, [
-    { id: 'bp-monitor', mode: 'buy', qty: 1 },
-    { id: 'walking-stick', mode: 'buy', qty: 1 },
-  ], 'delivered', HOME),
-];
 
 /** Older "order placed" notes start as read, so the bell shows only what is new. */
 export const demoReadIds = (): string[] =>
@@ -81,8 +31,8 @@ const demoFamily = () => [
 ];
 
 const demoAddresses = () => [
-  { id: 'demo-parents', label: 'parents', forWhom: 'Asha and Vinod Patil', ...PARENTS },
-  { id: 'demo-home', label: 'home', forWhom: '', ...HOME },
+  { id: 'demo-parents', label: 'parents', forWhom: 'Asha and Vinod Patil', ...DEMO_PARENTS },
+  { id: 'demo-home', label: 'home', forWhom: '', ...DEMO_HOME },
 ];
 
 /** Sample lists by storage key (see hooks/useStoredList). */

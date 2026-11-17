@@ -1,42 +1,21 @@
 // Typed access to the sample data. Prices and the launch range are illustrative and are to
 // be agreed with pharmacy partners (pitch deck p.3). TODO: API: replace JSON with the catalogue service.
-import categoriesJson from './categories.json';
 import shopViewsJson from './shop-views.json';
-import productsJson from './products.json';
-import servicesJson from './services.json';
-import plansJson from './plans.json';
-import faqsJson from './faqs.json';
 import teamJson from './team.json';
 import testimonialsJson from './testimonials.json';
 import { localize } from '../i18n/LangContext';
-import type { Category, Faq, Lang, Plan, Product, PurchaseMode, Service, TeamMember, Testimonial } from './types';
+import { deliveryLabel } from './catalog';
+import type { Category, Lang, Product, TeamMember, Testimonial } from './types';
 
 export type * from './types';
+// Catalogue, prices and delivery labels live in catalog.ts (no React), shared with the app in mobile/.
+export { categories, products, services, subscriptionPlans, faqs, getProduct, getService, unitPrice, deliveryLabel } from './catalog';
 
-export const categories = categoriesJson as Category[];
 /** Extra shop views from the site map: Rent equipment and Marketplace sellers. */
 export const shopViews = shopViewsJson as Category[];
-export const products = productsJson as Product[];
-export const services = servicesJson as Service[];
-export const subscriptionPlans = plansJson as Plan[];
-export const faqs = faqsJson as Faq[];
 export const team = teamJson as TeamMember[];
 /** Empty until real stories are collected with written consent. TODO: client */
 export const testimonials = testimonialsJson as Testimonial[];
-
-export const getProduct = (id: string) => products.find((p) => p.id === id);
-export const getService = (id: string) => services.find((s) => s.id === id);
-
-export const unitPrice = (p: Product, mode: PurchaseMode) => (mode === 'rent' ? p.rentPerMonth ?? 0 : p.price ?? 0);
-
-const DELIVERY: Record<Lang, [string, string, string]> = {
-  en: ['Today by 6 pm', 'Tomorrow', 'In 2 days'],
-  hi: ['आज शाम 6 बजे तक', 'कल', '2 दिन में'],
-  mr: ['आज संध्याकाळी 6 पर्यंत', 'उद्या', '2 दिवसांत'],
-};
-
-export const deliveryLabel = (hours: number, lang: Lang = 'en') =>
-  DELIVERY[lang][hours <= 6 ? 0 : hours <= 24 ? 1 : 2];
 
 const FAQ: Record<Lang, Record<string, string>> = {
   en: {

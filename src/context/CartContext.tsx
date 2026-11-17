@@ -1,25 +1,13 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { getProduct, unitPrice, type Product, type PurchaseMode } from '../data';
-import { SITE } from '../config/site';
 import useAccountStore from '../hooks/useAccountStore';
 import { demoOrders } from '../data/demoAccount';
+import { deliveryFeeFor } from '../data/demoSeed';
 
-/** supplyDays: how long this order should last. Used for refill reminders (see NotificationsContext).
- *  remind: false when the family chose "No" to a refill reminder on the product page. */
-export interface CartItem { id: string; mode: PurchaseMode; qty: number; supplyDays?: number; remind?: boolean }
+import type { CartItem, Order, OrderStatus } from '../data/types';
+
+export type { CartItem, Order, OrderStatus };
 export interface CartLine extends CartItem { product: Product; unit: number; total: number }
-
-/** Stored as a code, shown in the reader's language. */
-export type OrderStatus = 'awaiting-pharmacist' | 'packed' | 'delivered';
-
-export interface Order {
-  id: string;
-  date: string;
-  items: CartItem[];
-  total: number;
-  status: OrderStatus;
-  [detail: string]: unknown;
-}
 
 interface CartValue {
   lines: CartLine[];
@@ -110,7 +98,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     });
     const subtotal = lines.reduce((s, x) => s + x.total, 0);
     // Delivery is always shown as its own line before payment: no hidden fees (guidelines p.11).
-    const deliveryFee = subtotal === 0 || subtotal >= SITE.delivery.freeAbove ? 0 : SITE.delivery.fee;
+    const deliveryFee = deliveryFeeFor(subtotal);
     const hasRx = lines.some((x) => x.product.rx);
 
     return {

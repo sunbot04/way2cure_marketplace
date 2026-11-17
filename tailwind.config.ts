@@ -27,7 +27,7 @@ export default {
       line: v('line'), // hairline borders on white
       whatsapp: { DEFAULT: v('whatsapp'), dark: v('whatsapp-dark') }, // WhatsApp buttons only (white logo on it)
       // Time-of-day dose colours (guidelines p.13). Always paired with a word label.
-      dose: { morning: v('mustard'), afternoon: v('sage'), evening: v('terracotta-deep'), night: v('green') },
+      dose: { morning: v('mustard'), afternoon: v('sage'), evening: v('terracotta-deep'), night: v('dose-night') },
     },
     fontFamily: {
       head: ['Lora', '"Noto Sans Devanagari"', 'Georgia', 'serif'],

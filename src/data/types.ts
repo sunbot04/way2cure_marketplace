@@ -66,3 +66,22 @@ export interface TestimonialText { quote: string; relation: string }
 export type Testimonial = Localized<TestimonialText> & { name: string; city: string; consentOnFile: true };
 
 export type PurchaseMode = 'buy' | 'rent' | 'subscribe';
+
+// Accounts, carts and orders. Kept here (not in the React contexts) so the app in mobile/ can share them.
+export interface User { name: string; phone: string; since: string }
+
+/** supplyDays: how long this order should last. Used for refill reminders (see NotificationsContext).
+ *  remind: false when the family chose "No" to a refill reminder on the product page. */
+export interface CartItem { id: string; mode: PurchaseMode; qty: number; supplyDays?: number; remind?: boolean }
+
+/** Stored as a code, shown in the reader's language. */
+export type OrderStatus = 'awaiting-pharmacist' | 'packed' | 'delivered';
+
+export interface Order {
+  id: string;
+  date: string;
+  items: CartItem[];
+  total: number;
+  status: OrderStatus;
+  [detail: string]: unknown;
+}
