@@ -33,7 +33,7 @@ export default function Footer() {
       <div className="container grid gap-12 pb-12 pt-12 lg:grid-cols-[1.5fr_1fr_1fr_1.2fr] lg:gap-10 lg:pt-16">
         <div>
           {/* White logo on charcoal (p.4). TODO: client: swap in the official reversed logo file. */}
-          <img src="/logo.png" alt="Way2Cure" width={150} height={50} className="mb-6 h-11 w-auto [filter:brightness(0)_invert(1)]" />
+          <img src="/logo.png" alt="Way2Senior" width={150} height={50} className="mb-6 h-11 w-auto [filter:brightness(0)_invert(1)]" />
           <p className="font-head text-h3m font-bold leading-snug text-white">{tr('promise')}</p>
           <p className="text-base">{tr('about')}</p>
           <p className="mb-1 mt-6 text-small font-bold text-white">{tx('getApp')}</p>
@@ -75,6 +75,7 @@ export default function Footer() {
           <ul className="mb-6">
             <li><Link to="/about" className={link}>{tr('aboutUs')}</Link></li>
             <li><Link to="/contact" className={link}>{tr('contactUs')}</Link></li>
+            <li><Link to="/contact#grievance" className={link}>{tr('grievance')}</Link></li>
           </ul>
           <h2 className={heading}>{tr('visit')}</h2>
           <address className="mb-3 text-base not-italic">{SITE.offices[0].address}</address>

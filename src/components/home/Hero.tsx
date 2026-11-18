@@ -25,7 +25,7 @@ const T: Dict = {
     b3tag: 'Doctor at home', b3title: 'A doctor visit, without the hospital trip', b3text: 'General physicians and specialists who come to your home.', b3cta: 'Book a visit',
     b4tag: 'Subscriptions', b4title: 'Monthly medicines, never run out', b4text: 'We remind you 3 days before. Pause or change anytime, with no fee.', b4cta: 'See plans',
     a1: 'Upload prescription', a1s: 'A pharmacist checks it', a2: 'Order medicines', a2s: 'Delivered to your door',
-    a3: 'Book a nurse', a3s: 'Background-checked, at home', a4: 'Doctor at home', a4s: 'Physicians who come to you', a5: 'Call us 24/7',
+    a3: 'Book a nurse', a3s: 'Background-checked, at home', a4: 'Rent equipment', a4s: 'Beds, wheelchairs and more', a5: 'Call us 24/7',
     need: 'What do you need today?', seeAll: 'See all',
     s1: 'Upload Rx', s2: 'Medicines', s3: 'Nurse at home', s4: 'Doctor visit', s5: 'Devices', s6: 'Daily care', s7: 'Dose sachets', s8: 'Monthly refills',
     advTitle: 'Not sure what you need?', advText: 'Talk to a care advisor, free, any time.', call: 'Call now', whatsapp: 'WhatsApp',
@@ -43,7 +43,7 @@ const T: Dict = {
     b3tag: 'घर पर डॉक्टर', b3title: 'डॉक्टर की विज़िट, अस्पताल जाए बिना', b3text: 'जनरल फ़िज़िशियन और विशेषज्ञ, जो आपके घर आते हैं।', b3cta: 'विज़िट बुक करें',
     b4tag: 'सब्सक्रिप्शन', b4title: 'हर महीने की दवाइयाँ, कभी ख़त्म नहीं', b4text: 'ख़त्म होने से 3 दिन पहले याद दिलाते हैं। जब चाहें रोकें या बदलें, कोई शुल्क नहीं।', b4cta: 'प्लान देखें',
     a1: 'पर्चा अपलोड करें', a1s: 'फ़ार्मासिस्ट इसे जाँचते हैं', a2: 'दवाइयाँ ऑर्डर करें', a2s: 'आपके दरवाज़े तक डिलिवरी',
-    a3: 'नर्स बुक करें', a3s: 'जाँचे-परखे, घर पर', a4: 'घर पर डॉक्टर', a4s: 'डॉक्टर जो आपके पास आते हैं', a5: 'हमें 24/7 कॉल करें',
+    a3: 'नर्स बुक करें', a3s: 'जाँचे-परखे, घर पर', a4: 'उपकरण किराये पर', a4s: 'बेड, व्हीलचेयर और भी बहुत कुछ', a5: 'हमें 24/7 कॉल करें',
     need: 'आज आपको क्या चाहिए?', seeAll: 'सभी देखें',
     s1: 'पर्चा भेजें', s2: 'दवाइयाँ', s3: 'घर पर नर्स', s4: 'डॉक्टर विज़िट', s5: 'उपकरण', s6: 'रोज़ की देखभाल', s7: 'डोज़ सैशे', s8: 'मासिक रीफ़िल',
     advTitle: 'पक्का नहीं कि क्या चाहिए?', advText: 'केयर सलाहकार से बात करें, मुफ़्त, कभी भी।', call: 'अभी कॉल करें', whatsapp: 'WhatsApp',
@@ -61,7 +61,7 @@ const T: Dict = {
     b3tag: 'घरी डॉक्टर', b3title: 'डॉक्टरांची भेट, हॉस्पिटलला न जाता', b3text: 'जनरल फिजिशियन आणि तज्ज्ञ, जे तुमच्या घरी येतात.', b3cta: 'भेट बुक करा',
     b4tag: 'सबस्क्रिप्शन', b4title: 'दर महिन्याची औषधे, कधीही संपणार नाहीत', b4text: 'संपण्याच्या 3 दिवस आधी आठवण करून देतो. कधीही थांबवा किंवा बदला, कोणतेही शुल्क नाही.', b4cta: 'प्लॅन पाहा',
     a1: 'प्रिस्क्रिप्शन अपलोड करा', a1s: 'फार्मासिस्ट तपासतात', a2: 'औषधे ऑर्डर करा', a2s: 'तुमच्या दारापर्यंत डिलिव्हरी',
-    a3: 'नर्स बुक करा', a3s: 'तपासलेल्या, घरी', a4: 'घरी डॉक्टर', a4s: 'तुमच्याकडे येणारे डॉक्टर', a5: 'आम्हाला 24/7 कॉल करा',
+    a3: 'नर्स बुक करा', a3s: 'तपासलेल्या, घरी', a4: 'उपकरणे भाड्याने', a4s: 'बेड, व्हीलचेअर आणि बरेच काही', a5: 'आम्हाला 24/7 कॉल करा',
     need: 'आज तुम्हाला काय हवे आहे?', seeAll: 'सर्व पाहा',
     s1: 'प्रिस्क्रिप्शन', s2: 'औषधे', s3: 'घरी नर्स', s4: 'डॉक्टर भेट', s5: 'उपकरणे', s6: 'रोजची काळजी', s7: 'डोस सॅशे', s8: 'मासिक रिफिल',
     advTitle: 'काय हवे ते नक्की माहीत नाही?', advText: 'केअर सल्लागाराशी बोला, मोफत, कधीही.', call: 'आता कॉल करा', whatsapp: 'WhatsApp',
@@ -89,7 +89,7 @@ const ACTIONS = [
   { k: 'a1', to: '/prescription', icon: 'upload' },
   { k: 'a2', to: '/shop/medicines', icon: 'pill' },
   { k: 'a3', to: '/care/nurse', icon: 'stethoscope' },
-  { k: 'a4', to: '/care/doctor', icon: 'userDoctor' },
+  { k: 'a4', to: '/shop/rent', icon: 'bed' },
 ];
 
 const SERVICES = [
@@ -225,12 +225,12 @@ function BannerCarousel({ tr }: { tr: Tr }) {
   );
 }
 
-const tileClass = 'group flex h-full flex-col items-start gap-3 rounded-tile bg-white p-5 text-ink no-underline shadow-card transition-[transform,box-shadow] duration-slow hover-mouse:hover:-translate-y-0.5 hover-mouse:hover:shadow-raised';
+const tileClass = 'group flex h-full items-center gap-3 rounded-tile bg-white px-3.5 py-4 text-ink no-underline shadow-card transition-[transform,box-shadow] duration-slow hover-mouse:hover:-translate-y-0.5 hover-mouse:hover:shadow-raised';
 function TileBody({ icon, title, sub, urgent = false }: { icon: string; title: string; sub: string; urgent?: boolean }) {
   return (
     <>
-      <span className={`grid h-11 w-11 place-items-center rounded-full ${urgent ? 'bg-terracotta-deep text-white' : 'bg-mint/60 text-green'}`}><Icon name={icon} size={22} /></span>
-      <span>
+      <span className={`grid h-10 w-10 shrink-0 place-items-center rounded-full ${urgent ? 'bg-terracotta-deep text-white' : 'bg-mint/60 text-green'}`}><Icon name={icon} size={20} /></span>
+      <span className="min-w-0">
         <span className="block font-bold leading-tight">{title}</span>
         <span className="mt-0.5 block text-small text-grey">{sub}</span>
       </span>
@@ -240,7 +240,7 @@ function TileBody({ icon, title, sub, urgent = false }: { icon: string; title: s
 
 function Desktop({ tr }: { tr: Tr }) {
   return (
-    <m.div initial="hidden" animate="show" variants={stagger(0.06)} className="container hidden pb-14 pt-8 lg:block">
+    <m.div initial="hidden" animate="show" variants={stagger(0.06)} className="container hidden pb-8 pt-8 lg:block">
       <m.div variants={fadeRise} className="mb-8 grid grid-cols-2 items-end gap-10">
         <div>
           <h1 className="mb-2 font-head text-[clamp(2rem,1.2rem+1.6vw,2.75rem)] font-semibold leading-[1.1] tracking-[-0.02em] text-green">
@@ -251,7 +251,7 @@ function Desktop({ tr }: { tr: Tr }) {
         <div className="min-w-0"><Search tr={tr} placeholder={tr('ph')} /></div>
       </m.div>
       <m.div variants={fadeRise}><BannerCarousel tr={tr} /></m.div>
-      <m.ul variants={fadeRise} className="mt-8 grid grid-cols-5 gap-4">
+      <m.ul variants={fadeRise} className="mt-8 grid grid-cols-5 gap-3">
         {ACTIONS.map((a) => (
           <li key={a.k}><Link to={a.to} className={tileClass}><TileBody icon={a.icon} title={tr(a.k)} sub={tr(`${a.k}s`)} /></Link></li>
         ))}

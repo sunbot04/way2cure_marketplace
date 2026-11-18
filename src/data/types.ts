@@ -30,6 +30,8 @@ export type Product = Localized<ProductText> & {
   image?: string;
   /** Needs a valid prescription. Rx items never carry offer or discount badges (guidelines p.11). */
   rx: boolean;
+  /** Ayurvedic medicine (shown with an "Ayurvedic" tag; the shop can filter by it). */
+  ayurvedic?: boolean;
   chronic?: boolean;
   subscribe?: boolean;
   launch?: boolean;

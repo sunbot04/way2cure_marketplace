@@ -2,7 +2,7 @@ import { useEffect, useRef, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import Icon from '../Icon';
 import { useLoc, useT, type Dict } from '../../i18n/LangContext';
-import { categories, type Product } from '../../data';
+import type { Product } from '../../data';
 import { formatPrice } from '../../config/site';
 import { useCart } from '../../context/CartContext';
 import { useSaved } from '../../context/SavedContext';
@@ -73,7 +73,9 @@ export function SellerBadge({ product }: { product: Product }) {
 //  · Rx items: "Rx needed" and the valid-prescription line, never an offer or launch badge (p.11).
 //    Partner sellers are named; Way2Cure's own items are not.
 //  · Hover: the card lifts 3px and the drawing rises a little (transform only).
-export default function ProductCard({ product, alt = false }: { product: Product; alt?: boolean }) {
+// `rent` (the Rent equipment page): rentable items show the monthly price and a "Rent" button that
+// puts them in the cart as a monthly rental; "or buy for ..." is the note line when buying is possible.
+export default function ProductCard({ product, alt = false, rent = false }: { product: Product; alt?: boolean; rent?: boolean }) {
   const tr = useT(COPY);
   const loc = useLoc();
   const { lines, add, setQty } = useCart();
@@ -81,11 +83,10 @@ export default function ProductCard({ product, alt = false }: { product: Product
   const showToast = useCartToast();
   const { enabled: canSave, has, toggle } = useSaved();
   const p = loc(product);
-  const catRaw = categories.find((c) => c.slug === product.cat);
-  const cat = catRaw ? loc(catRaw) : undefined;
   const href = `/product/${product.id}`;
-  const needsDetails = product.rx || product.rentOnly;
-  const qty = lines.find((l) => l.id === product.id && l.mode === 'buy')?.qty ?? 0;
+  const mode = rent && product.rentPerMonth ? 'rent' : 'buy';
+  const needsDetails = product.rx || (product.rentOnly && mode !== 'rent');
+  const qty = lines.find((l) => l.id === product.id && l.mode === mode)?.qty ?? 0;
   const saved = has(product.id);
 
   // Keyboard focus moves to the control that replaces the one just pressed (Add <-> counter).
@@ -105,12 +106,16 @@ export default function ProductCard({ product, alt = false }: { product: Product
       // Subscribe tag switched off: buying regular items now offers a refill reminder instead.
       // : product.subscribe
       //   ? { text: tr('subscribe'), cls: 'bg-green text-white' }
-      : product.launch
+      : product.ayurvedic
+        ? { text: tr('ayurvedic'), cls: 'bg-green text-white' }
+        : product.launch
           ? { text: tr('launch'), cls: 'bg-mustard text-ink' }
           : null;
 
   const note = product.rx
     ? { text: tr('rxShort'), cls: 'text-terracotta-deep' }
+    : mode === 'rent'
+      ? product.rentOnly ? null : { text: tr('orBuy', { price: formatPrice(product.price ?? 0) }), cls: 'text-sage-deep' }
     : product.rentPerMonth && !product.rentOnly
       ? { text: tr('orRent', { price: formatPrice(product.rentPerMonth) }), cls: 'text-terracotta-deep' }
       // "Monthly delivery available" switched off with the subscribe option (see above).
@@ -118,8 +123,8 @@ export default function ProductCard({ product, alt = false }: { product: Product
       //   ? { text: tr('monthly'), cls: 'text-sage-deep' }
       : null;
 
-  const price: ReactNode = product.rentOnly ? (
-    <>{formatPrice(product.rentPerMonth ?? 0)}<span className="ml-1 text-[0.75rem] font-bold text-grey">{tr('perMonth')}</span></>
+  const price: ReactNode = product.rentOnly || mode === 'rent' ? (
+    <>{formatPrice(product.rentPerMonth ?? 0)}<span className="ml-1 inline-block whitespace-nowrap text-[0.75rem] font-bold text-grey">{tr('perMonth')}</span></>
   ) : (
     formatPrice(product.price ?? 0)
   );
@@ -139,7 +144,7 @@ export default function ProductCard({ product, alt = false }: { product: Product
         <button
           type="button"
           aria-label={tr('less', { name: p.name })}
-          onClick={() => { if (qty === 1) focusNext.current = 'add'; setQty(product.id, 'buy', qty - 1); }}
+          onClick={() => { if (qty === 1) focusNext.current = 'add'; setQty(product.id, mode, qty - 1); }}
           className="grid h-10 w-8 place-items-center text-green transition-colors duration-micro hover:bg-mint"
         >
           <Icon name="minus" size={16} />
@@ -149,7 +154,7 @@ export default function ProductCard({ product, alt = false }: { product: Product
           ref={plusRef}
           type="button"
           aria-label={tr('more', { name: p.name })}
-          onClick={() => { add(product.id, 'buy', 1); showToast(); }}
+          onClick={() => { add(product.id, mode, 1); showToast(); }}
           className="grid h-10 w-8 place-items-center text-green transition-colors duration-micro hover:bg-mint"
         >
           <Icon name="plus" size={16} />
@@ -161,12 +166,12 @@ export default function ProductCard({ product, alt = false }: { product: Product
       <button
         ref={addRef}
         type="button"
-        aria-label={tr('addItem', { name: p.name })}
-        onClick={() => { focusNext.current = 'plus'; add(product.id, 'buy', 1); showToast(); }}
+        aria-label={tr(mode === 'rent' ? 'rentItem' : 'addItem', { name: p.name })}
+        onClick={() => { focusNext.current = 'plus'; add(product.id, mode, 1); showToast(); }}
         className={`${btn} w-10 bg-green text-white hover:bg-green-dark md:w-auto md:px-3.5`}
       >
         <Icon name="plus" size={18} />
-        <span className="hidden md:inline">{tr('add')}</span>
+        <span className="hidden md:inline">{tr(mode === 'rent' ? 'rentBtn' : 'add')}</span>
       </button>
     );
   }
@@ -207,7 +212,6 @@ export default function ProductCard({ product, alt = false }: { product: Product
       )}
 
       <div className="flex flex-1 flex-col px-1 pb-0.5 pt-2.5 md:px-1.5 md:pb-1 md:pt-3">
-        {cat && <p className="m-0 mb-[3px] text-[0.6875rem] font-extrabold uppercase leading-snug tracking-[0.06em] text-sage-deep md:mb-1 md:text-[0.71875rem]">{cat.name}</p>}
         <h3 className="m-0 mb-0.5 font-body text-[0.9375rem] font-extrabold leading-[1.3] md:text-[0.96875rem]">
           <Link to={href} className="line-clamp-2 text-green no-underline hover:underline">{p.name}</Link>
         </h3>

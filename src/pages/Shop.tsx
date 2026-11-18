@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
 import Icon from '../components/Icon';
 import CategoryCard from '../components/commerce/CategoryCard';
 import Button from '../components/ui/Button';
@@ -9,7 +9,6 @@ import { Reveal, Stagger, StaggerItem } from '../components/motion/Reveal';
 import ProductCard from '../components/commerce/ProductCard';
 import { COPY } from '../components/copy';
 import { useSaved } from '../context/SavedContext';
-import RxNotice from '../components/commerce/RxNotice';
 import PageHeader from '../components/layout/PageHeader';
 import Seo from '../components/layout/Seo';
 import { categories, shopViews, products, type Product } from '../data';
@@ -25,10 +24,11 @@ const T: Dict = {
     intro: 'Medicines, devices, daily care and more. Delivered in Mumbai, Navi Mumbai and Thane.',
     browse: 'Browse by need',
     filters: 'Filters', filter: 'Filter', showFilters: 'Show filters', hideFilters: 'Hide filters', active: '{n} on',
-    brand: 'Brand', allBrands: 'All brands',
-    price: 'Price', anyPrice: 'Any price', under500: 'Under ₹500.00', mid: '₹500.00 to ₹2,000.00', over2000: 'Over ₹2,000.00',
-    buyOrRent: 'Buy or rent', buy: 'Buy', rent: 'Rent',
-    prescription: 'Prescription', rxAll: 'Rx and no Rx', rxNeeded: 'Rx needed', rxNo: 'No Rx needed',
+    brand: 'Brand', allBrands: 'All Brands',
+    price: 'Price', anyPrice: 'Any Price', under500: 'Under ₹500.00', mid: '₹500.00 to ₹2,000.00', over2000: 'Over ₹2,000.00',
+    buyOrRent: 'Buy or Rent', buy: 'Buy', rent: 'Rent',
+    medType: 'Medicine type', medAll: 'All Medicines', medAyur: 'Ayurvedic', medAllo: 'Allopathic (English medicine)',
+    rxNote: 'Prescription medicines are not sold in the shop. Upload your prescription and our pharmacist will arrange them.', rxUpload: 'Upload prescription',
     clear: 'Clear filters',
     item: 'item', items: 'items', loading: 'Loading products',
     sortBy: 'Sort by', popular: 'Most popular', priceLow: 'Price: low to high', priceHigh: 'Price: high to low', fastest: 'Fastest delivery',
@@ -50,7 +50,8 @@ const T: Dict = {
     brand: 'ब्रांड', allBrands: 'सभी ब्रांड',
     price: 'कीमत', anyPrice: 'कोई भी कीमत', under500: '₹500.00 से कम', mid: '₹500.00 से ₹2,000.00', over2000: '₹2,000.00 से ज़्यादा',
     buyOrRent: 'ख़रीदें या किराये पर', buy: 'ख़रीदें', rent: 'किराये पर',
-    prescription: 'पर्चा', rxAll: 'सभी सामान', rxNeeded: 'पर्चा ज़रूरी', rxNo: 'पर्चा ज़रूरी नहीं',
+    medType: 'दवा का प्रकार', medAll: 'सभी दवाइयाँ', medAyur: 'आयुर्वेदिक', medAllo: 'एलोपैथिक (अंग्रेज़ी दवा)',
+    rxNote: 'पर्चे वाली दवाइयाँ शॉप में नहीं मिलतीं। अपना पर्चा अपलोड करें, हमारे फ़ार्मासिस्ट दवाइयों का इंतज़ाम करेंगे।', rxUpload: 'पर्चा अपलोड करें',
     clear: 'फ़िल्टर हटाएँ',
     item: 'सामान', items: 'सामान', loading: 'प्रोडक्ट लोड हो रहे हैं',
     sortBy: 'क्रम', popular: 'सबसे लोकप्रिय', priceLow: 'कीमत: कम से ज़्यादा', priceHigh: 'कीमत: ज़्यादा से कम', fastest: 'सबसे जल्दी डिलिवरी',
@@ -72,7 +73,8 @@ const T: Dict = {
     brand: 'ब्रँड', allBrands: 'सर्व ब्रँड',
     price: 'किंमत', anyPrice: 'कोणतीही किंमत', under500: '₹500.00 पेक्षा कमी', mid: '₹500.00 ते ₹2,000.00', over2000: '₹2,000.00 पेक्षा जास्त',
     buyOrRent: 'विकत की भाड्याने', buy: 'विकत घ्या', rent: 'भाड्याने',
-    prescription: 'प्रिस्क्रिप्शन', rxAll: 'सर्व वस्तू', rxNeeded: 'प्रिस्क्रिप्शन लागते', rxNo: 'प्रिस्क्रिप्शन नको',
+    medType: 'औषधाचा प्रकार', medAll: 'सर्व औषधे', medAyur: 'आयुर्वेदिक', medAllo: 'ॲलोपॅथिक (इंग्रजी औषध)',
+    rxNote: 'प्रिस्क्रिप्शनची औषधे शॉपमध्ये मिळत नाहीत. तुमचे प्रिस्क्रिप्शन अपलोड करा, आमचे फार्मासिस्ट औषधांची व्यवस्था करतील.', rxUpload: 'प्रिस्क्रिप्शन अपलोड करा',
     clear: 'फिल्टर काढा',
     item: 'वस्तू', items: 'वस्तू', loading: 'उत्पादने लोड होत आहेत',
     sortBy: 'क्रम', popular: 'सर्वात लोकप्रिय', priceLow: 'किंमत: कमी ते जास्त', priceHigh: 'किंमत: जास्त ते कमी', fastest: 'सर्वात लवकर डिलिव्हरी',
@@ -104,7 +106,8 @@ const sorters: Record<SortKey, (a: Product, b: Product) => number> = {
 
 // Search matches the English text and both translations, so a search typed in any language works.
 const searchText = (p: Product) =>
-  [p, p.hi, p.mr].filter(Boolean).map((x) => `${x!.name ?? ''} ${x!.desc ?? ''}`).join(' ') + ` ${p.brand} ${p.cat}`;
+  [p, p.hi, p.mr].filter(Boolean).map((x) => `${x!.name ?? ''} ${x!.desc ?? ''}`).join(' ') + ` ${p.brand} ${p.cat}` +
+  (p.ayurvedic ? ' ayurvedic ayurveda आयुर्वेदिक आयुर्वेद' : '');
 
 // Simulated catalogue loading time, so the skeleton grid can be seen.
 // TODO: API: replace with the real catalogue request; keep the skeleton while it is in flight.
@@ -131,8 +134,12 @@ export default function Shop() {
 
   const [brand, setBrand] = useState('all');
   const [price, setPrice] = useState('all');
-  const [buyRent, setBuyRent] = useState('all');
-  const [rx, setRx] = useState('all');
+  const [buyRentPick, setBuyRent] = useState('all');
+  // Buy or Rent only applies on the Rent equipment page; everywhere else it is ignored and hidden.
+  const isRent = category === 'rent';
+  const buyRent = isRent ? buyRentPick : 'all';
+  // Medicine type: all / ayurvedic / allopathic. ?type=ayurvedic opens the shop already filtered.
+  const [medType, setMedType] = useState(() => (['ayurvedic', 'allopathic'].includes(params.get('type') ?? '') ? params.get('type')! : 'all'));
   const [sort, setSort] = useState<SortKey>('popular');
   const [showFilters, setShowFilters] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -142,7 +149,9 @@ export default function Shop() {
 
   // TODO: API: catalogue search and filters server-side once the range grows.
   const base = useMemo(() => {
-    let list = products;
+    // Prescription-only medicines are not sold off the shelf: they come through /prescription
+    // (upload, pharmacist check), so the shop and its search never list them.
+    let list = products.filter((p) => !p.rx);
     if (category === 'rent') list = list.filter((p) => p.rentPerMonth);
     else if (category === 'sellers') list = list.filter((p) => p.seller !== 'Way2Cure');
     else if (category) list = list.filter((p) => p.cat === category);
@@ -152,6 +161,8 @@ export default function Shop() {
   }, [category, q, savedOnly, savedIds]);
 
   const brands = [...new Set(base.map((p) => p.brand))].sort();
+  // The medicine-type filter only shows where both kinds of medicine can appear.
+  const hasMeds = base.some((p) => p.ayurvedic) && base.some((p) => p.cat === 'medicines' && !p.ayurvedic);
 
   const shown = useMemo(() => {
     const band = priceBands.find((b) => b.id === price) ?? priceBands[0];
@@ -160,18 +171,18 @@ export default function Shop() {
         (brand === 'all' || p.brand === brand) &&
         band.test(amount(p)) &&
         (buyRent === 'all' || (buyRent === 'rent' ? !!p.rentPerMonth : !p.rentOnly)) &&
-        (rx === 'all' || (rx === 'rx' ? p.rx : !p.rx)),
+        (medType === 'all' || (p.cat === 'medicines' && (medType === 'ayurvedic' ? !!p.ayurvedic : !p.ayurvedic))),
     );
     // Chronic-care items are pinned to the top, then the chosen sort.
     return [...list].sort((a, b) => (b.chronic ? 1 : 0) - (a.chronic ? 1 : 0) || sorters[sort](a, b));
-  }, [base, brand, price, buyRent, rx, sort]);
+  }, [base, brand, price, buyRent, medType, sort]);
 
   // Skeleton on first load and whenever the category, search or a filter changes (not on sort).
   useEffect(() => {
     setLoading(true);
     const timer = window.setTimeout(() => setLoading(false), LOAD_MS);
     return () => window.clearTimeout(timer);
-  }, [category, q, brand, price, buyRent, rx, fail, attempt, savedOnly]);
+  }, [category, q, brand, price, buyRent, medType, fail, attempt, savedOnly]);
 
   if (category && !view) return <NotFound />;
 
@@ -179,8 +190,8 @@ export default function Shop() {
   const plainTitle = q ? tr('resultsFor', { q: rawQ }) : v ? v.name : tr('shop');
   const title = q || v ? plainTitle : tr('shopTitle');
   const lead = v ? v.blurb : tr('intro');
-  const reset = () => { setBrand('all'); setPrice('all'); setBuyRent('all'); setRx('all'); };
-  const activeCount = [brand, price, buyRent, rx].filter((x) => x !== 'all').length;
+  const reset = () => { setBrand('all'); setPrice('all'); setBuyRent('all'); setMedType('all'); };
+  const activeCount = [brand, price, buyRent, medType].filter((x) => x !== 'all').length;
   const retry = () => {
     if (fail) {
       const next = new URLSearchParams(params);
@@ -188,7 +199,7 @@ export default function Shop() {
       setParams(next, { replace: true });
     } else setAttempt((n) => n + 1);
   };
-  const gridKey = [category, q, brand, price, buyRent, rx, sort, attempt, savedOnly].join('|');
+  const gridKey = [category, q, brand, price, buyRent, medType, sort, attempt, savedOnly].join('|');
   const toggleSaved = () => {
     const next = new URLSearchParams(params);
     if (savedOnly) next.delete('saved'); else next.set('saved', '1');
@@ -204,8 +215,13 @@ export default function Shop() {
         lead={lead}
         crumbs={[{ label: t('home'), to: '/' }, ...(category || q ? [{ label: tr('shop'), to: '/shop' }, { label: plainTitle }] : [{ label: tr('shop') }])]}
       >
-        {/* Prescription rule, as a quiet note under the heading */}
-        {(category === 'medicines' || base.some((p) => p.rx)) && <RxNotice inline />}
+        {/* Medicines and search: prescription medicines come through the upload, not the shop */}
+        {(category === 'medicines' || q) && (
+          <p className="m-0 inline-flex max-w-full flex-wrap items-center gap-x-3 gap-y-1 rounded-2xl bg-[#FDF0F2] px-4 py-2.5 text-base font-semibold text-terracotta-deep">
+            <span className="inline-flex items-start gap-2.5"><Icon name="rx" size={18} className="mt-0.5 shrink-0" /> {tr('rxNote')}</span>
+            <Link to="/prescription" className="inline-flex items-center gap-1 font-bold text-terracotta-deep">{tr('rxUpload')} <Icon name="arrow" size={16} /></Link>
+          </p>
+        )}
       </PageHeader>
 
       {!category && !q && (
@@ -245,6 +261,15 @@ export default function Shop() {
                 </button>
               </div>
               <div id="filter-fields" className={`${showFilters ? 'grid' : 'hidden'} mt-5 gap-4 sm:grid-cols-2 lg:grid lg:grid-cols-1`}>
+                {hasMeds && (
+                  <Field id="f-type" label={tr('medType')}>
+                    <Select id="f-type" value={medType} onChange={(e) => setMedType(e.target.value)}>
+                      <option value="all">{tr('medAll')}</option>
+                      <option value="ayurvedic">{tr('medAyur')}</option>
+                      <option value="allopathic">{tr('medAllo')}</option>
+                    </Select>
+                  </Field>
+                )}
                 <Field id="f-brand" label={tr('brand')}>
                   <Select id="f-brand" value={brand} onChange={(e) => setBrand(e.target.value)}>
                     <option value="all">{tr('allBrands')}</option>
@@ -256,20 +281,15 @@ export default function Shop() {
                     {priceBands.map((b) => <option key={b.id} value={b.id}>{tr(b.label)}</option>)}
                   </Select>
                 </Field>
-                <Field id="f-mode" label={tr('buyOrRent')}>
-                  <Select id="f-mode" value={buyRent} onChange={(e) => setBuyRent(e.target.value)}>
-                    <option value="all">{tr('buyOrRent')}</option>
-                    <option value="buy">{tr('buy')}</option>
-                    <option value="rent">{tr('rent')}</option>
-                  </Select>
-                </Field>
-                <Field id="f-rx" label={tr('prescription')}>
-                  <Select id="f-rx" value={rx} onChange={(e) => setRx(e.target.value)}>
-                    <option value="all">{tr('rxAll')}</option>
-                    <option value="rx">{tr('rxNeeded')}</option>
-                    <option value="otc">{tr('rxNo')}</option>
-                  </Select>
-                </Field>
+                {isRent && (
+                  <Field id="f-mode" label={tr('buyOrRent')}>
+                    <Select id="f-mode" value={buyRent} onChange={(e) => setBuyRent(e.target.value)}>
+                      <option value="all">{tr('buyOrRent')}</option>
+                      <option value="buy">{tr('buy')}</option>
+                      <option value="rent">{tr('rent')}</option>
+                    </Select>
+                  </Field>
+                )}
                 {activeCount > 0 && (
                   <Button variant="outline" block compact className="sm:col-span-2 lg:col-span-1" onClick={reset}>
                     <Icon name="close" size={16} /> {tr('clear')}
@@ -326,7 +346,7 @@ export default function Shop() {
               ) : shown.length ? (
                 <ul key={gridKey} className={grid}>
                   {/* Each card fades in as it scrolls into view; cards in a row follow each other closely */}
-                  {shown.map((p, i) => <Reveal as="li" key={p.id} delay={(i % 4) * 0.05} className="grid"><ProductCard product={p} alt={i % 2 === 1} /></Reveal>)}
+                  {shown.map((p, i) => <Reveal as="li" key={p.id} delay={(i % 4) * 0.05} className="grid"><ProductCard product={p} alt={i % 2 === 1} rent={isRent && buyRent !== 'buy'} /></Reveal>)}
                 </ul>
               ) : (
                 <Reveal>

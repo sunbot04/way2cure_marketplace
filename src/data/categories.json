@@ -2,18 +2,18 @@
   {
     "slug": "medicines",
     "name": "Medicines",
-    "blurb": "Prescription, over-the-counter and regular refills",
+    "blurb": "Everyday and Ayurvedic medicines, plus regular refills",
     "icon": "pill",
     "image": "/images/categories/medicines.webp",
     "edge": "var(--terracotta)",
     "launch": true,
     "hi": {
       "name": "दवाइयाँ",
-      "blurb": "पर्चे वाली, बिना पर्चे वाली और नियमित रीफ़िल"
+      "blurb": "रोज़ की और आयुर्वेदिक दवाइयाँ, साथ में नियमित रीफ़िल"
     },
     "mr": {
       "name": "औषधे",
-      "blurb": "प्रिस्क्रिप्शनची, विना-प्रिस्क्रिप्शन आणि नियमित रिफिल"
+      "blurb": "रोजची आणि आयुर्वेदिक औषधे, सोबत नियमित रिफिल"
     }
   },
   {

@@ -573,5 +573,149 @@
       "desc": "फक्त भाड्याने. ऑक्सिजन फ्लो लिहिलेले डॉक्टरांचे प्रिस्क्रिप्शन आवश्यक. आमची टीम घरी बसवून देते."
     },
     "image": "/images/products/oxygen-concentrator.webp"
+  },
+  {
+    "id": "ashwagandha-tablets",
+    "name": "Ashwagandha tablets 500 mg",
+    "cat": "medicines",
+    "brand": "Vedika Ayur",
+    "pack": "Bottle of 60 tablets",
+    "price": 299,
+    "rx": false,
+    "ayurvedic": true,
+    "seller": "Way2Cure",
+    "deliveryHours": 24,
+    "popular": 88,
+    "desc": "A traditional Ayurvedic herb, taken for everyday strength and calm. Ask your doctor first if you take regular medicines.",
+    "hi": {
+      "name": "अश्वगंधा गोलियाँ 500 mg",
+      "pack": "60 गोलियों की बोतल",
+      "desc": "एक पारंपरिक आयुर्वेदिक जड़ी-बूटी, रोज़ की ताक़त और सुकून के लिए ली जाती है। अगर आप रोज़ दवाइयाँ लेते हैं, तो पहले डॉक्टर से पूछें।"
+    },
+    "mr": {
+      "name": "अश्वगंधा गोळ्या 500 mg",
+      "pack": "60 गोळ्यांची बाटली",
+      "desc": "एक पारंपरिक आयुर्वेदिक वनस्पती, रोजची ताकद आणि शांततेसाठी घेतली जाते. तुम्ही नियमित औषधे घेत असल्यास, आधी डॉक्टरांना विचारा."
+    }
+  },
+  {
+    "id": "chyawanprash",
+    "name": "Chyawanprash",
+    "cat": "medicines",
+    "brand": "Vedika Ayur",
+    "pack": "Jar of 500 g",
+    "price": 245,
+    "rx": false,
+    "ayurvedic": true,
+    "seller": "Way2Cure",
+    "deliveryHours": 24,
+    "popular": 90,
+    "desc": "The classic Ayurvedic herbal jam with amla, taken daily by the spoonful. Ask your doctor first if you take regular medicines.",
+    "hi": {
+      "name": "च्यवनप्राश",
+      "pack": "500 g का डिब्बा",
+      "desc": "आँवले वाला पारंपरिक आयुर्वेदिक अवलेह, रोज़ एक चम्मच लिया जाता है। अगर आप रोज़ दवाइयाँ लेते हैं, तो पहले डॉक्टर से पूछें।"
+    },
+    "mr": {
+      "name": "च्यवनप्राश",
+      "pack": "500 g ची बरणी",
+      "desc": "आवळ्याचा पारंपरिक आयुर्वेदिक अवलेह, रोज एक चमचा घेतला जातो. तुम्ही नियमित औषधे घेत असल्यास, आधी डॉक्टरांना विचारा."
+    }
+  },
+  {
+    "id": "triphala-churna",
+    "name": "Triphala churna",
+    "cat": "medicines",
+    "brand": "Shuddhi Herbals",
+    "pack": "Pack of 100 g powder",
+    "price": 120,
+    "rx": false,
+    "ayurvedic": true,
+    "seller": "Way2Cure",
+    "deliveryHours": 24,
+    "popular": 84,
+    "desc": "A blend of three fruits, traditionally taken with warm water for regular digestion. Ask your doctor first if you take regular medicines.",
+    "hi": {
+      "name": "त्रिफला चूर्ण",
+      "pack": "100 g पाउडर का पैक",
+      "desc": "तीन फलों का मिश्रण, नियमित पाचन के लिए परंपरा से गुनगुने पानी के साथ लिया जाता है। अगर आप रोज़ दवाइयाँ लेते हैं, तो पहले डॉक्टर से पूछें।"
+    },
+    "mr": {
+      "name": "त्रिफळा चूर्ण",
+      "pack": "100 g पावडरचे पॅक",
+      "desc": "तीन फळांचे मिश्रण, नियमित पचनासाठी परंपरेने कोमट पाण्यासोबत घेतले जाते. तुम्ही नियमित औषधे घेत असल्यास, आधी डॉक्टरांना विचारा."
+    }
+  },
+  {
+    "id": "giloy-tablets",
+    "name": "Giloy (Guduchi) tablets",
+    "cat": "medicines",
+    "brand": "Shuddhi Herbals",
+    "pack": "Bottle of 60 tablets",
+    "price": 199,
+    "rx": false,
+    "ayurvedic": true,
+    "seller": "Way2Cure",
+    "deliveryHours": 24,
+    "popular": 80,
+    "desc": "A traditional Ayurvedic herb, taken to support the body's natural defences. Ask your doctor first if you take regular medicines.",
+    "hi": {
+      "name": "गिलोय (गुडूची) गोलियाँ",
+      "pack": "60 गोलियों की बोतल",
+      "desc": "एक पारंपरिक आयुर्वेदिक जड़ी-बूटी, शरीर की प्राकृतिक रोग-प्रतिरोधक शक्ति के लिए ली जाती है। अगर आप रोज़ दवाइयाँ लेते हैं, तो पहले डॉक्टर से पूछें।"
+    },
+    "mr": {
+      "name": "गुळवेल (गुडूची) गोळ्या",
+      "pack": "60 गोळ्यांची बाटली",
+      "desc": "एक पारंपरिक आयुर्वेदिक वनस्पती, शरीराच्या नैसर्गिक प्रतिकारशक्तीसाठी घेतली जाते. तुम्ही नियमित औषधे घेत असल्यास, आधी डॉक्टरांना विचारा."
+    }
+  },
+  {
+    "id": "mahanarayan-oil",
+    "name": "Mahanarayan oil",
+    "cat": "medicines",
+    "brand": "Vedika Ayur",
+    "pack": "Bottle of 100 ml",
+    "price": 180,
+    "rx": false,
+    "ayurvedic": true,
+    "seller": "Way2Cure",
+    "deliveryHours": 24,
+    "popular": 86,
+    "desc": "A classic Ayurvedic massage oil for stiff joints and tired muscles. For external use only.",
+    "hi": {
+      "name": "महानारायण तेल",
+      "pack": "100 ml की बोतल",
+      "desc": "अकड़े जोड़ों और थकी मांसपेशियों के लिए पारंपरिक आयुर्वेदिक मालिश तेल। सिर्फ़ बाहरी उपयोग के लिए।"
+    },
+    "mr": {
+      "name": "महानारायण तेल",
+      "pack": "100 ml ची बाटली",
+      "desc": "आखडलेले सांधे आणि थकलेल्या स्नायूंसाठी पारंपरिक आयुर्वेदिक मसाज तेल. फक्त बाह्य वापरासाठी."
+    }
+  },
+  {
+    "id": "sitopaladi-churna",
+    "name": "Sitopaladi churna",
+    "cat": "medicines",
+    "brand": "Shuddhi Herbals",
+    "pack": "Pack of 50 g powder",
+    "price": 95,
+    "rx": false,
+    "ayurvedic": true,
+    "seller": "Way2Cure",
+    "deliveryHours": 24,
+    "popular": 78,
+    "desc": "A traditional Ayurvedic powder, taken with honey for a dry throat and cough. Ask your doctor first if you take regular medicines.",
+    "hi": {
+      "name": "सितोपलादि चूर्ण",
+      "pack": "50 g पाउडर का पैक",
+      "desc": "एक पारंपरिक आयुर्वेदिक चूर्ण, सूखे गले और खाँसी में शहद के साथ लिया जाता है। अगर आप रोज़ दवाइयाँ लेते हैं, तो पहले डॉक्टर से पूछें।"
+    },
+    "mr": {
+      "name": "सितोपलादी चूर्ण",
+      "pack": "50 g पावडरचे पॅक",
+      "desc": "एक पारंपरिक आयुर्वेदिक चूर्ण, कोरडा घसा आणि खोकल्यावर मधासोबत घेतले जाते. तुम्ही नियमित औषधे घेत असल्यास, आधी डॉक्टरांना विचारा."
+    }
   }
 ]

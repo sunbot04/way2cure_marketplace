@@ -14,6 +14,9 @@ export const SITE = {
   // TODO: client: the emergency line the app's SOS button dials. Placeholder until the number is provided.
   sosPhone: '+910000000000',
   email: 'support@way2cure.com',
+  // Grievance Officer (Consumer Protection (E-Commerce) Rules, 2020: name, contact, acknowledge in 48 h,
+  // resolve within a month). TODO: client: the officer's name and a dedicated grievance email.
+  grievance: { email: 'support@way2cure.com' },
   cities: 'Mumbai, Navi Mumbai & Thane',
   // TODO: client: real app links once the Way2Cure app is live (prescription upload is app-only).
   appStores: {

@@ -8,8 +8,10 @@ export interface Step {
   title: string;
   text?: string;
   colour?: StepColour;
-  hi?: { title?: string; text?: string };
-  mr?: { title?: string; text?: string };
+  /** Optional short time label shown as a pill beside the title (the prescription story). */
+  tag?: string;
+  hi?: { title?: string; text?: string; tag?: string };
+  mr?: { title?: string; text?: string; tag?: string };
 }
 
 // Number circle colours; light fills (sky blue, yellow) take dark text for contrast.

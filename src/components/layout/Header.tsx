@@ -163,7 +163,7 @@ export default function Header() {
             <div className={`flex items-center gap-2 px-3 transition-[height] duration-slow ease-soft lg:gap-4 lg:px-5 ${scrolled ? 'h-16' : 'h-[4.5rem] lg:h-20'}`}>
               <Link to="/" aria-label={tr('homeAria')} className="mr-2 flex min-h-tap shrink-0 items-center no-underline xl:mr-6">
                 {/* Official logo: 36px high on mobile, 44px on desktop (p.4) */}
-                <img src="/logo.png" alt="Way2Cure" width={132} height={44} className={`w-auto transition-[height] duration-slow ${scrolled ? 'h-9' : 'h-9 lg:h-11'}`} />
+                <img src="/logo.png" alt="Way2Senior" width={132} height={44} className={`w-auto transition-[height] duration-slow ${scrolled ? 'h-9' : 'h-9 lg:h-11'}`} />
               </Link>
 
               {/* Desktop navigation (p.8). Below 1280px it lives in the menu. The logo links home. */}

@@ -6,6 +6,7 @@ import {
   Check, ArrowRight, Clock, Truck, Lock, Calendar, MapPin, Menu, X, Plus, Minus, Bell,
   BadgeCheck, Users, Headphones, Smartphone, ScanLine, Sparkles, UserCheck, Trash2, Pencil,
   Info, AlertTriangle, ChevronRight, ChevronDown, Globe, Watch, Mail, ExternalLink, QrCode, Puzzle, SlidersHorizontal, Upload,
+  Camera, Hospital,
   type LucideIcon,
 } from 'lucide-react';
 
@@ -20,6 +21,7 @@ const map: Record<string, LucideIcon> = {
   phoneApp: Smartphone, scan: ScanLine, sparkles: Sparkles, userCheck: UserCheck, trash: Trash2,
   edit: Pencil, info: Info, warning: AlertTriangle, chevron: ChevronRight, globe: Globe, watch: Watch,
   heart: Heart, mail: Mail, user: UserRound, chevronDown: ChevronDown, external: ExternalLink, qr: QrCode, memory: Puzzle, filter: SlidersHorizontal, upload: Upload,
+  camera: Camera, pharmacy: Hospital,
 };
 
 export interface IconProps {
