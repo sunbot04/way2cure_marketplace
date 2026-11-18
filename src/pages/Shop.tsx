@@ -9,7 +9,7 @@ import { Reveal, Stagger, StaggerItem } from '../components/motion/Reveal';
 import ProductCard from '../components/commerce/ProductCard';
 import { COPY } from '../components/copy';
 import { useSaved } from '../context/SavedContext';
-import PageHeader from '../components/layout/PageHeader';
+import Accent from '../components/ui/Accent';
 import Seo from '../components/layout/Seo';
 import { categories, shopViews, products, type Product } from '../data';
 import { SITE } from '../config/site';
@@ -190,6 +190,10 @@ export default function Shop() {
   const plainTitle = q ? tr('resultsFor', { q: rawQ }) : v ? v.name : tr('shop');
   const title = q || v ? plainTitle : tr('shopTitle');
   const lead = v ? v.blurb : tr('intro');
+  const crumbs: { label: string; to?: string }[] = [
+    { label: t('home'), to: '/' },
+    ...(category || q ? [{ label: tr('shop'), to: '/shop' }, { label: plainTitle }] : [{ label: tr('shop') }]),
+  ];
   const reset = () => { setBrand('all'); setPrice('all'); setBuyRent('all'); setMedType('all'); };
   const activeCount = [brand, price, buyRent, medType].filter((x) => x !== 'all').length;
   const retry = () => {
@@ -210,28 +214,43 @@ export default function Shop() {
   return (
     <>
       <Seo title={plainTitle} description={lead} noindex={!!q} />
-      <PageHeader
-        title={title}
-        lead={lead}
-        crumbs={[{ label: t('home'), to: '/' }, ...(category || q ? [{ label: tr('shop'), to: '/shop' }, { label: plainTitle }] : [{ label: tr('shop') }])]}
-      >
-        {/* Medicines and search: prescription medicines come through the upload, not the shop */}
-        {(category === 'medicines' || q) && (
-          <p className="m-0 inline-flex max-w-full flex-wrap items-center gap-x-3 gap-y-1 rounded-2xl bg-[#FDF0F2] px-4 py-2.5 text-base font-semibold text-terracotta-deep">
-            <span className="inline-flex items-start gap-2.5"><Icon name="rx" size={18} className="mt-0.5 shrink-0" /> {tr('rxNote')}</span>
-            <Link to="/prescription" className="inline-flex items-center gap-1 font-bold text-terracotta-deep">{tr('rxUpload')} <Icon name="arrow" size={16} /></Link>
-          </p>
-        )}
-      </PageHeader>
+      {/* Compact marketplace-style header (2026-11-18): small breadcrumb, a modest title and one
+          short line, so the products show on the first screen. Not the shared PageHeader, which is
+          sized for content pages. */}
+      <section className="bg-white pb-4 pt-1 md:pb-5">
+        <div className="container">
+          <nav aria-label="Breadcrumb">
+            <ol className="m-0 flex list-none flex-wrap items-center gap-1 p-0 text-small">
+              {crumbs.map((c, i) => (
+                <li key={i} className="inline-flex items-center gap-1">
+                  {i > 0 && <Icon name="chevron" size={14} className="text-grey" />}
+                  {c.to ? <Link to={c.to} className="inline-flex min-h-[2.25rem] items-center">{c.label}</Link> : <span aria-current="page" className="text-grey">{c.label}</span>}
+                </li>
+              ))}
+            </ol>
+          </nav>
+          <h1 className="m-0 font-head text-[1.5rem] font-semibold leading-tight text-green md:text-[1.875rem]">
+            {q || v ? title : <Accent text={title} />}
+          </h1>
+          <p className="m-0 mt-1 text-base text-ink/70">{lead}</p>
+          {/* Medicines and search: prescription medicines come through the upload, not the shop */}
+          {(category === 'medicines' || q) && (
+            <p className="m-0 mt-3 inline-flex max-w-full flex-wrap items-center gap-x-3 gap-y-1 rounded-xl bg-[#FDF0F2] px-3 py-2 text-small font-semibold text-terracotta-deep">
+              <span className="inline-flex items-start gap-2"><Icon name="rx" size={16} className="mt-0.5 shrink-0" /> {tr('rxNote')}</span>
+              <Link to="/prescription" className="inline-flex items-center gap-1 font-bold text-terracotta-deep">{tr('rxUpload')} <Icon name="arrow" size={14} /></Link>
+            </p>
+          )}
+        </div>
+      </section>
 
       {!category && !q && (
-        <section aria-labelledby="browse" className="pb-8 md:pb-10">
+        <section aria-labelledby="browse" className="bg-white pb-5">
           <div className="container">
             <h2 id="browse" className="sr-only">{tr('browse')}</h2>
-            {/* Phones: a row you swipe (keeps the products near the top); 2 across from 640px, 4 from 1024px */}
-            <Stagger as="ul" className="-mx-4 flex snap-x snap-mandatory scroll-px-4 gap-3 overflow-x-auto px-4 pb-2 sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-4 lg:gap-4">
+            {/* One row of eight from 1024px; below that a row you swipe */}
+            <Stagger as="ul" className="-mx-4 flex snap-x snap-mandatory scroll-px-4 gap-2.5 overflow-x-auto px-4 pb-1 sm:-mx-6 sm:scroll-px-6 sm:px-6 lg:mx-0 lg:grid lg:grid-cols-8 lg:gap-3 lg:overflow-visible lg:px-0 lg:pb-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               {[...categories, ...shopViews].map(loc).map((c) => (
-                <StaggerItem as="li" key={c.slug} className="w-[8.5rem] shrink-0 snap-start sm:w-auto">
+                <StaggerItem as="li" key={c.slug} className="w-[7.5rem] shrink-0 snap-start lg:w-auto">
                   <CategoryCard c={c} />
                 </StaggerItem>
               ))}
@@ -240,12 +259,12 @@ export default function Shop() {
         </section>
       )}
 
-      <section aria-label={tr('shop')} className="bg-mist py-8 md:py-12">
+      <section aria-label={tr('shop')} className="bg-mist pb-10 pt-4 md:pb-14 md:pt-5">
         <div className="container">
-          <div className="grid gap-8 lg:grid-cols-[17rem_1fr]">
-            <aside aria-labelledby="filter-heading" className="self-start rounded-panel bg-white p-5 shadow-card lg:sticky lg:top-28 lg:p-6">
+          <div className="grid gap-3 lg:grid-cols-[16rem_1fr] lg:gap-6">
+            <aside aria-labelledby="filter-heading" className="self-start rounded-panel bg-white px-4 py-1 shadow-card lg:sticky lg:top-28 lg:p-5">
               <div className="flex items-center justify-between gap-3">
-                <h2 id="filter-heading" className="m-0 flex items-center gap-2 font-body text-h3m">
+                <h2 id="filter-heading" className="m-0 flex items-center gap-2 font-body text-[1.125rem] font-bold">
                   <Icon name="filter" size={20} className="text-sage" /> {tr('filter')}
                   {activeCount > 0 && <span className="ml-2 rounded-full bg-green px-2 py-0.5 align-middle text-small font-bold text-white">{tr('active', { n: activeCount })}</span>}
                 </h2>
@@ -260,7 +279,7 @@ export default function Shop() {
                   <Icon name="chevronDown" size={18} className={`transition-transform duration-micro ${showFilters ? 'rotate-180' : ''}`} />
                 </button>
               </div>
-              <div id="filter-fields" className={`${showFilters ? 'grid' : 'hidden'} mt-5 gap-4 sm:grid-cols-2 lg:grid lg:grid-cols-1`}>
+              <div id="filter-fields" className={`${showFilters ? 'grid' : 'hidden'} mb-3 mt-2 gap-4 sm:grid-cols-2 lg:mb-0 lg:mt-4 lg:grid lg:grid-cols-1`}>
                 {hasMeds && (
                   <Field id="f-type" label={tr('medType')}>
                     <Select id="f-type" value={medType} onChange={(e) => setMedType(e.target.value)}>
@@ -299,7 +318,7 @@ export default function Shop() {
             </aside>
 
             <div className="min-w-0">
-              <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
+              <div className="mb-3 flex flex-wrap items-center justify-between gap-3 md:mb-4">
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
                   <p className="m-0 text-body" aria-live="polite">
                     {loading ? <span className="text-grey">{tr('loading')}…</span> : !fail && <><strong className="text-green">{shown.length}</strong> {shown.length === 1 ? tr('item') : tr('items')}</>}
@@ -317,14 +336,16 @@ export default function Shop() {
                     </button>
                   )}
                 </div>
-                <Field id="f-sort" label={tr('sortBy')} className="w-full sm:w-64">
-                  <Select id="f-sort" value={sort} onChange={(e) => setSort(e.target.value as SortKey)}>
+                {/* Sort sits inline beside the count, like the big marketplaces */}
+                <div className="flex items-center gap-2">
+                  <label htmlFor="f-sort" className="shrink-0 text-small font-bold text-green">{tr('sortBy')}</label>
+                  <Select id="f-sort" className="w-[11.5rem] sm:w-56" value={sort} onChange={(e) => setSort(e.target.value as SortKey)}>
                     <option value="popular">{tr('popular')}</option>
                     <option value="price-low">{tr('priceLow')}</option>
                     <option value="price-high">{tr('priceHigh')}</option>
                     <option value="delivery">{tr('fastest')}</option>
                   </Select>
-                </Field>
+                </div>
               </div>
 
               {loading ? (

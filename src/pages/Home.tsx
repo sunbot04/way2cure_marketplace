@@ -119,10 +119,11 @@ export default function Home() {
       {/* 1-2 · Hero: search, service banners, quick actions (components/home/Hero) */}
       <Hero />
 
-      {/* 3 · Shop by need: the client's card design (components/home/ShopByNeed) */}
-      <section className="cv-auto section bg-white">
+      {/* 3 · Shop by need: the client's card design (components/home/ShopByNeed). Less space on top,
+          so it follows straight on from the hero's quick actions. */}
+      <section className="cv-auto section bg-white pt-8 lg:pt-10">
         <div className="container">
-          <div className="mb-8 md:mb-12 flex flex-wrap items-end justify-between gap-6">
+          <div className="mb-6 md:mb-8 flex flex-wrap items-end justify-between gap-6">
             <Heading title={tr('quickTitle')} lead={tr('quickLead')} className="max-w-2xl" />
             <Reveal><Link to="/shop" className="group inline-flex min-h-tap items-center gap-1.5 font-bold">{tr('allProducts')} <Icon name="arrow" size={18} /></Link></Reveal>
           </div>

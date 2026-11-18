@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
 import Icon from '../Icon';
-import CardArrow from '../ui/CardArrow';
 
-// Shop-page category card with a real photo (stock until the product shoot, see
-// public/images/categories/CREDITS.md). Compact, so the products below stay near the top. Phones: a
-// picture tile with the name under it, in a row you swipe; from 640px: photo thumbnail beside the
-// name. The whole card is one link; the photo zooms a little and the round arrow fills crimson on hover.
+// Shop-page category tile with a real photo (stock until the product shoot, see
+// public/images/categories/CREDITS.md). Kept small, like a marketplace category strip, so the
+// products stay near the top: photo above, name below. All eight sit in one row from 1024px;
+// below that they form a row you swipe. The whole tile is one link; the photo zooms a little on
+// hover. The blurb is the link's tooltip.
 
 export interface CategoryCardData { slug: string; name: string; blurb: string; icon: string; image?: string }
 
@@ -32,14 +32,11 @@ export default function CategoryCard({ c }: { c: CategoryCardData }) {
   return (
     <Link
       to={`/shop/${c.slug}`}
-      className="group flex h-full flex-col gap-2 rounded-tile border border-line bg-white p-2 pb-3 text-ink no-underline shadow-card transition-[transform,box-shadow] duration-micro ease-soft hover:-translate-y-0.5 hover:shadow-raised sm:flex-row sm:items-center sm:gap-3 sm:pb-2 sm:pr-3"
+      title={c.blurb}
+      className="group flex h-full flex-col gap-2 rounded-tile border border-line bg-white p-1.5 pb-2.5 text-center text-ink no-underline shadow-card transition-[transform,box-shadow] duration-micro ease-soft hover:-translate-y-0.5 hover:shadow-raised"
     >
-      <span className="block aspect-[4/3] w-full overflow-hidden rounded-card bg-mist sm:aspect-square sm:h-16 sm:w-16 sm:shrink-0">{photo('(min-width: 640px) 4rem, 8.5rem', '')}</span>
-      <span className="grid min-w-0 flex-1 gap-0.5 px-1 sm:px-0">
-        <strong className="text-base leading-snug text-green md:text-body">{c.name}</strong>
-        <span className="hidden text-small leading-snug text-grey xl:block">{c.blurb}</span>
-      </span>
-      <CardArrow size="sm" className="hidden xl:grid" />
+      <span className="block h-[4.5rem] w-full overflow-hidden rounded-card bg-mist lg:h-20">{photo('(min-width: 1024px) 10rem, 7.5rem', '')}</span>
+      <strong className="flex flex-1 items-center justify-center px-1 text-small font-bold leading-snug text-green">{c.name}</strong>
     </Link>
   );
 }
