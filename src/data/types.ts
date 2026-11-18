@@ -69,7 +69,7 @@ export type Testimonial = Localized<TestimonialText> & { name: string; city: str
 
 export type PurchaseMode = 'buy' | 'rent' | 'subscribe';
 
-// Accounts, carts and orders. Kept here (not in the React contexts) so the app in mobile/ can share them.
+// Accounts, carts and orders. Kept here (not in the React contexts) so the customer app (../customer-app) can share them.
 export interface User { name: string; phone: string; since: string }
 
 /** supplyDays: how long this order should last. Used for refill reminders (see NotificationsContext).

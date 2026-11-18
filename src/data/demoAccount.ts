@@ -14,7 +14,7 @@ import { DEMO_HOME, DEMO_PARENTS, DEMO_PHONE, demoOrders } from './demoSeed';
 // TODO: API: remove once real accounts exist.
 
 export const DEMO_ENABLED = import.meta.env.VITE_DEMO_ACCOUNT !== 'off';
-// The phone, code, sample orders and addresses live in demoSeed.ts (no React), shared with the app in mobile/.
+// The phone, code, sample orders and addresses live in demoSeed.ts (no React), shared with the customer app (../customer-app).
 export { DEMO_CODE, DEMO_PHONE, demoOrders, formatPhone } from './demoSeed';
 export const DEMO_USER: User = { name: 'Rohan Patil', phone: DEMO_PHONE, since: '2024-06-10T10:00:00.000Z' };
 

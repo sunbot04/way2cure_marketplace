@@ -1,5 +1,5 @@
 // Sample data for the demo account, with no React or browser code, so the website
-// (data/demoAccount.ts) and the Android app (mobile/) sign in to the same account and see the
+// (data/demoAccount.ts) and the customer app (../customer-app, which copies it with npm run sync-shared) sign in to the same account and see the
 // same orders.
 //
 //   Mobile 98765 43210 · code 123456

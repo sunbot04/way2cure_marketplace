@@ -1,4 +1,4 @@
-// Checkout choices shared by the website (pages/Checkout.tsx) and the Android app (mobile/).
+// Checkout choices shared by the website (pages/Checkout.tsx) and the customer app (../customer-app, which copies it with npm run sync-shared).
 // No React or browser code here.
 import type { Lang } from './types';
 

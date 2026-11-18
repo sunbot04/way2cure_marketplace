@@ -1,5 +1,5 @@
 // The catalogue and the rules that price it, with no React or browser code, so the website
-// (src/data/index.ts) and the Android app (mobile/) share one copy.
+// (src/data/index.ts) and the customer app (../customer-app, which copies it with npm run sync-shared) share one copy.
 // TODO: API: replace the JSON with the catalogue service.
 import categoriesJson from './categories.json';
 import productsJson from './products.json';

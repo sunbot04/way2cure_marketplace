@@ -8,7 +8,7 @@ import { deliveryLabel } from './catalog';
 import type { Category, Lang, Product, TeamMember, Testimonial } from './types';
 
 export type * from './types';
-// Catalogue, prices and delivery labels live in catalog.ts (no React), shared with the app in mobile/.
+// Catalogue, prices and delivery labels live in catalog.ts (no React), shared with the customer app (../customer-app).
 export { categories, products, services, subscriptionPlans, faqs, getProduct, getService, unitPrice, deliveryLabel } from './catalog';
 
 /** Extra shop views from the site map: Rent equipment and Marketplace sellers. */
